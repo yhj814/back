@@ -108,21 +108,24 @@ document.addEventListener("DOMContentLoaded", function () {
     // 네 번째 기능: 나의 모집에서 답글 섹션 표시/숨김
     const toggleReplyBtns = document.querySelectorAll(".btn-wrapper");
 
-    toggleReplyBtns.forEach(function (btn) {
-        btn.addEventListener("click", function () {
-            const replyId = this.getAttribute("data-reply"); // 각 버튼에 설정된 data-reply 값 가져오기
-            const replySection = document.getElementById(
-                `replySection${replyId}`
-            ); // data-reply에 해당하는 replySection 찾기
-            if (
-                replySection.style.display === "none" ||
-                replySection.style.display === ""
-            ) {
-                replySection.style.display = "block"; // 보이도록 변경
-            } else {
-                replySection.style.display = "none"; // 다시 숨김
-            }
-        });
+    toggleReplyBtns.forEach(function (btnWrapper) {
+        const toggleBtn = btnWrapper.querySelector(".btn-icon-edit-my"); // .btn-icon-edit-my 버튼만 선택
+        if (toggleBtn) {
+            toggleBtn.addEventListener("click", function () {
+                const replyId = btnWrapper.getAttribute("data-reply"); // 각 버튼에 설정된 data-reply 값 가져오기
+                const replySection = document.getElementById(
+                    `replySection${replyId}`
+                ); // data-reply에 해당하는 replySection 찾기
+                if (
+                    replySection.style.display === "none" ||
+                    replySection.style.display === ""
+                ) {
+                    replySection.style.display = "block"; // 보이도록 변경
+                } else {
+                    replySection.style.display = "none"; // 다시 숨김
+                }
+            });
+        }
     });
 
     // 추가 기능: 사이드바 메뉴 접기/펼치기 기능
