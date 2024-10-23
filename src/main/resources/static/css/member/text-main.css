@@ -1480,8 +1480,7 @@ p {
 .container.mypage .main-content-container .inquiry-list .inquiry-description {
     display: block;
     line-height: 22px; /* 각 줄의 높이 설정 */
-    height: 44px; /* 두 줄의 높이로 고정 */
-    max-height: 44px; /* 두 줄의 높이로 제한 */
+    height: auto; /* 두 줄의 높이로 고정 */
     overflow: hidden; /* 넘치는 내용 숨기기 */
     text-overflow: ellipsis; /* 넘칠 경우 ... 처리 */
     white-space: normal; /* 줄바꿈 허용 */
