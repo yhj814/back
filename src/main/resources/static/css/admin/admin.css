@@ -378,11 +378,11 @@ video {
 }
 
 .admin-layout-container
-    .layout-main
-    .layout-expand-nav-button
-    .layout-icon {
+.layout-main
+.layout-expand-nav-button
+.layout-icon {
     background: url(https://static.wadiz.kr/studio/funding/static/media/icon-expand-more.21864999.svg)
-        no-repeat 50%;
+    no-repeat 50%;
     background-size: 12px 12px;
     pointer-events: none;
     width: 12px;
@@ -391,14 +391,14 @@ video {
 
 /* 사이드바 열렸을 때 버튼 */
 .admin-layout-container
-    .layout-main
-    .layout-expand-nav-button.layout-expand {
+.layout-main
+.layout-expand-nav-button.layout-expand {
     left: 195px;
 }
 .admin-layout-container
-    .layout-main
-    .layout-expand-nav-button.layout-expand
-    .layout-icon {
+.layout-main
+.layout-expand-nav-button.layout-expand
+.layout-icon {
     -webkit-transform: rotate(180deg);
     transform: rotate(180deg);
 }
@@ -470,7 +470,7 @@ video {
     transition: background-color 0.3s;
 }
 .selected-btn:hover {
-    background-color: #e2e8f0; 
+    background-color: #e2e8f0;
 }
 
 /* 통합검색 */
@@ -523,9 +523,9 @@ video {
 .apply-table-cell {
     display: table-cell;
     box-sizing: border-box; /* padding과 border를 포함한 크기 조정 */
-    padding: 8px; 
+    padding: 8px;
     vertical-align: middle; /* 내용이 수직으로 가운데 정렬되도록 */
-    border-bottom: 1px solid #dee2e6; 
+    border-bottom: 1px solid #dee2e6;
 }
 .apply-table-header {
     background-color: #f8f9fa;
@@ -667,7 +667,7 @@ video {
 .status.hold {
     background-color: #ffa600;
 }
-.status.no-issue, 
+.status.no-issue,
 .status.refund-cancelled {
     background-color: #b7b7b7;
     cursor: default;
@@ -807,7 +807,7 @@ video {
     padding: 8px;
     box-sizing: border-box;
 }
-.reasons-report-btn:hover, 
+.reasons-report-btn:hover,
 .edit-btn:hover {
     opacity: 0.8;
 }
@@ -1528,11 +1528,13 @@ h1.common-header-description {
 
 
 .apply-table-row .active-member,
-.apply-table-row .payment-complete {
+.apply-table-row .payment-complete,
+.apply-table-row .progress {
     color: rgba(41, 153, 41, 0.818);
 }
 .apply-table-row .terminated-member,
-.apply-table-row .payment-cancelled {
+.apply-table-row .payment-cancelled,
+.apply-table-row .end {
     color: #00000076;
 }
 
@@ -1648,7 +1650,7 @@ h1.common-header-description {
 .notice-full-modal .edit-post-content {
     height: 380px;
 }
- 
+
 
 .answered-modal .comment-textarea {
     height: 150px;
@@ -1716,7 +1718,7 @@ h1.common-header-description {
 }
 
 .btn-wrapper:hover .caption {
-    opacity: 1;  
+    opacity: 1;
 }
 
 .btn-wrapper .caption:after {
