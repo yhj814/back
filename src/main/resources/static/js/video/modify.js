@@ -290,3 +290,60 @@ document.addEventListener("click", () => {
         });
     });
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+    const inputElement = document.querySelector(".label-input-partner input");
+    const textareaElement = document.querySelector(
+        ".textarea__border textarea"
+    );
+    const radioButtons = document.querySelectorAll('input[type="radio"]');
+    const fileInputs = document.querySelectorAll('input[type="file"]');
+    const submitButton = document.querySelector(".btn-submit");
+
+    // 버튼 활성화 확인 함수
+    function checkFormCompletion() {
+        // 파일 업로드가 완료되었는지 확인
+        const allFilesUploaded = Array.from(fileInputs).every(
+            (fileInput) => fileInput.files.length > 0
+        );
+        // 텍스트 필드가 비어있지 않은지 확인
+        const isInputValid = inputElement && inputElement.value.trim() !== "";
+        const isTextareaValid =
+            textareaElement && textareaElement.value.trim() !== "";
+        // 라디오 버튼이 선택되었는지 확인
+        const isRadioSelected = Array.from(radioButtons).some(
+            (radio) => radio.checked
+        );
+
+        // 모든 조건을 만족하면 버튼 활성화, 그렇지 않으면 비활성화
+        if (
+            allFilesUploaded &&
+            isInputValid &&
+            isTextareaValid &&
+            isRadioSelected
+        ) {
+            submitButton.disabled = false;
+            submitButton.classList.add("active"); // 버튼 활성화 스타일 추가 (필요에 따라 클래스명 수정 가능)
+        } else {
+            submitButton.disabled = true;
+            submitButton.classList.remove("active"); // 버튼 비활성화 스타일 제거
+        }
+    }
+
+    // 각 입력 필드에 이벤트 리스너 추가
+    if (inputElement) {
+        inputElement.addEventListener("input", checkFormCompletion);
+    }
+    if (textareaElement) {
+        textareaElement.addEventListener("input", checkFormCompletion);
+    }
+    radioButtons.forEach((radio) => {
+        radio.addEventListener("change", checkFormCompletion);
+    });
+    fileInputs.forEach((fileInput) => {
+        fileInput.addEventListener("change", checkFormCompletion);
+    });
+
+    // 페이지 로드 시에도 버튼 상태 확인
+    checkFormCompletion();
+});

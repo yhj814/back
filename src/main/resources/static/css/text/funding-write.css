@@ -410,7 +410,7 @@ button {
     width: 96px;
 }
 .btn-submit {
-    background-color: #00a878;
+    background-color: #a1a6ad;
     color: #fff;
     border: #00a878;
     font-size: 16px;
@@ -963,4 +963,7 @@ input {
 
 input:hover {
     border-color: #00a878;
+}
+.active {
+    background-color: #00a878;
 }

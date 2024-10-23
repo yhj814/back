@@ -410,7 +410,7 @@ button {
     width: 96px;
 }
 .btn-submit {
-    background-color: #2099bb;
+    background-color: #a1a6ad;
     color: #fff;
     border: #2099bb;
     font-size: 16px;
@@ -812,4 +812,7 @@ input {
 }
 input:hover {
     border-color: #2099bb;
+}
+.active {
+    background-color: #2099bb;
 }
