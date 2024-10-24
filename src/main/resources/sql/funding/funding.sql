@@ -5,6 +5,7 @@ create table tbl_funding (
     target_price int not null, -- 목표 금액
     converge_price int not null, -- 모인 금액
     funding_status varchar(255) default 0, -- 펀딩 상태
+    file_content varchar(255),
     constraint fk_funding_post foreign key (id)
     references tbl_post(id)
 );

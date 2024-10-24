@@ -1489,12 +1489,29 @@ p {
     box-shadow: 0 2px 8px 0 rgba(0, 0, 0, .16);
     background-color: #fff;
 }
-.noti-center-header {
+.withdraw-right-side {
+    float: right;
+    width: 740px;
+    margin-top: 5px;
+    border: 1px solid #e5e6eb;
+    background-color: #fff;
+}
+
+.noti-center-header{
     width: 100%;
     display: inline-block;
     padding: 26px 17px 26px 36px;
 }
-.noti-center-header .noti-center-title {
+
+.withdraw-center-header{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px 0px;
+}
+
+.noti-center-header .noti-center-title,
+.withdraw-center-header .withdraw-center-title{
     display: inline-block;
     color: #212121;
 }
@@ -1503,7 +1520,7 @@ p {
     line-height: 36px;
     font-weight: 400;
 }
-.noti-center-header .noti-center-header-more {
+.noti-center-header .noti-center-header-more{
     display: inline-block;
     position: relative;
     top: 6px;
@@ -1524,33 +1541,46 @@ p {
     position: relative;
     top: 1px;
 }
- .noti-body {
+ .noti-body, .withdraw-body {
     width: 100%;
 }
- .noti-body>.noti-box:first-child {
+ .noti-body>.noti-box:first-child,
+ .withdraw-body>.withdraw-box:first-child{
     border-top: solid 1px #e0e0e0;
 }
- .noti-box.date-box {
+ .noti-box.date-box,
+ .withdraw-box.box {
     cursor: default;
 }
- .noti-body>.noti-box:first-child .noti-box-wrapper {
+ .noti-body>.noti-box:first-child .noti-box-wrapper{
     padding: 5px 40px 0px 36px;
 }
- .noti-box.date-box .noti-box-wrapper .noti-date-title {
-    color: #212121;
-    font-weight: 650;
 
+.withdraw-body>.withdraw-box:first-child .withdraw-box-wrapper {
+    margin-top: 10px;
+    margin-bottom: 30px;
+    padding: 5px 40px 0px 36px;
 }
 
+ .noti-box.date-box .noti-box-wrapper .noti-date-title{
+    color: #212121;
+    font-weight: 650;
+}
+
+.withdraw-box.box .withdraw-box-wrapper .withdraw-title {
+    color: #212121;
+}
 
  .noti-box.unread {
     background-color: #f2fcff;
 }
- .noti-box {
+ .noti-box,
+ .withdraw-box {
     border-top: solid 1px #eee;
     cursor: pointer;
 }
- .noti-box .noti-box-wrapper {
+ .noti-box .noti-box-wrapper,
+ .withdraw-box .withdraw-box-wrapper {
     padding: 15px 40px 16px 40px;
 }
  .noti-box .noti-box-content {
@@ -1611,6 +1641,17 @@ p {
     cursor: pointer;
     text-align: center;
 }
+
+.withdraw-question {
+    font-size: 14px;
+    padding: 20px 0;
+    border-top: solid 1px #e0e0e0;
+    color: #757575;
+    text-align: center;
+    letter-spacing : 1px;
+    cursor: default;
+}
+
 .ifclick img {
     position: absolute;
     margin-left: 5px;
