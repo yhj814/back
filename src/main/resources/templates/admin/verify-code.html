@@ -81,12 +81,12 @@
             </div>
             <form id="verify-form" method="POST" th:action="@{/admin/verify}" th:object="${adminDTO}">
                 <div class="enter-container">
-                    <input type="text" id="input1" maxlength="6" class="enter-input" th:field="*{adminVerifyCode}" />
-<!--                    <input type="text" id="input2" maxlength="1" class="enter-input" th:field="*{adminVerifyCode2}" />-->
-<!--                    <input type="text" id="input3" maxlength="1" class="enter-input" th:field="*{adminVerifyCode3}" />-->
-<!--                    <input type="text" id="input4" maxlength="1" class="enter-input" th:field="*{adminVerifyCode4}" />-->
-<!--                    <input type="text" id="input5" maxlength="1" class="enter-input" th:field="*{adminVerifyCode5}" />-->
-<!--                    <input type="text" id="input6" maxlength="1" class="enter-input" th:field="*{adminVerifyCode6}" />-->
+                    <input type="text" id="input1" maxlength="1" class="enter-input" th:field="*{adminVerifyCode}" />
+                    <input type="text" id="input2" maxlength="1" class="enter-input" th:field="*{adminVerifyCode}" />
+                    <input type="text" id="input3" maxlength="1" class="enter-input" th:field="*{adminVerifyCode}" />
+                    <input type="text" id="input4" maxlength="1" class="enter-input" th:field="*{adminVerifyCode}" />
+                    <input type="text" id="input5" maxlength="1" class="enter-input" th:field="*{adminVerifyCode}" />
+                    <input type="text" id="input6" maxlength="1" class="enter-input" th:field="*{adminVerifyCode}" />
                 </div>
                 <button type="submit" id="enterVerify_btn" class="enterVerify_btn">확인</button>
             </form>
@@ -96,6 +96,7 @@
 </body>
 <script src="/js/admin/verify-code.js"></script>
 </html>
+
 
 
 
