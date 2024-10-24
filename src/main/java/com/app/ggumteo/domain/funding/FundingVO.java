@@ -14,9 +14,9 @@ import org.springframework.stereotype.Component;
 public class FundingVO {
 
     private Long id; // 펀딩 ID
-    private Integer investorNumber; // 투자자 수
-    private Integer targetPrice; // 목표 금액
-    private Integer convergePrice; // 모인 금액
+    private int investorNumber; // 투자자 수
+    private int targetPrice; // 목표 금액
+    private int convergePrice; // 모인 금액
     private Long genreId; // 장르 ID
     private String fundingStatus; // 펀딩 상태
     private String createdDate; // 생성 날짜
