@@ -1,18 +1,16 @@
 package com.app.ggumteo.domain.post;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.stereotype.Component;
 
 @Component
 @Getter
 @Setter
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @NoArgsConstructor
 @AllArgsConstructor
 public class PostVO {
-
+    @EqualsAndHashCode.Include
     private Long id; // 포스트 ID
     private String postTitle; // 포스트 제목
     private String postContent; // 포스트 내용

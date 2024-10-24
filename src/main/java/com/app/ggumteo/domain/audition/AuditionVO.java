@@ -12,6 +12,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AuditionVO implements Serializable {
+    @EqualsAndHashCode.Include
     private Long id;
     private int auditionField;
     private String auditionCareer;
