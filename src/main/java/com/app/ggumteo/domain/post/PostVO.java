@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PostVO {
-
+    @EqualsAndHashCode.Include
     private Long id; // 포스트 ID
     private String postTitle; // 포스트 제목
     private String postContent; // 포스트 내용

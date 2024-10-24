@@ -12,8 +12,8 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MemberProfileVO implements Serializable {
+    @EqualsAndHashCode.Include
     private Long Id;
-    private String profileName;
     private String profileGender;
     private String profileAge;
     private String profileEmail;
