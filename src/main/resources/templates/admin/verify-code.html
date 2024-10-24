@@ -1,64 +1,102 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--    <head>-->
+<!--        <meta charset="UTF-8" />-->
+<!--        <meta name="viewport" content="width=device-width, initial-scale=1.0" />-->
+<!--        <link rel="stylesheet" href="/css/admin/verify-code.css" />-->
+<!--        <title>인증번호 페이지</title>-->
+<!--    </head>-->
+<!--    <body>-->
+<!--        &lt;!&ndash; 관리자 로그인(모달창) &ndash;&gt;-->
+<!--        <div id="enter-modal" class="verify-modal">-->
+<!--            <div class="modal-wrap">-->
+<!--                <div class="enterModal_content">-->
+<!--                    <div class="header-title">-->
+<!--                        <img src="/images/header/test-logo2.png" width="90px" />-->
+<!--                        <p>관리자 페이지</p>-->
+<!--                    </div>-->
+<!--                    <div class="enter-container">-->
+<!--                        <input-->
+<!--                            type="text"-->
+<!--                            id="input1"-->
+<!--                            maxlength="1"-->
+<!--                            class="enter-input"-->
+<!--                        />-->
+<!--                        <input-->
+<!--                            type="text"-->
+<!--                            id="input2"-->
+<!--                            maxlength="1"-->
+<!--                            class="enter-input"-->
+<!--                        />-->
+<!--                        <input-->
+<!--                            type="text"-->
+<!--                            id="input3"-->
+<!--                            maxlength="1"-->
+<!--                            class="enter-input"-->
+<!--                        />-->
+<!--                        <input-->
+<!--                            type="text"-->
+<!--                            id="input4"-->
+<!--                            maxlength="1"-->
+<!--                            class="enter-input"-->
+<!--                        />-->
+<!--                        <input-->
+<!--                            type="text"-->
+<!--                            id="input5"-->
+<!--                            maxlength="1"-->
+<!--                            class="enter-input"-->
+<!--                        />-->
+<!--                        <input-->
+<!--                            type="text"-->
+<!--                            id="input6"-->
+<!--                            maxlength="1"-->
+<!--                            class="enter-input"-->
+<!--                        />-->
+<!--                    </div>-->
+<!--                    <button id="enterVerify_btn" class="enterVerify_btn">-->
+<!--                        확인-->
+<!--                    </button>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </body>-->
+<!--    <script src="/js/admin/verify-code.js"></script>-->
+<!--</html>-->
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <link rel="stylesheet" href="/css/admin/verify-code.css" />
-        <title>인증번호 페이지</title>
-    </head>
-    <body>
-        <!-- 관리자 로그인(모달창) -->
-        <div id="enter-modal" class="verify-modal">
-            <div class="modal-wrap">
-                <div class="enterModal_content">
-                    <div class="header-title">
-                        <img src="/images/header/test-logo2.png" width="90px" />
-                        <p>관리자 페이지</p>
-                    </div>
-                    <div class="enter-container">
-                        <input
-                            type="text"
-                            id="input1"
-                            maxlength="1"
-                            class="enter-input"
-                        />
-                        <input
-                            type="text"
-                            id="input2"
-                            maxlength="1"
-                            class="enter-input"
-                        />
-                        <input
-                            type="text"
-                            id="input3"
-                            maxlength="1"
-                            class="enter-input"
-                        />
-                        <input
-                            type="text"
-                            id="input4"
-                            maxlength="1"
-                            class="enter-input"
-                        />
-                        <input
-                            type="text"
-                            id="input5"
-                            maxlength="1"
-                            class="enter-input"
-                        />
-                        <input
-                            type="text"
-                            id="input6"
-                            maxlength="1"
-                            class="enter-input"
-                        />
-                    </div>
-                    <button id="enterVerify_btn" class="enterVerify_btn">
-                        확인
-                    </button>
-                </div>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/css/admin/verify-code.css" />
+    <title>인증번호 페이지</title>
+</head>
+<body>
+<!-- 관리자 로그인(모달창) -->
+<div id="enter-modal" class="verify-modal">
+    <div class="modal-wrap">
+        <div class="enterModal_content">
+            <div class="header-title">
+                <img src="/images/header/test-logo2.png" width="90px" />
+                <p>관리자 페이지</p>
             </div>
+            <form id="verify-form" method="POST" th:action="@{/admin/verify}" th:object="${adminDTO}">
+                <div class="enter-container">
+                    <input type="text" id="input1" maxlength="6" class="enter-input" th:field="*{adminVerifyCode}" />
+<!--                    <input type="text" id="input2" maxlength="1" class="enter-input" th:field="*{adminVerifyCode2}" />-->
+<!--                    <input type="text" id="input3" maxlength="1" class="enter-input" th:field="*{adminVerifyCode3}" />-->
+<!--                    <input type="text" id="input4" maxlength="1" class="enter-input" th:field="*{adminVerifyCode4}" />-->
+<!--                    <input type="text" id="input5" maxlength="1" class="enter-input" th:field="*{adminVerifyCode5}" />-->
+<!--                    <input type="text" id="input6" maxlength="1" class="enter-input" th:field="*{adminVerifyCode6}" />-->
+                </div>
+                <button type="submit" id="enterVerify_btn" class="enterVerify_btn">확인</button>
+            </form>
         </div>
-    </body>
-    <script src="/js/admin/verify-code.js"></script>
+    </div>
+</div>
+</body>
+<script src="/js/admin/verify-code.js"></script>
 </html>
+
+
+
+

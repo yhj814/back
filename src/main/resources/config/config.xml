@@ -5,4 +5,9 @@
         <setting name="mapUnderscoreToCamelCase" value="true"/>
     </settings>
 
+    <typeAliases>
+        <typeAlias type="com.app.ggumteo.domain.admin.AdminVO" alias="adminVO"/>
+        <typeAlias type="com.app.ggumteo.domain.admin.AdminDTO" alias="adminDTO"/>
+    </typeAliases>
+
 </configuration>
