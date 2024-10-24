@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.app.ggumteo.mapper.admin.AdminMapper">
+    <!-- 인증번호 생성 -->
+    <insert id="insert">
+        insert into tbl_admin (admin_verify_code)
+        values (#{adminVerifyCode})
+    </insert>
+
+    <!-- 인증번호 조회 -->
+    <select id="selectAdminVerifyCode" resultType="AdminVO">
+        select id, admin_verify_code
+        from tbl_admin
+        where admin_verify_code = #{adminVerifyCode}
+    </select>
+</mapper>
