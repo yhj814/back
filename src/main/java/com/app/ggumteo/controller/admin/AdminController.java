@@ -45,6 +45,7 @@ public class AdminController {
 
     @GetMapping("/admin")
     public String showAdminPage() {
+        log.info("관리자 로그인 완료");
         return "admin/admin";
     }
 }
