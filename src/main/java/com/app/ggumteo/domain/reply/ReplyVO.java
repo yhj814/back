@@ -17,6 +17,6 @@ public class ReplyVO  {
     private String replyContent;
     private Long memberId;
     private Long workId;
-    private String createTime;
+    private String createDate;
     private int star;
 }
