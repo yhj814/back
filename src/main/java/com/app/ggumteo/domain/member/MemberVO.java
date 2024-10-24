@@ -12,10 +12,9 @@ import java.io.Serializable;
 public class MemberVO implements Serializable {
     @EqualsAndHashCode.Include
     private Long id;
-    private String name;
-    private String email;
+    private String memberName;
+    private String memberEmail;
     private String profileImgUrl;
     private String createdDate;
     private String updatedDate;
-
 }

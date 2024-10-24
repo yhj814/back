@@ -13,7 +13,6 @@ import java.io.Serializable;
 @AllArgsConstructor
 public class MemberProfileVO implements Serializable {
     private Long Id;
-    private String profileName;
     private String profileGender;
     private String profileAge;
     private String profileEmail;
