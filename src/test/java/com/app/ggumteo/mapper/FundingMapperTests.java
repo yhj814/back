@@ -18,10 +18,7 @@ public class FundingMapperTests {
 
     @Test
     public void testSelectByMemberId() {
-        FundingDTO fundingDTO = new FundingDTO();
-        fundingDTO.setMemberId(1L);
-
-        List<FundingDTO> fundingPosts = fundingMapper.selectByMemberId(fundingDTO.getMemberId());
-        fundingPosts.stream().map(FundingDTO::toString).forEach(log::info);
+//        List<FundingDTO> fundingDTOs = fundingMapper.selectByMemberId(1L);
+        fundingMapper.selectByMemberId(1L).stream().map(FundingDTO::toString).forEach(log::info);
     }
 }
