@@ -6,6 +6,8 @@
     </settings>
 
     <typeAliases>
+        <typeAlias type="com.app.ggumteo.domain.member.MemberVO" alias="memberVO"/>
+        <typeAlias type="com.app.ggumteo.domain.member.MemberDTO" alias="memberDTO"/>
         <typeAlias type="com.app.ggumteo.domain.admin.AdminVO" alias="adminVO"/>
         <typeAlias type="com.app.ggumteo.domain.admin.AdminDTO" alias="adminDTO"/>
         <typeAlias type="com.app.ggumteo.domain.post.PostVO" alias="postVO"/>
