@@ -1489,13 +1489,6 @@ p {
     box-shadow: 0 2px 8px 0 rgba(0, 0, 0, .16);
     background-color: #fff;
 }
-.withdraw-right-side {
-    float: right;
-    width: 740px;
-    margin-top: 5px;
-    border: 1px solid #e5e6eb;
-    background-color: #fff;
-}
 
 .noti-center-header{
     width: 100%;
@@ -1503,15 +1496,7 @@ p {
     padding: 26px 17px 26px 36px;
 }
 
-.withdraw-center-header{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 20px 0px;
-}
-
-.noti-center-header .noti-center-title,
-.withdraw-center-header .withdraw-center-title{
+.noti-center-header .noti-center-title{
     display: inline-block;
     color: #212121;
 }
@@ -1556,31 +1541,19 @@ p {
     padding: 5px 40px 0px 36px;
 }
 
-.withdraw-body>.withdraw-box:first-child .withdraw-box-wrapper {
-    margin-top: 10px;
-    margin-bottom: 30px;
-    padding: 5px 40px 0px 36px;
-}
-
  .noti-box.date-box .noti-box-wrapper .noti-date-title{
     color: #212121;
     font-weight: 650;
 }
 
-.withdraw-box.box .withdraw-box-wrapper .withdraw-title {
-    color: #212121;
-}
-
  .noti-box.unread {
     background-color: #f2fcff;
 }
- .noti-box,
- .withdraw-box {
+ .noti-box {
     border-top: solid 1px #eee;
     cursor: pointer;
 }
- .noti-box .noti-box-wrapper,
- .withdraw-box .withdraw-box-wrapper {
+ .noti-box .noti-box-wrapper {
     padding: 15px 40px 16px 40px;
 }
  .noti-box .noti-box-content {
@@ -1640,16 +1613,6 @@ p {
     color: #757575;
     cursor: pointer;
     text-align: center;
-}
-
-.withdraw-question {
-    font-size: 14px;
-    padding: 20px 0;
-    border-top: solid 1px #e0e0e0;
-    color: #757575;
-    text-align: center;
-    letter-spacing : 1px;
-    cursor: default;
 }
 
 .ifclick img {
@@ -1718,15 +1681,179 @@ p {
     align-items: center;
 }
 
+/* 탈퇴하기 버튼 추가 */
+#my-withdraw-content.content{
+    float: right;
+    width: 740px;
+    margin-top: 5px;
+    background-color: #fff;
+}
 
+.withdraw-right-side {
+    border: 1px solid #e5e6eb;
+}
 
+.withdraw-center-header{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px 0px;
+}
 
+.withdraw-center-header .withdraw-center-title {
+    display: inline-block;
+    color: #212121;
+}
 
+.withdraw-body>.withdraw-box:first-child .withdraw-box-wrapper {
+    margin-top: 10px;
+    margin-bottom: 30px;
+    padding: 5px 40px 0px 36px;
+}
 
+.withdraw-box.box .withdraw-box-wrapper .withdraw-title {
+    color: #212121;
+}
 
+.withdraw-btn {
+    font-size: 14px;
+    padding: 20px 0;
+    border-top: solid 1px #e0e0e0;
+    color: #757575;
+    text-align: center;
+    letter-spacing : 1px;
+    cursor: pointer;
+}
 
+.withdraw-btn span:hover {
+    font-weight: 600;
+    padding: 10px 25px 11px 25px;
+    border-radius: 5px;
+    background-color: rgba(126, 126, 126, 0.18);
+}
 
-
+/* 탈퇴하시겠습니까? 모달창 */
+.withdraw-modal {
+    display: none;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    background: rgba(0, 0, 0, 0.4);
+}
+.modal {
+    width: 100%;
+    max-width: 440px;
+    min-height: 200px;
+    border-radius: 8px;
+    background-color: rgb(255, 255, 255);
+}
+.modal-header {
+    padding: 10px 25px 0px 25px;
+    display: flex;
+    align-items: center;
+    height: 64px;
+    min-height: 64px;
+}
+.modal-header > div {
+    height: fit-content;
+    flex: 0 0 auto;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+.blank {
+    visibility: hidden;
+    min-width: 64px;
+}
+.header-title {
+    display: flex;
+    flex: 1 1 0%;
+    justify-content: center;
+    align-items: center;
+    font-size: 26px;
+    font-weight: 700;
+    color: rgb(23, 23, 25);
+}
+.header-title > p {
+    text-align: center;
+    letter-spacing: -0.002em;
+    line-height: 26px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 27px;
+    font-weight: 700;
+    color: rgb(23, 23, 25);
+}
+.close-btn-wrapper {
+    display: flex;
+    min-width: 64px;
+    justify-content: flex-end;
+    align-items: center;
+}
+.close-btn  {
+    border: none;
+    background: none;
+    cursor: pointer;
+    padding: 8px;
+    margin: -8px;
+    fill: rgb(0, 0, 0);
+}
+.close {
+    user-select: none;
+    width: 1em;
+    height: 1em;
+    display: inline-block;
+    fill: currentcolor;
+    flex-shrink: 0;
+    font-size: 24px;
+}
+.modal-content {
+    padding: 0px 23px 23px;
+}
+.withdraw-question {
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+    margin-bottom: 25px;
+    gap: 30px;
+}
+.withdraw-question > p {
+    color: #404040;
+    font-weight: 600;
+    text-align: center;
+    letter-spacing: 1px;
+    font-size: 19px;
+    line-height: 28px;
+}
+.submit-btn {
+    display: flex;
+    justify-content: right;
+}
+.submit-btn > button {
+    width: 100%;
+    color: rgba(55, 56, 60, 0.16);
+    background-color: #F4F4F5;
+    border: none;
+    height: 48px;
+    min-height: 48px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+.submit-btn > button > span {
+    font-weight: 600;
+    font-size: 16px;
+}
+.submit-btn > button:hover {
+    background-color: #dcdcdc;
+    color: rgb(53, 53, 53);
+}
 
 /* 미디어 쿼리 시작 */
 @media (max-width: 430px) {

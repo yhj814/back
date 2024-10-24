@@ -241,7 +241,7 @@
                                 class="sidebar-menu-name"
                                 onclick="showContent('my-withdraw-content')"
                         >
-                            탈퇴하기
+                            회원 탈퇴
                         </div>
                     </div>
                 </div>
@@ -7395,44 +7395,61 @@
                         </div>
                     </div>
                     <div id="my-withdraw-content" class="content">
-                        <div
-                                class="content-container main-content"
-                        >
-                            <div class="content2">
-                                <div class="withdraw-right-side">
-                                    <div class="withdraw-center-header">
-                                        <div
-                                                class="subtitle-1 withdraw-center-title"
-                                        >
-                                           회원 탈퇴 시 주의사항
-                                        </div>
+                        <div class="withdraw-right-side">
+                            <div class="withdraw-center-header">
+                                <div
+                                        class="subtitle-1 withdraw-center-title"
+                                >
+                                   회원 탈퇴 시 주의사항
+                                </div>
+                            </div>
+                            <div class="withdraw-body">
+                                <div class="withdraw-box box">
+                                    <div class="withdraw-box-wrapper">
+                                        <p class="withdraw-title">
+                                            - 탈퇴 시 등록한 서비스의 <strong>모든 정보가 영구적으로 삭제되며, 복구가 불가능합니다.</strong>
+                                            </br>
+                                            </br>
+                                            - 탈퇴 시 '로그인'을 통해 진행된 <strong>모든 모집 지원이 자동 취소됩니다.</strong>
+                                        </p>
                                     </div>
-                                    <div class="withdraw-body">
-                                        <div class="withdraw-box box">
-                                            <div class="withdraw-box-wrapper">
-                                                <p class="withdraw-title">
-                                                    - 탈퇴 시 등록한 서비스의 <strong>모든 정보가 영구적으로 삭제되며, 복구가 불가능합니다.</strong>
-                                                    </br>
-                                                    </br>
-                                                    - 탈퇴 시 '로그인'을 통해 진행된 <strong>모든 모집 지원이 자동 취소됩니다.</strong>
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <div
-                                                class="withdraw-question footer-down"
-                                        >
-                                            정말 탈퇴하시겠습니까?
-                                        </div>
-                                    </div>
+                                </div>
+                                <div
+                                        class="withdraw-btn" id="withdraw-btn"
+                                >
+                                    <span>탈퇴하기</span>
                                 </div>
                             </div>
                         </div>
-                        <button
-                                class="btn btn-partner btn-submit"
-                                type="button"
-                        >
-                            수정
-                        </button>
+                    </div>
+                    <div class="withdraw-modal">
+                        <div class="modal">
+                            <div class="modal-header" >
+                                <div>
+                                    <div class="blank"></div>
+                                    <div class="header-title">
+                                        <p>회원 탈퇴</p>
+                                    </div>
+                                    <div class="close-btn-wrapper" >
+                                        <button class="close-btn">
+                                            <span class="icon-close"><svg viewBox="0 0 24 24" color="#000000" class="close"><path fill-rule="evenodd" clip-rule="evenodd" fill="#000000" d="M4.61321 4.6137C4.96469 4.26223 5.53453 4.26223 5.88601 4.6137L11.9996 10.7273L18.1132 4.6137C18.4647 4.26223 19.0345 4.26223 19.386 4.6137C19.7375 4.96517 19.7375 5.53502 19.386 5.88649L13.2724 12.0001L19.386 18.1137C19.7375 18.4652 19.7375 19.035 19.386 19.3865C19.0345 19.738 18.4647 19.738 18.1132 19.3865L11.9996 13.2729L5.88601 19.3865C5.53453 19.738 4.96469 19.738 4.61321 19.3865C4.26174 19.035 4.26174 18.4652 4.61321 18.1137L10.7268 12.0001L4.61321 5.88649C4.26174 5.53502 4.26174 4.96517 4.61321 4.6137Z"></path></svg></span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-content">
+                                <form>
+                                    <div class="withdraw-question">
+                                        <p>정말 탈퇴하시겠습니까?</p>
+                                    </div>
+                                    <div class="submit-btn">
+                                        <button type="submit">
+                                            <span>회원 탈퇴</span>
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

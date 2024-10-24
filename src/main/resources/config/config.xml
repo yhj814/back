@@ -9,6 +9,7 @@
         <typeAlias type="com.app.ggumteo.domain.admin.AdminVO" alias="adminVO"/>
         <typeAlias type="com.app.ggumteo.domain.admin.AdminDTO" alias="adminDTO"/>
         <typeAlias type="com.app.ggumteo.domain.post.PostVO" alias="postVO"/>
+        <typeAlias type="com.app.ggumteo.domain.funding.FundingDTO" alias="fundingDTO"/>
     </typeAliases>
 
 </configuration>

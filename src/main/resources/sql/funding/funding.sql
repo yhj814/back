@@ -19,8 +19,20 @@ select * from tbl_post;
 insert into tbl_post
     (post_title, post_content, post_type, member_id)
 values ('test2 제목', 'test2 내용', '영상', 2);
+insert into tbl_post
+(post_title, post_content, post_type, member_id)
+values ('회원1 포스트2/제목', '회원1 포스트2/내용', '영상', 1);
 
 select * from tbl_funding;
 insert into tbl_funding
-    (genre_type, investor_number, target_price, converge_price, funding_status)
-values ('로맨스', '5', '3000000', '200000', );
+    (id, genre_type, investor_number, target_price, converge_price)
+values (4, '호러', '5', '3000000', '200000');
+
+
+SELECT f.genre_type, f.funding_status, p.post_title, p.post_content, p.post_type, p.created_date, p.updated_date, m.member_name, m.profile_img_url
+FROM
+    tbl_funding f
+        JOIN tbl_post p ON f.id = p.id
+        JOIN tbl_member m ON p.member_id = m.id
+WHERE
+    m.id = 1;
