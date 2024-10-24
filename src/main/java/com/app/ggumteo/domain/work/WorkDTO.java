@@ -1,6 +1,7 @@
 package com.app.ggumteo.domain.work;
 
 
+import com.app.ggumteo.domain.post.PostVO;
 import lombok.*;
 import org.springframework.stereotype.Component;
 
@@ -26,4 +27,6 @@ public class WorkDTO {
     public WorkVO toVO() {
         return new WorkVO(id, workPrice, genreType, readCount, createdDate, updatedDate);
     }
+
+
 }

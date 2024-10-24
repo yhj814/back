@@ -8,3 +8,5 @@ create table tbl_funding (
     constraint fk_funding_post foreign key (id)
     references tbl_post(id)
 );
+
+select * from tbl_work;
