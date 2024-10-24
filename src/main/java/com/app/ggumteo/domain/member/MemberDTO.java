@@ -9,6 +9,5 @@ import org.springframework.stereotype.Component;
 @Component
 @Getter
 @NoArgsConstructor
-@AllArgsConstructor
 public class MemberDTO {
 }

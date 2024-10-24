@@ -24,7 +24,8 @@ public class AdminServiceImpl implements AdminService {
     public boolean verifyAdminCode(String adminVerifyCode) {
         // 입력한 인증번호로 DB에서 조회
         AdminVO adminVO = adminDAO.getAdminVerifyCode(adminVerifyCode);
-        return adminVO != null; // 인증번호가 있으면 true 반환
+        // 인증번호가 있으면 true 반환
+        return adminVO != null;
     }
 }
 
