@@ -187,11 +187,6 @@ html {
     width: 280px;
 }
 
-
-
-
-
-
 .sidebar-menu-name{
     font-size: 14px;
     line-height: 24px;
@@ -203,7 +198,6 @@ html {
     font-weight: 400;
     color: #9e9e9e;
 }
-
 
 /* 기본적으로 모든 콘텐츠 숨기기 */
 .content {
@@ -220,7 +214,7 @@ html {
     background-image: url('https://yozm.wishket.com/static/renewal/img/news/icon_menu_open_on.png'); /* 초기 이미지: 아래로 화살표 */
     cursor: pointer;
     transition: transform 0.3s ease;
-   
+
 }
 
 .icon-fold.fold-on {
