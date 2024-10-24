@@ -6,5 +6,5 @@ create table tbl_funding (
                              genre_type varchar(255) not null,
                              funding_status varchar(255) default 0,
                              constraint fk_funding_post foreign key (id)
-                                 references tbl_post(id)
+                             references tbl_post(id)
 );
