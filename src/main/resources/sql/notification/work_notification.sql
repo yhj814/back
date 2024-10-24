@@ -1,7 +1,7 @@
 
 create table tbl_work_notification (
                                        id bigint unsigned auto_increment primary key,
-                                       member_id bigint unsigned not null,
+                                       member_id bigint unsigned not null,  -- 구매자 id 입니다
                                        work_id bigint unsigned not null,
                                        constraint fk_buy_work_notification_member foreign key (member_id)
                                            references tbl_member (id),
