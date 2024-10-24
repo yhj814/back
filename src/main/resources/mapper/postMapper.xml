@@ -5,4 +5,7 @@
         insert into tbl_post(post_title, post_content, post_type, member_id)
         values(#{postTitle}, #{postContent}, #{postType}, #{memberId})
     </insert>
+
+
 </mapper>
+
