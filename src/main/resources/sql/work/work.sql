@@ -8,3 +8,6 @@ create table tbl_work (
                           constraint fk_work_genre foreign key (genre_id)
                               references tbl_genre(id)
 );
+
+
+

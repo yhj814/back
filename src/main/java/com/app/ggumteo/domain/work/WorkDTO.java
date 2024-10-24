@@ -14,6 +14,7 @@ public class WorkDTO {
     private Long id; // 작품 ID
     private String workPrice; // 작품 가격
     private Long genreId; // 장르 ID
+    private String genreType;// 장르 타입
     private int readCount; // 조회수
     private Long memberId;
     private String memberName;
