@@ -3,8 +3,8 @@
 <mapper namespace="com.app.ggumteo.mapper.work.WorkMapper">
 
     <insert id="insert">
-        insert into tbl_work(id, work_price, read_count, genre_type)
-        values(#{id}, #{workPrice}, #{readCount}, #{genreType})
+        insert into tbl_work(id, work_price, file_content, read_count, genre_type)
+        values(#{id}, #{workPrice},#{fileContent}, #{readCount}, #{genreType})
     </insert>
 
 </mapper>

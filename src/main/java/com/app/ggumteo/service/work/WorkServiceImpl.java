@@ -39,6 +39,7 @@ public class WorkServiceImpl implements WorkService {
         workVO.setWorkPrice(workDTO.getWorkPrice());
         workVO.setGenreType(workDTO.getGenreType());
         workVO.setReadCount(0);  // 기본값 설정
+        workVO.setFileContent(workDTO.getFileContent());
 
         // Work 데이터를 저장
         workDAO.save(workVO);

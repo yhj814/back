@@ -21,11 +21,12 @@ public class WorkDTO {
     private String postTitle;
     private String postContent;
     private String postType;
+    private String fileContent;
     private String createdDate; // 생성 날짜
     private String updatedDate; // 수정 날짜
 
     public WorkVO toVO() {
-        return new WorkVO(id, workPrice, genreType, readCount, createdDate, updatedDate);
+        return new WorkVO(id, workPrice, genreType, fileContent, readCount, createdDate, updatedDate);
     }
 
 
