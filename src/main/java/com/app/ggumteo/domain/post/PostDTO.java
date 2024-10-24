@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @NoArgsConstructor
 @AllArgsConstructor
-public class PostVO {
+public class PostDTO {
     @EqualsAndHashCode.Include
     private Long id; // 포스트 ID
     private String postTitle; // 포스트 제목
@@ -19,4 +19,8 @@ public class PostVO {
     private Long memberId; // 회원 ID
     private String createdDate; // 생성 날짜
     private String updatedDate; // 수정 날짜
+
+    public PostVO toVO() {
+        return new PostVO(id, postTitle, postContent, postType, memberId, createdDate, updatedDate);
+    }
 }

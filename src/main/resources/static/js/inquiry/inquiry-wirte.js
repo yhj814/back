@@ -104,3 +104,9 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 });
+
+const btnSubmit =document.querySelector(".btn-submit");
+
+btnSubmit.addEventListener("click",()=>{
+    alert("문의하기 완료");
+})

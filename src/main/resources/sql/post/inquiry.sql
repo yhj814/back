@@ -5,5 +5,4 @@ create table tbl_inquiry (
     references tbl_post(id)
 );
 
-
 select *from tbl_inquiry;

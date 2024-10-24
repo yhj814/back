@@ -6,3 +6,5 @@ create table tbl_admin_answer (
     constraint fk_admin_answer_inquiry foreign key (inquiry_id)
        references tbl_inquiry(id)
 );
+
+select *from tbl_admin_answer;
