@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class FundingVO {
     @EqualsAndHashCode.Include
     private Long id; // 펀딩 ID
