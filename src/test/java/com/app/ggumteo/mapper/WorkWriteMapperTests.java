@@ -24,6 +24,9 @@ public class WorkWriteMapperTests {
         workDTO.setPostContent("테스트 글 내용1");
         workDTO.setMemberId(1L);
         workDTO.setWorkPrice("1000");
+        workDTO.setGenreType("1");
+
+
 
 
 
