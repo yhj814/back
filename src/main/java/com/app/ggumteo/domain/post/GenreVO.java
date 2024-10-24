@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 @NoArgsConstructor
 @AllArgsConstructor
 public class GenreVO {
+    @EqualsAndHashCode.Include
     private Long id;
     private String genreType;
 
