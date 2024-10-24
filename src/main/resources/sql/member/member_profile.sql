@@ -1,6 +1,5 @@
 create table tbl_member_profile (
                                     id bigint unsigned auto_increment primary key,
-                                    profile_name varchar(255) not null,
                                     profile_gender varchar(255) default 0,
                                     profile_age varchar(255) default 0,
                                     profile_email varchar(255) not null,

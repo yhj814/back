@@ -7,9 +7,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.servlet.view.RedirectView;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,6 +24,7 @@ public class AdminController {
         return "admin/verify-code";
     }
 
+    // 인증완료시 관리자 페이지로 이동
     @PostMapping("/verify")
     @ResponseBody
     public Map<String, Object> verifyCode(@ModelAttribute AdminDTO adminDTO) {
@@ -35,7 +33,7 @@ public class AdminController {
         if (isVerified) {
             response.put("success", true);
             log.info("인증번호 : {} 관리자 인증성공!! ", adminDTO.getAdminVerifyCode());
-            // 리다이렉트 URL 포함
+            // 리다이렉트
             response.put("redirect", "/admin/admin");
         } else {
             log.info("인증실패 !!");
@@ -43,5 +41,10 @@ public class AdminController {
         }
         // JSON 형태로 반환
         return response;
+    }
+
+    @GetMapping("/admin")
+    public String showAdminPage() {
+        return "admin/admin";
     }
 }
