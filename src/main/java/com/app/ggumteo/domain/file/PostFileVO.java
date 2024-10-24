@@ -1,9 +1,8 @@
 package com.app.ggumteo.domain.file;
 
+
 import lombok.*;
 import org.springframework.stereotype.Component;
-
-import java.io.Serializable;
 
 @Component
 @Getter
@@ -11,13 +10,8 @@ import java.io.Serializable;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @NoArgsConstructor
 @AllArgsConstructor
-public class FileVO implements Serializable {
+public class PostFileVO {
     @EqualsAndHashCode.Include
     private Long id;
-    private String fileName;
-    private String fileSize;
-    private String fileType;
-    private String filePath;
-    private String createdDate;
-    private String updatedDate;
+    private Long postId;
 }
