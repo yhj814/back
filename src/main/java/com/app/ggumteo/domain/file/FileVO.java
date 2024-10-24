@@ -12,6 +12,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 public class FileVO implements Serializable {
+    @EqualsAndHashCode.Include
     private String id;
     private String fileSize;
     private String fileType;
