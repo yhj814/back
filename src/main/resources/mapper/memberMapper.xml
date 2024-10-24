@@ -4,6 +4,6 @@
     <select id="selectByMemberEmailForKakao">
         select id, member_name, member_email, profile_img_url, created_date, updated_date
         from tbl_member
-        where member_email = #{email}
+        where member_email = #{memberEmail}
     </select>
 </mapper>
