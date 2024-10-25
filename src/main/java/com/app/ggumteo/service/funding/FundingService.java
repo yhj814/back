@@ -6,7 +6,5 @@ import java.util.List;
 
 public interface FundingService {
     //    내 게시물 조회
-    public List<FundingDTO> findByMemberId(Long memberId) {
-        return fundingMapper.selectByMemberId(memberId);
-    }
+    public List<FundingDTO> getMyFundingPosts(Long memberId);
 }
