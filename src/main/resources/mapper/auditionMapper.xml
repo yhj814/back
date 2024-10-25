@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.app.ggumteo.mapper.audition.AuditionMapper">
+
+    <insert id="insert">
+        insert into tbl_audition(id, audition_field, audition_career, expected_amount,
+                                 service_start_date, audition_deadline, audition_personnel,
+                                 audition_location, audition_background, audition_category,
+                                 file_content, audition_status)
+        values(#{id}, #{auditionField}, #{auditionCareer}, #{expectedAmount}, #{serviceStartDate},
+               #{auditionDeadLine}, #{auditionPersonnel}, #{auditionLocation}, #{auditionBackground},
+               #{auditionCategory}, #{fileContent}, #{auditionStatus})
+    </insert>
+
+</mapper>

@@ -4,7 +4,7 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>모집 작성하기</title>
-        <link rel="stylesheet" href="/static/css/audition/video/write.css" />
+        <link rel="stylesheet" href="/css/audition/video/write.css" />
     </head>
     <body>
         <header></header>
@@ -14,7 +14,11 @@
                     <div class="background"></div>
                     <div class="container">
                         <div class="profile-box write">
-                            <form action="" id="write-form">
+                            <form
+                                    method="post"
+                                    th:action="@{/audition/video/audition-write}"
+                                    id="write-form"
+                            >
                                 <div class="write-add-view">
                                     <div class="subtitle-1 write-add-title">
                                         모집 작성하기
@@ -28,7 +32,7 @@
                                             <div class="label-input-partner">
                                                 <input
                                                     class="required label-input"
-                                                    name="title"
+                                                    name="postTitle"
                                                     type="text"
                                                     value=""
                                                 />
@@ -70,7 +74,8 @@
                                                                 <span>
                                                                     <input
                                                                         type="radio"
-                                                                        name="category"
+                                                                        name="auditionCategory"
+                                                                        value="1"
                                                                     />
                                                                     <span
                                                                         class="arrow"
@@ -92,7 +97,8 @@
                                                                 <span>
                                                                     <input
                                                                         type="radio"
-                                                                        name="category"
+                                                                        name="auditionCategory"
+                                                                        value="2"
                                                                     />
                                                                     <span
                                                                         class="arrow"
@@ -114,7 +120,8 @@
                                                                 <span>
                                                                     <input
                                                                         type="radio"
-                                                                        name="category"
+                                                                        name="auditionCategory"
+                                                                        value="3"
                                                                     />
                                                                     <span
                                                                         class="arrow"
@@ -137,7 +144,8 @@
                                                                 <span>
                                                                     <input
                                                                         type="radio"
-                                                                        name="category"
+                                                                        name="auditionCategory"
+                                                                        value="4"
                                                                     />
                                                                     <span
                                                                         class="arrow"
@@ -167,7 +175,7 @@
                                                             <input
                                                                 class="theme-partner wishket-label-input not-required-field"
                                                                 data-type="label"
-                                                                name="experience"
+                                                                name="auditionCareer"
                                                                 type="text"
                                                                 value=""
                                                             /><label
@@ -193,7 +201,7 @@
                                                             <input
                                                                 class="theme-partner wishket-label-input not-required-field"
                                                                 data-type="label"
-                                                                name="amount"
+                                                                name="expectedAmount"
                                                                 type="text"
                                                                 value=""
                                                             /><label
@@ -231,7 +239,7 @@
                                                             <input
                                                                 class="required theme-partner wishket-label-input date-input"
                                                                 data-type="label-placeholder"
-                                                                name="date_started"
+                                                                name="serviceStartDate"
                                                                 onkeypress="filter_number(this, 'm')"
                                                                 onkeyup="only_number(this, 'm')"
                                                                 placeholder="YYYY.MM.DD"
@@ -261,7 +269,7 @@
                                                             <input
                                                                 class="required theme-partner wishket-label-input date-input"
                                                                 data-type="label-placeholder"
-                                                                name="date_started"
+                                                                name="auditionDeadLine"
                                                                 onkeypress="filter_number(this, 'm')"
                                                                 onkeyup="only_number(this, 'm')"
                                                                 placeholder="YYYY.MM.DD"
@@ -291,7 +299,7 @@
                                                             <input
                                                                 class="required theme-partner wishket-label-input participation_rate"
                                                                 data-type="label-placeholder"
-                                                                name="participation_rate"
+                                                                name="auditionPersonnel"
                                                                 onkeypress="filter_percent(this)"
                                                                 onkeyup="only_number(this)"
                                                                 placeholder="예) 1명"
@@ -331,7 +339,7 @@
                                                         >
                                                             <input
                                                                 class="theme-partner wishket-text not-required-field"
-                                                                name="reference_url"
+                                                                name="auditionLocation"
                                                                 onkeyup="max_input(this, 500)"
                                                                 placeholder=""
                                                                 type="text"
@@ -361,7 +369,7 @@
                                                         >
                                                             <input
                                                                 class="theme-partner wishket-text not-required-field"
-                                                                name="reference_url"
+                                                                name="auditionBackground"
                                                                 onkeyup="max_input(this, 500)"
                                                                 placeholder=""
                                                                 type="text"
@@ -391,7 +399,7 @@
                                                         >
                                                             <input
                                                                 class="theme-partner wishket-text not-required-field"
-                                                                name="reference_url"
+                                                                name="auditionCategory"
                                                                 onkeyup="max_input(this, 500)"
                                                                 placeholder=""
                                                                 type="text"
@@ -428,7 +436,7 @@
                                                     <textarea
                                                         class="required textarea expand"
                                                         maxlength="5000"
-                                                        name="description"
+                                                        name="postContent"
                                                     ></textarea>
                                                 </div>
                                                 <span
@@ -535,6 +543,7 @@
                                                                 <input
                                                                     type="text"
                                                                     class="img-caption-box-content"
+                                                                    name="fileContent"
                                                                     placeholder="올린 파일에 대한 설명을 입력해주세요."
                                                                 />
                                                             </div>
@@ -572,6 +581,6 @@
         </main>
         <footer></footer>
     </body>
-    <script src="/static/js/audition/write.js"></script>
-    <script src="/static/js/audition/write2.js"></script>
+    <script src="/js/audition/write.js"></script>
+    <script src="/js/audition/write2.js"></script>
 </html>
