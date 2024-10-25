@@ -4,5 +4,5 @@ create table tbl_admin_answer (
                                   inquiry_id bigint unsigned not null,
                                   created_date datetime default current_timestamp,
                                   constraint fk_admin_answer_inquiry foreign key (inquiry_id)
-                                      references tbl_inquiry(id)
+                                  references tbl_inquiry(id)
 );
