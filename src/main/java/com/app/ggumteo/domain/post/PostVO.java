@@ -1,5 +1,6 @@
 package com.app.ggumteo.domain.post;
 
+import com.app.ggumteo.constant.PostType;
 import lombok.*;
 import org.springframework.stereotype.Component;
 

@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" th:action="@{/admin/admin}" th:object="${adminDTO}">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>회원 관리 페이지</title>
-    <link rel="stylesheet" href="/css/admin/admin.css" />
+    <link rel="stylesheet" th:href="@{/css/admin/admin.css}" />
 </head>
 <body>
 <div id="root">
@@ -24,8 +24,7 @@
             <div class="header-container header-right-box">
                 <div class="admin-info-container">
                     <button type="button" class="admin-id-title">
-                        관리자 ID:
-                        <span class="admin-id">GgumTeo</span>
+                        <span class="admin-id">관리자 모드</span>
                     </button>
                 </div>
                 <div class="logout-button-container">

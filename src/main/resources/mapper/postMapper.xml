@@ -6,6 +6,14 @@
         values(#{postTitle}, #{postContent}, #{postType}, #{memberId})
     </insert>
 
+    <!--문의사항 작성-->
+    <insert id="insertInquiry" parameterType="PostVO">
+        INSERT INTO tbl_post (post_title, post_content, post_type, member_id, created_date, updated_date)
+        VALUES (#{postTitle}, #{postContent}, 'INQUIRY', #{memberId}, NOW(), NOW())
+    </insert>
 
+    <!-- 마지막 삽입된 ID를 가져오는 쿼리 -->
+    <select id="getLastInsertId" resultType="Long">
+        SELECT LAST_INSERT_ID()
+    </select>
 </mapper>
-
