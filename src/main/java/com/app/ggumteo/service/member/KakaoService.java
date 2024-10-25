@@ -21,16 +21,10 @@ public class KakaoService {
 
         try {
             URL url = new URL(requestURL);
-            // 자바로 브라우저 열기
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            // 데이터를 전송할때
-            BufferedWriter bufferedWriter = null;
-            // 객체로 사용 : 문자열로 연결하는 것 보다 객체를 사용해서 연결하는 것이 더 라소스 사용에 유리하다
             StringBuilder stringBuilder = new StringBuilder();
 
             connection.setRequestMethod("POST");
-
-            // 출력을 모두보기위해 빌드 : true 디버그 : false
             connection.setDoOutput(true);
 
             // 고정
@@ -44,38 +38,43 @@ public class KakaoService {
             // 제품설정 보안 -> Client Secret -> 개인코드
             stringBuilder.append("&client_secret=et1SxUxPAgjDnLShd0XEZZaOILYczIPI");
 
+            // 로그로 요청 데이터 확인
+            log.info("Kakao token request data: " + stringBuilder.toString());
 
-            bufferedWriter = new BufferedWriter(new OutputStreamWriter(connection.getOutputStream()));
-            // 연결해 놓은 것을 나열
+            BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(connection.getOutputStream()));
             bufferedWriter.write(stringBuilder.toString());
-            // flush : 안에있는 것을 비우기 위해씀
             bufferedWriter.flush();
 
             // connection 성공
-            if(connection.getResponseCode() == 200){
+            int responseCode = connection.getResponseCode();
+            log.info("Kakao token response code: " + responseCode);  // 응답 코드 로그 출력
+
+            if (responseCode == 200) {
                 // 응답데이터 읽기
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-                // 한줄한줄 가져오기
                 String line = null;
                 String result = "";
 
-                // 다 가져올때까지 반복
-                while((line = bufferedReader.readLine()) != null){
-                    // 문자열로 연결
+                while ((line = bufferedReader.readLine()) != null) {
                     result += line;
                 }
+
+                log.info("Kakao token response: " + result);  // 응답 데이터 로그 출력
+
                 // JSON객체를 JAVA 객체로 변형
                 JsonElement jsonElement = JsonParser.parseString(result);
                 // 토큰을 전달 받고 문자열로 바꿈
                 accessToken = jsonElement.getAsJsonObject().get("access_token").getAsString();
 
-                // 열은것을 닫기
                 bufferedReader.close();
                 bufferedWriter.close();
+
+                log.info("Kakao access token: " + accessToken);  // 토큰 로그 출력
+            } else {
+                log.error("Failed to get access token. Response code: " + responseCode);
             }
-            //input output Exception
-        } catch (IOException e){
-            e.printStackTrace();
+        } catch (IOException e) {
+            log.error("Error while getting access token: " + e.getMessage(), e);
         }
 
         return accessToken;
@@ -83,7 +82,6 @@ public class KakaoService {
 
     // 토큰으로 정보 받아오기
     public Optional<MemberDTO> getKakaoInfo(String token){
-        // 카카오로그인 -> RestApi -> 사용자 정보 가져오기
         String requestURL = "https://kapi.kakao.com/v2/user/me";
         MemberDTO memberDTO = null;
 
@@ -92,46 +90,41 @@ public class KakaoService {
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
             connection.setRequestMethod("POST");
-            // true 해야 JSON 데이터가 넘어옴
             connection.setDoOutput(true);
-            // 요청 : 액세스 토큰 방식 ("키값","value값" + 받은 토큰)
             connection.setRequestProperty("Authorization", "Bearer " + token);
 
-            // 성공
-            if(connection.getResponseCode() == 200){
-                // 응답 정보 받아오기
+            int responseCode = connection.getResponseCode();
+            log.info("Kakao info response code: " + responseCode);  // 응답 코드 로그 출력
+
+            if (responseCode == 200) {
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
                 String line = null;
                 String result = "";
 
-                while((line = bufferedReader.readLine()) != null){
+                while ((line = bufferedReader.readLine()) != null) {
                     result += line;
                 }
 
+                log.info("Kakao info response: " + result);  // 응답 데이터 로그 출력
+
                 JsonElement jsonElement = JsonParser.parseString(result);
-
-                // 카카오 정보중에 계정값 kakao_account 을 받아옴 받을때 객체로 받아야하기 때문에 getAsJsonObject
                 JsonElement kakaoAccount = jsonElement.getAsJsonObject().get("kakao_account").getAsJsonObject();
-
-                // kakaoAccount객체 안에 profile 을 받아옴 받을때 객체로 받아야하기 때문에 getAsJsonObject
                 JsonElement profile = kakaoAccount.getAsJsonObject().get("profile").getAsJsonObject();
 
-                // DB에 저장
                 memberDTO = new MemberDTO();
-                // profile,kakaoAccount 에 각각 있는 정보 가져오기
                 memberDTO.setMemberName(profile.getAsJsonObject().get("nickname").getAsString());
                 memberDTO.setMemberEmail(kakaoAccount.getAsJsonObject().get("email").getAsString());
                 memberDTO.setProfileImgUrl(profile.getAsJsonObject().get("profile_image_url").getAsString());
-                //로그인 타입 카카오로 설정 일반은 NORMAL
-//                memberDTO.setMemberLoginType(MemberLoginType.KAKAO.name());
+
                 bufferedReader.close();
+            } else {
+                log.error("Failed to get Kakao info. Response code: " + responseCode);
             }
 
-        } catch (IOException e){
-            e.printStackTrace();
+        } catch (IOException e) {
+            log.error("Error while getting Kakao info: " + e.getMessage(), e);
         }
-        // of :  NULL 일 수가 없을때
-        // ofNullable : NUll 일 수도 있을때
+
         return Optional.ofNullable(memberDTO);
     }
 
