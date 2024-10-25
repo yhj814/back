@@ -75,3 +75,5 @@ header.addEventListener("mouseleave", (e) => {
     notiModal1.style.display = "none";
     notiModal2.style.display = "none";
 });
+
+

@@ -31,6 +31,6 @@ public class MemberSerivceImpl implements MemberService {
 
     @Override
     public Optional<MemberVO> getKakaoMember(String memberEmail) {
-        return Optional.empty();
+        return memberDAO.findByKakaoEmail(memberEmail);
     }
 }
