@@ -14,7 +14,7 @@ public class MemberDAO {
 
     public void save(MemberVO memberVO) {memberMapper.insert(memberVO);}
 
-    public Optional<MemberVO> findByKakaoEmail(String MemberEmail) {
-        return memberMapper.selectByMemberEmailForKakao(MemberEmail);
+    public Optional<MemberVO> findByKakaoEmail(String memberEmail) {
+        return memberMapper.selectByMemberEmailForKakao(memberEmail);
     }
 }

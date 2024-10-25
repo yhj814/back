@@ -1696,7 +1696,8 @@
                                     <div class="list-item">
                                         <div class="products-list">
                                             <div class="flex-box">
-                                                <div class="products-text" id="my-funding-texts">
+                                                <div class="products-text" id="my-funding-list">
+<!--                                                    나의 펀딩 - 목록 -->
                                                 </div>
                                                 <div class="btn products-image">
                                                     <a
@@ -7386,5 +7387,11 @@
             </div>
         </div>
     </body>
+    <script th:inline="javascript">
+        const memberId = [[${member.memberEmail}]];
+
+    </script>
     <script src="/js/member/video-main.js"></script>
+    <script src="/js/my/video/my-video-funding-service.js"></script>
+    <script src="/js/my/video/my-video-funding-layout.js"></script>
 </html>

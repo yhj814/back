@@ -24,7 +24,9 @@ public class FundingDTO {
     private String postTitle; // 포스트 제목
     private String postContent; // 포스트 내용
     private String postType; // 포스트 타입 (영상, 글, 문의사항 등)
+    private Long memberId; // 멤버 이름
     private String memberName; // 멤버 이름
+    private String profileImgUrl; // (카카오)프로필 이미지
 
     public FundingVO toVO() {
         return new FundingVO(id, genreType, investorNumber, targetPrice, convergePrice, fileContent, fundingStatus, createdDate, updatedDate);
