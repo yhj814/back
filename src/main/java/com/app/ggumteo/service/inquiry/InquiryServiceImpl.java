@@ -41,4 +41,5 @@ public class InquiryServiceImpl implements InquiryService {
         inquiry.setInquiryStatus("0"); // 미답변 상태
         inquiryDAO.saveInquiry(inquiry);
     }
+
 }
