@@ -16,17 +16,12 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 @Transactional(rollbackFor = Exception.class)
 public class InquiryServiceImpl implements InquiryService {
 
     private final PostDAO postDAO;
     private final InquiryDAO inquiryDAO;
-
-    @Autowired
-    public InquiryServiceImpl(PostDAO postDAO, InquiryDAO inquiryDAO) {
-        this.postDAO = postDAO;
-        this.inquiryDAO = inquiryDAO;
-    }
 
     @Override
     public void createInquiry(InquiryDTO inquiryDTO, Long memberId) {
