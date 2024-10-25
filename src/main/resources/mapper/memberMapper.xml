@@ -4,8 +4,8 @@
     <insert id="insert">
         <choose>
             <when test="memberEmail != null">
-                insert into tbl_member(member_name, member_email, profile_img_url, member_status)
-                values (#{memberName},#{memberEmail},#{prifileImgUrl}, #{memberStatus})
+                insert into tbl_member(member_name, member_email, profile_img_url)
+                values (#{memberName},#{memberEmail},#{profileImgUrl})
             </when>
         </choose>
     </insert>
