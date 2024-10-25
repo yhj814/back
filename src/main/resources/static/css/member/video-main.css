@@ -1,27 +1,22 @@
 @font-face {
     font-family: "NotoSansKR";
     font-weight: 700;
-    src: url("/static/fonts/NotoSansKR-Bold.woff2") format("woff2");
+    src: url("/fonts/NotoSansKR-Bold.woff2") format("woff2");
 }
 @font-face {
     font-family: "NotoSansKR";
     font-weight: 500;
-    src: url("/static/fonts/NotoSansKR-Medium.woff2") format("woff2");
+    src: url("/fonts/NotoSansKR-Medium.woff2") format("woff2");
 }
 @font-face {
     font-family: "NotoSansKR";
     font-weight: 400;
-    src: url("/static/fonts/NotoSansKR-Regular.woff2") format("woff2");
+    src: url("/fonts/NotoSansKR-Regular.woff2") format("woff2");
 }
 @font-face {
     font-family: "NotoSansKR";
     font-weight: 300;
-    src: url("/static/fonts/NotoSansKR-Light.woff2") format("woff2");
-}
-@font-face {
-    font-family: "NotoSansKR";
-    font-weight: 100;
-    src: url("/static/fonts/NotoSansKR-Thin.woff2") format("woff2");
+    src: url("/fonts/NotoSansKR-Light.woff2") format("woff2");
 }
 
 html {
@@ -211,14 +206,14 @@ html {
 .icon-fold {
     width: 16px;
     height: 16px;
-    background-image: url('https://yozm.wishket.com/static/renewal/img/news/icon_menu_open_on.png'); /* 초기 이미지: 아래로 화살표 */
+    background-image: url('https://yozm.wishket.com/renewal/img/news/icon_menu_open_on.png'); /* 초기 이미지: 아래로 화살표 */
     cursor: pointer;
     transition: transform 0.3s ease;
 
 }
 
 .icon-fold.fold-on {
-    background-image: url('https://yozm.wishket.com/static/renewal/img/news/icon_menu_open_on.png'); /* 접힌 상태의 이미지 */
+    background-image: url('https://yozm.wishket.com/renewal/img/news/icon_menu_open_on.png'); /* 접힌 상태의 이미지 */
     transform: rotate(-90deg);}
 
 .container.mypage .main-content-container {
@@ -465,7 +460,7 @@ p {
 .icon-my-edit-off {
     width: 21px;
     height: 21px;
-    background-image: url(/static/images/member/plus.png);
+    background-image: url(/images/member/plus.png);
 }
 
 
@@ -475,7 +470,7 @@ p {
 .icon-my-delete {
     width: 24px;
     height: 24px;
-    background-image: url(/static/images/member/delete.png);
+    background-image: url(/images/member/delete.png);
 }
 .container.mypage .main-content-container .products-list .products-image img {
     width: 110px;
@@ -534,7 +529,7 @@ ul li {
     cursor: pointer;
 }
 .pagination.theme-yozm li:last-child>.page-link {
-    background-image: url(/static/images/member/next.png);
+    background-image: url(/images/member/next.png);
     text-indent: -999999px;
     background-position: center;
     background-repeat: no-repeat;
@@ -545,7 +540,7 @@ ul li {
     background-color: #fafafa;
 }
 #back{
-    background-image: url(/static/images/member/next.png);
+    background-image: url(/images/member/next.png);
     text-indent: -999999px;
     background-position: center;
     background-repeat: no-repeat;
@@ -1111,7 +1106,7 @@ body.partners_profile .edit-menu-box .profile-menu-setting .setting-table .setti
     margin-left: 4px;
 }
 .pagination2.theme-yozm li:last-child>.page-link {
-    background-image: url(https://yozm.wishket.com/static/renewal/img/news/icon_page_next.png);
+    background-image: url(https://yozm.wishket.com/renewal/img/news/icon_page_next.png);
     text-indent: -999999px;
     background-position: center;
     background-repeat: no-repeat;
