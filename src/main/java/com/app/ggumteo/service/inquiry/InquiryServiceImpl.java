@@ -2,9 +2,11 @@ package com.app.ggumteo.service.inquiry;
 
 import com.app.ggumteo.constant.PostType;
 import com.app.ggumteo.domain.inquiry.InquiryDTO;
+import com.app.ggumteo.domain.inquiry.InquiryDetailVO;
 import com.app.ggumteo.domain.inquiry.InquiryVO;
 import com.app.ggumteo.domain.post.PostVO;
 import com.app.ggumteo.mapper.inquiry.InquiryMapper;
+import com.app.ggumteo.pagination.Pagination;
 import com.app.ggumteo.repository.inquiry.InquiryDAO;
 import com.app.ggumteo.repository.post.PostDAO;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor

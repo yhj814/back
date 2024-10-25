@@ -558,9 +558,9 @@ showMesaageModal("#work-section");
 showMesaageModal("#funding-section");
 
 // **문의사항 답변 모달창**
-function showAnsweredModal(sectionId, type) {
-    const btns = document.querySelectorAll(`.answered-btn.${type}`);
-    const modal = document.querySelector(`.answered-modal.${type}`);
+function showAnsweredModal() {
+    const btns = document.querySelectorAll(`.answered-btn`);
+    const modal = document.querySelector(`.answered-modal`);
     const closeBtn = modal.querySelector(".close-button");
     const backgroundOverlay = modal.querySelector(".background-overlay");
 
