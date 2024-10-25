@@ -695,4 +695,24 @@ const adminLogOut =document.querySelector(".logout-btn");
 adminLogOut.addEventListener("click",()=>{
     window.location.href="/admin/verify";
     alert("관리자 로그아웃 !");
-})
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
