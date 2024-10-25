@@ -43,5 +43,9 @@ public class WorkServiceImpl implements WorkService {
 
         // Work 데이터를 저장
         workDAO.save(workVO);
+
+        // workDTO에 저장된 postId를 설정
+        workDTO.setId(postId);  // 파일 저장 시 사용할 수 있도록
     }
 }
+
