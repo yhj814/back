@@ -20,8 +20,8 @@ public class MemberRestController {
     private final MyPageService myPageService;
 
     @GetMapping("/member/video-main")
-    public void read(String memberEmail, Model model){
-        MemberVO memberDTO = myPageService.getMember(memberEmail).orElseThrow();
+    public void read(Long id, Model model){
+        MemberVO memberDTO = myPageService.getMember(id).orElseThrow();
         model.addAttribute("member", memberDTO);
     }
 //    http://localhost:10000/member/video-main?memberEmail=test1@gmail.com
