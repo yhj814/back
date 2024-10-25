@@ -89,4 +89,7 @@ public class TextWorkController {
             return ResponseEntity.status(500).body(Collections.singletonMap("error", "저장 중 오류가 발생했습니다."));
         }
     }
+
+    @GetMapping("list")
+    public void goToListForm() {;}
 }

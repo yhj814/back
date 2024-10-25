@@ -3,3 +3,4 @@ create table tbl_notice (
                             constraint fk_notice_post foreign key (id)
                                 references tbl_post(id)
 );
+
