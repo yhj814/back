@@ -111,6 +111,8 @@ document.addEventListener("DOMContentLoaded", function () {
         for (let [key, value] of formData.entries()) {
             console.log(`${key}: ${value}`);
         }
+        console.log(document.querySelector('input[name="workFile"]').files[0]);
+
 
         //폼 데이터 전송
         fetch("/text/write", {

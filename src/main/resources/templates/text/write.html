@@ -16,7 +16,7 @@
                         <form id="writeForm" action="/text/write" method="post" enctype="multipart/form-data">
                         <div class="profile-box write">
 
-                                <div class="write-add-view">
+                            <div class="write-add-view">
                                     <div class="subtitle-1 write-add-title">
                                         내 작품올리기
                                     </div>
@@ -31,8 +31,9 @@
                                                     class="required label-input"
                                                     name="postTitle"
                                                     type="text"
+                                                    th:value="${post?.postTitle}"
                                                     id="postTitle"
-                                                    value=""
+
                                                     required
                                                 />
                                                 <label for="title"

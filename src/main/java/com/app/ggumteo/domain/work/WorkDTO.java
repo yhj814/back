@@ -29,5 +29,9 @@ public class WorkDTO {
         return new WorkVO(id, workPrice, genreType, fileContent, readCount, createdDate, updatedDate);
     }
 
+    public PostVO toPostVO() {
+        return new PostVO(id, postTitle, postContent, postType, memberId, createdDate, updatedDate);
+    }
+
 
 }
