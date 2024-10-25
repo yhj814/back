@@ -37,4 +37,6 @@ public class InquiryController {
         // 추후에 이동할페이지로 수정
         return new RedirectView("/admin/admin");
     }
+
+
 }

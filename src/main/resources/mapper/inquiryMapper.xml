@@ -3,7 +3,23 @@
 <mapper namespace="com.app.ggumteo.mapper.inquiry.InquiryMapper">
 
     <insert id="insertInquiry" parameterType="InquiryVO">
-        INSERT INTO tbl_inquiry (id, inquiry_status)
-        VALUES (#{postId}, 0) <!-- 문의 작성 시 기본 상태는 미답변(0) -->
+        insert into tbl_inquiry (id, inquiry_status)
+        values (#{postId}, 0) <!-- 문의 작성 시 기본 상태는 미답변(0) -->
     </insert>
+
+    <select id="selectInquiries" resultType="InquiryDetailVO">
+        select p.id as postId,
+               p.created_date as createdDate,
+               p.post_title as postTitle,
+               p.post_content as postContent,
+               m.member_name as memberName,
+               m.member_email as memberEmail,
+               i.inquiry_status as inquiryStatus,
+               a.created_date as adminAnswerDate
+        from tbl_post p
+                 join tbl_inquiry i on p.id = i.id
+                 join tbl_member m on p.member_id = m.id
+                 left join tbl_admin_answer a on i.id = a.inquiry_id
+        where p.post_type = 'INQUIRY'
+    </select>
 </mapper>

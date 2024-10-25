@@ -1,6 +1,8 @@
 package com.app.ggumteo.controller.admin;
 
 import com.app.ggumteo.domain.admin.AdminDTO;
+import com.app.ggumteo.domain.inquiry.InquiryDetailVO;
+import com.app.ggumteo.repository.inquiry.InquiryDAO;
 import com.app.ggumteo.service.admin.AdminService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -8,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -16,6 +19,7 @@ import java.util.Map;
 @RequestMapping("/admin")
 public class AdminController {
     private final AdminService adminService;
+    private final InquiryDAO inquiryDAO;
 
     // 인증번호 입력 페이지
     @GetMapping("/verify")
@@ -44,7 +48,9 @@ public class AdminController {
     }
 
     @GetMapping("/admin")
-    public String showAdminPage() {
-        return "admin/admin";
+    public String showAdminPage(Model model) {
+        List<InquiryDetailVO> inquiries = inquiryDAO.getInquiries();
+        model.addAttribute("inquiries", inquiries);
+        return "admin/admin"; // 해당 템플릿으로 이동
     }
 }

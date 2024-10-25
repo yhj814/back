@@ -5235,6 +5235,26 @@
                                                 (admin_answer테이블에) created_date
                                             </div>
                                         </div>
+                                        <!-- 추가-->
+                                                <th:block th:each="inquiry : ${inquiries}">
+                                                    <div class="apply-table-row">
+                                                        <div class="apply-table-cell">
+                                                            <input type="checkbox" class="apply-checkbox"/>
+                                                        </div>
+                                                        <div class="apply-table-cell" th:text="${inquiry.postId}">Post ID</div>
+                                                        <div class="apply-table-cell" th:text="${inquiry.createdDate}">생성 날짜</div>
+                                                        <div class="apply-table-cell" th:text="${inquiry.postTitle}">문의 제목</div>
+                                                        <div class="apply-table-cell" th:text="${inquiry.postContent}">문의 내용</div>
+                                                        <div class="apply-table-cell" th:text="${inquiry.memberName}">회원 이름</div>
+                                                        <div class="apply-table-cell" th:text="${inquiry.memberEmail}">회원 이메일</div>
+                                                        <div class="apply-table-cell">
+                                                            <button  th:class="${inquiry.inquiryStatus == '0' ? 'answered-btn status unanswered' : 'answered-btn status completed'}">
+                                                                <span th:text="${inquiry.inquiryStatus == '0' ? '미답변' : '답변완료'}"></span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="apply-table-cell" th:text="${inquiry.adminAnswerDate}">답변 날짜</div>
+                                                    </div>
+                                                </th:block>
                                         <div class="apply-table-row">
                                             <div class="apply-table-cell">
                                                 <input
@@ -5965,4 +5985,5 @@
 </svg>
 </body>
 <script src="/js/admin/admin.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- jQuery 사용 -->
 </html>
