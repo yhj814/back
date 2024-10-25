@@ -23,6 +23,6 @@ public class AuditionVO implements Serializable {
     private String auditionLocation;
     private String auditionBackground;
     private String auditionCategory;
-    private String fileContents;
+    private String fileContent;
     private String auditionStatus;
 }

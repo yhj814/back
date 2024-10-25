@@ -14,3 +14,5 @@ create table tbl_audition (
     constraint fk_audition_post foreign key (id)
     references tbl_post(id)
 );
+
+select * from tbl_audition
