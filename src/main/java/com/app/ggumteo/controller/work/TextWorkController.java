@@ -34,7 +34,7 @@ public class TextWorkController {
     public void setTestMember(HttpSession session) {
         if (session.getAttribute("member") == null) {
             session.setAttribute("member", new MemberVO(
-                    1L,
+                    2L,
                     "",      // memberName
                     "",         // memberEmail
                     "",
@@ -49,7 +49,7 @@ public class TextWorkController {
     @GetMapping("write")
     public void goToWriteForm(WorkDTO workDTO) {
 
-        session.setAttribute("memberId", 1L);
+
 
 
         log.info("세션에 설정된 memberId: " + ((MemberVO) session.getAttribute("member")).getId());}
