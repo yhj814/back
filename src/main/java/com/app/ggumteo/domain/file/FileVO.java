@@ -7,6 +7,7 @@ import java.io.Serializable;
 
 @Component
 @Getter
+@Setter
 @ToString
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @NoArgsConstructor
