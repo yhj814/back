@@ -19,7 +19,7 @@ public class FundingServiceTests {
 
     @Test
     public void getMyFundingPosts() {
-        List<FundingDTO> fundingPosts = fundingService.getMyFundingPosts(1L);
+        List<FundingDTO> fundingPosts = fundingService.getMemberFundingPosts(1L);
 //        fundingMapper.selectByMemberId(1L).stream().map(FundingDTO::toString).forEach(log::info);
 
         for (FundingDTO fundingDTO : fundingPosts) {

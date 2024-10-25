@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface FundingService {
     //    내 게시물 조회
-    public List<FundingDTO> getMyFundingPosts(Long memberId);
+    public List<FundingDTO> getMemberFundingPosts(Long memberId);
 }

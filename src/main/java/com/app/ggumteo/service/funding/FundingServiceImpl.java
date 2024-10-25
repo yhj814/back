@@ -17,7 +17,7 @@ public class FundingServiceImpl implements FundingService {
     private final FundingDAO fundingDAO;
 
     @Override
-    public List<FundingDTO> getMyFundingPosts(Long memberId) {
+    public List<FundingDTO> getMemberFundingPosts(Long memberId) {
         return fundingDAO.findByMemberId(memberId);
     }
 }
