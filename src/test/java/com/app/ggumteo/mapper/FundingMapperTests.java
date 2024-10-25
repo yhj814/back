@@ -18,7 +18,11 @@ public class FundingMapperTests {
 
     @Test
     public void testSelectByMemberId() {
-//        List<FundingDTO> fundingDTOs = fundingMapper.selectByMemberId(1L);
-        fundingMapper.selectByMemberId(1L).stream().map(FundingDTO::toString).forEach(log::info);
+        List<FundingDTO> fundingPosts = fundingMapper.selectByMemberId(1L);
+//        fundingMapper.selectByMemberId(1L).stream().map(FundingDTO::toString).forEach(log::info);
+
+        for (FundingDTO fundingDTO : fundingPosts) {
+            log.info("{}", fundingDTO);
+        }
     }
 }
