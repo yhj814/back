@@ -16,11 +16,10 @@ import java.util.List;
 @Controller
 @Slf4j
 @RequiredArgsConstructor
-@RequestMapping("/member/*")
 public class MemberRestController {
     private final MyPageService myPageService;
 
-    @GetMapping("video-main")
+    @GetMapping("/member/video-main")
     public void read(String memberEmail, Model model){
         MemberVO memberDTO = myPageService.getMember(memberEmail).orElseThrow();
         model.addAttribute("member", memberDTO);
@@ -29,7 +28,7 @@ public class MemberRestController {
 
     // SELECT
     @ResponseBody
-    @GetMapping("{memberId}")
+    @GetMapping("/members/{memberId}")
     public List<FundingDTO> getMyFundingList(@PathVariable("memberId") Long memberId) {
         return myPageService.getMyFundingList(memberId);
     }
