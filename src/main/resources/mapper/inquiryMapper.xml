@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.app.ggumteo.mapper.inquiry.InquiryMapper">
+
+    <insert id="insertInquiry" parameterType="InquiryVO">
+        INSERT INTO tbl_inquiry (id, inquiry_status)
+        VALUES (#{postId}, 0) <!-- 문의 작성 시 기본 상태는 미답변(0) -->
+    </insert>
+
+</mapper>

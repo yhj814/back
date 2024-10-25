@@ -10,3 +10,5 @@ create table tbl_member_profile (
     constraint fk_member_profile_member foreign key (member_id)
     references tbl_member(id)
 );
+
+select *from tbl_member_profile;

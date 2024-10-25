@@ -689,3 +689,10 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 });
+
+// 로그아웃 누를시 인증번호페이지로 이동
+const adminLogOut =document.querySelector(".logout-btn");
+adminLogOut.addEventListener("click",()=>{
+    window.location.href="/admin/verify";
+    alert("관리자 로그아웃 !");
+})

@@ -1,11 +1,11 @@
 create table tbl_member(
-                           id bigint unsigned auto_increment primary key,
-                           member_name varchar(255) not null,
-                           member_email varchar(255) not null,
-                           profile_img_url varchar(255),
-                           member_status varchar(255) default 0, -- 0 가입 상태, 1 탈퇴 상태
-                           created_date datetime default current_timestamp,
-                           updated_date datetime default current_timestamp
+    id bigint unsigned auto_increment primary key,
+    member_name varchar(255) not null,
+    member_email varchar(255) not null,
+    member_status varchar(255) default 0,
+    profile_img_url varchar(255),
+    created_date datetime default current_timestamp,
+    updated_date datetime default current_timestamp
 );
 
 select * from tbl_member;
