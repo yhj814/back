@@ -12,7 +12,9 @@ import java.util.Optional;
 public class MemberDAO {
     private final MemberMapper memberMapper;
 
-    public Optional<MemberVO> findByKakaoEmail(String email) {
-        return memberMapper.selectByMemberEmailForKakao(email);
+    public void save(MemberVO memberVO) {memberMapper.insert(memberVO);}
+
+    public Optional<MemberVO> findByKakaoEmail(String MemberEmail) {
+        return memberMapper.selectByMemberEmailForKakao(MemberEmail);
     }
 }

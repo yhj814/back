@@ -2,4 +2,9 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.app.ggumteo.mapper.work.WorkMapper">
 
+    <insert id="insert">
+        insert into tbl_work(id, work_price, file_content, read_count, genre_type)
+        values(#{id}, #{workPrice},#{fileContent}, #{readCount}, #{genreType})
+    </insert>
+
 </mapper>
