@@ -14,11 +14,12 @@ public class MemberDTO implements Serializable {
     private String memberName;
     private String memberEmail;
     private String profileImgUrl;
+    private String memberStatus;
     private String createdDate;
     private String updatedDate;
 
     public MemberVO toVO(){
-        return new MemberVO(id, memberName, memberEmail, profileImgUrl, createdDate, updatedDate);
+        return new MemberVO(id, memberName, memberEmail, profileImgUrl, memberStatus, createdDate, updatedDate);
     }
 }
 
