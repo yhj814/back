@@ -1,0 +1,1 @@
+myPageService.getMyFundingList(memberId, showList);
