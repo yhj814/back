@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+
 @Service
 @Transactional(rollbackFor = Exception.class)
 @RequiredArgsConstructor
@@ -19,5 +20,7 @@ public class AdminServiceImpl implements AdminService {
         // 인증번호가 있으면 true 반환
         return adminVO != null;
     }
+
+
 }
 

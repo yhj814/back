@@ -1,9 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
     const inputElement = document.querySelector(".label-input-partner input");
     const labelInputPartner = document.querySelector(".label-input-partner");
-    const textareaElement = document.querySelector(
-        ".textarea__border textarea"
-    );
+    const textareaElement = document.querySelector(".textarea__border textarea");
     const textareaBorder = document.querySelector(".textarea__border");
 
     if (inputElement) {
@@ -51,10 +49,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 
         inputElement.addEventListener("mouseout", function () {
-            if (
-                !inputElement.value &&
-                !inputElement.classList.contains("error")
-            ) {
+            if (!inputElement.value && !inputElement.classList.contains("error")) {
                 inputElement.style.border = "1px solid #e0e0e0";
             }
         });
@@ -103,6 +98,87 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
     }
+
+    const form = document.querySelector("#writeForm");
+    const submitButton = document.querySelector(".btn-submit");
+
+    submitButton.addEventListener("click", function (event) {
+        event.preventDefault(); // 폼 기본 제출 방지
+
+        const formData = new FormData(form); // 폼 데이터 수집
+
+        // 수집된 formData의 모든 값 출력 (디버깅용)
+        for (let [key, value] of formData.entries()) {
+            console.log(`${key}: ${value}`);
+        }
+
+        //폼 데이터 전송
+        fetch("/text/write", {
+            method: "POST",
+            body: formData
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                if (data.success) {
+                    window.location.href = "/text/list"; // 성공 시 리스트 페이지로 이동
+                } else {
+                    alert("저장 중 오류가 발생했습니다.");
+                }
+            })
+            .catch((error) => {
+                console.error("Error:", error);
+            });
+    });
+
+    const radioButtons = document.querySelectorAll('input[type="radio"]');
+    const fileInputs = document.querySelectorAll('input[type="file"]');
+
+    // 버튼 활성화 확인 함수
+    function checkFormCompletion() {
+        // 파일 업로드가 완료되었는지 확인
+        const allFilesUploaded = Array.from(fileInputs).every(
+            (fileInput) => fileInput.files.length > 0
+        );
+        // 텍스트 필드가 비어있지 않은지 확인
+        const isInputValid = inputElement && inputElement.value.trim() !== "";
+        const isTextareaValid =
+            textareaElement && textareaElement.value.trim() !== "";
+        // 라디오 버튼이 선택되었는지 확인
+        const isRadioSelected = Array.from(radioButtons).some(
+            (radio) => radio.checked
+        );
+
+        // 모든 조건을 만족하면 버튼 활성화, 그렇지 않으면 비활성화
+        if (
+            allFilesUploaded &&
+            isInputValid &&
+            isTextareaValid &&
+            isRadioSelected
+        ) {
+            submitButton.disabled = false;
+            submitButton.classList.add("active"); // 버튼 활성화 스타일 추가
+        } else {
+            submitButton.disabled = true;
+            submitButton.classList.remove("active"); // 버튼 비활성화 스타일 제거
+        }
+    }
+
+    // 각 입력 필드에 이벤트 리스너 추가
+    if (inputElement) {
+        inputElement.addEventListener("input", checkFormCompletion);
+    }
+    if (textareaElement) {
+        textareaElement.addEventListener("input", checkFormCompletion);
+    }
+    radioButtons.forEach((radio) => {
+        radio.addEventListener("change", checkFormCompletion);
+    });
+    fileInputs.forEach((fileInput) => {
+        fileInput.addEventListener("change", checkFormCompletion);
+    });
+
+    // 페이지 로드 시에도 버튼 상태 확인
+    checkFormCompletion();
 });
 
 // 모든 img-box-list에 대해 이벤트 리스너를 설정하는 함수
@@ -136,7 +212,6 @@ function setupEventListeners(imgBox) {
         const title = imgBox.querySelector(".img-box-title");
         const text = imgBox.querySelector(".img-box-text");
         const help = imgBox.querySelector(".img-box-help");
-        const imgEditBox = imgBox.querySelector(".img-edit-box"); // img-edit-box에 대한 참조 추가
 
         imgCaptionBox.style.display = "none"; // 캡션 입력 박스 숨기기
         title.style.display = "block"; // 제목 다시 보이기
@@ -199,6 +274,10 @@ document.querySelector(".img-add").addEventListener("click", function () {
 
 // 파일 미리보기 함수 (파일 선택 시 이미지 및 비디오 미리보기)
 function previewFile(fileInput, previewSelector, videoPreviewSelector) {
+    if (!fileInput || !fileInput.files || fileInput.files.length === 0) {
+        console.error("No file selected.");
+        return;
+    }
     const file = fileInput.files[0];
     const preview = document.querySelector(previewSelector);
     const videoPreview = document.querySelector(videoPreviewSelector); // 비디오 미리보기 요소
@@ -267,6 +346,7 @@ function previewImage(event) {
         reader.readAsDataURL(file);
     }
 }
+
 // radio-div 어디를 눌러도 클릭되게 함
 document.addEventListener("click", () => {
     const categoryBoxes = document.querySelectorAll(".project-category-box");
@@ -286,66 +366,6 @@ document.addEventListener("click", () => {
         });
 
         // 마우스 뗐을 때 배경색 원래대로 변경
-        box.addEventListener("mouseleave", () => {
-            // 원래 배경색으로 복원
-            box.style.backgroundColor = "";
-        });
+        box.style.backgroundColor = "";
     });
-});
-
-document.addEventListener("DOMContentLoaded", function () {
-    const inputElement = document.querySelector(".label-input-partner input");
-    const textareaElement = document.querySelector(
-        ".textarea__border textarea"
-    );
-    const radioButtons = document.querySelectorAll('input[type="radio"]');
-    const fileInputs = document.querySelectorAll('input[type="file"]');
-    const submitButton = document.querySelector(".btn-submit");
-
-    // 버튼 활성화 확인 함수
-    function checkFormCompletion() {
-        // 파일 업로드가 완료되었는지 확인
-        const allFilesUploaded = Array.from(fileInputs).every(
-            (fileInput) => fileInput.files.length > 0
-        );
-        // 텍스트 필드가 비어있지 않은지 확인
-        const isInputValid = inputElement && inputElement.value.trim() !== "";
-        const isTextareaValid =
-            textareaElement && textareaElement.value.trim() !== "";
-        // 라디오 버튼이 선택되었는지 확인
-        const isRadioSelected = Array.from(radioButtons).some(
-            (radio) => radio.checked
-        );
-
-        // 모든 조건을 만족하면 버튼 활성화, 그렇지 않으면 비활성화
-        if (
-            allFilesUploaded &&
-            isInputValid &&
-            isTextareaValid &&
-            isRadioSelected
-        ) {
-            submitButton.disabled = false;
-            submitButton.classList.add("active"); // 버튼 활성화 스타일 추가 (필요에 따라 클래스명 수정 가능)
-        } else {
-            submitButton.disabled = true;
-            submitButton.classList.remove("active"); // 버튼 비활성화 스타일 제거
-        }
-    }
-
-    // 각 입력 필드에 이벤트 리스너 추가
-    if (inputElement) {
-        inputElement.addEventListener("input", checkFormCompletion);
-    }
-    if (textareaElement) {
-        textareaElement.addEventListener("input", checkFormCompletion);
-    }
-    radioButtons.forEach((radio) => {
-        radio.addEventListener("change", checkFormCompletion);
-    });
-    fileInputs.forEach((fileInput) => {
-        fileInput.addEventListener("change", checkFormCompletion);
-    });
-
-    // 페이지 로드 시에도 버튼 상태 확인
-    checkFormCompletion();
 });

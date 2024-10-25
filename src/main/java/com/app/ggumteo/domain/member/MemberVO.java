@@ -14,8 +14,8 @@ public class MemberVO implements Serializable {
     private Long id;
     private String memberName;
     private String memberEmail;
-    private String profileImgUrl;
     private String memberStatus;
+    private String profileImgUrl;
     private String createdDate;
     private String updatedDate;
 }

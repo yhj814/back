@@ -24,7 +24,6 @@ public class FundingDTO {
     private String postTitle; // 포스트 제목
     private String postContent; // 포스트 내용
     private String postType; // 포스트 타입 (영상, 글, 문의사항 등)
-    private Long memberId;
     private String memberName; // 멤버 이름
 
     public FundingVO toVO() {

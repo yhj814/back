@@ -11,16 +11,20 @@ import com.app.ggumteo.service.work.WorkService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.Collections;
+import java.util.List;
+
 
 @Controller
 @RequestMapping("/text/*")
 @RequiredArgsConstructor
 @Slf4j
 public class TextWorkController {
-    private final WorkMapper workMapper;
     private final WorkService workService;
     private final HttpSession session;
     private final PostFileService postFileService;
@@ -43,40 +47,53 @@ public class TextWorkController {
 
     // write 화면 이동
     @GetMapping("write")
-    public void goToWriteForm(WorkDTO workDTO) {log.info("세션에 설정된 memberId: " + ((MemberVO) session.getAttribute("member")).getId());}
+    public void goToWriteForm(WorkDTO workDTO) {
+
+
+
+
+        log.info("세션에 설정된 memberId: " + ((MemberVO) session.getAttribute("member")).getId());}
     // 글 쓰기 후 처리
     @PostMapping("write")
-    public String write(WorkDTO workDTO, @RequestParam("file") MultipartFile file) {
+    public ResponseEntity<?> write(WorkDTO workDTO, @RequestParam("workFile") MultipartFile workFile,
+                                   @RequestParam("thumbnailFile") MultipartFile thumbnailFile) {
         try {
             // 세션에서 멤버 정보 가져오기
             MemberVO member = (MemberVO) session.getAttribute("member");
             if (member == null) {
                 log.error("멤버 정보가 세션에 없습니다.");
-                return "redirect:/login";
+
             }
 
-            // WorkDTO에 멤버 ID 설정
+            // WorkDTO에 세션에서 가져온 멤버 ID 설정
             workDTO.setMemberId(member.getId());
+            workDTO.setPostType("TEXT");  // postType은 TEXT로 고정
 
             // 글과 워크 데이터 저장 (tbl_post, tbl_work)
             workService.write(workDTO);
 
-            // 파일 저장 처리 및 tbl_post_file 관계 저장
-            if (!file.isEmpty()) {
-                FileVO savedFile = postFileService.saveFile(file);  // 파일 저장 후 FileVO 반환
-
-                // 파일과 포스트 간의 관계 저장 (tbl_post_file)
+            // 파일 저장 처리 (작품 파일)
+            if (!workFile.isEmpty()) {
+                FileVO savedFile = postFileService.saveFile(workFile);
                 PostFileVO postFileVO = new PostFileVO();
-                postFileVO.setId(savedFile.getId());  // tbl_file의 ID
-                postFileVO.setPostId(workDTO.getId());  // tbl_post의 ID
-                postFileService.savePostFile(postFileVO);  // 관계 저장
+                postFileVO.setId(savedFile.getId());
+                postFileVO.setPostId(workDTO.getId());
+                postFileService.savePostFile(postFileVO);
             }
 
-            return "redirect:/text/list";  // 성공 후 리다이렉트
+            // 썸네일 파일 저장 처리
+            if (!thumbnailFile.isEmpty()) {
+                // 썸네일 파일 저장 로직 추가
+                FileVO savedThumbnail = postFileService.saveFile(thumbnailFile);
+                // 썸네일과 관련된 추가 처리 로직
+            }
 
+
+            // 성공 응답 (JSON 반환)
+            return ResponseEntity.ok(Collections.singletonMap("success", true));
         } catch (Exception e) {
             log.error("글 저장 중 오류 발생", e);
-            return "error";  // 에러 발생시 에러 페이지로 이동
+            return ResponseEntity.status(500).body(Collections.singletonMap("error", "저장 중 오류가 발생했습니다."));
         }
     }
 

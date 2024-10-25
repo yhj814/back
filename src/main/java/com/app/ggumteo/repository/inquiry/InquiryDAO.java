@@ -1,5 +1,6 @@
 package com.app.ggumteo.repository.inquiry;
 
+import com.app.ggumteo.domain.inquiry.InquiryDTO;
 import com.app.ggumteo.domain.inquiry.InquiryVO;
 import com.app.ggumteo.mapper.inquiry.InquiryMapper;
 import lombok.RequiredArgsConstructor;
@@ -18,5 +19,6 @@ public class InquiryDAO {
     public void saveInquiry(InquiryVO inquiry) {
         inquiryMapper.insertInquiry(inquiry);
     }
+
 }
 
