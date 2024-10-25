@@ -11,14 +11,14 @@ import java.io.Serializable;
 public class MemberDTO implements Serializable {
     @EqualsAndHashCode.Include
     private Long id;
-    private String name;
-    private String email;
+    private String memberName;
+    private String memberEmail;
     private String profileImgUrl;
     private String createdDate;
     private String updatedDate;
 
     public MemberVO toVO(){
-        return new MemberVO(id, name, email, profileImgUrl, createdDate, updatedDate);
+        return new MemberVO(id, memberName, memberEmail, profileImgUrl, createdDate, updatedDate);
     }
 }
 

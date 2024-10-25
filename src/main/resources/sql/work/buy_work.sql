@@ -8,3 +8,6 @@ create table tbl_buy_work (
                               constraint fk_buy_work_work foreign key (work_id)
                                   references tbl_work (id)
 );
+
+select * from tbl_work;
+select * from tbl_post;
