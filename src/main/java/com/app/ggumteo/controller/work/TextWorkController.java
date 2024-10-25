@@ -69,7 +69,7 @@ public class TextWorkController {
             workDTO.setMemberId(member.getId());
             workDTO.setPostType("TEXT");  // postType은 TEXT로 고정
 
-            // 글과 워크 데이터 저장 (tbl_post, tbl_work)
+            // 글과 작품 데이터 저장 (tbl_post, tbl_work)
             workService.write(workDTO);
 
             // 파일 저장 처리 (작품 파일)
