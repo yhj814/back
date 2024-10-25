@@ -17,6 +17,7 @@ public class FundingDTO {
     private int investorNumber; // 투자자 수
     private int targetPrice; // 목표 금액
     private int convergePrice; // 모인 금액
+    private String fileContent;
     private String fundingStatus; // 펀딩 상태
     private String createdDate; // 생성 날짜
     private String updatedDate; // 수정 날짜
@@ -26,6 +27,6 @@ public class FundingDTO {
     private String memberName; // 멤버 이름
 
     public FundingVO toVO() {
-        return new FundingVO(id, genreType, investorNumber, targetPrice, convergePrice, fundingStatus, createdDate, updatedDate);
+        return new FundingVO(id, genreType, investorNumber, targetPrice, convergePrice, fileContent, fundingStatus, createdDate, updatedDate);
     }
 }

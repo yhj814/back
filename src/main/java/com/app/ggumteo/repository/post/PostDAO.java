@@ -12,4 +12,8 @@ public class PostDAO {
     private final PostMapper postMapper;
 
     public void save(PostVO postVO) {postMapper.insert(postVO);}
+//    // 마지막 삽입된 ID 가져오기
+//    public Long selectLastInsertId() {
+//        return postMapper.selectLastInsertId();
+//    }
 }

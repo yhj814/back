@@ -18,5 +18,4 @@ public class PostVO {
     private Long memberId; // 회원 ID
     private String createdDate; // 생성 날짜
     private String updatedDate; // 수정 날짜
-
 }

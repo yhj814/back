@@ -7,3 +7,4 @@ create table tbl_work (
     constraint fk_work_post foreign key (id)
     references tbl_post(id)
 );
+
