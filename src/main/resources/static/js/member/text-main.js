@@ -286,3 +286,16 @@ document.querySelectorAll(".btn.last-open-mypage").forEach((button) => {
         }
     });
 });
+
+// 추가 : 회원 탈퇴하기 버튼 클릭 시 기능 구현
+const withdrawBtn = document.getElementById("withdraw-btn");
+const withdrawModal = document.querySelector(".withdraw-modal");
+const closeBtn = document.querySelector(".close-btn");
+
+withdrawBtn.addEventListener("click", () => {
+    withdrawModal.style.display = "flex"
+})
+
+closeBtn.addEventListener("click", () => {
+    withdrawModal.style.display = "none"
+})
