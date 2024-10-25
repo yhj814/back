@@ -13,8 +13,9 @@
                 <div class="header edit-header">
                     <div class="background"></div>
                     <div class="container">
+                        <form id="writeForm" action="/text/write" method="post" enctype="multipart/form-data">
                         <div class="profile-box write">
-                            <form action="" id="write-form">
+
                                 <div class="write-add-view">
                                     <div class="subtitle-1 write-add-title">
                                         내 작품올리기
@@ -28,9 +29,11 @@
                                             <div class="label-input-partner">
                                                 <input
                                                     class="required label-input"
-                                                    name="title"
+                                                    name="postTitle"
                                                     type="text"
+                                                    id="postTitle"
                                                     value=""
+                                                    required
                                                 />
                                                 <label for="title"
                                                     >제목을 입력해주세요
@@ -63,7 +66,8 @@
                                                         <span>
                                                             <input
                                                                 type="radio"
-                                                                name="category"
+                                                                name="genreType"
+                                                                value="romance"
                                                             />
                                                             <span
                                                                 class="arrow"
@@ -85,7 +89,8 @@
                                                         <span>
                                                             <input
                                                                 type="radio"
-                                                                name="category"
+                                                                name="genreType"
+                                                                value="comedy"
                                                             />
                                                             <span
                                                                 class="arrow"
@@ -107,7 +112,8 @@
                                                         <span>
                                                             <input
                                                                 type="radio"
-                                                                name="category"
+                                                                name="genreType"
+                                                                value="horror"
                                                             />
                                                             <span
                                                                 class="arrow"
@@ -129,7 +135,8 @@
                                                         <span>
                                                             <input
                                                                 type="radio"
-                                                                name="category"
+                                                                name="genreType"
+                                                                value="action"
                                                             />
                                                             <span
                                                                 class="arrow"
@@ -151,7 +158,8 @@
                                                         <span>
                                                             <input
                                                                 type="radio"
-                                                                name="category"
+                                                                name="genreType"
+                                                                value="drama"
                                                             />
                                                             <span
                                                                 class="arrow"
@@ -170,7 +178,7 @@
                                                 <input
                                                     type="number"
                                                     class="required label-input"
-                                                    name="price"
+                                                    name="workPrice"
                                                     style="outline: none"
                                                     placeholder="숫자만 입력해주세요. 무료일 경우 0을 입력해주세요"
                                                 />
@@ -198,7 +206,8 @@
                                                     <textarea
                                                         class="required textarea expand"
                                                         maxlength="5000"
-                                                        name="description"
+                                                        name="postContent"
+                                                        id="postContent"
                                                     ></textarea>
                                                 </div>
                                                 <span
@@ -292,6 +301,7 @@
                                                                 <input
                                                                     id="file-upload"
                                                                     type="file"
+                                                                    name="workFile"
                                                                     accept="image/*,video/*"
                                                                     style="
                                                                         display: none;
@@ -308,6 +318,7 @@
                                                             >
                                                                 <input
                                                                     type="text"
+                                                                    name="fileContent"
                                                                     class="img-caption-box-content"
                                                                     placeholder="올린 파일에 대한 설명을 입력해주세요."
                                                                 />
@@ -339,6 +350,7 @@
                                                     <input
                                                         type="file"
                                                         id="thumbnail-upload"
+                                                        name="thumbnailFile"
                                                         accept="image/*"
                                                         style="display: none"
                                                         onchange="previewImage(event)"
@@ -432,8 +444,8 @@
                                         </button>
                                     </div>
                                 </div>
-                            </form>
-                        </div>
+
+                        </div></form>
                     </div>
                 </div>
             </div>
