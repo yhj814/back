@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.app.ggumteo.mapper.work.workmapper">
+<mapper namespace="com.app.ggumteo.mapper.work.WorkMapper">
 
     <!-- 작품 삽입 -->
     <insert id="insert" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
         insert into tbl_work (id, work_price, file_content, read_count, genre_type)
-        values (#{id}, #{workprice}, #{filecontent}, #{readcount}, #{genretype})
+        values (#{id}, #{workPrice}, #{fileContent}, #{readCount}, #{genreType})
     </insert>
 
     <!-- 총 작품 수 조회 -->
@@ -32,17 +32,28 @@
         where id = #{id}
     </update>
 
-    <!-- 작품 정보 수정 -->
-    <update id="updateWork" parameterType="workVO">
+    <!-- 작품 정보 수정 (tbl_work 및 tbl_post 업데이트) -->
+    <update id="updateWork" parameterType="workDTO">
+        <!-- tbl_work 업데이트 -->
         update tbl_work
         set
-            work_price = #{workprice},
-            file_content = #{filecontent},
-            genre_type = #{genretype},
-            updated_date = current_timestamp
+        work_price = #{workPrice},
+        file_content = #{fileContent},
+        genre_type = #{genreType},
+        updated_date = current_timestamp
         where
-            id = #{id}
+        id = #{id};
+
+        <!-- tbl_post 업데이트 -->
+        update tbl_post
+        set
+        post_title = #{postTitle},
+        post_content = #{postContent},
+        updated_date = current_timestamp
+        where
+        id = #{id};
     </update>
+
 
     <!-- 작품 삭제 -->
     <delete id="deleteById" parameterType="Long">
@@ -57,14 +68,25 @@
     </delete>
 
     <!-- 작품 목록 조회 및 썸네일 불러오기 + 장르 필터 추가 -->
-    <select id="selectAllWithThumbnail" resultType="workdto">
+    <select id="selectAllWithThumbnail" resultType="workDTO">
         select
-        w.id, w.work_price, w.read_count, w.genre_type, p.post_title, p.post_content,
-        p.member_id, p.created_date, p.updated_date,
-        f.file_name as thumbnail_file_name, f.file_path as thumbnail_file_path
+        w.id,
+        w.work_price,
+        w.read_count,
+        w.genre_type,
+        p.post_title,
+        p.post_content,
+        p.member_id,
+        p.created_date,
+        p.updated_date,
+        f.file_name as thumbnail_file_name,
+        f.file_path as thumbnail_file_path,
+        m.member_name,
+        m.profile_img_url
         from
         tbl_work w
         join tbl_post p on w.id = p.id
+        join tbl_member m on p.member_id = m.id
         left join (
         select pf.post_id, f.file_name, f.file_path
         from tbl_post_file pf
@@ -81,6 +103,7 @@
         order by w.id desc
     </select>
 
+
     <!-- 검색 조건이 포함된 총 작품 수 조회 -->
     <select id="selectTotalWithSearch">
         select count(*)
@@ -91,14 +114,14 @@
     </select>
 
     <!-- 상세보기에서 다중 파일 조회 -->
-    <select id="selectFilesByPostId" resultType="fileDTO">
+    <select id="selectFilesByPostId" resultType="postFileDTO">
         select
-            f.id as fileid, f.file_name, f.file_path, f.file_size, f.file_type
+            f.id as fileId, f.file_name, f.file_path, f.file_size, f.file_type
         from
             tbl_post_file pf
                 join tbl_file f on pf.id = f.id
         where
-            pf.post_id = #{postid}
+            pf.post_id = #{postId}
         order by pf.id
     </select>
 
@@ -106,8 +129,8 @@
     <sql id="workSearch">
         <if test="workSearch.keyword != null and workSearch.keyword != ''">
             and (
-            p.post_title like '%' || #{worksearch.keyword} || '%'
-            or p.post_content like '%' || #{worksearch.keyword} || '%'
+            p.post_title like '%' || #{workSearch.keyword} || '%'
+            or p.post_content like '%' || #{workSearch.keyword} || '%'
             )
         </if>
     </sql>

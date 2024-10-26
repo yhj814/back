@@ -1,6 +1,7 @@
 package com.app.ggumteo.controller.work;
 
 
+
 import com.app.ggumteo.constant.PostType;
 import com.app.ggumteo.domain.file.FileVO;
 import com.app.ggumteo.domain.file.PostFileDTO;
@@ -18,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -95,5 +97,21 @@ public class TextWorkController {
     }
 
     @GetMapping("list")
-    public void goToListForm() {;}
+    public String list(@RequestParam(required = false) String genreType, Model model) {
+        try {
+            List<WorkDTO> works = workService.findAllWithThumbnail(genreType);
+            works.forEach(work -> {
+                log.info("Work ID: {}, Thumbnail Path: {}", work.getId(), work.getThumbnailFilePath());
+            });
+            model.addAttribute("works", works);
+            return "/text/list";  // list.html로 이동
+        } catch (Exception e) {
+            log.error("작품 목록을 불러오는 중 오류 발생", e);
+            return "error";  // 오류 발생 시 오류 페이지로 이동
+        }
+    }
+
+
+
+
 }
