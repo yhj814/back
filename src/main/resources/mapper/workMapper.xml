@@ -1,10 +1,115 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.app.ggumteo.mapper.work.WorkMapper">
+<mapper namespace="com.app.ggumteo.mapper.work.workmapper">
 
-    <insert id="insert">
-        insert into tbl_work(id, work_price, file_content, read_count, genre_type)
-        values(#{id}, #{workPrice},#{fileContent}, #{readCount}, #{genreType})
+    <!-- 작품 삽입 -->
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        insert into tbl_work (id, work_price, file_content, read_count, genre_type)
+        values (#{id}, #{workprice}, #{filecontent}, #{readcount}, #{genretype})
     </insert>
+
+    <!-- 총 작품 수 조회 -->
+    <select id="selectTotal">
+        select count(*) from tbl_work
+    </select>
+
+    <!-- 작품 id로 작품 조회 -->
+    <select id="selectById" resultType="workDTO">
+        select
+            w.id, w.work_price, w.file_content, w.read_count, w.genre_type,
+            p.post_title, p.post_content, p.member_id, p.created_date, p.updated_date
+        from
+            tbl_work w
+                join tbl_post p on w.id = p.id
+        where
+            w.id = #{id}
+    </select>
+
+    <!-- 조회수 증가 -->
+    <update id="increaseReadCount" parameterType="Long">
+        update tbl_work
+        set read_count = read_count + 1
+        where id = #{id}
+    </update>
+
+    <!-- 작품 정보 수정 -->
+    <update id="updateWork" parameterType="workVO">
+        update tbl_work
+        set
+            work_price = #{workprice},
+            file_content = #{filecontent},
+            genre_type = #{genretype},
+            updated_date = current_timestamp
+        where
+            id = #{id}
+    </update>
+
+    <!-- 작품 삭제 -->
+    <delete id="deleteById" parameterType="Long">
+        delete from tbl_work
+        where id = #{id}
+    </delete>
+
+    <!-- 게시물 삭제 -->
+    <delete id="deletePostById" parameterType="Long">
+        delete from tbl_post
+        where id = #{id}
+    </delete>
+
+    <!-- 작품 목록 조회 및 썸네일 불러오기 + 장르 필터 추가 -->
+    <select id="selectAllWithThumbnail" resultType="workdto">
+        select
+        w.id, w.work_price, w.read_count, w.genre_type, p.post_title, p.post_content,
+        p.member_id, p.created_date, p.updated_date,
+        f.file_name as thumbnail_file_name, f.file_path as thumbnail_file_path
+        from
+        tbl_work w
+        join tbl_post p on w.id = p.id
+        left join (
+        select pf.post_id, f.file_name, f.file_path
+        from tbl_post_file pf
+        join tbl_file f on pf.id = f.id
+        where pf.id = (
+        select max(id) from tbl_post_file where post_id = pf.post_id
+        )
+        ) as f on f.post_id = p.id
+        where
+        w.id is not null
+        <if test="genreType != null and genreType != ''">
+            and w.genre_type = #{genreType}
+        </if>
+        order by w.id desc
+    </select>
+
+    <!-- 검색 조건이 포함된 총 작품 수 조회 -->
+    <select id="selectTotalWithSearch">
+        select count(*)
+        from tbl_work w
+        join tbl_post p on w.id = p.id
+        where w.id is not null
+        <include refid="workSearch"/>
+    </select>
+
+    <!-- 상세보기에서 다중 파일 조회 -->
+    <select id="selectFilesByPostId" resultType="fileDTO">
+        select
+            f.id as fileid, f.file_name, f.file_path, f.file_size, f.file_type
+        from
+            tbl_post_file pf
+                join tbl_file f on pf.id = f.id
+        where
+            pf.post_id = #{postid}
+        order by pf.id
+    </select>
+
+    <!-- 검색 및 정렬 옵션 -->
+    <sql id="workSearch">
+        <if test="workSearch.keyword != null and workSearch.keyword != ''">
+            and (
+            p.post_title like '%' || #{worksearch.keyword} || '%'
+            or p.post_content like '%' || #{worksearch.keyword} || '%'
+            )
+        </if>
+    </sql>
 
 </mapper>

@@ -59,7 +59,7 @@ public class TextWorkController {
     public void goToWriteForm() {;}
 
     @PostMapping("write")
-    public ResponseEntity<?> write(WorkDTO workDTO, @RequestParam("workFile") MultipartFile workFile,
+    public ResponseEntity<?> write(WorkDTO workDTO, @RequestParam("workFile") MultipartFile[] workFiles,
                                    @RequestParam("thumbnailFile") MultipartFile thumbnailFile) {
         try {
             MemberVO member = (MemberVO) session.getAttribute("member");
@@ -76,8 +76,12 @@ public class TextWorkController {
             workService.write(workDTO);
 
             // 파일 저장 로직 호출 (workFile 및 thumbnailFile 저장)
-            if (!workFile.isEmpty()) {
-                postFileService.saveFile(workFile, workDTO.getId()); // workDTO.getId()가 post의 ID를 반환
+            if (workFiles != null && workFiles.length > 0) {
+                for (MultipartFile file : workFiles) {
+                    if (!file.isEmpty()) {
+                        postFileService.saveFile(file, workDTO.getId()); // 각각의 파일 저장
+                    }
+                }
             }
             if (!thumbnailFile.isEmpty()) {
                 postFileService.saveFile(thumbnailFile, workDTO.getId());
