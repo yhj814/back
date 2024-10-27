@@ -24,4 +24,8 @@ public class PostDAO {
     public Long getLastInsertId() {
         return postMapper.getLastInsertId();
     }
+
+    public void deleteById(Long id) {
+        postMapper.deleteById(id);
+    }
 }

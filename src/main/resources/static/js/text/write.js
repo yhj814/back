@@ -113,7 +113,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }
         console.log(document.querySelector('input[name="workFile"]').files[0]);
 
-
         //폼 데이터 전송
         fetch("/text/write", {
             method: "POST",
@@ -256,14 +255,14 @@ document.querySelector(".img-add").addEventListener("click", function () {
                     <div class="img-box-title">작품 영상, 이미지 등록</div>
                     <div class="img-box-text">작품 결과물 혹은 설명을 돕는 이미지를 선택해 주세요.</div>
                     <div class="img-box-help"><span>· 이미지 최적 사이즈: 가로 720px</span></div>
-                    <input id="file-upload-${timestamp}" type="file" accept="image/*,video/*" style="display: none;" />
+                    <input id="file-upload-${timestamp}" type="file" name="workFile" accept="image/*,video/*" style="display: none;" />
                 </div>
             </div>
-            <div class="img-caption-box" style="display: none;">
-                <div class="default-input-partner">
-                    <input type="text" class="img-caption-box-content" placeholder="올린 파일에 대한 설명을 입력해주세요." />
-                </div>
-            </div>
+<!--            <div class="img-caption-box" style="display: none;">-->
+<!--                <div class="default-input-partner">-->
+<!--                    <input type="text" class="img-caption-box-content" placeholder="올린 파일에 대한 설명을 입력해주세요." />-->
+<!--                </div>-->
+<!--            </div>-->
         </div>
     `;
 
@@ -322,6 +321,28 @@ function previewFile(fileInput, previewSelector, videoPreviewSelector) {
     if (file) {
         reader.readAsDataURL(file);
     }
+
+    // 파일을 서버로 전송하는 로직 추가
+    const formData = new FormData();
+    formData.append('file', file);
+
+    // 서버로 파일을 전송
+    fetch('/uploadFile', {
+        method: 'POST',
+        body: formData
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                console.log('파일이 성공적으로 업로드되었습니다.');
+                // 필요한 경우, 파일과 관련된 다른 데이터를 처리하는 로직 추가
+            } else {
+                console.error('파일 업로드 중 오류가 발생했습니다.');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
 }
 
 function previewImage(event) {

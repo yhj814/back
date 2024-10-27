@@ -16,4 +16,9 @@
     <select id="getLastInsertId" resultType="Long">
         SELECT LAST_INSERT_ID()
     </select>
+
+    <delete id="deleteById" parameterType="Long">
+        delete from tbl_post
+        where id = #{id}
+    </delete>
 </mapper>
