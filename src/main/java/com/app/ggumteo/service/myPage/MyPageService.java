@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public interface MyPageService {
     //    회원 정보 조회
-    public Optional<MemberVO> getMember(String memberEmail);
+    public Optional<MemberVO> getMember(Long Id);
     //    내 게시물 조회
     public List<FundingDTO> getMyFundingList(Long memberId);
 }
