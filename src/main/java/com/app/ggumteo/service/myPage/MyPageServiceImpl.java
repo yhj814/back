@@ -21,9 +21,10 @@ public class MyPageServiceImpl implements MyPageService {
     private final MemberDAO memberDAO;
     private final FundingDAO fundingDAO;
 
+
     @Override
-    public Optional<MemberVO> getMember(String memberEmail) {
-        return memberDAO.findByKakaoEmail(memberEmail);
+    public Optional<MemberVO> getMember(Long Id) {
+        return memberDAO.findById(Id);
     }
 
     @Override

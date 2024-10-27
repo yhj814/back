@@ -1,7 +1,5 @@
 const myFundingListLayout = document.getElementById("my-funding-list");
 
-console.log(myFundingListLayout);
-
 const showList = ({members}) => {
     let text = ``;
 
