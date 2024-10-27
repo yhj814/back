@@ -120,38 +120,24 @@
                             <!-- 페이지네이션박스 -->
                             <div class="center-text pagination-box">
                                 <ul class="pagination theme-ggumteo">
-                                    <li class="page-item before-btn">
-                                        <a id="page-btn" class="page-link"
-                                            >이전</a
-                                        >
+                                    <!-- 이전 버튼 -->
+                                    <li class="page-item" th:classappend="${pagination.isPrev()} ? '' : 'disabled'">
+                                        <a class="page-link" th:href="@{/text/list(page=${pagination.page - 1}, genreType=${genreType})}">이전</a>
                                     </li>
-                                    <li class="page-item">
-                                        <a
-                                            id="page-btn"
-                                            class="page-link active"
-                                            >1</a
-                                        >
+
+                                    <!-- 페이지 번호 -->
+                                    <li th:each="i : ${#numbers.sequence(pagination.startPage, pagination.endPage)}" class="page-item" th:classappend="${pagination.page == i} ? 'active' : ''">
+                                        <a class="page-link" th:href="@{/text/list(page=${i}, genreType=${genreType})}" th:text="${i}"></a>
                                     </li>
-                                    <li class="page-item">
-                                        <a id="page-btn" class="page-link">2</a>
-                                    </li>
-                                    <li class="page-item">
-                                        <a id="page-btn" class="page-link">3</a>
-                                    </li>
-                                    <li class="page-item">
-                                        <a id="page-btn" class="page-link">4</a>
-                                    </li>
-                                    <li class="page-item">
-                                        <a id="page-btn" class="page-link">5</a>
-                                    </li>
-                                    <!-- li채로 복사 -->
-                                    <li class="page-item right=btn">
-                                        <a id="page-btn" class="page-link"
-                                            >다음</a
-                                        >
+
+                                    <!-- 다음 버튼 -->
+                                    <li class="page-item" th:classappend="${pagination.isNext()} ? '' : 'disabled'">
+                                        <a class="page-link" th:href="@{/text/list(page=${pagination.page + 1}, genreType=${genreType})}">다음</a>
                                     </li>
                                 </ul>
+
                             </div>
+
                         </div>
                     </div>
                 </div>
