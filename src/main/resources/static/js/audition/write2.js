@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-    const targetInputNames = ["title", "experience", "amount"];
+    const targetInputNames = ["postTitle", "experience", "amount"];
 
     targetInputNames.forEach((name) => {
         const inputElement = document.querySelector(`input[name="${name}"]`);
