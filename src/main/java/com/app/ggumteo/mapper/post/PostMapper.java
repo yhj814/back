@@ -11,4 +11,6 @@ public interface PostMapper {
     public void insertInquiry(PostVO post);
 //    작성게시글 마지막 ID 가져오기
     public Long getLastInsertId();
+
+   public void deleteById(Long id);
 }

@@ -1,6 +1,6 @@
 package com.app.ggumteo.service.work;
 
-
+import com.app.ggumteo.domain.file.PostFileDTO;
 import com.app.ggumteo.domain.post.PostVO;
 import com.app.ggumteo.domain.work.WorkDTO;
 import com.app.ggumteo.domain.work.WorkVO;
@@ -10,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @Primary
@@ -47,5 +49,40 @@ public class WorkServiceImpl implements WorkService {
         // workDTO에 저장된 postId를 설정
         workDTO.setId(postId);  // 파일 저장 시 사용할 수 있도록
     }
-}
 
+    @Override
+    public WorkDTO findWorkById(Long id) {
+        return workDAO.findWorkById(id);
+    }
+
+    @Override
+    public List<WorkDTO> findAllWithThumbnail(String genreType) {
+        return workDAO.findAllWithThumbnail(genreType);
+    }
+
+    @Override
+    public void updateWork(WorkDTO workDTO) {
+        workDAO.updateWork(workDTO);
+    }
+
+    @Override
+    public void deleteWorkById(Long id) {
+        workDAO.deleteWorkById(id);
+        postDAO.deleteById(id);  // 연관된 post 삭제
+    }
+
+    @Override
+    public void incrementReadCount(Long id) {
+        workDAO.incrementReadCount(id);
+    }
+
+    @Override
+    public int findTotalWorks() {
+        return workDAO.findTotalWorks();
+    }
+
+    @Override
+    public List<PostFileDTO> findFilesByPostId(Long postId) {
+        return workDAO.findFilesByPostId(postId);
+    }
+}

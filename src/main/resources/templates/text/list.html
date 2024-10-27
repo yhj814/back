@@ -52,49 +52,44 @@
                             <div class="filter-group-wrapper">
                                 <div class="filter-group">
                                     <div class="filter-box-group">
-                                        <div class="filter-box">로맨스</div>
+                                        <button class="filter-box" data-genre="romance">로맨스</button>
                                     </div>
                                     <div class="filter-box-group">
-                                        <div class="filter-box">코미디</div>
+                                        <button type="submit" class="filter-box" data-genre="comedy">코미디</button>
                                     </div>
                                     <div class="filter-box-group">
-                                        <div class="filter-box">공포</div>
+                                        <button type="submit" class="filter-box" data-genre="horror">공포</button>
                                     </div>
                                     <div class="filter-box-group">
-                                        <div class="filter-box">액션</div>
+                                        <button type="submit" class="filter-box" data-genre="action">액션</button>
                                     </div>
                                     <div class="filter-box-group">
-                                        <div class="filter-box">드라마</div>
+                                        <button type="submit" class="filter-box" data-genre="drama">드라마</button>
                                     </div>
                                     <div class="box-group">
-                                        <div class="write-box">
+                                        <button type="submit" class="write-box">
                                             내 작품올리기
-                                        </div>
+                                        </button>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div id="ggumteo-list-box">
                             <div class="list-box-wrapper">
+
+                                <li th:each="work : ${works}">
                                 <a href="" class="box">
-                                    <img
-                                        class="thumbnail"
-                                        src="/static/images/text/thumbnail.jpg"
-                                    />
-                                    <div class="title">글의 타이틀</div>
+                                    <img th:src="${work.thumbnailFilePath}" class="thumbnail" alt="썸네일 이미지" />
+                                    <div class="title" th:text="${work.postTitle}"></div>
                                     <div class="detail">
-                                        글장르
+                                        <span th:text="${work.genreType}"></span>
                                         <img
                                             src="https://yozm.wishket.com/static/renewal/img/news/icon-clock.png"
                                             class="content-meta-elem meta-icon"
                                         />
-                                        <span class="list-time"
-                                            >2024.10.26</span
-                                        >
+                                        <span th:text="${work.createdDate}"></span>
                                     </div>
-                                    <div class="content">
-                                        글의 간단한 요약.....
-                                    </div>
+                                    <div class="content" th:text="${work.postContent}">글의 간단한 요약</div>
                                     <!-- 펀딩은 review 없음-->
                                     <div class="detail review">
                                         <div class="review-box">
@@ -116,186 +111,11 @@
                                                 class="partner-profile"
                                             />
                                         </div>
-                                        <div class="name-box">홍길동</div>
+                                        <div class="name-box" th:text="${work.memberName}"></div>
                                         <div></div>
                                     </div>
                                 </a>
-                                <a href="" class="box">
-                                    <img
-                                        class="thumbnail"
-                                        src="/static/images/text/thumbnail.jpg"
-                                    />
-                                    <div class="title">글의 타이틀</div>
-                                    <div class="detail">
-                                        글장르
-                                        <img
-                                            src="https://yozm.wishket.com/static/renewal/img/news/icon-clock.png"
-                                            class="content-meta-elem meta-icon"
-                                        />
-                                        <span class="list-time"
-                                            >2024.10.26</span
-                                        >
-                                    </div>
-                                    <div class="content">
-                                        글의 간단한 요약,,,,,,,
-                                    </div>
-                                    <!-- 펀딩은 review 없음-->
-                                    <div class="detail review">
-                                        <div class="review-box">
-                                            <div class="star-box">
-                                                <img
-                                                    src="https://www.wishket.com/static/renewal/img/project/wishket-project-portfolio/icon-review-star-full.png"
-                                                />
-                                            </div>
-                                            <span class="review-score"
-                                                >5.0</span
-                                            >
-                                        </div>
-                                        <div
-                                            class="portfolio-detail-seperator"
-                                        ></div>
-                                        <div class="partner-profile-box">
-                                            <img
-                                                src="https://cdn.wishket.com/news_profiles/248055_20230718_02e200cef51139ed.jpg"
-                                                class="partner-profile"
-                                            />
-                                        </div>
-                                        <div class="name-box">홍길동</div>
-                                        <div></div>
-                                    </div>
-                                </a>
-                                <a href="" class="box">
-                                    <img
-                                        class="thumbnail"
-                                        src="/static/images/text/thumbnail.jpg"
-                                    />
-                                    <div class="title">글의 타이틀</div>
-                                    <div class="detail">
-                                        글장르
-                                        <img
-                                            src="https://yozm.wishket.com/static/renewal/img/news/icon-clock.png"
-                                            class="content-meta-elem meta-icon"
-                                        />
-                                        <span class="list-time"
-                                            >2024.10.26</span
-                                        >
-                                    </div>
-                                    <div class="content">
-                                        글의 간단한 요약,,,,,
-                                    </div>
-                                    <!-- 펀딩은 review 없음-->
-                                    <div class="detail review">
-                                        <div class="review-box">
-                                            <div class="star-box">
-                                                <img
-                                                    src="https://www.wishket.com/static/renewal/img/project/wishket-project-portfolio/icon-review-star-full.png"
-                                                />
-                                            </div>
-                                            <span class="review-score"
-                                                >5.0</span
-                                            >
-                                        </div>
-                                        <div
-                                            class="portfolio-detail-seperator"
-                                        ></div>
-                                        <div class="partner-profile-box">
-                                            <img
-                                                src="https://cdn.wishket.com/news_profiles/248055_20230718_02e200cef51139ed.jpg"
-                                                class="partner-profile"
-                                            />
-                                        </div>
-                                        <div class="name-box">홍길동</div>
-                                        <div></div>
-                                    </div>
-                                </a>
-                                <a href="" class="box">
-                                    <img
-                                        class="thumbnail"
-                                        src="/static/images/text/thumbnail.jpg"
-                                    />
-                                    <div class="title">글의 타이틀</div>
-                                    <div class="detail">
-                                        글장르
-                                        <img
-                                            src="https://yozm.wishket.com/static/renewal/img/news/icon-clock.png"
-                                            class="content-meta-elem meta-icon"
-                                        />
-                                        <span class="list-time"
-                                            >2024.10.26</span
-                                        >
-                                    </div>
-                                    <div class="content">
-                                        글의 간단한 요약 ,,,,
-                                    </div>
-                                    <!-- 펀딩은 review 없음-->
-                                    <div class="detail review">
-                                        <div class="review-box">
-                                            <div class="star-box">
-                                                <img
-                                                    src="https://www.wishket.com/static/renewal/img/project/wishket-project-portfolio/icon-review-star-full.png"
-                                                />
-                                            </div>
-                                            <span class="review-score"
-                                                >5.0</span
-                                            >
-                                        </div>
-                                        <div
-                                            class="portfolio-detail-seperator"
-                                        ></div>
-                                        <div class="partner-profile-box">
-                                            <img
-                                                src="https://cdn.wishket.com/news_profiles/248055_20230718_02e200cef51139ed.jpg"
-                                                class="partner-profile"
-                                            />
-                                        </div>
-                                        <div class="name-box">홍길동</div>
-                                        <div></div>
-                                    </div>
-                                </a>
-                                <a href="" class="box">
-                                    <img
-                                        class="thumbnail"
-                                        src="/static/images/text/thumbnail.jpg"
-                                    />
-                                    <div class="title">글의 타이틀</div>
-                                    <div class="detail">
-                                        글장르
-                                        <img
-                                            src="https://yozm.wishket.com/static/renewal/img/news/icon-clock.png"
-                                            class="content-meta-elem meta-icon"
-                                        />
-                                        <span class="list-time"
-                                            >2024.10.26</span
-                                        >
-                                    </div>
-                                    <div class="content">
-                                        글의 간단한 요약 ,,,,
-                                    </div>
-                                    <!-- 펀딩은 review 없음-->
-                                    <div class="detail review">
-                                        <div class="review-box">
-                                            <div class="star-box">
-                                                <img
-                                                    src="https://www.wishket.com/static/renewal/img/project/wishket-project-portfolio/icon-review-star-full.png"
-                                                />
-                                            </div>
-                                            <span class="review-score"
-                                                >5.0</span
-                                            >
-                                        </div>
-                                        <div
-                                            class="portfolio-detail-seperator"
-                                        ></div>
-                                        <div class="partner-profile-box">
-                                            <img
-                                                src="https://cdn.wishket.com/news_profiles/248055_20230718_02e200cef51139ed.jpg"
-                                                class="partner-profile"
-                                            />
-                                        </div>
-                                        <div class="name-box">홍길동</div>
-                                        <div></div>
-                                    </div>
-                                </a>
+                                </li>
                             </div>
                             <!-- 페이지네이션박스 -->
                             <div class="center-text pagination-box">
