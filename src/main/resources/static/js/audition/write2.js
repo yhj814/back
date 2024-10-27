@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-    const targetInputNames = ["title", "experience", "amount"];
+    const targetInputNames = ["postTitle", "auditionCareer", "expectedAmount"];
 
     targetInputNames.forEach((name) => {
         const inputElement = document.querySelector(`input[name="${name}"]`);
@@ -161,12 +161,12 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // 근무시작일, 모집마감일 입력 필드에 대한 처리
-    const dateInputs = document.querySelectorAll('input[name="date_started"]');
+    const dateInputs = document.querySelectorAll('input[name="serviceStartDate"],input[name="auditionDeadLine"]');
     dateInputs.forEach(formatDateInput);
 
     // 모집인원 입력 필드에 대한 처리
     const participantInput = document.querySelector(
-        'input[name="participation_rate"]'
+        'input[name="auditionPersonnel"]'
     );
     if (participantInput) {
         formatParticipantInput(participantInput);

@@ -1,5 +1,6 @@
 package com.app.ggumteo.domain.audition;
 
+import com.app.ggumteo.domain.post.PostVO;
 import lombok.*;
 import org.springframework.stereotype.Component;
 
@@ -19,7 +20,7 @@ public class AuditionDTO {
     private String auditionCareer;
     private String expectedAmount;
     private String serviceStartDate;
-    private String auditionDeadline;
+    private String auditionDeadLine;
     private String auditionPersonnel;
     private String auditionLocation;
     private String auditionBackground;
@@ -31,7 +32,11 @@ public class AuditionDTO {
 
     public AuditionVO toVO() {
         return new AuditionVO(id, auditionField, auditionCareer, expectedAmount, serviceStartDate,
-                auditionDeadline, auditionPersonnel, auditionLocation, auditionBackground,
+                auditionDeadLine, auditionPersonnel, auditionLocation, auditionBackground,
                 auditionCategory, fileContent, auditionStatus);
+    }
+
+    public PostVO toPostVO() {
+        return new PostVO(id, postTitle, postContent, postType, memberId, createdDate,updatedDate);
     }
 }
