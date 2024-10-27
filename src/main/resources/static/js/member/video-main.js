@@ -226,14 +226,14 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // 페이지 로딩 후 초기화
-    const textarea = document.querySelector("textarea[name='description']");
-    if (textarea) {
-        resizeTextarea(textarea);
-    }
-    var check = $("input[type='checkbox']");
-    check.click(function () {
-        $("p").toggle();
-    });
+    // const textarea = document.querySelector("textarea[name='description']");
+    // if (textarea) {
+    //     resizeTextarea(textarea);
+    // }
+    // var check = $("input[type='checkbox']");
+    // check.click(function () {
+    //     $("p").toggle();
+    // });
 });
 // 추가 기능: "내 작품" 등 클릭 시 사이드바 메뉴와 동일한 효과
 document.querySelectorAll(".btn.last-open-mypage").forEach((button) => {
