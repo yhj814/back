@@ -17,4 +17,9 @@ public class MemberDAO {
     public Optional<MemberVO> findByKakaoEmail(String memberEmail) {
         return memberMapper.selectByMemberEmailForKakao(memberEmail);
     }
+
+    //   회원 정보 조회: 마이페이지 목록 조회할 때 member id 조회가 필요하여 작성함.
+    public Optional<MemberVO> findById(Long id) {
+        return memberMapper.selectById(id);
+    };
 }

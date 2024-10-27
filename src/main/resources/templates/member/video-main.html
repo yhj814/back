@@ -245,7 +245,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="main-content-container">
+                <div class="main-content-container" th:object="${member}">
                     <div id="my-main" class="content active">
                         <div class="content-container main-content">
                             <div class="sub-title-box">
@@ -1395,7 +1395,6 @@
                         </div>
                         <!-- my-product.html의 실제 콘텐츠가 여기에 들어갑니다. -->
                     </div>
-
                     <div id="my-buy-product-content" class="content">
                         <div class="">
                             <div class="main-content read-products-list">
@@ -1684,7 +1683,6 @@
                         </div>
                         <!-- my-product-.html의 실제 콘텐츠가 여기에 들어갑니다. -->
                     </div>
-
                     <!-- my-funding.html 콘텐츠 -->
                     <div id="my-funding-content" class="content">
                         <div class="">
@@ -2650,7 +2648,6 @@
                         </div>
                         <!-- my-profile.html의 실제 콘텐츠가 여기에 들어갑니다. -->
                     </div>
-
                     <!-- 추가적인 콘텐츠 -->
                     <div id="my-buy-funding-content" class="content">
                         <div class="">
@@ -7388,10 +7385,12 @@
         </div>
     </body>
     <script th:inline="javascript">
-        const memberId = [[${member.memberEmail}]];
+        const memberId = [[${member.id}]];
+        // const memberId = [[${session.member.id}]];
 
     </script>
     <script src="/js/member/video-main.js"></script>
     <script src="/js/my/video/my-video-funding-service.js"></script>
     <script src="/js/my/video/my-video-funding-layout.js"></script>
+    <script src="/js/my/video/my-video-funding-event.js"></script>
 </html>
