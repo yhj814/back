@@ -3,6 +3,7 @@ package com.app.ggumteo.service.work;
 import com.app.ggumteo.domain.file.PostFileDTO;
 import com.app.ggumteo.domain.work.WorkDTO;
 import com.app.ggumteo.domain.work.WorkVO;
+import com.app.ggumteo.pagination.Pagination;
 
 import java.util.List;
 
@@ -15,7 +16,7 @@ public interface WorkService {
     WorkDTO findWorkById(Long id);
 
     // 작품 목록 조회 (썸네일 포함, 장르 필터 추가)
-    List<WorkDTO> findAllWithThumbnail(String genreType);
+    List<WorkDTO> findAllWithThumbnail(String genreType, Pagination pagination);
 
     // 작품 정보 수정
     void updateWork(WorkDTO workDTO);
@@ -27,7 +28,7 @@ public interface WorkService {
     void incrementReadCount(Long id);
 
     // 총 작품 수 조회
-    int findTotalWorks();
+    int findTotalWorks(String genreType);
 
     // 다중 파일 조회 (작품 상세보기)
     List<PostFileDTO> findFilesByPostId(Long postId);

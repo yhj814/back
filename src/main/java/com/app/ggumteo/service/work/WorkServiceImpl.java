@@ -4,6 +4,7 @@ import com.app.ggumteo.domain.file.PostFileDTO;
 import com.app.ggumteo.domain.post.PostVO;
 import com.app.ggumteo.domain.work.WorkDTO;
 import com.app.ggumteo.domain.work.WorkVO;
+import com.app.ggumteo.pagination.Pagination;
 import com.app.ggumteo.repository.post.PostDAO;
 import com.app.ggumteo.repository.work.WorkDAO;
 import lombok.RequiredArgsConstructor;
@@ -56,9 +57,12 @@ public class WorkServiceImpl implements WorkService {
     }
 
     @Override
-    public List<WorkDTO> findAllWithThumbnail(String genreType) {
-        return workDAO.findAllWithThumbnail(genreType);
+    public List<WorkDTO> findAllWithThumbnail(String genreType, Pagination pagination) {
+        pagination.progress2();  // 페이지네이션 계산
+        return workDAO.findAllWithThumbnail(genreType, pagination);
     }
+
+
 
     @Override
     public void updateWork(WorkDTO workDTO) {
@@ -77,8 +81,8 @@ public class WorkServiceImpl implements WorkService {
     }
 
     @Override
-    public int findTotalWorks() {
-        return workDAO.findTotalWorks();
+    public int findTotalWorks(String genreType) {
+        return workDAO.findTotalWorks(genreType);  // DAO에서 장르 필터가 적용된 총 작품 수 조회
     }
 
     @Override
