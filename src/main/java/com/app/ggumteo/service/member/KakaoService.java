@@ -112,7 +112,7 @@ public class KakaoService {
                 JsonElement profile = kakaoAccount.getAsJsonObject().get("profile").getAsJsonObject();
 
                 memberDTO = new MemberDTO();
-                memberDTO.setMemberName(profile.getAsJsonObject().get("nickname").getAsString());
+
                 memberDTO.setMemberEmail(kakaoAccount.getAsJsonObject().get("email").getAsString());
                 memberDTO.setProfileImgUrl(profile.getAsJsonObject().get("profile_image_url").getAsString());
 

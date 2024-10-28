@@ -34,13 +34,15 @@
                                     <div class="text-input-ggumteo icon-right">
                                         <div>
                                             <input
-                                                type="text"
-                                                class="theme-ggumteo search-input"
-                                                placeholder="원하는 작품을 찾아보세요"
+                                                    type="text"
+                                                    class="theme-ggumteo search-input"
+                                                    id="searchKeyword"
+                                                    value="${keyword}"
+                                                    placeholder="원하는 작품을 찾아보세요"
                                             />
-                                            <i class="search-btn">
+                                            <i class="search-btn" onclick="searchWorks()">
                                                 <img
-                                                    src="https://www.wishket.com/static/renewal/img/stack/icon-search.png"
+                                                        src="https://www.wishket.com/static/renewal/img/stack/icon-search.png"
                                                 />
                                             </i>
                                         </div>
@@ -52,27 +54,23 @@
                             <div class="filter-group-wrapper">
                                 <div class="filter-group">
                                     <div class="filter-box-group">
-                                        <button class="filter-box" data-genre="romance">로맨스</button>
+                                        <button class="filter-box" data-genre="romance" onclick="filterByGenre('romance')">로맨스</button>
                                     </div>
                                     <div class="filter-box-group">
-                                        <button type="submit" class="filter-box" data-genre="comedy">코미디</button>
+                                        <button class="filter-box" data-genre="comedy" onclick="filterByGenre('comedy')">코미디</button>
                                     </div>
                                     <div class="filter-box-group">
-                                        <button type="submit" class="filter-box" data-genre="horror">공포</button>
+                                        <button class="filter-box" data-genre="horror" onclick="filterByGenre('horror')">공포</button>
                                     </div>
                                     <div class="filter-box-group">
-                                        <button type="submit" class="filter-box" data-genre="action">액션</button>
+                                        <button class="filter-box" data-genre="action" onclick="filterByGenre('action')">액션</button>
                                     </div>
                                     <div class="filter-box-group">
-                                        <button type="submit" class="filter-box" data-genre="drama">드라마</button>
-                                    </div>
-                                    <div class="box-group">
-                                        <button type="submit" class="write-box">
-                                            내 작품올리기
-                                        </button>
+                                        <button class="filter-box" data-genre="drama" onclick="filterByGenre('drama')">드라마</button>
                                     </div>
                                 </div>
                             </div>
+
                         </div>
                         <div id="ggumteo-list-box">
                             <div class="list-box-wrapper">
@@ -111,7 +109,7 @@
                                                 class="partner-profile"
                                             />
                                         </div>
-                                        <div class="name-box" th:text="${work.memberName}"></div>
+                                        <div class="name-box" th:text="${work.profileName}"></div>
                                         <div></div>
                                     </div>
                                 </a>
