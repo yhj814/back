@@ -14,21 +14,52 @@ from tbl_funding;
 
 select *
 from tbl_member;
+insert into tbl_member
+(member_email)
+values ('member12@gmail.com');
 
 select *
 from tbl_member_profile;
 insert into tbl_member_profile
 (profile_name, profile_nickname, profile_gender, profile_age, profile_email, profile_phone, member_id)
-values ('홍길동', '너구리쌤', '남', '30', 'test2@gmail.com', '01029390392', 2);
+values ('이름12', '닉네임12', '여'
+       , '30', 'test12@gmail.com', '01221231322', 12);
 
 select id, product_name, product_price, product_amount, funding_id
 from tbl_funding_product;
 insert into tbl_funding_product
 (product_name, product_price, product_amount, funding_id)
-values ('펀딩 상품3 이름 test4', '40000', '50', 3);
+values ('펀딩 상품3 이름 test4', '40000', '60', 3);
 
-select id, member_id, funding_product_id, funding_send_status
+select id, member_profile_id, funding_product_id, funding_send_status
 from tbl_buy_funding_product;
 insert into tbl_buy_funding_product
-(member_id, funding_product_id, funding_send_status)
-values ();
+(member_profile_id, funding_product_id, funding_send_status)
+values (9, 9, 0);
+
+
+SELECT f.id, f.genre_type, p.post_title, p.post_content, p.post_type, p.member_profile_id, p.created_date, p.updated_date, mp.profile_nickname, mp.member_id, m.profile_img_url
+FROM
+    tbl_funding f
+        JOIN tbl_post p ON f.id = p.id
+        JOIN tbl_member_profile mp ON p.member_profile_id = mp.id
+        JOIN tbl_member m ON mp.member_id = m.id
+WHERE
+    m.id = 1;
+
+SELECT bfp.id, bfp.funding_send_status
+     , fp.product_name, fp.product_price, fp.product_amount
+     , f.id, f.genre_type, f.investor_number, f.target_price, f.converge_price, f.funding_status, f.file_content
+     , p.id, p.post_title, p.post_content, p.post_type, p.member_profile_id, p.created_date, p.updated_date
+     , mp.id, mp.profile_name, mp.profile_nickname, mp.profile_gender, mp.profile_age, mp.profile_email, mp.profile_phone, mp.profile_etc, mp.member_id, mp.created_date, mp.updated_date
+     , m.id, m.member_email, m.member_status, m.profile_img_url, m.created_date, m.updated_date
+FROM
+    tbl_buy_funding_product bfp
+        JOIN tbl_funding_product fp ON bfp.funding_product_id = fp.id
+        JOIN tbl_funding f ON fp.funding_id = f.id
+        JOIN tbl_post p ON f.id = p.id
+        JOIN tbl_member_profile mp ON p.member_profile_id = mp.id
+        JOIN tbl_member m ON mp.member_id = m.id
+        JOIN tbl_member_profile bfp_mp ON bfp.member_profile_id = bfp_mp.id
+WHERE
+    m.id = 1;
