@@ -332,7 +332,7 @@ li:first-child > .page-link {
     font-weight: 500;
     color: #616161;
     text-decoration: none;
-    border: 1px solid transparent;
+    border: 1px solid #00a878;
 }
 .theme-ggumteo li {
     height: 100%;

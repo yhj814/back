@@ -18,7 +18,7 @@ public class AdminMapperTests {
     @Test
     public void testInsert() {
         AdminDTO adminDTO = new AdminDTO();
-        adminDTO.setAdminVerifyCode("222222");
+        adminDTO.setAdminVerifyCode("111111");
         log.info("{}","관리자 인증번호 생성완료");
         adminMapper.insert(adminDTO.toVO());
     }

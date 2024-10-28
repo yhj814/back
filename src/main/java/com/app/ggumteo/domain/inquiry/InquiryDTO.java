@@ -13,8 +13,8 @@ import org.springframework.stereotype.Component;
 @NoArgsConstructor
 @AllArgsConstructor
 public class InquiryDTO {
-    private String title; // 문의 제목
-    private String description; // 문의 내용
+    private Long id;
+    private String inquiryStatus;
 }
 
 

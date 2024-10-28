@@ -1,47 +1,30 @@
 package com.app.ggumteo.service.inquiry;
 
-import com.app.ggumteo.constant.PostType;
-import com.app.ggumteo.domain.inquiry.InquiryDTO;
-import com.app.ggumteo.domain.inquiry.InquiryDetailVO;
-import com.app.ggumteo.domain.inquiry.InquiryVO;
-import com.app.ggumteo.domain.post.PostVO;
-import com.app.ggumteo.mapper.inquiry.InquiryMapper;
-import com.app.ggumteo.pagination.Pagination;
+
+import com.app.ggumteo.domain.post.PostDTO;
 import com.app.ggumteo.repository.inquiry.InquiryDAO;
-import com.app.ggumteo.repository.post.PostDAO;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 @Transactional(rollbackFor = Exception.class)
 public class InquiryServiceImpl implements InquiryService {
 
-    private final PostDAO postDAO;
-    private final InquiryDAO inquiryDAO;
+    private final InquiryDAO inquiryDAO; // final로 선언하여 주입받도록 설정
 
     @Override
-    public void createInquiry(InquiryDTO inquiryDTO, Long memberId) {
-        // 게시물 생성
-        PostVO post = new PostVO();
-        post.setPostTitle(inquiryDTO.getTitle());
-        post.setPostContent(inquiryDTO.getDescription());
-        // 문의하기 type
-        post.setPostType("INQUIRY");
-        post.setMemberProfileId(memberId);
-        postDAO.saveInquiry(post);
+    public void writeInquiry(PostDTO postDTO) {
+        // tbl_post에 문의사항을 삽입
+        inquiryDAO.insertInquiry(postDTO);
 
-        // 마지막에 생성된 게시물 ID를 가져와서 문의 생성
-        Long postId = postDAO.getLastInsertId();
-        InquiryVO inquiry = new InquiryVO();
-        inquiry.setPostId(postId);
-        inquiry.setInquiryStatus("0"); // 미답변 상태
-        inquiryDAO.saveInquiry(inquiry);
+        // 마지막으로 삽입된 ID를 가져와서 PostDTO에 세팅
+        Long lastInsertId = inquiryDAO.getLastInsertId();
+        postDTO.setId(lastInsertId); // 가져온 ID를 PostDTO에 설정
+
+        // tbl_inquiry에 삽입
+        inquiryDAO.insertInquiryToTblInquiry(postDTO);
     }
 }

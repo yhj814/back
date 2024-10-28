@@ -1029,18 +1029,18 @@ h1.common-header-description {
 /* 여섯번째 열 */
 #member-section .apply-header-cell:nth-child(7),
 #member-section .apply-table-cell:nth-child(7) {
-    width: 7%;
+    width: 10%;
 }
 
 /* 일곱 열 */
 #member-section .apply-header-cell:nth-child(8),
 #member-section .apply-table-cell:nth-child(8) {
-    width: 15%;
+    width: 10%;
 }
 /* 여덟 열 */
 #member-section .apply-header-cell:nth-child(9),
 #member-section .apply-table-cell:nth-child(9) {
-    width: 8%;
+    width: 15%;
 }
 
 /* 아홉 열 */
