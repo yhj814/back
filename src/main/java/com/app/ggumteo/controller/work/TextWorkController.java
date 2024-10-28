@@ -109,12 +109,13 @@ public class TextWorkController {
             Pagination pagination = new Pagination();
             pagination.setPage(page);
 
-
-            // 검색어가 있는지 확인
-            String searchKeyword = (keyword != null && !keyword.isEmpty()) ? keyword : null;
+            // 총 작품 수 계산 (검색어에 맞는 결과 갯수도 포함해야 함)
+            int totalWorks = workService.findTotalWithSearch(genreType, keyword);
+            pagination.setTotal(totalWorks); // 총 작품 수 설정
+            pagination.progress(); // 페이지네이션 계산 진행
 
             // 검색 조건에 맞는 작품 리스트 가져오기
-            List<WorkDTO> works = workService.findAllWithThumbnailAndSearch(searchKeyword, genreType, pagination);
+            List<WorkDTO> works = workService.findAllWithThumbnailAndSearch(genreType, keyword, pagination);
 
             model.addAttribute("works", works);
             model.addAttribute("pagination", pagination);
@@ -127,6 +128,7 @@ public class TextWorkController {
             return "error";
         }
     }
+
 
 
 
