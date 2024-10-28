@@ -17,7 +17,7 @@ public class FundingDTO {
     private int investorNumber; // 투자자 수
     private int targetPrice; // 목표 금액
     private int convergePrice; // 모인 금액
-    private String fileContent;
+    private String fileContent; // 파일 설명
     private String fundingStatus; // 펀딩 상태
     private String createdDate; // 생성 날짜
     private String updatedDate; // 수정 날짜
@@ -25,7 +25,7 @@ public class FundingDTO {
     private String postContent; // 포스트 내용
     private String postType; // 포스트 타입 (영상, 글, 문의사항 등)
     private Long memberId; // 멤버 이름
-    private String memberName; // 멤버 이름
+    private String memberEmail; // 멤버 이메일
     private String profileImgUrl; // (카카오)프로필 이미지
 
     public FundingVO toVO() {
