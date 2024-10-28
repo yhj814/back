@@ -17,16 +17,13 @@ values ('test2@gmail.com');
 
 select * from tbl_member_profile;
 insert into tbl_member_profile
-(id, profile_gender, profile_age, profile_email, profile_phone, profile_etc, member_id, updated_date)
-values ();
+(profile_gender, profile_age, profile_email, profile_phone, member_id)
+values ('여자', '21', 'test1@gmail.com', '01052538203', 1);
 
 select * from tbl_post;
 insert into tbl_post
     (post_title, post_content, post_type, member_id)
 values ('test2 제목', 'test2 내용', '영상', 2);
-insert into tbl_post
-(post_title, post_content, post_type, member_id)
-values ('회원1 포스트2/제목', '회원1 포스트2/내용', '영상', 1);
 
 select * from tbl_funding;
 insert into tbl_funding
