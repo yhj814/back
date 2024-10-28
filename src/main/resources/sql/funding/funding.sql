@@ -12,8 +12,8 @@ create table tbl_funding (
 
 select * from tbl_member;
 insert into tbl_member
-    (member_email)
-values ('test2@gmail.com');
+    (member_email, member_status, profile_img_url)
+values ('test1@gmail.com', '활동 중', 'url.test1');
 
 select * from tbl_member_profile;
 insert into tbl_member_profile
@@ -35,6 +35,6 @@ SELECT f.genre_type, f.funding_status, p.post_title, p.post_content, p.post_type
 FROM
     tbl_funding f
         JOIN tbl_post p ON f.id = p.id
-        JOIN tbl_member m ON p.member_id = m.id
+        JOIN tbl_member_profile m ON p.member_profile_id = m.id
 WHERE
     m.id = 1;
