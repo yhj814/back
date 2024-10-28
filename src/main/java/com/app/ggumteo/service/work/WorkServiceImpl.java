@@ -7,6 +7,7 @@ import com.app.ggumteo.domain.work.WorkVO;
 import com.app.ggumteo.pagination.Pagination;
 import com.app.ggumteo.repository.post.PostDAO;
 import com.app.ggumteo.repository.work.WorkDAO;
+import com.app.ggumteo.search.Search;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
@@ -57,11 +58,16 @@ public class WorkServiceImpl implements WorkService {
     }
 
     @Override
-    public List<WorkDTO> findAllWithThumbnail(String genreType, Pagination pagination) {
+    public List<WorkDTO> findAllWithThumbnailAndSearch(String genreType, String keyword, Pagination pagination) {
         pagination.progress2();  // 페이지네이션 계산
-        return workDAO.findAllWithThumbnail(genreType, pagination);
-    }
 
+        // 검색 조건 설정
+        Search search = new Search();
+        search.setKeyword(keyword);
+
+        // 검색된 작품 목록 조회
+        return workDAO.findAllWithThumbnailAndSearch(search, genreType, pagination);
+    }
 
 
     @Override
@@ -89,4 +95,16 @@ public class WorkServiceImpl implements WorkService {
     public List<PostFileDTO> findFilesByPostId(Long postId) {
         return workDAO.findFilesByPostId(postId);
     }
+
+    @Override
+    public int findTotalWithSearch(String genreType, String keyword) {
+        // 검색 조건을 Search 객체에 설정
+        Search searchParams = new Search();
+        searchParams.setGenreType(genreType);
+        searchParams.setKeyword(keyword);
+
+        // Search 객체를 사용하여 DAO 메서드 호출
+        return workDAO.findTotalWithSearch(searchParams);
+    }
+
 }

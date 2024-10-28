@@ -49,6 +49,17 @@
     // 페이지네이션 데이터 예시 (서버에서 받아와야 함)
     const paginationData = {
 };
+    function filterByGenre(genre) {
+        const url = `http://localhost:10000/text/list?page=0&genreType=${genre}`;
+        window.location.href = url; // 해당 장르로 페이지 이동
+    }
+
+    function searchWorks() {
+        const keyword = document.getElementById('searchKeyword').value.trim();
+        const url = `/text/list?page=1&keyword=${keyword}`;
+        window.location.href = url; // 검색 결과 페이지로 이동
+    }
+
 
     // 페이지네이션 렌더링
     renderPagination(paginationData);
