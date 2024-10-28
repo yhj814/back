@@ -30,7 +30,7 @@ public class VideoAuditionController {
         if (session.getAttribute("member") == null) {
             session.setAttribute("member", new MemberVO(
                     1L,
-                    "",      // memberName
+
                     "",         // memberEmail
                     "",
                     "",              // profileUrl

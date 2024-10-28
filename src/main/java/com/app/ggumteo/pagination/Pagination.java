@@ -49,7 +49,7 @@ public class Pagination {
     // progress2 메서드 - 페이지네이션 조건을 다르게 적용할 때 사용
     public void progress2() {
         this.page = (this.page == null || this.page < 1) ? 1 : this.page;
-        this.rowCount = 20;  // 한 페이지에 보여줄 게시물 수
+        this.rowCount = 5;  // 한 페이지에 보여줄 게시물 수
         this.pageCount = 5;   // 페이지 버튼 갯수
         this.endRow = page * rowCount;
         this.startRow = endRow - rowCount + 1;
