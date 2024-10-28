@@ -96,13 +96,13 @@
     </select>
 
     <!-- 검색 조건이 포함된 총 작품 수 조회 -->
-    <select id="selectTotalWithSearch">
-        select count(*)
-        from tbl_audition a
-        join tbl_post p on a.id = p.id
-        where a.id is not null
-        <include refid="auditionSearch"/>
-    </select>
+<!--    <select id="selectTotalWithSearch">-->
+<!--        select count(*)-->
+<!--        from tbl_audition a-->
+<!--        join tbl_post p on a.id = p.id-->
+<!--        where a.id is not null-->
+<!--        <include refid="auditionSearch"/>-->
+<!--    </select>-->
 
 
 </mapper>
