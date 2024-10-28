@@ -56,6 +56,9 @@ const paginationData = {
     keyword: '${keyword}'  // 서버에서 받아오는 값
 };
 
+// 페이지네이션 렌더링
+renderPagination(paginationData);
+
 // 장르 필터 적용 함수
 function filterByGenre(genre) {
     const keyword = document.getElementById('searchKeyword').value.trim(); // 기존 검색어 유지
@@ -63,19 +66,12 @@ function filterByGenre(genre) {
     window.location.href = url; // 해당 장르로 페이지 이동
 }
 
-
 // 검색 기능
 function searchWorks() {
     const keyword = document.getElementById('searchKeyword').value.trim();
     if (keyword !== "") {
-        // 장르 필터를 무시하고 검색어만으로 검색
         window.location.href = `/text/list?page=1&keyword=${encodeURIComponent(keyword)}`;
     } else {
-        // 검색어가 없으면 전체 작품 목록으로 이동
         window.location.href = `/text/list?page=1`;
     }
 }
-
-
-// 페이지네이션 렌더링
-renderPagination(paginationData);

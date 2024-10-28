@@ -38,7 +38,7 @@
                                                     type="text"
                                                     class="theme-ggumteo search-input"
                                                     id="searchKeyword"
-                                                    value=""
+                                                    th:value="${keyword}"
                                                     placeholder="원하는 작품을 찾아보세요"
                                             />
                                             <i class="search-btn" onclick="searchWorks()">
@@ -81,45 +81,41 @@
                         <div id="ggumteo-list-box">
                             <div class="list-box-wrapper">
                                 <li th:each="work : ${works}" style="width: 213px">
-                                <a href="" class="box">
-                                    <img th:src="${work.thumbnailFilePath}" class="thumbnail" alt="썸네일 이미지" />
-                                    <div class="title" style="width: 180px" th:text="${work.postTitle}"></div>
-                                    <div class="detail">
-                                        <span th:text="${work.genreType}"></span>
-                                        <img
-                                            src="https://yozm.wishket.com/static/renewal/img/news/icon-clock.png"
-                                            class="content-meta-elem meta-icon"
-                                        />
-                                        <span style="margin-right: 40px" th:text="${work.createdDate.substring(0, 10)}"></span>
-                                    </div>
-                                    <div class="content" th:text="${work.postContent}">글의 간단한 요약</div>
-                                    <!-- 펀딩은 review 없음-->
-                                    <div class="detail review">
-                                        <div class="review-box">
-                                            <div class="star-box">
+                                    <a th:href="@{/text/detail/{id}(id=${work.id})}"  class="box">
+                                        <img th:src="${work.thumbnailFilePath}" class="thumbnail" alt="썸네일 이미지" />
+                                        <div class="title" style="width: 180px" th:text="${work.postTitle}"></div>
+                                        <div class="detail">
+                                            <span th:text="${work.genreType}"></span>
+                                            <img
+                                                    src="https://yozm.wishket.com/static/renewal/img/news/icon-clock.png"
+                                                    class="content-meta-elem meta-icon"
+                                            />
+                                            <span style="margin-right: 40px" th:text="${work.createdDate.substring(0, 10)}"></span>
+                                        </div>
+                                        <div class="content" th:text="${work.postContent}">글의 간단한 요약</div>
+                                        <div class="detail review">
+                                            <div class="review-box">
+                                                <div class="star-box">
+                                                    <img
+                                                            src="https://www.wishket.com/static/renewal/img/project/wishket-project-portfolio/icon-review-star-full.png"
+                                                    />
+                                                </div>
+                                                <span class="review-score">5.0</span>
+                                            </div>
+                                            <div class="portfolio-detail-seperator"></div>
+                                            <div class="partner-profile-box">
                                                 <img
-                                                    src="https://www.wishket.com/static/renewal/img/project/wishket-project-portfolio/icon-review-star-full.png"
+                                                        src="https://cdn.wishket.com/news_profiles/248055_20230718_02e200cef51139ed.jpg"
+                                                        class="partner-profile"
                                                 />
                                             </div>
-                                            <span class="review-score"
-                                                >5.0</span
-                                            >
+                                            <div class="name-box" th:text="${work.profileNickName}"></div>
+                                            <div></div>
                                         </div>
-                                        <div
-                                            class="portfolio-detail-seperator"
-                                        ></div>
-                                        <div class="partner-profile-box">
-                                            <img
-                                                src="https://cdn.wishket.com/news_profiles/248055_20230718_02e200cef51139ed.jpg"
-                                                class="partner-profile"
-                                            />
-                                        </div>
-                                        <div class="name-box" th:text="${work.profileNickName}"></div>
-                                        <div></div>
-                                    </div>
-                                </a>
+                                    </a>
                                 </li>
                             </div>
+
 
                             <!-- 페이지네이션박스 -->
                             <div class="center-text pagination-box">
