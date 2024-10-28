@@ -1,7 +1,12 @@
 package com.app.ggumteo.controller.admin;
 
 import com.app.ggumteo.domain.admin.AdminDTO;
+import com.app.ggumteo.domain.inquiry.InquiryDTO;
+import com.app.ggumteo.pagination.AdminPagination;
 import com.app.ggumteo.service.admin.AdminService;
+import com.app.ggumteo.service.inquiry.InquiryService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -9,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -17,6 +23,7 @@ import java.util.Map;
 @RequestMapping("/admin")
 public class AdminController {
     private final AdminService adminService;
+    private final InquiryService inquiryService;
 
     // 인증번호 입력 페이지
     @GetMapping("/verify")
@@ -43,4 +50,22 @@ public class AdminController {
         // JSON 형태로 반환
         return response;
     }
+
+    @GetMapping("/inquiry")
+    public String getList(@ModelAttribute AdminPagination pagination, Model model) {
+        List<InquiryDTO> inquiryList = inquiryService.getList(pagination);
+        int totalInquiries = inquiryService.getTotal();
+
+        pagination.setTotal(totalInquiries); // 전체 문의 수 설정
+        pagination.progress(); // 페이지네이션 진행
+
+        log.info("Inquiry List: {}", inquiryList);
+        log.info("Pagination: {}", pagination);
+
+        model.addAttribute("inquiries", inquiryList);
+        model.addAttribute("pagination", pagination);
+
+        return "admin/admin";
+    }
+
 }

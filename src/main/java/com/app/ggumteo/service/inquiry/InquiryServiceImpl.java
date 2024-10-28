@@ -32,4 +32,14 @@ public class InquiryServiceImpl implements InquiryService {
         // tbl_inquiry에 삽입
         inquiryDAO.insertInquiryToTblInquiry(postDTO);
     }
+
+    @Override
+    public List<InquiryDTO> getList(AdminPagination pagination) {
+        return inquiryDAO.findAllInquiry(pagination);
+    }
+
+    @Override
+    public int getTotal(){
+        return inquiryDAO.getTotalInquiry();
+    }
 }

@@ -3,6 +3,7 @@ package com.app.ggumteo.repository.inquiry;
 import com.app.ggumteo.domain.inquiry.InquiryDTO;
 import com.app.ggumteo.domain.post.PostDTO;
 import com.app.ggumteo.mapper.inquiry.InquiryMapper;
+import com.app.ggumteo.pagination.AdminPagination;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -26,14 +27,12 @@ public class InquiryDAO {
         inquiryMapper.insertInquiryToTblInquiry(postDTO);
     }
 
-    // 문의 목록 조회 메서드
-    public List<InquiryDTO> getInquiryList(int offset, int limit) {
-        return inquiryMapper.getInquiryList(offset, limit);
+    public List<InquiryDTO> findAllInquiry(AdminPagination pagination) {
+        return inquiryMapper.selectInquiryAll(pagination);
     }
 
-    // 총 문의 수 조회 메서드
-    public int getInquiryCount() {
-        return inquiryMapper.getInquiryCount();
+    public int getTotalInquiry() {
+        return inquiryMapper.countInquiries();
     }
 }
 

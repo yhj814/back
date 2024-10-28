@@ -8,3 +8,6 @@ create table tbl_admin_answer (
 );
 
 select *from tbl_admin_answer;
+
+insert into tbl_admin_answer
+values(1,'답변1',8,now());
