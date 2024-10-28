@@ -137,7 +137,7 @@
                 <div class="profile-box inquiry">
                     <form
                             th:action="@{/inquiry/write}"
-                            th:object="${inquiryDTO}"
+                            th:object="${postDTO}"
                             id="inquiry-form"
                             method="post"
                     enctype="multipart/form-data"
@@ -146,13 +146,14 @@
                         <div class="subtitle inquiry-add-title">
                             문의사항 등록
                         </div>
+                        <input type="hidden" name="memberProfileId" value="1" />
                         <div class="inquiry-add-content-box">
                             <div class="inquiry-name inquiry-detail">
                                 <div class="label-input-partner">
                                     <input
                                             class="required theme-partner wishket-label-input"
                                             data-type="label"
-                                            name="title"
+                                            name="postTitle"
                                             onkeyup="max_input(this, 100)"
                                             type="text"
                                             value=""
@@ -174,7 +175,7 @@
                                                 <textarea
                                                         class="required wishket-textarea theme-partner expand"
                                                         maxlength="5000"
-                                                        name="description"
+                                                        name="postContent"
                                                         style="min-height: 402px;"
                                                         required
                                         ></textarea>

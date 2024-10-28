@@ -29,7 +29,7 @@ public class WorkWriteMapperTests {
         postVO.setPostTitle("테스트제목1");
         postVO.setPostContent("테스트 글 내용1");
         postVO.setPostType("TEXT");  // 글 유형
-        postVO.setMemberId(1L);  // 회원 ID
+        postVO.setMemberProfileId(1L);  // 회원 ID
         postMapper.insert(postVO);  // tbl_post에 데이터 삽입
 
         // Post ID가 제대로 설정되었는지 확인

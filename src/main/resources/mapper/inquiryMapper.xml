@@ -1,11 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.app.ggumteo.mapper.inquiry.InquiryMapper">
-
     <!-- 문의사항 삽입 -->
-    <insert id="insertInquiry" parameterType="InquiryDTO">
-        INSERT INTO tbl_inquiry (inquiry_status, post_id)
-        VALUES (0, #{postId})
+    <insert id="insertInquiry" parameterType="PostDTO">
+        INSERT INTO tbl_post (post_title, post_content, post_type, member_profile_id)
+        VALUES (#{postTitle}, #{postContent}, 'INQUIRY', #{memberProfileId})
+    </insert>
+
+    <!-- 마지막 삽입된 ID 가져오기 -->
+    <select id="getLastInsertId" resultType="Long">
+        SELECT LAST_INSERT_ID()
+    </select>
+
+    <!-- tbl_inquiry에 삽입 -->
+    <insert id="insertInquiryToTblInquiry" parameterType="PostDTO">
+        INSERT INTO tbl_inquiry (id, inquiry_status)
+        VALUES (#{id}, '0')
     </insert>
 
 </mapper>

@@ -27,7 +27,7 @@ public class AuditionMapperTests {
         postVO.setPostTitle("모집TEST");
         postVO.setPostContent("모집내용 TEST입니다. 모집내용 TEST입니다. 모집내용 TEST입니다. 모집내용 TEST입니다. ");
         postVO.setPostType("VIDEO");
-        postVO.setMemberId(1L);
+        postVO.setMemberProfileId(1L);
         postMapper.insert(postVO);
 
         Long postId = postVO.getId();
