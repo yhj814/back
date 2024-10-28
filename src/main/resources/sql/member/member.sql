@@ -1,6 +1,5 @@
 create table tbl_member(
     id bigint unsigned auto_increment primary key,
-    member_name varchar(255) not null,
     member_email varchar(255) not null,
     member_status varchar(255) default 0,
     profile_img_url varchar(255),
@@ -10,7 +9,7 @@ create table tbl_member(
 
 select * from tbl_member;
 
-insert into tbl_member (member_name, member_email, profile_img_url)
-values ('John Doe', 'john.doe@example.com', 'profile.jpg');
+insert into tbl_member (member_email, profile_img_url)
+values ( 'john.doe@example.com', 'profile.jpg');
 
 use gb;
