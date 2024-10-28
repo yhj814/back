@@ -17,7 +17,9 @@ public class WorkDTO {
     private String genreType;// 장르 타입
     private int readCount; // 조회수
     private Long memberId;
-    private String memberName;
+    private String profileName;
+    private String profileNickName;
+    private String profileEmail;
     private String postTitle;
     private String postContent;
     private String postType;

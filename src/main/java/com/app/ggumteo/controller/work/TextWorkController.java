@@ -48,7 +48,7 @@ public class TextWorkController {
         if (session.getAttribute("member") == null) {
             session.setAttribute("member", new MemberVO(
                     2L,
-                    "",      // memberName
+
                     "",         // memberEmail
                     "",
                     "",              // profileUrl

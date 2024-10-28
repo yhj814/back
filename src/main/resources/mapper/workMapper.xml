@@ -12,10 +12,12 @@
     <select id="selectById" resultType="workDTO">
         select
             w.id, w.work_price, w.file_content, w.read_count, w.genre_type,
-            p.post_title, p.post_content, p.member_id, p.created_date, p.updated_date
+            p.post_title, p.post_content, p.member_id, p.created_date, p.updated_date,
+            mp.profile_nickname
         from
             tbl_work w
                 join tbl_post p on w.id = p.id
+                join tbl_member_profile mp on p.member_id = mp.member_id
         where
             w.id = #{id}
     </select>
@@ -65,10 +67,10 @@
         w.id, w.work_price, w.read_count, w.genre_type,
         p.post_title, p.post_content, p.member_id, p.created_date, p.updated_date,
         f.file_name as thumbnail_file_name, f.file_path as thumbnail_file_path,
-        m.member_name, m.profile_img_url
+        mp.profile_nickname as profile_nickname
         from tbl_work w
         join tbl_post p on w.id = p.id
-        join tbl_member m on p.member_id = m.id
+        join tbl_member_profile mp on p.member_id = mp.member_id
         left join (
         select pf.post_id, f.file_name, f.file_path
         from tbl_post_file pf
@@ -80,7 +82,7 @@
             and (
             p.post_title like '%' || #{search.keyword} || '%'
             or p.post_content like '%' || #{search.keyword} || '%'
-            or m.member_name like '%' || #{search.keyword} || '%'
+            or mp.profile_nickname like '%' || #{search.keyword} || '%'
             )
         </if>
         <if test="genreType != null and genreType != ''">
@@ -95,12 +97,13 @@
         select count(*)
         from tbl_work w
         join tbl_post p on w.id = p.id
+        join tbl_member_profile mp on p.member_id = mp.member_id
         where w.id is not null
         <if test="search.keyword != null and search.keyword != ''">
             and (
             p.post_title like '%' || #{search.keyword} || '%'
             or p.post_content like '%' || #{search.keyword} || '%'
-            or m.member_name like '%' || #{search.keyword} || '%'
+            or mp.profile_nickname like '%' || #{search.keyword} || '%'
             )
         </if>
         <if test="genreType != null and genreType != ''">
