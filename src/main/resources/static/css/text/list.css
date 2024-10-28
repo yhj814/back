@@ -356,12 +356,12 @@ li:last-child > .page-link {
 .content-meta-elem {
     display: inline-block;
     line-height: 20px;
-    margin-right: -42px !important;
+    margin-left: 23px;
     margin-top: 2px;
 }
 .box-group {
     display: inline-block;
-    margin-left: 605px;
+    margin-left: 930px;
 }
 .write-box {
     display: inline-flex;
