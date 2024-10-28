@@ -17,7 +17,7 @@
     </select>
 
     <!--  마이페이지 목록 조회할 때 member id 조회가 필요하여 작성함.   -->
-    <select id="selectById">
+    <select id="selectById" resultType="memberVO">
         select id, member_name, member_email, profile_img_url
         from tbl_member
         where id = #{id}

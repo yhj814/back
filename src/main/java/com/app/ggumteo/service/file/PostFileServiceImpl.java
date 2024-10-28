@@ -53,13 +53,13 @@ public class PostFileServiceImpl implements PostFileService {
             throw new RuntimeException("파일 저장 실패", e);
         }
 
-        // tbl_file에 파일 정보 저장 (FileDAO 사용)
+        // tbl_file에 파일 정보 저장
         fileDAO.save(fileVO);  // 파일 정보를 tbl_file 테이블에 저장하고, 자동 생성된 ID를 가져옴
 
         // tbl_post_file에 파일과 게시물의 관계 저장 (PostFileDAO 사용)
         PostFileVO postFileVO = new PostFileVO(fileVO.getId(), postId);  // 파일 ID와 게시물 ID로 관계 생성
         postFileDAO.insertPostFile(postFileVO);  // tbl_post_file 테이블에 파일-게시물 관계 저장
 
-        return fileVO;  // 저장된 파일 정보를 반환
+        return fileVO;
     }
 }

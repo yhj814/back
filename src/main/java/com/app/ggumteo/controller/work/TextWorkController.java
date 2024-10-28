@@ -12,6 +12,7 @@ import com.app.ggumteo.domain.work.WorkDTO;
 import com.app.ggumteo.domain.work.WorkVO;
 import com.app.ggumteo.mapper.post.PostMapper;
 import com.app.ggumteo.mapper.work.WorkMapper;
+import com.app.ggumteo.pagination.Pagination;
 import com.app.ggumteo.service.file.PostFileService;
 import com.app.ggumteo.service.work.WorkService;
 import jakarta.servlet.http.HttpSession;
@@ -97,19 +98,32 @@ public class TextWorkController {
     }
 
     @GetMapping("list")
-    public String list(@RequestParam(required = false) String genreType, Model model) {
+    public String list(
+            @RequestParam(required = false) String genreType,
+            @RequestParam(value = "page", defaultValue = "1") int page,
+            Model model) {
         try {
-            List<WorkDTO> works = workService.findAllWithThumbnail(genreType);
-            works.forEach(work -> {
-                log.info("Work ID: {}, Thumbnail Path: {}", work.getId(), work.getThumbnailFilePath());
-            });
+            // 페이지네이션 객체 생성 및 설정
+            Pagination pagination = new Pagination();
+            pagination.setPage(page); // 현재 페이지 설정
+            pagination.setTotal(workService.findTotalWorks(genreType)); // 해당 장르에 맞는 총 작품 수
+            pagination.progress();  // 페이지네이션 계산
+
+            // 서비스에서 페이지네이션 및 작품 리스트 가져오기
+            List<WorkDTO> works = workService.findAllWithThumbnail(genreType, pagination);
+
+            // 모델에 작품 목록 및 페이지네이션 정보를 추가
             model.addAttribute("works", works);
-            return "/text/list";  // list.html로 이동
+            model.addAttribute("pagination", pagination);
+            model.addAttribute("genreType", genreType);  // 필터 조건도 추가
+
+            return "text/list";  // list.html로 이동
         } catch (Exception e) {
             log.error("작품 목록을 불러오는 중 오류 발생", e);
             return "error";  // 오류 발생 시 오류 페이지로 이동
         }
     }
+
 
 
 

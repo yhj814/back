@@ -23,7 +23,6 @@ public class AuditionServiceImpl implements AuditionService {
     @Override
     public void write(AuditionDTO auditionDTO) {
         PostVO postVO = new PostVO();
-        postVO.setId(auditionDTO.getId());
         postVO.setPostTitle(auditionDTO.getPostTitle());
         postVO.setPostContent(auditionDTO.getPostContent());
         postVO.setPostType(auditionDTO.getPostType());
@@ -32,22 +31,26 @@ public class AuditionServiceImpl implements AuditionService {
         postDAO.save(postVO);
         Long postId = postVO.getId();
 
-        AuditionDTO toVO = new AuditionDTO();
-        toVO.setId(postId);
-        toVO.setAuditionField(auditionDTO.getAuditionField());
-        toVO.setAuditionCareer(auditionDTO.getAuditionCareer());
-        toVO.setExpectedAmount(auditionDTO.getExpectedAmount());
-        toVO.setServiceStartDate(auditionDTO.getServiceStartDate());
-        toVO.setAuditionDeadline(auditionDTO.getAuditionDeadline());
-        toVO.setAuditionPersonnel(auditionDTO.getAuditionPersonnel());
-        toVO.setAuditionLocation(auditionDTO.getAuditionLocation());
-        toVO.setAuditionBackground(auditionDTO.getAuditionBackground());
-        toVO.setAuditionCategory(auditionDTO.getAuditionCategory());
-        toVO.setFileContent(auditionDTO.getFileContent());
-        toVO.setAuditionStatus(auditionDTO.getAuditionStatus());
+        // AuditionDTO의 데이터를 AuditionVO로 복사
+        auditionVO.setId(postId);
+        auditionVO.setAuditionField(auditionDTO.getAuditionField());
+        auditionVO.setAuditionCareer(auditionDTO.getAuditionCareer());
+        auditionVO.setExpectedAmount(auditionDTO.getExpectedAmount());
+        auditionVO.setServiceStartDate(auditionDTO.getServiceStartDate());
+        auditionVO.setAuditionDeadLine(auditionDTO.getAuditionDeadLine());
+        auditionVO.setAuditionPersonnel(auditionDTO.getAuditionPersonnel());
+        auditionVO.setAuditionLocation(auditionDTO.getAuditionLocation());
+        auditionVO.setAuditionBackground(auditionDTO.getAuditionBackground());
+        auditionVO.setAuditionCategory(auditionDTO.getAuditionCategory());
+        auditionVO.setFileContent(auditionDTO.getFileContent());
+        auditionVO.setAuditionStatus(auditionDTO.getAuditionStatus());
 
+        // 완전히 설정된 auditionVO를 저장
         auditionDAO.save(auditionVO);
+
+        auditionDTO.setId(postId);
     }
+
 
 
 }
