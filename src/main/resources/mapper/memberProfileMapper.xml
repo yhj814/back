@@ -8,7 +8,6 @@
                 profile_email, profile_phone, profile_etc, member_id)
                 values (#{profileName}, #{profileNickName}, #{profileGender}. #{profileAge}, #{profileEmail},
                         #{profilePhone}, #{profileEtc}, #{member_id})
-                where member_id = #{memberId}
             </when>
         </choose>
     </insert>
