@@ -2,11 +2,12 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.app.ggumteo.mapper.funding.FundingMapper">
     <select id="selectByMemberId" resultType="fundingDTO">
-        SELECT f.genre_type, f.funding_status, p.post_title, p.post_content, p.post_type, p.member_id, p.created_date, p.updated_date, m.member_email, m.profile_img_url
+        SELECT f.id, f.genre_type, p.post_title, p.post_content, p.post_type, p.member_profile_id, p.created_date, p.updated_date, mp.profile_nickname, mp.member_id, m.profile_img_url
         FROM
             tbl_funding f
                 JOIN tbl_post p ON f.id = p.id
-                JOIN tbl_member m ON p.member_id = m.id
+                JOIN tbl_member_profile mp ON p.member_profile_id = mp.id
+                JOIn tbl_member m ON mp.member_id = m.id
         WHERE
             m.id = #{memberId};
     </select>
