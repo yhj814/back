@@ -62,9 +62,10 @@ public class WorkDAO {
 
 
     // 검색 조건이 포함된 총 작품 수 조회
-    public int findTotalWithSearch(Search searchParams) {
-        return workMapper.selectTotalWithSearch(searchParams);
+    public int findTotalWithSearch(Search searchParams, String genreType) {
+        return workMapper.selectTotalWithSearch(searchParams, genreType);
     }
+
 
     // 다중 파일 조회 (작품 상세보기)
     public List<PostFileDTO> findFilesByPostId(Long postId) {
