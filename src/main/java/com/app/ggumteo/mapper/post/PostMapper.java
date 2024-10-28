@@ -8,7 +8,7 @@ public interface PostMapper {
     public void insert(PostVO postVO);
 
 //    문의하기
-    public void insertInquiry(PostVO post);
+    public void insertInquiry(PostVO postVO);
 //    작성게시글 마지막 ID 가져오기
     public Long getLastInsertId();
 

@@ -31,7 +31,7 @@ public class WorkServiceImpl implements WorkService {
         postVO.setPostTitle(workDTO.getPostTitle());
         postVO.setPostContent(workDTO.getPostContent());
         postVO.setPostType(workDTO.getPostType());
-        postVO.setMemberId(workDTO.getMemberId());
+        postVO.setMemberProfileId(workDTO.getMemberProfileId());
 
         // Post를 저장하고 해당 ID를 가져옴
         postDAO.save(postVO);

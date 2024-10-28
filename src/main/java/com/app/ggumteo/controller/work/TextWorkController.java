@@ -73,7 +73,7 @@ public class TextWorkController {
 
             // PostType을 TEXT로 고정
             workDTO.setPostType(PostType.TEXT.name());
-            workDTO.setMemberId(member.getId());
+            workDTO.setMemberProfileId(member.getId());
 
             // Work와 Post 저장
             workService.write(workDTO);

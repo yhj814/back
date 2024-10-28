@@ -16,11 +16,11 @@ public class PostDTO {
     private String postTitle; // 포스트 제목
     private String postContent; // 포스트 내용
     private String postType; // 포스트 타입 (영상, 글, 문의사항 등)
-    private Long memberId; // 회원 ID
+    private Long memberProfileId; // 회원 ID
     private String createdDate; // 생성 날짜
     private String updatedDate; // 수정 날짜
 
     public PostVO toVO() {
-        return new PostVO(id, postTitle, postContent, postType, memberId, createdDate, updatedDate);
+        return new PostVO(id, postTitle, postContent, postType, memberProfileId, createdDate, updatedDate);
     }
 }
