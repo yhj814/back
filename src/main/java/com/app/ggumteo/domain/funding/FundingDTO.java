@@ -19,14 +19,15 @@ public class FundingDTO {
     private int convergePrice; // 모인 금액
     private String fileContent; // 파일 설명
     private String fundingStatus; // 펀딩 상태
-    private String createdDate; // 생성 날짜
-    private String updatedDate; // 수정 날짜
     private String postTitle; // 포스트 제목
     private String postContent; // 포스트 내용
     private String postType; // 포스트 타입 (영상, 글, 문의사항 등)
-    private Long memberId; // 멤버 이름
-    private String memberEmail; // 멤버 이메일
-    private String profileImgUrl; // (카카오)프로필 이미지
+    private Long memberProfileId; // 회원 프로필 ID
+    private String createdDate; // 생성 날짜
+    private String updatedDate; // 수정 날짜
+    private String profileNickname; // 프로필 닉네임
+    private Long memberId; // 회원 ID
+    private String profileImgUrl; // 카카오톡 프로필 이미지 url
 
     public FundingVO toVO() {
         return new FundingVO(id, genreType, investorNumber, targetPrice, convergePrice, fileContent, fundingStatus, createdDate, updatedDate);
