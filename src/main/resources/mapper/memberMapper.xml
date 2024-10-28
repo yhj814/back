@@ -4,21 +4,21 @@
     <insert id="insert">
         <choose>
             <when test="memberEmail != null">
-                insert into tbl_member(member_name, member_email, profile_img_url)
-                values (#{memberName},#{memberEmail},#{profileImgUrl})
+                insert into tbl_member(member_email, profile_img_url)
+                values (#{memberEmail},#{profileImgUrl})
             </when>
         </choose>
     </insert>
 
     <select id="selectByMemberEmailForKakao">
-        select id, member_name, member_email, profile_img_url, created_date, updated_date
+        select id, member_email, profile_img_url, created_date, updated_date
         from tbl_member
         where member_email = #{email}
     </select>
 
     <!--  마이페이지 목록 조회할 때 member id 조회가 필요하여 작성함.   -->
     <select id="selectById" resultType="memberVO">
-        select id, member_name, member_email, profile_img_url
+        select id, member_email, profile_img_url
         from tbl_member
         where id = #{id}
     </select>

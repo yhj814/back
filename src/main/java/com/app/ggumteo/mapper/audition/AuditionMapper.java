@@ -34,6 +34,6 @@ public interface AuditionMapper {
     List<AuditionDTO> selectAll();
 
     // 검색 조건이 포함된 총 작품 수 조회
-    int selectTotalWithSearch(@Param("auditionSearch") AuditionDTO auditionSearch);
+    int selectTotalWithSearch(@Param("auditionSearch") AuditionDTO auditionDTO);
 
 }
