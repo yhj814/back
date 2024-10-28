@@ -1,9 +1,7 @@
 const myFundingListLayout = document.getElementById("my-funding-list");
 
-const showList = (members) => {
+const showMyFundingList = (members) => {
     let text = ``;
-    console.log("들어옴")
-    console.log(members)
 
     members.forEach((member) => {
         text += `
@@ -163,4 +161,16 @@ function timeForToday(datetime) {
     gap = Math.floor(gap / 12);
 
     return `${gap}년 전`;
+}
+
+
+const showFundingBuyerList = (members) => {
+    let text = ``;
+
+    members.forEach((member) => {
+        text += `
+            `;
+    });
+    myFundingListLayout.innerHTML += text;
+
 }

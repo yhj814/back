@@ -1,6 +1,6 @@
 const myPageService = (() => {
     const getMyFundingList = async (memberId, callback) => {
-        const response = await fetch(`/members/${memberId}`);
+        const response = await fetch(`/members/video/funding/${memberId}`);
         const members = await response.json();
 
         console.log(members)
@@ -9,5 +9,18 @@ const myPageService = (() => {
             callback(members);
         }
     }
-    return {getMyFundingList: getMyFundingList}
+
+    const getFundingBuyerList = async (memberId, callback) => {
+        const response = await fetch(`/members/video/funding-buyer/${memberId}`);
+        const members = await response.json();
+
+        console.log(members)
+
+        if(callback){
+            callback(members);
+        }
+    }
+
+
+    return {getMyFundingList: getMyFundingList, getFundingBuyerList: getFundingBuyerList}
 })()

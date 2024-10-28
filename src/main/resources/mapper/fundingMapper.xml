@@ -11,4 +11,20 @@
         WHERE
             m.id = #{memberId};
     </select>
+
+    <select id="selectBuyerByMemberId">
+        SELECT bfp.id, bfp.funding_send_status
+             , fp.product_name, fp.product_price
+             , bfp_mp .profile_name, bfp_mp .profile_email
+        FROM
+            tbl_buy_funding_product bfp
+                JOIN tbl_funding_product fp ON bfp.funding_product_id = fp.id
+                JOIN tbl_funding f ON fp.funding_id = f.id
+                JOIN tbl_post p ON f.id = p.id
+                JOIN tbl_member_profile mp ON p.member_profile_id = mp.id
+                JOIN tbl_member m ON mp.member_id = m.id
+                JOIN tbl_member_profile bfp_mp ON bfp.member_profile_id = bfp_mp.id
+        WHERE
+            m.id = #{memberId};
+    </select>
 </mapper>

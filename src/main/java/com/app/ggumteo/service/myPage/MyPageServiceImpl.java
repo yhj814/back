@@ -1,5 +1,6 @@
 package com.app.ggumteo.service.myPage;
 
+import com.app.ggumteo.domain.funding.BuyFundingProductDTO;
 import com.app.ggumteo.domain.funding.FundingDTO;
 import com.app.ggumteo.domain.member.MemberDTO;
 import com.app.ggumteo.domain.member.MemberVO;
@@ -30,5 +31,10 @@ public class MyPageServiceImpl implements MyPageService {
     @Override
     public List<FundingDTO> getMyFundingList(Long memberId) {
         return fundingDAO.findByMemberId(memberId);
+    }
+
+    @Override
+    public List<BuyFundingProductDTO> getFundingBuyerList(Long memberId) {
+        return fundingDAO.findBuyerByMemberId(memberId);
     }
 }

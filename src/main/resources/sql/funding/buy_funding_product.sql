@@ -48,11 +48,8 @@ WHERE
     m.id = 1;
 
 SELECT bfp.id, bfp.funding_send_status
-     , fp.product_name, fp.product_price, fp.product_amount
-     , f.id, f.genre_type, f.investor_number, f.target_price, f.converge_price, f.funding_status, f.file_content
-     , p.id, p.post_title, p.post_content, p.post_type, p.member_profile_id, p.created_date, p.updated_date
-     , mp.id, mp.profile_name, mp.profile_nickname, mp.profile_gender, mp.profile_age, mp.profile_email, mp.profile_phone, mp.profile_etc, mp.member_id, mp.created_date, mp.updated_date
-     , m.id, m.member_email, m.member_status, m.profile_img_url, m.created_date, m.updated_date
+     , fp.product_name, fp.product_price
+     , bfp_mp .profile_name, bfp_mp .profile_email
 FROM
     tbl_buy_funding_product bfp
         JOIN tbl_funding_product fp ON bfp.funding_product_id = fp.id
