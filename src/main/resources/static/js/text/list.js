@@ -55,9 +55,11 @@
     }
 
     function searchWorks() {
-        const keyword = document.getElementById('searchKeyword').value.trim();
-        const url = `/text/list?page=1&keyword=${keyword}`;
-        window.location.href = url; // 검색 결과 페이지로 이동
+        const keyword = document.getElementById('searchKeyword').value;
+        if (keyword.trim() !== "") {
+            window.location.href = `http://localhost:10000/text/list?keyword=${keyword}`;
+
+        }
     }
 
 

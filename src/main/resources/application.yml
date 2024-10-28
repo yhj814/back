@@ -18,6 +18,12 @@ spring:
       max-file-size: 40MB
       file-size-threshold: 100MB
 
+coolsms:
+  api:
+    key: NCS25G6A1FACZMHF
+    secret: ANWHAYC8JXWP0M89KARI1ATUJUCPSWV3
+    number: 01090455160
+
 mybatis:
   config-location: classpath:/config/config.xml
   mapper-locations: classpath*:/mapper/*.xml

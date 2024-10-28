@@ -13,6 +13,7 @@ import com.app.ggumteo.domain.work.WorkVO;
 import com.app.ggumteo.mapper.post.PostMapper;
 import com.app.ggumteo.mapper.work.WorkMapper;
 import com.app.ggumteo.pagination.Pagination;
+import com.app.ggumteo.search.Search;
 import com.app.ggumteo.service.file.PostFileService;
 import com.app.ggumteo.service.work.WorkService;
 import jakarta.servlet.http.HttpSession;
@@ -108,13 +109,12 @@ public class TextWorkController {
             Pagination pagination = new Pagination();
             pagination.setPage(page);
 
-            // 검색어 조건에 맞는 총 작품 수 조회
-            int totalWorks = workService.findTotalWithSearch(genreType, keyword);
-            pagination.setTotal(totalWorks);
-            pagination.progress();
+
+            // 검색어가 있는지 확인
+            String searchKeyword = (keyword != null && !keyword.isEmpty()) ? keyword : null;
 
             // 검색 조건에 맞는 작품 리스트 가져오기
-            List<WorkDTO> works = workService.findAllWithThumbnailAndSearch(genreType, keyword, pagination);
+            List<WorkDTO> works = workService.findAllWithThumbnailAndSearch(searchKeyword, genreType, pagination);
 
             model.addAttribute("works", works);
             model.addAttribute("pagination", pagination);
@@ -127,8 +127,6 @@ public class TextWorkController {
             return "error";
         }
     }
-
-
 
 
 

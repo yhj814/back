@@ -55,9 +55,10 @@ public class WorkDAO {
     }
 
     // 작품 목록 조회 (썸네일 포함, 장르 필터, 검색 추가)
-    public List<WorkDTO> findAllWithThumbnailAndSearch(Search search, String genreType, Pagination pagination) {
-        return workMapper.selectAllWithThumbnailAndSearch(search, genreType, pagination);
+    public List<WorkDTO> findAllWithThumbnailAndSearch(String keyword, String genreType, Pagination pagination) {
+        return workMapper.selectAllWithThumbnailAndSearch(keyword, genreType, pagination);
     }
+
 
 
 
