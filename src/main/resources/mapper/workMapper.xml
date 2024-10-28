@@ -93,11 +93,11 @@
     </select>
 
     <!-- 검색 조건이 포함된 총 작품 수 조회 -->
-    <select id="selectTotalWithSearch">
+    <select id="selectTotalWithSearch" parameterType="map">
         select count(*)
         from tbl_work w
         join tbl_post p on w.id = p.id
-        join tbl_member_profile mp on p.member_id = mp.member_id
+        join tbl_member_profile mp on p.member_profile_id = mp.id
         where w.id is not null
         <if test="search.keyword != null and search.keyword != ''">
             and (
@@ -110,6 +110,7 @@
             and w.genre_type = #{genreType}
         </if>
     </select>
+
 
     <!-- 상세보기에서 다중 파일 조회 -->
     <select id="selectFilesByPostId" resultType="postFileDTO">
