@@ -61,13 +61,10 @@ public class WorkServiceImpl implements WorkService {
     public List<WorkDTO> findAllWithThumbnailAndSearch(String genreType, String keyword, Pagination pagination) {
         pagination.progress2();  // 페이지네이션 계산
 
-        // 검색 조건 설정
-        Search search = new Search();
-        search.setKeyword(keyword);
-
         // 검색된 작품 목록 조회
-        return workDAO.findAllWithThumbnailAndSearch(search, genreType, pagination);
+        return workDAO.findAllWithThumbnailAndSearch(keyword, genreType, pagination);
     }
+
 
 
     @Override
