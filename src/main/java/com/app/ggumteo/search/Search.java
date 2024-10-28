@@ -7,7 +7,6 @@ import lombok.ToString;
 @Setter
 @ToString
 public class Search {
-        String keyword;
-        String[] types;
-
+       private String genreType;  // 장르 필터
+       private String keyword;    // 검색어
 }
