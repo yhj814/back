@@ -57,7 +57,8 @@
     function searchWorks() {
         const keyword = document.getElementById('searchKeyword').value;
         if (keyword.trim() !== "") {
-            window.location.href = `/text/list?keyword=${encodeURIComponent(keyword)}`;
+            window.location.href = `http://localhost:10000/text/list?keyword=${keyword}`;
+
         }
     }
 

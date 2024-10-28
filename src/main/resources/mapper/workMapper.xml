@@ -78,11 +78,11 @@
         where pf.id = (select max(id) from tbl_post_file where post_id = pf.post_id)
         ) as f on f.post_id = p.id
         where w.id is not null
-        <if test="search.keyword != null and search.keyword != ''">
+        <if test="keyword != null and keyword != ''">
             and (
-            p.post_title like '%' || #{search.keyword} || '%'
-            or p.post_content like '%' || #{search.keyword} || '%'
-            or mp.profile_nickname like '%' || #{search.keyword} || '%'
+            p.post_title like '%' || #{keyword} || '%'
+            or p.post_content like '%' || #{keyword} || '%'
+            or mp.profile_nickname like '%' || #{keyword} || '%'
             )
         </if>
         <if test="genreType != null and genreType != ''">
@@ -91,6 +91,7 @@
         order by w.id desc
         limit #{pagination.startRow}, #{pagination.rowCount}
     </select>
+
 
     <!-- 검색 조건이 포함된 총 작품 수 조회 -->
     <select id="selectTotalWithSearch" parameterType="map">
