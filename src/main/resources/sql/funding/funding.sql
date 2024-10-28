@@ -13,28 +13,30 @@ create table tbl_funding (
 select * from tbl_member;
 insert into tbl_member
     (member_email, member_status, profile_img_url)
-values ('test1@gmail.com', '활동 중', 'url.test1');
+values ('test2@gmail.com', '활동 중', 'url.test2');
 
 select * from tbl_member_profile;
 insert into tbl_member_profile
-(profile_gender, profile_age, profile_email, profile_phone, member_id)
-values ('여자', '21', 'test1@gmail.com', '01052538203', 1);
+(profile_name, profile_nickname, profile_gender, profile_age, profile_email, profile_phone, member_id)
+values ('정지수', '별쌤', '여'
+       , '21', 'profileEmailTest1@gmail.com', '01052530430', 1);
 
 select * from tbl_post;
 insert into tbl_post
-    (post_title, post_content, post_type, member_id)
-values ('test2 제목', 'test2 내용', '영상', 2);
+    (post_title, post_content, post_type, member_profile_id)
+values ('제목 test3', '내용 test3', '영상', 1);
 
 select * from tbl_funding;
 insert into tbl_funding
-    (id, genre_type, investor_number, target_price, converge_price)
-values (4, '호러', '5', '3000000', '200000');
+    (id, genre_type, investor_number, target_price, converge_price, funding_status)
+values (2, '액션', 5, 50000000, 3000000,1);
 
 
-SELECT f.genre_type, f.funding_status, p.post_title, p.post_content, p.post_type, p.created_date, p.updated_date, m.profile_img_url
+SELECT f.id, f.genre_type, p.post_title, p.post_content, p.post_type, p.member_profile_id, p.created_date, p.updated_date, mp.profile_nickname, mp.member_id, m.profile_img_url
 FROM
     tbl_funding f
         JOIN tbl_post p ON f.id = p.id
-        JOIN tbl_member_profile m ON p.member_profile_id = m.id
+        JOIN tbl_member_profile mp ON p.member_profile_id = mp.id
+        JOIn tbl_member m ON mp.member_id = m.id
 WHERE
     m.id = 1;
