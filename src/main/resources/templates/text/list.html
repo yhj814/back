@@ -75,7 +75,7 @@
                         <div id="ggumteo-list-box">
                             <div class="list-box-wrapper">
 
-                                <li th:each="work : ${works}">
+                                <li th:each="work : ${works}" style="width: 213px">
                                 <a href="" class="box">
                                     <img th:src="${work.thumbnailFilePath}" class="thumbnail" alt="썸네일 이미지" />
                                     <div class="title" th:text="${work.postTitle}"></div>
