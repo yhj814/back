@@ -14,4 +14,7 @@ select * from tbl_member;
 insert into tbl_member (member_email, profile_img_url)
 values ( 'john.doe@example.com', 'profile.jpg');
 
+insert into tbl_member (member_email, profile_img_url)
+values ( 'test2@gamail.com', 'profile.jpg');
+
 use gb;
