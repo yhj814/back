@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>내정보 작성하기</title>
+    <link
+            rel="stylesheet"
+            href="/css/audition/video/application2.css"
+    />
+</head>
+<body>
+<header class="header"></header>
+<main>
+    <div id="wrap">
+        <div class="container">
+            <div id="messages"></div>
+        </div>
+        <a
+                class="advertisement no_message"
+                id="message_advertisement"
+        ></a>
+        <div class="page">
+            <div
+                    class="page-inner"
+                    style="
+                            display: flex;
+                            flex-direction: row;
+                            gap: 33px;
+                            justify-content: center;
+                        "
+            >
+                <div
+                        style="
+                                width: 256px;
+                                height: 286px;
+                                border-radius: 8px;
+                                box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.16);
+                                background: #fff;
+                                padding: 24px;
+                                display: flex;
+                                flex-direction: column;
+                                gap: 16px;
+                            "
+                >
+                    <img
+                            height="48"
+                            src="/static/images/audition/icon_call.svg"
+                            width="48"
+                    />
+                    <p class="p-medium">
+                        꿈터에 회원가입하신<br />여러분을 진심으로
+                        환영합니다!
+                    </p>
+                    <p class="p-medium-2">
+                        꿈터는 여러분의 꿈을 응원합니다.
+                    </p>
+                    <p class="p-medium-2">
+                        자신의 꿈을 향해 거침없이 도전하세요. 꿈터가
+                        도와드립니다.
+                    </p>
+                </div>
+                <div class="content">
+                    <div class="content-header action">
+                        <h3 class="header-text">
+                            내 정보 작성하기
+                            <small class="small-text">아래 사항 </small>
+                        </h3>
+                    </div>
+                    <div class="content-inner">
+                        <h4 style="margin-top: 0px">
+                            내 정보<button
+                                class="btn btn-default"
+                                id="show_base_button"
+                                onclick="show_base_form()"
+                                style="display: none; float: right"
+                        >
+                            수정
+                        </button>
+                        </h4>
+                        <p style="color: #2099bb">
+                            마이페이지의 내 정보
+                        </p>
+                        <div
+                                class="inactive account-setting-basic-block-basic"
+                                id="base-show-form"
+                        >
+                            <div
+                                    class="account-setting-row profile-setting-row"
+                            >
+                                <div class="account-setting-box">
+                                            <span
+                                                    class="account-setting-category"
+                                            ><span>이름</span></span
+                                            >
+                                    <span
+                                            class="account-setting-content"
+                                    ></span>
+                                </div>
+                            </div>
+                            <div
+                                    class="account-setting-row profile-setting-row"
+                            >
+                                <div class="account-setting-box">
+                                            <span
+                                                    class="account-setting-category"
+                                            ><span>성별</span></span
+                                            >
+                                    <span
+                                            class="account-setting-content"
+                                    ><span
+                                            class="account-setting-content account-setting-content-detail-data"
+                                            onclick="show_base_form()"
+                                    >정보를 입력해 주세요.</span
+                                    ></span
+                                    >
+                                </div>
+                            </div>
+                            <div
+                                    class="account-setting-row profile-setting-row"
+                            >
+                                <div class="account-setting-box">
+                                            <span
+                                                    class="account-setting-category"
+                                            ><span>생년월일</span></span
+                                            >
+                                    <span
+                                            class="account-setting-content account-setting-content-detail-data"
+                                            onclick="show_base_form()"
+                                    >정보를 입력해 주세요.</span
+                                    >
+                                </div>
+                            </div>
+                        </div>
+                        <form
+                                action=""
+                                class="form-horizontal has-validation-callback"
+                                id="base-edit-form"
+                                style="
+                                        border-bottom: 1px dashed #dedede;
+                                        padding-bottom: 25px;
+                                        margin-bottom: 25px;
+                                        height: 100%;
+                                    "
+                        >
+                            <div class="form-group">
+                                <label
+                                        class="control-label required"
+                                        id="full_name_label"
+                                ><span></span> 이름</label
+                                >
+                                <div class="control-wrapper">
+                                    <input
+                                            class="form-control"
+                                            id="full_name"
+                                            placeholder="이름을 입력해 주세요."
+                                            name="full_name"
+                                            type="text"
+                                            value=""
+                                    />
+                                    <div class="error-message">
+                                        <i
+                                                class="fa fa-exclamation-circle"
+                                        ></i>
+                                        이 항목을 채워주십시오.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label
+                                        class="control-label required"
+                                        id="full_name_label"
+                                ><span></span> 닉네임</label
+                                >
+                                <div class="control-wrapper">
+                                    <input
+                                            class="form-control"
+                                            id="full_nickname"
+                                            placeholder="사용할 닉네임을 입력해주세요."
+                                            name="full_nickname"
+                                            type="text"
+                                            value=""
+                                    />
+                                    <div class="error-message">
+                                        <i
+                                                class="fa fa-exclamation-circle"
+                                        ></i>
+                                        이 항목을 채워주십시오.
+                                    </div>
+                                </div>
+                            </div>
+                            <div
+                                    class="form-group"
+                                    style="margin-top: -5px"
+                            >
+                                <label
+                                        class="control-label"
+                                        for="gender"
+                                >성별</label
+                                >
+                                <div class="control-wrapper">
+                                    <div class="error-message">
+                                        <i
+                                                class="fa fa-exclamation-circle"
+                                        ></i>
+                                        이 항목을 채워주십시오.
+                                    </div>
+                                </div>
+                                <div class="control-wrapper">
+                                    <ul
+                                            class="list-unstyled"
+                                            style="margin-bottom: 0"
+                                    >
+                                        <li>
+                                            <label
+                                                    class="radio-inline"
+                                                    for="gender_1"
+                                            ><input
+                                                    data-exception="yes"
+                                                    id="gender_1"
+                                                    name="gender"
+                                                    type="radio"
+                                                    value="m"
+                                            />남성</label
+                                            >
+                                        </li>
+                                        <li>
+                                            <label
+                                                    class="radio-inline"
+                                                    for="gender_2"
+                                            ><input
+                                                    data-exception="yes"
+                                                    id="gender_2"
+                                                    name="gender"
+                                                    type="radio"
+                                                    value="f"
+                                            />여성</label
+                                            >
+                                        </li>
+                                    </ul>
+                                    <div class="error-message">
+                                        <i
+                                                class="fa fa-exclamation-circle"
+                                        ></i>
+                                        이 항목을 채워주십시오.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label
+                                        class="control-label"
+                                        for="date_of_birth"
+                                        id="date_of_birth_label"
+                                >나이</label
+                                >
+                                <div class="control-wrapper">
+                                    <input
+                                            class="form-control"
+                                            id="member-age"
+                                            name="member-age"
+                                            placeholder="만 나이를 입력해주세요."
+                                            type="text"
+                                            style="width: 55%"
+                                            value=""
+                                    />
+
+                                    <div class="error-message">
+                                        <i
+                                                class="fa fa-exclamation-circle"
+                                        ></i>
+                                        이 항목을 채워주십시오.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label"
+                                >이메일</label
+                                >
+
+                                <div class="control-wrapper">
+                                    <input
+                                            class="form-control"
+                                            data-exception="yes"
+                                            placeholder="이메일을 입력하세요."
+                                            type="text"
+                                            value=""
+                                    />
+
+                                    <div class="error-message">
+                                        <i
+                                                class="fa fa-exclamation-circle"
+                                        ></i>
+                                        올바른 이메일 주소를
+                                        입력해주세요.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label"
+                                >연락처</label
+                                >
+                                <div class="control-wrapper">
+                                    <input
+                                            class="form-control"
+                                            data-exception="yes"
+                                            placeholder="전화번호를 입력하세요."
+                                            type="text"
+                                            value=""
+                                    />
+                                    <div class="error-message">
+                                        <i
+                                                class="fa fa-exclamation-circle"
+                                        ></i>
+                                        올바른 전화번호를 입력해주세요.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label"
+                                >추가 작성사항</label
+                                >
+                                <div class="control-wrapper">
+                                            <textarea
+                                                    class="form-control form-textarea"
+                                                    placeholder="간단한 자기소개를 입력해주세요."
+                                                    value=""
+                                                    style="height: 340px"
+                                            ></textarea>
+                                    <div class="error-message">
+                                        <i
+                                                class="fa fa-exclamation-circle"
+                                        ></i>
+                                        간단한 자기소개를 입력해주세요.
+                                    </div>
+                                </div>
+                            </div>
+                            <div
+                                    class="form-group"
+                                    style="margin-top: 360px"
+                            >
+                                <label class="control-label"
+                                >첨부파일</label
+                                >
+                                <div class="control-wrapper">
+                                    <input
+                                            accept=".pdf, .docx, .doc, .hwp"
+                                            class="temp-upload-resume"
+                                            hidden=""
+                                            type="file"
+                                    />
+
+                                    <div class="selected-file-viewer">
+                                        <input
+                                                class="remove-request"
+                                                hidden=""
+                                                name="remove_request"
+                                                type="checkbox"
+                                        />
+                                        <p
+                                                class="placeholder-attachment"
+                                        >
+                                            이력서를 제출해주세요.
+                                        </p>
+                                        <div class="tooltip-group">
+                                            <img
+                                                    class="viewer-file-icon"
+                                                    src="/static/images/audition/attachment_file_icon@2x.png"
+                                                    style="width: 15px"
+                                            /><a
+                                                download=""
+                                                id="resume_download"
+                                        ><p
+                                                class="file-name-viewer text300 body-2-medium"
+                                                id="selected_file_name_viewer"
+                                        ></p></a
+                                        ><img
+                                                class="btn-delete-resume"
+                                                id="btn_delete_resume"
+                                                src="/static/images/audition/chip_btn_delete_normal@2x.png"
+                                                style="width: 15px"
+                                        />
+                                        </div>
+                                    </div>
+                                    <button
+                                            class="btn btn-file-select"
+                                            id="file_select_btn"
+                                            type="button"
+                                    >
+                                        <img
+                                                src="/static/images/audition/btn_icon_add@2x.png"
+                                                style="width: 15px"
+                                        />이력서 선택
+                                    </button>
+                                    <div class="error-message">
+                                        <i
+                                                class="fa fa-exclamation-circle"
+                                        ></i>
+                                        첨부파일을 선택해주세요.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button
+                                    class="form-btn btn-wishket btn-11-24 btn-block"
+                                    id="consulting_apply_button"
+                                    type="button"
+                            >
+                                모집 신청 하기
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<footer></footer>
+</body>
+<script src="/js/audition/application2.js"></script>
+<script src="/js/audition/application-date.js"></script>
+</html>

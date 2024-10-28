@@ -14,11 +14,14 @@ import java.io.Serializable;
 public class MemberProfileVO implements Serializable {
     @EqualsAndHashCode.Include
     private Long Id;
+    private String profileName;
+    private String profileNickName;
     private String profileGender;
     private String profileAge;
     private String profileEmail;
     private String profilePhone;
     private String profileEtc;
     private String memberId;
+    private String createdDate;
     private String updatedDate;
 }
