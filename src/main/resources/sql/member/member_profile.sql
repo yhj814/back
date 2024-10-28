@@ -1,5 +1,7 @@
 create table tbl_member_profile (
     id bigint unsigned auto_increment primary key,
+    profile_name varchar(255) not null,
+    profile_nickname varchar(255) not null,
     profile_gender varchar(255) default 0,
     profile_age varchar(255) default 0,
     profile_email varchar(255) not null,
@@ -12,3 +14,9 @@ create table tbl_member_profile (
 );
 
 select *from tbl_member_profile;
+
+alter table tbl_member_profile
+    add profile_name varchar(255) not null;
+
+alter table tbl_member_profile
+    add profile_nickname varchar(255) not null;
