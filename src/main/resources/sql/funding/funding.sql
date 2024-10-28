@@ -17,8 +17,8 @@ values ('test2@gmail.com');
 
 select * from tbl_member_profile;
 insert into tbl_member_profile
-(id, profile_gender, profile_age, profile_email, profile_phone, profile_etc, member_id, updated_date)
-values ();
+(profile_gender, profile_age, profile_email, profile_phone, profile_etc, member_id, updated_date)
+values ('0', '');
 
 select * from tbl_post;
 insert into tbl_post
