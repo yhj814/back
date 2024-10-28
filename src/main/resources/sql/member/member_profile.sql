@@ -20,3 +20,4 @@ alter table tbl_member_profile
 
 alter table tbl_member_profile
     add profile_nickname varchar(255) not null;
+

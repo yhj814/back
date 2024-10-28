@@ -28,7 +28,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
         control.addEventListener("blur", () => {
             control.classList.remove("active");
-            if (hasBeenFocused && control.value.trim() === "") {
+            if (
+                hasBeenFocused &&
+                control.value.trim() === "" &&
+                !control.matches("textarea")
+            ) {
                 control.classList.add("error");
                 const errorMessage =
                     control.parentElement.querySelector(".error-message");
@@ -52,7 +56,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 ".ui-textarea-wishket"
             );
             if (uiTextareaWishket) {
-                if (!event.target.value.trim()) {
+                if (
+                    !event.target.value.trim() &&
+                    !event.target.matches("textarea")
+                ) {
                     uiTextareaWishket.classList.add("error");
                     uiTextareaWishket.querySelector(
                         ".error-text"
@@ -70,7 +77,11 @@ document.addEventListener("DOMContentLoaded", function () {
     function validateAndSubmitForm() {
         let isValid = true;
         document.querySelectorAll(".form-control").forEach(function (input) {
-            if (!input.value.trim()) {
+            // 첨부파일(.temp-upload-resume)과 textarea는 유효성 검사 제외
+            if (
+                !input.value.trim() &&
+                !input.matches(".temp-upload-resume, textarea")
+            ) {
                 input.classList.add("error");
                 const errorMessage =
                     input.parentElement.querySelector(".error-message");
