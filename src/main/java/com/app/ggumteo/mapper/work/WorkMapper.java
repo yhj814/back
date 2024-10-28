@@ -4,6 +4,7 @@ import com.app.ggumteo.domain.work.WorkDTO;
 import com.app.ggumteo.domain.work.WorkVO;
 import com.app.ggumteo.domain.file.PostFileDTO;
 import com.app.ggumteo.pagination.Pagination;
+import com.app.ggumteo.search.Search;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -33,11 +34,15 @@ public interface WorkMapper {
     // 게시물 삭제
     void deletePostById(Long id);
 
-    // 작품 목록 조회 및 썸네일 불러오기 (장르 필터 추가)
-    List<WorkDTO> selectAllWithThumbnail(@Param("genreType") String genreType, @Param("pagination") Pagination pagination);
-
+    // 작품 목록 조회 및 썸네일 불러오기 (검색 및 필터링 추가)
+    List<WorkDTO> selectAllWithThumbnailAndSearch(
+            @Param("search") Search search,
+            @Param("genreType") String genreType,
+            @Param("pagination") Pagination pagination
+    );
     // 검색 조건이 포함된 총 작품 수 조회
-    int selectTotalWithSearch(@Param("workSearch") WorkDTO workSearch);
+    int selectTotalWithSearch(@Param("search") Search search, @Param("genreType") String genreType);
+
 
     // 상세보기에서 다중 파일 조회
     List<PostFileDTO> selectFilesByPostId(Long postId);

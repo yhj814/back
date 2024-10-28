@@ -16,8 +16,10 @@ public class WorkDTO {
     private String workPrice; // 작품 가격
     private String genreType;// 장르 타입
     private int readCount; // 조회수
-    private Long memberId;
-    private String memberName;
+    private Long memberProfileId;
+    private String profileName;
+    private String profileNickName;
+    private String profileEmail;
     private String postTitle;
     private String postContent;
     private String postType;
@@ -26,12 +28,13 @@ public class WorkDTO {
     private String updatedDate; // 수정 날짜
     private String thumbnailFilePath; // 썸네일 파일 경로
 
+
     public WorkVO toVO() {
         return new WorkVO(id, workPrice, genreType, fileContent, readCount, createdDate, updatedDate);
     }
 
     public PostVO toPostVO() {
-        return new PostVO(id, postTitle, postContent, postType, memberId, createdDate, updatedDate);
+        return new PostVO(id, postTitle, postContent, postType, memberProfileId, createdDate, updatedDate);
     }
 
 

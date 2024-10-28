@@ -36,6 +36,10 @@ html {
     font-family: "NotoSansKR", Sans-serif;
     line-height: 1rem;
 }
+li {
+    all: unset;
+}
+
 
 body {
     height: 100%;

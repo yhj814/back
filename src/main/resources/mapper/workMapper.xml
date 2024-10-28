@@ -7,25 +7,17 @@
         insert into tbl_work (id, work_price, file_content, read_count, genre_type)
         values (#{id}, #{workPrice}, #{fileContent}, #{readCount}, #{genreType})
     </insert>
-<!-- 1=1이 항상 참인 조건식이래요;-->
-    <select id="selectTotalWithGenreType" resultType="int">
-        select count(*)
-        from tbl_work
-        where 1=1
-        <if test="genreType != null and genreType != ''">
-            and genre_type = #{genreType}
-        </if>
-    </select>
-
 
     <!-- 작품 id로 작품 조회 -->
     <select id="selectById" resultType="workDTO">
         select
             w.id, w.work_price, w.file_content, w.read_count, w.genre_type,
-            p.post_title, p.post_content, p.member_id, p.created_date, p.updated_date
+            p.post_title, p.post_content, p.member_profile_id, p.created_date, p.updated_date,
+            mp.profile_nickname
         from
             tbl_work w
                 join tbl_post p on w.id = p.id
+                join tbl_member_profile mp on p.member_profile_id = mp.id
         where
             w.id = #{id}
     </select>
@@ -37,28 +29,25 @@
         where id = #{id}
     </update>
 
-    <!-- 작품 정보 수정 (tbl_work 및 tbl_post 업데이트) -->
+    <!-- 작품 정보 수정 -->
     <update id="updateWork" parameterType="workDTO">
-        <!-- tbl_work 업데이트 -->
         update tbl_work
         set
-        work_price = #{workPrice},
-        file_content = #{fileContent},
-        genre_type = #{genreType},
-        updated_date = current_timestamp
+            work_price = #{workPrice},
+            file_content = #{fileContent},
+            genre_type = #{genreType},
+            updated_date = current_timestamp
         where
-        id = #{id};
+            id = #{id};
 
-        <!-- tbl_post 업데이트 -->
         update tbl_post
         set
-        post_title = #{postTitle},
-        post_content = #{postContent},
-        updated_date = current_timestamp
+            post_title = #{postTitle},
+            post_content = #{postContent},
+            updated_date = current_timestamp
         where
-        id = #{id};
+            id = #{id};
     </update>
-
 
     <!-- 작품 삭제 -->
     <delete id="deleteById" parameterType="Long">
@@ -72,36 +61,30 @@
         where id = #{id}
     </delete>
 
-    <!-- 작품 목록 조회 및 썸네일 불러오기 + 장르 필터 추가 (페이지네이션 적용) -->
-    <select id="selectAllWithThumbnail" resultType="workDTO">
+    <!-- 작품 목록 조회 및 검색 -->
+    <select id="selectAllWithThumbnailAndSearch" resultType="workDTO">
         select
-        w.id,
-        w.work_price,
-        w.read_count,
-        w.genre_type,
-        p.post_title,
-        p.post_content,
-        p.member_id,
-        p.created_date,
-        p.updated_date,
-        f.file_name as thumbnail_file_name,
-        f.file_path as thumbnail_file_path,
-        m.member_name,
-        m.profile_img_url
-        from
-        tbl_work w
+        w.id, w.work_price, w.read_count, w.genre_type,
+        p.post_title, p.post_content, p.member_profile_id, p.created_date, p.updated_date,
+        f.file_name as thumbnail_file_name, f.file_path as thumbnail_file_path,
+        mp.profile_nickname as profile_nickname
+        from tbl_work w
         join tbl_post p on w.id = p.id
-        join tbl_member m on p.member_id = m.id
+        join tbl_member_profile mp on p.member_profile_id = mp.id
         left join (
         select pf.post_id, f.file_name, f.file_path
         from tbl_post_file pf
         join tbl_file f on pf.id = f.id
-        where pf.id = (
-        select max(id) from tbl_post_file where post_id = pf.post_id
-        )
+        where pf.id = (select max(id) from tbl_post_file where post_id = pf.post_id)
         ) as f on f.post_id = p.id
-        where
-        w.id is not null
+        where w.id is not null
+        <if test="search.keyword != null and search.keyword != ''">
+            and (
+            p.post_title like '%' || #{search.keyword} || '%'
+            or p.post_content like '%' || #{search.keyword} || '%'
+            or mp.profile_nickname like '%' || #{search.keyword} || '%'
+            )
+        </if>
         <if test="genreType != null and genreType != ''">
             and w.genre_type = #{genreType}
         </if>
@@ -109,15 +92,23 @@
         limit #{pagination.startRow}, #{pagination.rowCount}
     </select>
 
-
-
     <!-- 검색 조건이 포함된 총 작품 수 조회 -->
-    <select id="selectTotalWithSearch">
+    <select id="selectTotalWithSearch" parameterType="map">
         select count(*)
         from tbl_work w
         join tbl_post p on w.id = p.id
+        join tbl_member_profile mp on p.member_profile_id = mp.id
         where w.id is not null
-        <include refid="workSearch"/>
+        <if test="search.keyword != null and search.keyword != ''">
+            and (
+            p.post_title like '%' || #{search.keyword} || '%'
+            or p.post_content like '%' || #{search.keyword} || '%'
+            or mp.profile_nickname like '%' || #{search.keyword} || '%'
+            )
+        </if>
+        <if test="genreType != null and genreType != ''">
+            and w.genre_type = #{genreType}
+        </if>
     </select>
 
     <!-- 상세보기에서 다중 파일 조회 -->
@@ -131,15 +122,5 @@
             pf.post_id = #{postId}
         order by pf.id
     </select>
-
-    <!-- 검색 및 정렬 옵션 -->
-    <sql id="workSearch">
-        <if test="workSearch.keyword != null and workSearch.keyword != ''">
-            and (
-            p.post_title like '%' || #{workSearch.keyword} || '%'
-            or p.post_content like '%' || #{workSearch.keyword} || '%'
-            )
-        </if>
-    </sql>
 
 </mapper>

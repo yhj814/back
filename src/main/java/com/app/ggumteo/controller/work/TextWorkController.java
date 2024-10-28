@@ -48,7 +48,7 @@ public class TextWorkController {
         if (session.getAttribute("member") == null) {
             session.setAttribute("member", new MemberVO(
                     2L,
-                    "",      // memberName
+
                     "",         // memberEmail
                     "",
                     "",              // profileUrl
@@ -73,7 +73,7 @@ public class TextWorkController {
 
             // PostType을 TEXT로 고정
             workDTO.setPostType(PostType.TEXT.name());
-            workDTO.setMemberId(member.getId());
+            workDTO.setMemberProfileId(member.getId());
 
             // Work와 Post 저장
             workService.write(workDTO);
@@ -101,26 +101,30 @@ public class TextWorkController {
     public String list(
             @RequestParam(required = false) String genreType,
             @RequestParam(value = "page", defaultValue = "1") int page,
+            @RequestParam(value = "keyword", required = false) String keyword,
             Model model) {
         try {
             // 페이지네이션 객체 생성 및 설정
             Pagination pagination = new Pagination();
-            pagination.setPage(page); // 현재 페이지 설정
-            pagination.setTotal(workService.findTotalWorks(genreType)); // 해당 장르에 맞는 총 작품 수
-            pagination.progress();  // 페이지네이션 계산
+            pagination.setPage(page);
 
-            // 서비스에서 페이지네이션 및 작품 리스트 가져오기
-            List<WorkDTO> works = workService.findAllWithThumbnail(genreType, pagination);
+            // 검색어 조건에 맞는 총 작품 수 조회
+            int totalWorks = workService.findTotalWithSearch(genreType, keyword);
+            pagination.setTotal(totalWorks);
+            pagination.progress();
 
-            // 모델에 작품 목록 및 페이지네이션 정보를 추가
+            // 검색 조건에 맞는 작품 리스트 가져오기
+            List<WorkDTO> works = workService.findAllWithThumbnailAndSearch(genreType, keyword, pagination);
+
             model.addAttribute("works", works);
             model.addAttribute("pagination", pagination);
-            model.addAttribute("genreType", genreType);  // 필터 조건도 추가
+            model.addAttribute("genreType", genreType);
+            model.addAttribute("keyword", keyword);  // 검색어 유지
 
-            return "text/list";  // list.html로 이동
+            return "text/list";
         } catch (Exception e) {
             log.error("작품 목록을 불러오는 중 오류 발생", e);
-            return "error";  // 오류 발생 시 오류 페이지로 이동
+            return "error";
         }
     }
 

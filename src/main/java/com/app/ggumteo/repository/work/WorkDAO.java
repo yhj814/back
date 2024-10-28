@@ -5,6 +5,7 @@ import com.app.ggumteo.domain.work.WorkVO;
 import com.app.ggumteo.domain.file.PostFileDTO;
 import com.app.ggumteo.mapper.work.WorkMapper;
 import com.app.ggumteo.pagination.Pagination;
+import com.app.ggumteo.search.Search;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -53,19 +54,23 @@ public class WorkDAO {
         workMapper.deletePostById(id);
     }
 
-    // 작품 목록 조회 (썸네일 포함, 장르 필터 추가)
-    public List<WorkDTO> findAllWithThumbnail(String genreType, Pagination pagination) {
-        return workMapper.selectAllWithThumbnail(genreType, pagination);
+    // 작품 목록 조회 (썸네일 포함, 장르 필터, 검색 추가)
+    public List<WorkDTO> findAllWithThumbnailAndSearch(Search search, String genreType, Pagination pagination) {
+        return workMapper.selectAllWithThumbnailAndSearch(search, genreType, pagination);
     }
+
 
 
     // 검색 조건이 포함된 총 작품 수 조회
-    public int findTotalWithSearch(WorkDTO workSearch) {
-        return workMapper.selectTotalWithSearch(workSearch);
+    public int findTotalWithSearch(Search searchParams, String genreType) {
+        return workMapper.selectTotalWithSearch(searchParams, genreType);
     }
+
 
     // 다중 파일 조회 (작품 상세보기)
     public List<PostFileDTO> findFilesByPostId(Long postId) {
         return workMapper.selectFilesByPostId(postId);
     }
+
+
 }
