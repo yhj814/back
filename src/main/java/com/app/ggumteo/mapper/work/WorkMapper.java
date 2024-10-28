@@ -36,7 +36,7 @@ public interface WorkMapper {
 
     // 작품 목록 조회 및 썸네일 불러오기 (검색 및 필터링 추가)
     List<WorkDTO> selectAllWithThumbnailAndSearch(
-            @Param("search") Search search,
+            @Param("keyword") String keyword,
             @Param("genreType") String genreType,
             @Param("pagination") Pagination pagination
     );
