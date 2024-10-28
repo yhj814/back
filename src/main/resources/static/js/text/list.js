@@ -57,10 +57,11 @@
     function searchWorks() {
         const keyword = document.getElementById('searchKeyword').value;
         if (keyword.trim() !== "") {
-            window.location.href = `http://localhost:10000/text/list?keyword=${keyword}`;
-
+            const url = `/text/list?page=1&keyword=${encodeURIComponent(keyword)}`;
+            window.location.href = url;  // 검색어를 URL에 포함시켜 페이지 이동
         }
     }
+
 
 
     // 페이지네이션 렌더링
