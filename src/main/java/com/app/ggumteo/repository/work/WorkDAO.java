@@ -4,10 +4,13 @@ import com.app.ggumteo.domain.work.WorkDTO;
 import com.app.ggumteo.domain.work.WorkVO;
 import com.app.ggumteo.domain.file.PostFileDTO;
 import com.app.ggumteo.mapper.work.WorkMapper;
+import com.app.ggumteo.pagination.Pagination;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
+import java.util.Map;
 
 @Repository
 @RequiredArgsConstructor
@@ -21,8 +24,8 @@ public class WorkDAO {
     }
 
     // 총 작품 수 조회
-    public int findTotalWorks() {
-        return workMapper.selectTotal();
+    public int findTotalWorks(String genreType) {
+        return workMapper.selectTotalWithGenreType(genreType);  // Mapper에서 SQL 호출
     }
 
     // 작품 ID로 조회
@@ -51,9 +54,10 @@ public class WorkDAO {
     }
 
     // 작품 목록 조회 (썸네일 포함, 장르 필터 추가)
-    public List<WorkDTO> findAllWithThumbnail(String genreType) {
-        return workMapper.selectAllWithThumbnail(genreType);
+    public List<WorkDTO> findAllWithThumbnail(String genreType, Pagination pagination) {
+        return workMapper.selectAllWithThumbnail(genreType, pagination);
     }
+
 
     // 검색 조건이 포함된 총 작품 수 조회
     public int findTotalWithSearch(WorkDTO workSearch) {

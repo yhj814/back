@@ -3,6 +3,8 @@ const myPageService = (() => {
         const response = await fetch(`/members/${memberId}`);
         const members = await response.json();
 
+        console.log(members)
+
         if(callback){
             callback(members);
         }

@@ -3,6 +3,7 @@ package com.app.ggumteo.mapper.work;
 import com.app.ggumteo.domain.work.WorkDTO;
 import com.app.ggumteo.domain.work.WorkVO;
 import com.app.ggumteo.domain.file.PostFileDTO;
+import com.app.ggumteo.pagination.Pagination;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -15,7 +16,7 @@ public interface WorkMapper {
     void insert(WorkVO workVO);
 
     // 총 작품 수 조회
-    int selectTotal();
+    int selectTotalWithGenreType(@Param("genreType") String genreType);
 
     // 작품 ID로 작품 조회
     WorkDTO selectById(Long id);
@@ -33,7 +34,7 @@ public interface WorkMapper {
     void deletePostById(Long id);
 
     // 작품 목록 조회 및 썸네일 불러오기 (장르 필터 추가)
-    List<WorkDTO> selectAllWithThumbnail(@Param("genreType") String genreType);
+    List<WorkDTO> selectAllWithThumbnail(@Param("genreType") String genreType, @Param("pagination") Pagination pagination);
 
     // 검색 조건이 포함된 총 작품 수 조회
     int selectTotalWithSearch(@Param("workSearch") WorkDTO workSearch);
