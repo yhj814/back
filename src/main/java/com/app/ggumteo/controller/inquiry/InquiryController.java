@@ -2,6 +2,8 @@ package com.app.ggumteo.controller.inquiry;
 
 import com.app.ggumteo.domain.inquiry.InquiryDTO;
 import com.app.ggumteo.domain.post.PostDTO;
+import com.app.ggumteo.pagination.AdminPagination;
+import com.app.ggumteo.pagination.Pagination;
 import com.app.ggumteo.service.inquiry.InquiryService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -54,6 +56,12 @@ public class InquiryController {
         model.addAttribute("message", "문의사항이 성공적으로 작성되었습니다.");
         // 추후 변경
         return new RedirectView("/admin/admin");
+    }
+
+    // 관리자 페이지에서 문의사항 목록 조회
+    @GetMapping("/admin")
+    public String showAdminPage() {
+        return "admin/admin";
     }
 }
 
