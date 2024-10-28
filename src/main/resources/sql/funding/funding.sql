@@ -12,8 +12,13 @@ create table tbl_funding (
 
 select * from tbl_member;
 insert into tbl_member
-    (member_name, member_email)
-values ('정지수2', 'test2@gmail.com');
+    (member_email)
+values ('test2@gmail.com');
+
+select * from tbl_member_profile;
+insert into tbl_member_profile
+(id, profile_gender, profile_age, profile_email, profile_phone, profile_etc, member_id, updated_date)
+values ();
 
 select * from tbl_post;
 insert into tbl_post
@@ -29,7 +34,7 @@ insert into tbl_funding
 values (4, '호러', '5', '3000000', '200000');
 
 
-SELECT f.genre_type, f.funding_status, p.post_title, p.post_content, p.post_type, p.created_date, p.updated_date, m.member_name, m.profile_img_url
+SELECT f.genre_type, f.funding_status, p.post_title, p.post_content, p.post_type, p.created_date, p.updated_date, m.profile_img_url
 FROM
     tbl_funding f
         JOIN tbl_post p ON f.id = p.id

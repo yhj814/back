@@ -69,7 +69,7 @@ const showList = (members) => {
                             src="/images/member/member-image.jpg"
                         />
                         <p class="author-name">
-                            ${member.memberName}
+                            멤버 닉네임
                         </p>
                     </div>
                     <div class="flex-box">

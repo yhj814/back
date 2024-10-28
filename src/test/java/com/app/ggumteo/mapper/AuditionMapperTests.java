@@ -42,7 +42,7 @@ public class AuditionMapperTests {
         auditionDTO.setAuditionCareer("경력무관");
         auditionDTO.setExpectedAmount("100000/일");
         auditionDTO.setServiceStartDate("2024.11.04");
-        auditionDTO.setAuditionDeadline("2024.11.24");
+        auditionDTO.setAuditionDeadLine("2024.11.24");
         auditionDTO.setAuditionPersonnel("4");
         auditionDTO.setAuditionLocation("서울특별시 강남구 역삼역 3번출구");
         auditionDTO.setAuditionBackground("TEST입니다.");
