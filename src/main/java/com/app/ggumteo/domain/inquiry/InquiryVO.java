@@ -6,14 +6,16 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Getter
-@Setter
 @ToString
+@Setter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @NoArgsConstructor
 @AllArgsConstructor
 public class InquiryVO {
     @EqualsAndHashCode.Include
     private Long id; // 문의 ID
-    private String inquiryStatus; // 문의 상태 : 0 미답변 1 답변완료
-    private Long postId; // 게시물 ID
+    private Long memberProfileId; // 회원 프로필 ID
+    private String inquiryStatus; // 문의 상태
+    private String title; // 문의 제목
+    private String description; // 문의 내용
 }

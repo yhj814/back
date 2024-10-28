@@ -23,20 +23,17 @@ public class InquiryController {
     @GetMapping("/write")
     public String showInquiryForm(Model model) {
         model.addAttribute("inquiryDTO", new InquiryDTO());
-        return "inquiry/write";
+        return "inquiry/write"; // 문의 작성 뷰 경로
     }
 
     // 문의 작성 처리
     @PostMapping("/write")
     public RedirectView writeInquiry(@ModelAttribute InquiryDTO inquiryDTO) {
-        Long memberId = 1L; // 현재 로그인한 회원의 ID ,추후에 로그인 한 ID 가져오기
+        Long memberId = 1L; // 현재 로그인한 회원의 ID, 추후에 로그인 한 ID 가져오기
         inquiryService.createInquiry(inquiryDTO, memberId); // 문의사항 생성
 
         log.info("문의사항이 작성되었습니다: {}", inquiryDTO.getTitle()); // 작성한 제목
         // 관리자 페이지로 리다이렉트
-        // 추후에 이동할페이지로 수정
-        return new RedirectView("/admin/admin");
+        return new RedirectView("/admin/admin"); // 관리자 페이지 경로
     }
-
-
 }
