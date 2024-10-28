@@ -6,8 +6,8 @@
             <when test="memberId != null">
                 insert into tbl_member_profile(profile_name, profile_nickname, profile_gender, profile_age,
                 profile_email, profile_phone, profile_etc, member_id)
-                values (#{profileName}, #{profileNickName}, #{profileGender}. #{profileAge}, #{profileEmail},
-                        #{profilePhone}, #{profileEtc}, #{member_id})
+                values (#{profileName}, #{profileNickName}, #{profileGender}, #{profileAge}, #{profileEmail},
+                        #{profilePhone}, #{profileEtc}, #{memberId})
             </when>
         </choose>
     </insert>

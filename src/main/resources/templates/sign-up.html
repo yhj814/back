@@ -154,7 +154,7 @@
                                             class="form-control"
                                             id="full_name"
                                             placeholder="이름을 입력해 주세요."
-                                            name="full_name"
+                                            name="profileName"
                                             type="text"
                                             value=""
                                     />
@@ -169,7 +169,7 @@
                             <div class="form-group">
                                 <label
                                         class="control-label required"
-                                        id="full_name_label"
+                                        id="full_nickname_label"
                                 ><span></span> 닉네임</label
                                 >
                                 <div class="control-wrapper">
@@ -177,7 +177,7 @@
                                             class="form-control"
                                             id="full_nickname"
                                             placeholder="사용할 닉네임을 입력해주세요."
-                                            name="full_nickname"
+                                            name="profileNickName"
                                             type="text"
                                             value=""
                                     />
@@ -218,9 +218,9 @@
                                             ><input
                                                     data-exception="yes"
                                                     id="gender_1"
-                                                    name="gender"
+                                                    name="profileGender"
                                                     type="radio"
-                                                    value="m"
+                                                    value="남성"
                                             />남성</label
                                             >
                                         </li>
@@ -231,9 +231,9 @@
                                             ><input
                                                     data-exception="yes"
                                                     id="gender_2"
-                                                    name="gender"
+                                                    name="profileGender"
                                                     type="radio"
-                                                    value="f"
+                                                    value="여성"
                                             />여성</label
                                             >
                                         </li>
@@ -257,7 +257,7 @@
                                     <input
                                             class="form-control"
                                             id="member-age"
-                                            name="member-age"
+                                            name="profileAge}"
                                             placeholder="만 나이를 입력해주세요."
                                             type="text"
                                             style="width: 55%"
@@ -282,6 +282,7 @@
                                             class="form-control"
                                             data-exception="yes"
                                             placeholder="이메일을 입력하세요."
+                                            name="profileEmail"
                                             type="text"
                                             value=""
                                     />
@@ -304,6 +305,7 @@
                                             class="form-control"
                                             data-exception="yes"
                                             placeholder="전화번호를 입력하세요."
+                                            name="profilePhone"
                                             type="text"
                                             value=""
                                     />
@@ -323,6 +325,7 @@
                                             <textarea
                                                     class="form-control form-textarea"
                                                     placeholder="간단한 자기소개를 입력해주세요."
+                                                    name="profileEtc"
                                                     value=""
                                                     style="height: 340px"
                                             ></textarea>
@@ -353,7 +356,7 @@
                                         <input
                                                 class="remove-request"
                                                 hidden=""
-                                                name="remove_request"
+                                                name="fileContent"
                                                 type="checkbox"
                                         />
                                         <p
