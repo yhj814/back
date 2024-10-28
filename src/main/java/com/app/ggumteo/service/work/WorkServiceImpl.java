@@ -31,7 +31,7 @@ public class WorkServiceImpl implements WorkService {
         postVO.setPostTitle(workDTO.getPostTitle());
         postVO.setPostContent(workDTO.getPostContent());
         postVO.setPostType(workDTO.getPostType());
-        postVO.setMemberId(workDTO.getMemberId());
+        postVO.setMemberProfileId(workDTO.getMemberProfileId());
 
         // Post를 저장하고 해당 ID를 가져옴
         postDAO.save(postVO);
@@ -100,11 +100,10 @@ public class WorkServiceImpl implements WorkService {
     public int findTotalWithSearch(String genreType, String keyword) {
         // 검색 조건을 Search 객체에 설정
         Search searchParams = new Search();
-        searchParams.setGenreType(genreType);
         searchParams.setKeyword(keyword);
 
-        // Search 객체를 사용하여 DAO 메서드 호출
-        return workDAO.findTotalWithSearch(searchParams);
+        // genreType과 searchParams를 함께 전달
+        return workDAO.findTotalWithSearch(searchParams, genreType);
     }
 
 }

@@ -34,7 +34,7 @@ public class InquiryServiceImpl implements InquiryService {
         post.setPostContent(inquiryDTO.getDescription());
         // 문의하기 type
         post.setPostType("INQUIRY");
-        post.setMemberId(memberId);
+        post.setMemberProfileId(memberId);
         postDAO.saveInquiry(post);
 
         // 마지막에 생성된 게시물 ID를 가져와서 문의 생성

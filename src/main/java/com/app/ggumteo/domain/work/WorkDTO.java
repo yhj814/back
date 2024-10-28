@@ -16,7 +16,7 @@ public class WorkDTO {
     private String workPrice; // 작품 가격
     private String genreType;// 장르 타입
     private int readCount; // 조회수
-    private Long memberId;
+    private Long memberProfileId;
     private String profileName;
     private String profileNickName;
     private String profileEmail;
@@ -34,7 +34,7 @@ public class WorkDTO {
     }
 
     public PostVO toPostVO() {
-        return new PostVO(id, postTitle, postContent, postType, memberId, createdDate, updatedDate);
+        return new PostVO(id, postTitle, postContent, postType, memberProfileId, createdDate, updatedDate);
     }
 
 

@@ -41,7 +41,8 @@ public interface WorkMapper {
             @Param("pagination") Pagination pagination
     );
     // 검색 조건이 포함된 총 작품 수 조회
-    int selectTotalWithSearch(@Param("search") Search searchParams);
+    int selectTotalWithSearch(@Param("search") Search search, @Param("genreType") String genreType);
+
 
     // 상세보기에서 다중 파일 조회
     List<PostFileDTO> selectFilesByPostId(Long postId);
