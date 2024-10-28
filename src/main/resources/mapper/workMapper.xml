@@ -12,12 +12,12 @@
     <select id="selectById" resultType="workDTO">
         select
             w.id, w.work_price, w.file_content, w.read_count, w.genre_type,
-            p.post_title, p.post_content, p.member_id, p.created_date, p.updated_date,
+            p.post_title, p.post_content, p.member_profile_id, p.created_date, p.updated_date,
             mp.profile_nickname
         from
             tbl_work w
                 join tbl_post p on w.id = p.id
-                join tbl_member_profile mp on p.member_id = mp.member_id
+                join tbl_member_profile mp on p.member_profile_id = mp.id
         where
             w.id = #{id}
     </select>
@@ -65,12 +65,12 @@
     <select id="selectAllWithThumbnailAndSearch" resultType="workDTO">
         select
         w.id, w.work_price, w.read_count, w.genre_type,
-        p.post_title, p.post_content, p.member_id, p.created_date, p.updated_date,
+        p.post_title, p.post_content, p.member_profile_id, p.created_date, p.updated_date,
         f.file_name as thumbnail_file_name, f.file_path as thumbnail_file_path,
         mp.profile_nickname as profile_nickname
         from tbl_work w
         join tbl_post p on w.id = p.id
-        join tbl_member_profile mp on p.member_id = mp.member_id
+        join tbl_member_profile mp on p.member_profile_id = mp.id
         left join (
         select pf.post_id, f.file_name, f.file_path
         from tbl_post_file pf
@@ -93,11 +93,11 @@
     </select>
 
     <!-- 검색 조건이 포함된 총 작품 수 조회 -->
-    <select id="selectTotalWithSearch">
+    <select id="selectTotalWithSearch" parameterType="map">
         select count(*)
         from tbl_work w
         join tbl_post p on w.id = p.id
-        join tbl_member_profile mp on p.member_id = mp.member_id
+        join tbl_member_profile mp on p.member_profile_id = mp.id
         where w.id is not null
         <if test="search.keyword != null and search.keyword != ''">
             and (

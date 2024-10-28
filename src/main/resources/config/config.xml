@@ -21,6 +21,7 @@
         <typeAlias type="com.app.ggumteo.domain.file.PostFileVO" alias="postFileVO"/>
         <typeAlias type="com.app.ggumteo.domain.file.PostFileDTO" alias="postFileDTO"/>
         <typeAlias type="com.app.ggumteo.domain.audition.AuditionDTO" alias="auditionDTO"/>
+        <typeAlias type="com.app.ggumteo.domain.member.MemberProfileVO" alias="memberProfileVO"/>
     </typeAliases>
 
 </configuration>

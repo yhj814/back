@@ -26,7 +26,7 @@ public class AuditionServiceImpl implements AuditionService {
         postVO.setPostTitle(auditionDTO.getPostTitle());
         postVO.setPostContent(auditionDTO.getPostContent());
         postVO.setPostType(auditionDTO.getPostType());
-        postVO.setMemberId(auditionDTO.getMemberId());
+        postVO.setMemberProfileId(auditionDTO.getMemberId());
 
         postDAO.save(postVO);
         Long postId = postVO.getId();

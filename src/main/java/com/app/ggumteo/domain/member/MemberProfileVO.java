@@ -13,7 +13,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 public class MemberProfileVO implements Serializable {
     @EqualsAndHashCode.Include
-    private Long Id;
+    private Long id;
     private String profileName;
     private String profileNickName;
     private String profileGender;

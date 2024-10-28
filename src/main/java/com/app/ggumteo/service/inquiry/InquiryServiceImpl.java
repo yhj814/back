@@ -1,27 +1,47 @@
 package com.app.ggumteo.service.inquiry;
 
+import com.app.ggumteo.constant.PostType;
 import com.app.ggumteo.domain.inquiry.InquiryDTO;
+import com.app.ggumteo.domain.inquiry.InquiryDetailVO;
+import com.app.ggumteo.domain.inquiry.InquiryVO;
+import com.app.ggumteo.domain.post.PostVO;
+import com.app.ggumteo.mapper.inquiry.InquiryMapper;
+import com.app.ggumteo.pagination.Pagination;
 import com.app.ggumteo.repository.inquiry.InquiryDAO;
+import com.app.ggumteo.repository.post.PostDAO;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 @Transactional(rollbackFor = Exception.class)
 public class InquiryServiceImpl implements InquiryService {
+
+    private final PostDAO postDAO;
     private final InquiryDAO inquiryDAO;
 
     @Override
     public void createInquiry(InquiryDTO inquiryDTO, Long memberId) {
-        // memberId에 따라 postId를 가져오는 로직이 필요합니다.
-        Long postId = getPostIdForMember(memberId); // 현재 회원의 게시물 ID를 가져오는 메서드 필요
-        inquiryDTO.setPostId(postId);
-        inquiryDAO.insertInquiry(inquiryDTO);
-    }
+        // 게시물 생성
+        PostVO post = new PostVO();
+        post.setPostTitle(inquiryDTO.getTitle());
+        post.setPostContent(inquiryDTO.getDescription());
+        // 문의하기 type
+        post.setPostType("INQUIRY");
+        post.setMemberProfileId(memberId);
+        postDAO.saveInquiry(post);
 
-    private Long getPostIdForMember(Long memberId) {
-        // 구현할 로직: memberId에 따라 적절한 postId를 찾는 로직 필요
-        return 1L; // 예시로 1L을 반환
+        // 마지막에 생성된 게시물 ID를 가져와서 문의 생성
+        Long postId = postDAO.getLastInsertId();
+        InquiryVO inquiry = new InquiryVO();
+        inquiry.setPostId(postId);
+        inquiry.setInquiryStatus("0"); // 미답변 상태
+        inquiryDAO.saveInquiry(inquiry);
     }
 }
