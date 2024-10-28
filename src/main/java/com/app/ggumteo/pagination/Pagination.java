@@ -17,14 +17,19 @@ public class Pagination {
     private boolean prev, next;
     private int total;
     private String order;
+
     // 더보기 구현 시, 1개 더 가져오는 변수
+
     private int moreRowcount;
 
     // 기본 progress 메서드
     public void progress() {
         this.page = page == null ? 1 : page;
         this.rowCount = 5;
-        this.moreRowcount = rowCount + 1;  // 더보기 시 사용하는 행 수
+
+    //    더보기 구현 시, 다음 페이지의 게시글 1개를 더 가져온다.
+        this.moreRowcount = rowCount + 1;
+
         this.pageCount = 10;
         this.endRow = page * rowCount;
         this.startRow = endRow - rowCount + 1;

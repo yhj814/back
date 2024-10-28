@@ -5201,40 +5201,6 @@
                                                 답변일자
                                             </div>
                                         </div>
-                                        <!-- Example row (Initial data) -->
-                                        <div class="apply-table-row">
-                                            <div class="apply-table-cell">
-                                                <input
-                                                        type="checkbox"
-                                                        class="apply-checkbox"
-                                                />
-                                            </div>
-                                            <div class="apply-table-cell">postID</div>
-                                            <div class="apply-table-cell">
-                                                post테이블에 created_date
-                                            </div>
-                                            <div class="apply-table-cell">
-                                                문의 제목 (post_title)
-                                            </div>
-
-                                            <div class="apply-table-cell">
-                                                문의 내용 (post_content)
-                                            </div>
-                                            <div class="apply-table-cell">
-                                                홍길동 member테이블에 member_name
-                                            </div>
-                                            <div class="apply-table-cell">member테이블에 member_email</div>
-                                            <div class="apply-table-cell">
-                                                <button
-                                                        class="answered-btn status unanswered"
-                                                >
-                                                    (inquiry테이블에) inquiry_status 0이 미답변 1이 답변
-                                                </button>
-                                            </div>
-                                            <div class="apply-table-cell">
-                                                (admin_answer테이블에) created_date
-                                            </div>
-                                        </div>
                                         <!-- 추가-->
                                                 <th:block th:each="inquiry : ${inquiries}">
                                                     <div class="apply-table-row">
@@ -5286,6 +5252,39 @@
                                             </div>
                                             <div class="apply-table-cell">
                                                 2024-02-02
+                                            </div>
+                                        </div>
+                                        <div class="apply-table-row">
+                                            <div class="apply-table-cell">
+                                                <input
+                                                        type="checkbox"
+                                                        class="apply-checkbox"
+                                                />
+                                            </div>
+                                            <div class="apply-table-cell">postID</div>
+                                            <div class="apply-table-cell">
+                                                post테이블에 created_date
+                                            </div>
+                                            <div class="apply-table-cell">
+                                                문의 제목 (post_title)
+                                            </div>
+
+                                            <div class="apply-table-cell">
+                                                문의 내용 (post_content)
+                                            </div>
+                                            <div class="apply-table-cell">
+                                                홍길동 member테이블에 member_name
+                                            </div>
+                                            <div class="apply-table-cell">member테이블에 member_email</div>
+                                            <div class="apply-table-cell">
+                                                <button
+                                                        class="answered-btn status unanswered"
+                                                >
+                                                    (inquiry테이블에) inquiry_status 0이 미답변 1이 답변
+                                                </button>
+                                            </div>
+                                            <div class="apply-table-cell">
+                                                (admin_answer테이블에) created_date
                                             </div>
                                         </div>
                                     </div>

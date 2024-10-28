@@ -25,6 +25,5 @@ public class InquiryDAO {
     public List<InquiryDetailVO> getInquiries() {
         return inquiryMapper.selectInquiries();
     }
-
 }
 
