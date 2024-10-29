@@ -117,30 +117,6 @@
                             </div>
 
 
-                            <!-- 페이지네이션박스 -->
-<!--                            <div class="center-text pagination-box">-->
-<!--                                <ul class="pagination theme-ggumteo">-->
-<!--                                    &lt;!&ndash; 이전 버튼 &ndash;&gt;-->
-<!--                                    <li class="page-item" th:class="${pagination.page > 5} ? 'page-item' : 'page-item disabled'">-->
-<!--                                        <a class="page-link" th:if="${pagination.page > 5}" th:href="@{/text/list(page=${pagination.startPage - 5}, genreType=${genreType}, keyword=${keyword})}">이전</a>-->
-<!--                                        <span th:unless="${pagination.page > 5}"></span>-->
-<!--                                    </li>-->
-
-<!--                                    &lt;!&ndash; 페이지 번호 &ndash;&gt;-->
-<!--                                    <li th:each="i : ${#numbers.sequence(pagination.startPage, pagination.endPage)}" th:class="${pagination.page == i} ? 'page-item active' : 'page-item'">-->
-<!--                                        &lt;!&ndash; 현재 페이지일 경우 클릭할 수 없도록 <span>으로 변경 &ndash;&gt;-->
-<!--                                        <span th:if="${pagination.page == i}" class="page-link" th:text="${i}"></span>-->
-<!--                                        &lt;!&ndash; 다른 페이지일 경우 <a>로 표시 &ndash;&gt;-->
-<!--                                        <a th:if="${pagination.page != i}" class="page-link" th:href="@{/text/list(page=${i}, genreType=${genreType}, keyword=${keyword})}" th:text="${i}"></a>-->
-<!--                                    </li>-->
-
-<!--                                    &lt;!&ndash; 다음 버튼 &ndash;&gt;-->
-<!--                                    <li class="page-item" th:class="${pagination.endPage < pagination.realEnd} ? 'page-item' : 'page-item disabled'">-->
-<!--                                        <a class="page-link" th:if="${pagination.endPage < pagination.realEnd}" th:href="@{/text/list(page=${pagination.startPage + 5}, genreType=${genreType}, keyword=${keyword})}">다음</a>-->
-<!--                                        <span th:unless="${pagination.endPage < pagination.realEnd}"></span>-->
-<!--                                    </li>-->
-<!--                                </ul>-->
-<!--                            </div>-->
                             <div class="center-text pagination-box">
                                 <ul class="pagination theme-ggumteo">
                                     <!-- 이전 버튼 -->
@@ -170,23 +146,71 @@
             </div>
         </div>
     </body>
-    <script>
-        // 검색 기능: genreType을 빈 문자열로 설정하여 전체 검색
-        function searchWorks() {
-            const keyword = document.getElementById('searchKeyword').value.trim();
-            document.getElementById('genreType').value = "";  // genreType을 빈 문자열로 설정
 
-            const url = `/text/list?page=1&keyword=${encodeURIComponent(keyword)}`;
-            window.location.href = url;
-        }
-
-        // 장르 필터 적용 함수
-        function filterByGenre(genre) {
-            const keyword = document.getElementById('searchKeyword').value.trim();
-            document.getElementById('genreType').value = genre;  // 선택된 장르로 설정
-            const url = `/text/list?page=1&genreType=${encodeURIComponent(genre)}${keyword ? `&keyword=${encodeURIComponent(keyword)}` : ''}`;
-            window.location.href = url;
-        }
-    </script>
-<!--    <script src="/js/text/list.js"></script>-->
+    <script src="/js/text/list.js"></script>
 </html>
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8" />-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0" />-->
+<!--    <title>글 작품 목록</title>-->
+<!--    <link rel="stylesheet" href="/css/text/list.css" />-->
+<!--</head>-->
+<!--<body>-->
+<!--<div class="main-header">-->
+<!--    <div class="container">-->
+<!--        <a class="sub-navigation" href=""><div>작품</div></a>-->
+<!--        <a class="sub-navigation" href=""><div>펀딩</div></a>-->
+<!--        <a class="sub-navigation" href=""><div>모집</div></a>-->
+<!--    </div>-->
+<!--</div>-->
+<!--<div class="main">-->
+<!--    <div class="container">-->
+<!--        <div class="content-wrapper">-->
+<!--            <div class="list">-->
+<!--                <div class="list-header">-->
+<!--                    <div class="text-ggumteo">꿈터 글 작품</div>-->
+<!--                    <div class="title-header">-->
+<!--                        <div class="title-2">꿈터에서 진행한 글 작품 목록</div>-->
+<!--                        <div>-->
+<!--                            <div class="text-input-ggumteo icon-right">-->
+<!--                                <div>-->
+<!--                                    <input type="text" id="searchKeyword" class="theme-ggumteo search-input" placeholder="원하는 작품을 찾아보세요" />-->
+<!--                                    <i class="search-btn" onclick="searchWorks()">-->
+<!--                                        <img src="https://www.wishket.com/static/renewal/img/stack/icon-search.png" />-->
+<!--                                    </i>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                <div class="filter-box-wrapper">-->
+<!--                    <div class="filter-group-wrapper">-->
+<!--                        <div class="filter-group">-->
+<!--                            <button class="filter-box" onclick="filterByGenre('romance')">로맨스</button>-->
+<!--                            <button class="filter-box" onclick="filterByGenre('comedy')">코미디</button>-->
+<!--                            <button class="filter-box" onclick="filterByGenre('horror')">공포</button>-->
+<!--                            <button class="filter-box" onclick="filterByGenre('action')">액션</button>-->
+<!--                            <button class="filter-box" onclick="filterByGenre('drama')">드라마</button>-->
+<!--                            <div class="box-group">-->
+<!--                                <div class="write-box">-->
+<!--                                    <a href="/text/write" style="color: inherit; text-decoration: none;">내 작품올리기</a>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                <div id="ggumteo-list-box">-->
+<!--                    <div class="list-box-wrapper" id="works-list"></div>-->
+<!--                    <div class="center-text pagination-box" id="pagination"></div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+
+<!--<script src="/js/text/list.js"></script>-->
+<!--</body>-->
+<!--</html>-->
+
