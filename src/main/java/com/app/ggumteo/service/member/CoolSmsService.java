@@ -18,8 +18,11 @@ public class CoolSmsService {
     private final String apiSecret;
     private final String fromPhoneNumber;
 
-    // 인증번호를 임시 저장하는 Map (phoneNumber와 인증번호 매핑)
-    private final ConcurrentHashMap<String, String> verificationCodes = new ConcurrentHashMap<>();
+    // 인증번호와 관련된 데이터를 저장하는 Map (phoneNumber와 인증 데이터 매핑)
+    private final ConcurrentHashMap<String, VerificationData> verificationDataMap = new ConcurrentHashMap<>();
+
+    // 인증번호 만료 시간 (3분)
+    private static final long EXPIRATION_TIME = 3 * 60 * 1000;
 
     public CoolSmsService(CoolSmsProperties coolSmsProperties) {
         this.apiKey = coolSmsProperties.getKey();
@@ -34,8 +37,14 @@ public class CoolSmsService {
 
     // SMS 발송 및 인증번호 생성 메서드
     public String sendSms(String to) throws CoolsmsException {
+        // 발송 요청 제한: 이전 요청 시간 확인 및 제한
+        VerificationData existingData = verificationDataMap.get(to);
+        if (existingData != null && (System.currentTimeMillis() - existingData.getGeneratedTime()) < EXPIRATION_TIME) {
+            throw new CoolsmsException("인증번호 요청이 너무 빈번합니다. 잠시 후 다시 시도해주세요.", 429);
+        }
+
         String verificationCode = generateRandomNumber(); // 랜덤 4자리 생성
-        verificationCodes.put(to, verificationCode); // 인증번호 저장
+        verificationDataMap.put(to, new VerificationData(verificationCode, System.currentTimeMillis())); // 인증번호 저장
 
         Message coolsms = new Message(apiKey, apiSecret);
 
@@ -51,10 +60,17 @@ public class CoolSmsService {
 
     // 인증번호 확인 메서드
     public boolean verifyCode(String phoneNumber, String code) {
-        String savedCode = verificationCodes.get(phoneNumber);
-        if (savedCode != null && savedCode.equals(code)) {
-            verificationCodes.remove(phoneNumber); // 인증 후 코드 삭제
-            return true;
+        VerificationData data = verificationDataMap.get(phoneNumber);
+
+        // 인증번호 유효성 검사 및 만료 시간 확인
+        if (data != null && data.getCode().equals(code)) {
+            if (System.currentTimeMillis() - data.getGeneratedTime() < EXPIRATION_TIME) {
+                verificationDataMap.remove(phoneNumber); // 인증 후 코드 삭제
+                return true;
+            } else {
+                verificationDataMap.remove(phoneNumber); // 만료된 코드 삭제
+                throw new IllegalStateException("인증번호가 만료되었습니다. 다시 시도해주세요.");
+            }
         }
         return false;
     }
@@ -67,5 +83,24 @@ public class CoolSmsService {
             numStr.append(rand.nextInt(10));
         }
         return numStr.toString();
+    }
+
+    // 인증 데이터 저장용 내부 클래스
+    private static class VerificationData {
+        private final String code;
+        private final long generatedTime;
+
+        public VerificationData(String code, long generatedTime) {
+            this.code = code;
+            this.generatedTime = generatedTime;
+        }
+
+        public String getCode() {
+            return code;
+        }
+
+        public long getGeneratedTime() {
+            return generatedTime;
+        }
     }
 }
