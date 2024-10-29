@@ -22,13 +22,16 @@ function validateField(input, regex, errorMessageText) {
 
 // 이메일 인증 관련 변수
 let emailTimerInterval;
-let emailTimeRemaining = 180; // 3분 타이머
-let isEmailVerified = false; // 이메일 인증 완료 여부 확인용
+const initialEmailTimeRemaining = 10; // 10초 타이머
+let emailTimeRemaining = initialEmailTimeRemaining;
+let isEmailVerified = false;
 
 const emailField = document.querySelector("input[name='profileEmail']");
 const emailRequestButton = document.getElementById("requestEmailCode");
 const emailVerifyButton = document.getElementById("verifyEmailCode");
-const loadingGif = document.getElementById("loadingGif"); // HTML에 이미 있는 로딩 GIF 요소
+const loadingGif = document.getElementById("loadingGif");
+const timerDisplay = document.getElementById("emailTimerDisplay");
+const verificationError = document.getElementById("emailVerificationError");
 
 // 이메일 인증번호 요청 버튼 클릭 시
 emailRequestButton.addEventListener("click", async function () {
@@ -39,9 +42,12 @@ emailRequestButton.addEventListener("click", async function () {
         loadingGif.style.display = "block"; // 로딩 GIF 표시
 
         // 타이머 및 만료 메시지 초기화
+        verificationError.style.display = "none"; // 만료 메시지 숨김
+        document.querySelector(".email-timer-container").style.display = "block"; // 타이머 컨테이너 표시
+        timerDisplay.textContent = "0:10"; // 타이머 초기화
+
         clearInterval(emailTimerInterval); // 기존 타이머 중지
-        document.getElementById("emailTimerDisplay").textContent = "3:00"; // 타이머 초기화
-        document.getElementById("emailVerificationError").style.display = "none"; // 만료 메시지 숨김
+        emailTimeRemaining = initialEmailTimeRemaining; // 타이머 시간 초기화
 
         try {
             const response = await fetch("/email/send", {
@@ -56,7 +62,6 @@ emailRequestButton.addEventListener("click", async function () {
 
             if (response.ok) {
                 alert("인증번호가 이메일로 발송되었습니다."); // 성공 메시지 출력
-                document.querySelector(".email-timer-container").style.display = "block"; // 타이머 표시
                 document.querySelector(".certification-input").classList.remove("certification-input"); // 인증번호 입력 div 표시
 
                 startEmailTimer(); // 타이머 시작
@@ -74,32 +79,26 @@ emailRequestButton.addEventListener("click", async function () {
 
 // 이메일 타이머 시작 함수
 function startEmailTimer() {
-    const timerDisplay = document.getElementById("emailTimerDisplay");
-    emailTimeRemaining = 10; // 타이머 초기화
+    clearInterval(emailTimerInterval); // 기존 타이머 초기화
 
-    if (emailTimerInterval) {
-        clearInterval(emailTimerInterval); // 기존 타이머 초기화
-    }
-
-    // 타이머 업데이트
     emailTimerInterval = setInterval(() => {
-        emailTimeRemaining--;
+        if (emailTimeRemaining <= 0) {
+            clearInterval(emailTimerInterval); // 타이머 종료
+            timerDisplay.textContent = "인증 시간 만료. 다시 요청해 주세요.";
+            verificationError.style.display = "none"; // 이전 만료 메세지 숨김
+            return;
+        }
+
         const minutes = Math.floor(emailTimeRemaining / 60);
         const seconds = emailTimeRemaining % 60;
         timerDisplay.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-
-        if (emailTimeRemaining <= 0) {
-            clearInterval(emailTimerInterval);
-            timerDisplay.textContent = "인증 시간 만료. 다시 요청해 주세요.";
-            isEmailVerified = false; // 인증 완료 여부 초기화
-        }
+        emailTimeRemaining--; // 타이머 시간 감소
     }, 1000);
 }
 
 // 이메일 인증번호 확인 버튼 클릭 시
 emailVerifyButton.addEventListener("click", async function () {
     const verificationCode = document.getElementById("emailVerificationCode").value;
-    const verificationError = document.getElementById("emailVerificationError");
 
     try {
         const response = await fetch("/email/verify", {
