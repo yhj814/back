@@ -19,15 +19,20 @@ import com.app.ggumteo.service.work.WorkService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Collections;
@@ -104,23 +109,28 @@ public class TextWorkController {
             @RequestParam(value = "keyword", required = false) String keyword,
             @RequestParam(value = "page", defaultValue = "1") int page,
             Model model) {
-        // 빈 문자열로 처리
-        if (genreType == null) {
-            genreType = "";
-        }
 
-        if (keyword == null) {
-            keyword = "";
-        }
+        if (genreType == null) genreType = "";
+        if (keyword == null) keyword = "";
 
-        log.info("검색어: {}", keyword);
-        log.info("장르: {}", genreType);
-        // 페이지네이션 및 검색 로직
+        log.info("검색어: {}, 장르: {}", keyword, genreType);
+
+        // 페이지네이션 설정
         Pagination pagination = new Pagination();
         pagination.setPage(page);
-        int totalWorks = workService.findTotalWithSearch(genreType, keyword);
-        pagination.setTotal(totalWorks);
 
+        // 검색어와 장르에 맞는 총 결과 수 계산
+        int totalWorks = workService.findTotalWithSearch(genreType, keyword); // 검색 조건을 고려한 총 작품 수
+        pagination.setTotal(totalWorks); // 검색 결과에 따른 총 페이지 수 반영
+        pagination.progress2();
+        log.info("총 작품 수 (검색 조건 적용): {}", totalWorks);
+
+        // 디버깅: 페이지네이션 정보 확인
+        log.info("Pagination - startPage: {}, endPage: {}, realEnd: {}, prev: {}, next: {}",
+                pagination.getStartPage(), pagination.getEndPage(), pagination.getRealEnd(),
+                pagination.isPrev(), pagination.isNext());
+
+        // 검색어와 페이지네이션 데이터 기반으로 작품 목록 조회
         List<WorkDTO> works = workService.findAllWithThumbnailAndSearch(genreType, keyword, pagination);
 
         model.addAttribute("works", works);
@@ -130,6 +140,37 @@ public class TextWorkController {
 
         return "text/list";
     }
+
+
+    @GetMapping("/display")
+    @ResponseBody
+    public ResponseEntity<byte[]> display(@RequestParam("fileName") String fileName) throws IOException {
+        String rootPath = "C:/ggumteofile/"; // 실제 파일이 저장된 루트 경로
+        File file = new File(rootPath + fileName); // rootPath와 요청된 상대 경로 결합
+
+        // 파일 경로를 로그로 출력하여 확인
+        log.info("Attempting to load file from path: {}", file.getAbsolutePath());
+
+        // 파일이 존재하지 않으면 404 반환
+        if (!file.exists()) {
+            log.error("File not found at path: {}", file.getAbsolutePath());
+            return ResponseEntity.notFound().build();
+        }
+
+        byte[] imageBytes = FileCopyUtils.copyToByteArray(file);
+        HttpHeaders headers = new HttpHeaders();
+
+        // MIME 타입 설정
+        String contentType = Files.probeContentType(file.toPath());
+        if (contentType != null) {
+            headers.setContentType(MediaType.parseMediaType(contentType));
+        }
+
+        return new ResponseEntity<>(imageBytes, headers, HttpStatus.OK);
+    }
+
+
+
 
 
     @GetMapping("/detail")
