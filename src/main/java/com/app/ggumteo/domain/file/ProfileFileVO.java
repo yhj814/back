@@ -1,18 +1,18 @@
-package com.app.ggumteo.domain.inquiry;
+package com.app.ggumteo.domain.file;
+
 
 import lombok.*;
 import org.springframework.stereotype.Component;
 
-
 @Component
 @Getter
-@ToString
 @Setter
+@ToString
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @NoArgsConstructor
 @AllArgsConstructor
-public class InquiryVO {
+public class ProfileFileVO {
     @EqualsAndHashCode.Include
     private Long id;
-    private String inquiryStatus;
+    private Long memberProfileId;
 }

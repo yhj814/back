@@ -12,6 +12,7 @@ create table tbl_post (
 
 select *from tbl_post;
 
+
 alter table tbl_post
 add constraint fk_post_member_profile foreign key (member_profile_id)
     references tbl_member_profile(id);

@@ -11,7 +11,6 @@ import java.io.Serializable;
 public class MemberDTO implements Serializable {
     @EqualsAndHashCode.Include
     private Long id;
-
     private String memberEmail;
     private String memberStatus;
     private String profileImgUrl;

@@ -21,7 +21,7 @@ public class PostMapperTests {
         postDTO.setPostTitle("문의제목1");
         postDTO.setPostContent("문의합니다");
         postDTO.setPostType("INQUIRY");
-        postDTO.setMemberId(1L);
+        postDTO.setMemberProfileId(1L);
         postMapper.insert(postDTO.toVO());
         log.info("{}","게시글 등록성공!");
     }
