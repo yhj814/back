@@ -1,14 +1,23 @@
 package com.app.ggumteo.controller.admin;
 
 import com.app.ggumteo.domain.admin.AdminDTO;
+import com.app.ggumteo.domain.admin.AnnouncementVO;
+import com.app.ggumteo.domain.inquiry.InquiryDTO;
+import com.app.ggumteo.pagination.AdminPagination;
 import com.app.ggumteo.service.admin.AdminService;
+import com.app.ggumteo.service.admin.AnnouncementService;
+import com.app.ggumteo.service.inquiry.InquiryService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -17,6 +26,8 @@ import java.util.Map;
 @RequestMapping("/admin")
 public class AdminController {
     private final AdminService adminService;
+    private final InquiryService inquiryService;
+    private final AnnouncementService announcementService;
 
     // 인증번호 입력 페이지
     @GetMapping("/verify")
@@ -42,5 +53,63 @@ public class AdminController {
         }
         // JSON 형태로 반환
         return response;
+    }
+
+    // 관리자 페이지
+    @GetMapping("/admin")
+    public String showAdminPage() {
+
+        return "admin/admin";
+    }
+
+    // 공지사항 작성
+    @PostMapping("/announcement")
+    public ResponseEntity<String> writeAnnouncement(@RequestBody AnnouncementVO announcementVO) {
+        announcementService.write(announcementVO);
+        return ResponseEntity.ok("공지사항이 성공적으로 등록되었습니다.");
+    }
+
+    // 공지사항 목록 조회
+    @GetMapping("/announcements")
+    public String listAnnouncements(@RequestParam(value = "page", defaultValue = "1") Integer page, Model model) {
+        // 페이지네이션 객체 생성
+        AdminPagination pagination = new AdminPagination();
+        pagination.setPage(page);
+        pagination.setTotal(announcementService.getTotalAnnouncements());
+        pagination.progress();
+
+        // 공지사항 목록 조회
+        List<AnnouncementVO> announcements = announcementService.getAllAnnouncements(pagination);
+
+        // 조회된 데이터와 페이지네이션 정보 로그 출력
+        log.info("Announcements List:");
+        for (AnnouncementVO announcement : announcements) {
+            log.info("{}", announcement); // AnnouncementVO의 toString() 메서드에 의해 출력
+        }
+        log.info("Pagination Details - Current Page: {}, Start Row: {}, End Row: {}, Total: {}",
+                pagination.getPage(), pagination.getStartRow(), pagination.getEndRow(), pagination.getTotal());
+
+        // 모델에 데이터 추가
+        model.addAttribute("announcements", announcements);
+        model.addAttribute("pagination", pagination);
+
+        return "admin/admin"; // 공지사항 목록 페이지
+    }
+
+    @GetMapping("/inquiry")
+    public String getList(@ModelAttribute AdminPagination pagination, Model model) {
+        List<InquiryDTO> inquiryList = inquiryService.getList(pagination);
+        int totalInquiries = inquiryService.getTotal();
+
+        pagination.setTotal(totalInquiries); // 전체 문의 수 설정
+        pagination.progress(); // 페이지네이션 진행
+
+        log.info("Inquiry List: {}", inquiryList);
+        log.info("Pagination: {}", pagination);
+
+        model.addAttribute("inquiries", inquiryList);
+        model.addAttribute("pagination", pagination);
+
+        return "admin/admin"; // 템플릿 경로
     }
 }

@@ -7,3 +7,4 @@ create table tbl_inquiry (
 
 select *from tbl_inquiry;
 
+SELECT * FROM tbl_inquiry LIMIT 0, 10; -- 쿼리를 직접 실행해 보기
