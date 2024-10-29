@@ -1,11 +1,16 @@
 package com.app.ggumteo.service.inquiry;
 
 
+import com.app.ggumteo.domain.inquiry.InquiryDTO;
 import com.app.ggumteo.domain.post.PostDTO;
+import com.app.ggumteo.pagination.AdminPagination;
 import com.app.ggumteo.repository.inquiry.InquiryDAO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.awt.print.Pageable;
+import java.util.List;
 
 
 @Service
