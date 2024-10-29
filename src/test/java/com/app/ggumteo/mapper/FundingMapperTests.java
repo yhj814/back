@@ -1,5 +1,6 @@
 package com.app.ggumteo.mapper;
 
+import com.app.ggumteo.domain.funding.BuyFundingProductDTO;
 import com.app.ggumteo.domain.funding.FundingDTO;
 import com.app.ggumteo.mapper.funding.FundingMapper;
 import com.app.ggumteo.pagination.MyPagePagination;
@@ -26,5 +27,13 @@ public class FundingMapperTests {
 //        for (FundingDTO fundingDTO : fundingPosts) {
 //            log.info("{}", fundingDTO);
 //        }
+    }
+
+    @Test
+    public void testSelectBuyerByFundingPostId() {
+        List<BuyFundingProductDTO> buyFundingProducts = fundingMapper.selectBuyerByFundingPostId(1L);
+        for (BuyFundingProductDTO buyFundingProductDTO : buyFundingProducts) {
+            log.info("{}", buyFundingProductDTO);
+        }
     }
 }

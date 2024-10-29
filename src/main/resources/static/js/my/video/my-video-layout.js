@@ -163,7 +163,7 @@ const showMyFundingList = ({myFundingPosts, myPagePagination}) => {
     if(myPagePagination.next) {
         pagingText += `
             <li class="page-item">
-                <a href="${myPagePagination.endPage + 1}" class="page-link" style="bottom: -15px"></a>
+                <a href="${myPagePagination.endPage + 1}" class="page-link" id="next" style="bottom: -15px"></a>
             </li>
         `
 

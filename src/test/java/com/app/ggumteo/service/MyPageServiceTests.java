@@ -52,4 +52,12 @@ public class MyPageServiceTests {
 //            log.info("{}", fundingDTO);
 //        }
     }
+
+    @Test
+    public void testGetFundingBuyerList() {
+        List<BuyFundingProductDTO> buyFundingProducts = myPageService.getFundingBuyerList(1L);
+        for (BuyFundingProductDTO buyFundingProductDTO : buyFundingProducts) {
+            log.info("{}", buyFundingProductDTO);
+        }
+    }
 }
