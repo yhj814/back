@@ -1,22 +1,11 @@
 const myFundingListLayout = document.getElementById("my-funding-list");
 const myFundingListPaging = document.getElementById("my-funding-list-paging");
 
-console.log("5 : ", myFundingListLayout);
-console.log("6 : ", myFundingListPaging);
-
 const showMyFundingList = ({myFundingPosts, myPagePagination}) => {
     let text = ``;
     let pagingText = ``;
 
-    console.log("7 : ", showMyFundingList);
-    console.log("8 : ", myFundingPosts);
-    console.log("9 : ", myPagePagination);
-
-    myFundingPosts.length;
-    console.log("9.1 : ", myFundingPosts.length);
-
     myFundingPosts.forEach((myFundingPost, index) => {
-        console.log("10 : ", index, myPagePagination);
 
         text += `
          <div class="list-item my-funding-posts">
@@ -142,8 +131,6 @@ const showMyFundingList = ({myFundingPosts, myPagePagination}) => {
     });
     myFundingListLayout.innerHTML = text;
 
-    console.log("12 : ", myFundingListLayout);
-
 
     if(myPagePagination.prev){
         pagingText += `
@@ -166,9 +153,6 @@ const showMyFundingList = ({myFundingPosts, myPagePagination}) => {
                 <a href="${myPagePagination.endPage + 1}" class="page-link" id="next" style="bottom: -15px"></a>
             </li>
         `
-
-        console.log("다음1 : ", myPagePagination.next);
-        console.log("다음2 : ", myPagePagination.endPage + 1);
     }
 
     myFundingListPaging.innerHTML = pagingText;
