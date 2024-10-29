@@ -1,5 +1,6 @@
 package com.app.ggumteo.service;
 
+import com.app.ggumteo.domain.funding.BuyFundingProductDTO;
 import com.app.ggumteo.domain.funding.FundingDTO;
 import com.app.ggumteo.domain.member.MemberDTO;
 import com.app.ggumteo.domain.member.MemberVO;
@@ -37,6 +38,14 @@ public class MyPageServiceTests {
 
         for (FundingDTO fundingDTO : fundingPosts) {
             log.info("{}", fundingDTO);
+        }
+    }
+
+    @Test
+    public void testGetFundingBuyerList() {
+        List<BuyFundingProductDTO> fundingBuyerList = myPageService.getFundingBuyerList(1L);
+        for (BuyFundingProductDTO buyFundingProductDTO : fundingBuyerList) {
+            log.info("{}", buyFundingProductDTO);
         }
     }
 }

@@ -1,5 +1,6 @@
 package com.app.ggumteo.repository.funding;
 
+import com.app.ggumteo.domain.funding.BuyFundingProductDTO;
 import com.app.ggumteo.domain.funding.FundingDTO;
 import com.app.ggumteo.mapper.funding.FundingMapper;
 import lombok.RequiredArgsConstructor;
@@ -15,5 +16,10 @@ public class FundingDAO {
 //    내 게시물 조회
     public List<FundingDTO> findByMemberId(Long memberId) {
         return fundingMapper.selectByMemberId(memberId);
+    }
+
+//    구매자 목록 조회
+    public List<BuyFundingProductDTO> findBuyerByMemberId(Long memberId) {
+        return fundingMapper.selectBuyerByMemberId(memberId);
     }
 }

@@ -37,6 +37,6 @@ FROM
     tbl_funding f
         JOIN tbl_post p ON f.id = p.id
         JOIN tbl_member_profile mp ON p.member_profile_id = mp.id
-        JOIn tbl_member m ON mp.member_id = m.id
+        JOIN tbl_member m ON mp.member_id = m.id
 WHERE
     m.id = 1;
