@@ -1,14 +1,10 @@
 package com.app.ggumteo.service.file;
 
 import com.app.ggumteo.domain.file.FileVO;
-import com.app.ggumteo.domain.file.PostFileDTO;
 import com.app.ggumteo.domain.file.PostFileVO;
 import com.app.ggumteo.repository.file.FileDAO;
 import com.app.ggumteo.repository.file.PostFileDAO;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,10 +36,14 @@ public class PostFileServiceImpl implements PostFileService {
         fileVO.setFileName(file.getOriginalFilename());
         fileVO.setFileSize(String.valueOf(file.getSize()));
         fileVO.setFileType(file.getContentType());
-        fileVO.setFilePath("C:/ggumteofile/" + UUID.randomUUID().toString() + "_" + file.getOriginalFilename());
 
-        // 파일 저장 로직
-        File saveLocation = new File(fileVO.getFilePath());
+        // 상대 경로를 생성하여 파일 저장 위치 설정
+        String relativePath = "uploads/" + UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
+        fileVO.setFilePath(relativePath);  // DB에 상대 경로만 저장
+
+        // 실제 파일을 절대 경로에 저장 (예: C:/ggumteofile/uploads/)
+        String rootPath = "C:/ggumteofile/";  // 실제 파일 저장 경로
+        File saveLocation = new File(rootPath + relativePath);
         try {
             if (!saveLocation.getParentFile().exists()) {
                 saveLocation.getParentFile().mkdirs();
@@ -62,4 +62,5 @@ public class PostFileServiceImpl implements PostFileService {
 
         return fileVO;
     }
+
 }

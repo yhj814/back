@@ -19,15 +19,20 @@ import com.app.ggumteo.service.work.WorkService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Collections;
@@ -130,6 +135,35 @@ public class TextWorkController {
 
         return "text/list";
     }
+    @GetMapping("/display")
+    @ResponseBody
+    public ResponseEntity<byte[]> display(@RequestParam("fileName") String fileName) throws IOException {
+        String rootPath = "C:/ggumteofile/"; // 실제 파일이 저장된 루트 경로
+        File file = new File(rootPath + fileName); // rootPath와 요청된 상대 경로 결합
+
+        // 파일 경로를 로그로 출력하여 확인
+        log.info("Attempting to load file from path: {}", file.getAbsolutePath());
+
+        // 파일이 존재하지 않으면 404 반환
+        if (!file.exists()) {
+            log.error("File not found at path: {}", file.getAbsolutePath());
+            return ResponseEntity.notFound().build();
+        }
+
+        byte[] imageBytes = FileCopyUtils.copyToByteArray(file);
+        HttpHeaders headers = new HttpHeaders();
+
+        // MIME 타입 설정
+        String contentType = Files.probeContentType(file.toPath());
+        if (contentType != null) {
+            headers.setContentType(MediaType.parseMediaType(contentType));
+        }
+
+        return new ResponseEntity<>(imageBytes, headers, HttpStatus.OK);
+    }
+
+
+
 
 
     @GetMapping("/detail")

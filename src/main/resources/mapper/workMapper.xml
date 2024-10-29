@@ -83,9 +83,9 @@
         where w.id is not null
         <if test="keyword != null and keyword != ''">
             and (
-            p.post_title LIKE CONCAT('%', #{keyword}, '%')
-            or p.post_content LIKE CONCAT('%', #{keyword}, '%')
-            or mp.profile_nickname LIKE CONCAT('%', #{keyword}, '%')
+            p.post_title like concat('%', #{keyword}, '%')
+            or p.post_content like concat('%', #{keyword}, '%')
+            or mp.profile_nickname like concat('%', #{keyword}, '%')
             )
         </if>
         <if test="genreType != null and genreType != ''">
