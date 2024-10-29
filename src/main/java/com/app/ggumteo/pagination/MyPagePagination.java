@@ -20,8 +20,8 @@ public class MyPagePagination {
 
     public void progress() {
         this.page = page == null ? 1 : page;
-        this.rowCount = 5;
-        this.pageCount = 5;
+        this.rowCount = 2;
+        this.pageCount = 2;
         this.endRow = page * rowCount;
         this.startRow = endRow - rowCount + 1;
         this.endPage = (int)(Math.ceil(page / (double)pageCount) * pageCount);

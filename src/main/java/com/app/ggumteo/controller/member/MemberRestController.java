@@ -32,8 +32,12 @@ public class MemberRestController {
     // SELECT
     @ResponseBody
     @GetMapping("/members/video/myFunding/{memberId}/{page}")
-    public MyFundingListDTO getMyFundingList(@PathVariable("memberId") Long memberId, @PathVariable("page") int page, MyPagePagination myPagePagination)
-    {
+    public MyFundingListDTO getMyFundingList(@PathVariable("memberId") Long memberId
+            , @PathVariable("page") int page, MyPagePagination myPagePagination) {
+
+        log.info("test 4={}", page);
+        log.info("test 5={}", myPagePagination);
+        log.info("test 6={}", memberId);
         return myPageService.getMyFundingList(page, myPagePagination, memberId);
     }
 

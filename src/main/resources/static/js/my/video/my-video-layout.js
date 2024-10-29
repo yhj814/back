@@ -1,12 +1,23 @@
 const myFundingListLayout = document.getElementById("my-funding-list");
 const myFundingListPaging = document.getElementById("my-funding-list-paging");
 
-const showMyFundingList = ({fundingPostsByMember, myPagePagination}) => {
+console.log("5 : ", myFundingListLayout);
+console.log("6 : ", myFundingListPaging);
+
+const showMyFundingList = ({myFundingPosts, myPagePagination}) => {
     let text = ``;
     let pagingText = ``;
 
+    console.log("7 : ", showMyFundingList);
+    console.log("8 : ", myFundingPosts);
+    console.log("9 : ", myPagePagination);
 
-    fundingPostsByMember.forEach((fundingPost) => {
+    myFundingPosts.length;
+    console.log("9.1 : ", myFundingPosts.length);
+
+    myFundingPosts.forEach((myFundingPost, index) => {
+        console.log("10 : ", index, myPagePagination);
+
         text += `
          <div class="list-item my-funding-posts">
             <div class="products-list">
@@ -16,7 +27,7 @@ const showMyFundingList = ({fundingPostsByMember, myPagePagination}) => {
                         ><p
                                 class="my-products-title"
                         >
-                            ${fundingPost.postTitle}
+                            ${myFundingPost.postTitle}
                         </p></a
                         >
                         <div
@@ -26,7 +37,7 @@ const showMyFundingList = ({fundingPostsByMember, myPagePagination}) => {
                             ><p
                                     class="btn smooth my-products-category"
                             >
-                                ${fundingPost.genreType}
+                                ${myFundingPost.genreType}
                             </p></a
                             >
                             <div
@@ -40,7 +51,7 @@ const showMyFundingList = ({fundingPostsByMember, myPagePagination}) => {
                                 <div
                                         class="timeandcontent smooth"
                                 >
-                                   ${timeForToday(fundingPost.createdDate)}
+                                   ${timeForToday(myFundingPost.createdDate)}
                                 </div>
                             </div>
                         </div>
@@ -48,7 +59,7 @@ const showMyFundingList = ({fundingPostsByMember, myPagePagination}) => {
                         ><p
                                 class="timeandcontent content products-description"
                         >
-                            ${fundingPost.postContent}
+                            ${myFundingPost.postContent}
                         </p></a
                         >
                     </div>
@@ -70,7 +81,7 @@ const showMyFundingList = ({fundingPostsByMember, myPagePagination}) => {
                             src="/images/member/member-image.jpg"
                         />
                         <p class="author-name">
-                            ${fundingPost.profileNickname}
+                            ${myFundingPost.profileNickname}
                         </p>
                     </div>
                     <div class="flex-box">
@@ -130,6 +141,8 @@ const showMyFundingList = ({fundingPostsByMember, myPagePagination}) => {
     });
     myFundingListLayout.innerHTML = text;
 
+    console.log("12 : ", myFundingListLayout);
+
 
     if(myPagePagination.prev){
         pagingText += `
@@ -138,18 +151,19 @@ const showMyFundingList = ({fundingPostsByMember, myPagePagination}) => {
             </li>
         `
     }
-    for(let i = myPagePagination.startPage; i <= myPagePagination.endPage; i++){
+    for(let i=myPagePagination.startPage; i<=myPagePagination.endPage; i++){
         if(myPagePagination.page === i){
-            pagingText += `<li class="page-item"><div class="page-link">${i}</div></li>`
+            pagingText += `<li class="page-item"><div class="page-link active">${i}</div></li>`
         }else{
-            pagingText += `<li class="page-item"><a href="${i}" class="page-link active">${i}</a></li>`
+            pagingText += `<li class="page-item"><a href="${i}" class="page-link">${i}</a></li>`
         }
     }
 
     if(myPagePagination.next) {
         pagingText += `
-            <div><a href="${myPagePagination.endPage + 1}">다음</a></div>
-            <li class="page-item"><a href="${myPagePagination.endPage + 1}" class="page-link">다음</a></li>
+            <li class="page-item">
+                <a href="${myPagePagination.endPage + 1}" class="page-link" style="bottom: -15px"></a>
+            </li>
         `
     }
 

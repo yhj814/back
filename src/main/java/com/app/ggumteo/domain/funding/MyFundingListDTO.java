@@ -9,6 +9,6 @@ import java.util.List;
 @Component
 @Getter @Setter @ToString
 public class MyFundingListDTO {
-    private List<FundingDTO> fundingPosts;
+    private List<FundingDTO> myFundingPosts;
     private MyPagePagination myPagePagination;
 }
