@@ -95,12 +95,8 @@ public class WorkServiceImpl implements WorkService {
 
     @Override
     public int findTotalWithSearch(String genreType, String keyword) {
-        // 검색 조건을 Search 객체에 설정
-        Search searchParams = new Search();
-        searchParams.setKeyword(keyword);
-
-        // genreType과 searchParams를 함께 전달
-        return workDAO.findTotalWithSearch(searchParams, genreType);
+        return workDAO.findTotalWithSearch(genreType, keyword);
     }
+
 
 }

@@ -98,38 +98,51 @@ public class TextWorkController {
         }
     }
 
-    @GetMapping("list")
+    @GetMapping("/list")
     public String list(
-            @RequestParam(required = false) String genreType,
-            @RequestParam(value = "page", defaultValue = "1") int page,
+            @RequestParam(value = "genreType", required = false) String genreType,
             @RequestParam(value = "keyword", required = false) String keyword,
+            @RequestParam(value = "page", defaultValue = "1") int page,
             Model model) {
-        try {
-            // 페이지네이션 객체 생성 및 설정
-            Pagination pagination = new Pagination();
-            pagination.setPage(page);
-
-            // 총 작품 수 계산 (검색어에 맞는 결과 갯수도 포함해야 함)
-            int totalWorks = workService.findTotalWithSearch(genreType, keyword);
-            pagination.setTotal(totalWorks); // 총 작품 수 설정
-            pagination.progress(); // 페이지네이션 계산 진행
-
-            // 검색 조건에 맞는 작품 리스트 가져오기
-            List<WorkDTO> works = workService.findAllWithThumbnailAndSearch(genreType, keyword, pagination);
-
-            model.addAttribute("works", works);
-            model.addAttribute("pagination", pagination);
-            model.addAttribute("genreType", genreType);
-            model.addAttribute("keyword", keyword);  // 검색어 유지
-
-            return "text/list";
-        } catch (Exception e) {
-            log.error("작품 목록을 불러오는 중 오류 발생", e);
-            return "error";
+        // 빈 문자열로 처리
+        if (genreType == null) {
+            genreType = "";
         }
+
+        if (keyword == null) {
+            keyword = "";
+        }
+
+        log.info("검색어: {}", keyword);
+        log.info("장르: {}", genreType);
+        // 페이지네이션 및 검색 로직
+        Pagination pagination = new Pagination();
+        pagination.setPage(page);
+        int totalWorks = workService.findTotalWithSearch(genreType, keyword);
+        pagination.setTotal(totalWorks);
+
+        List<WorkDTO> works = workService.findAllWithThumbnailAndSearch(genreType, keyword, pagination);
+
+        model.addAttribute("works", works);
+        model.addAttribute("pagination", pagination);
+        model.addAttribute("keyword", keyword);
+        model.addAttribute("genreType", genreType);
+
+        return "text/list";
     }
 
 
-
+    @GetMapping("/detail")
+    public void goTodetail(){;}
+//    @GetMapping("/detail/{id}")
+//    public String detail(@PathVariable("id") Long id, Model model) {
+//        // 해당 ID의 게시글을 조회
+//        WorkDTO work = workService.findWorkById(id);
+//
+//        // 게시글 정보를 모델에 추가하여 상세 페이지로 전달
+//        model.addAttribute("work", work);
+//
+//        return "text/detail";  // 상세 페이지 템플릿으로 이동
+//    }
 
 }
