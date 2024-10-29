@@ -66,18 +66,18 @@ public class Pagination {
         this.startRow--;
     }
 
-    // Thymeleaf에서 사용할 수 있는 getter 메서드 추가
-    public boolean isPrev() {
-        return prev;
-    }
-
-    public boolean isNext() {
-        return next;
-    }
-
-    // total을 설정하면 realEnd 값을 자동 계산
-    public void setTotal(int total) {
-        this.total = total;
-        this.realEnd = (int) Math.ceil(total / (double) rowCount); // realEnd는 total을 기반으로 계산됨
-    }
+//    // Thymeleaf에서 사용할 수 있는 getter 메서드 추가
+//    public boolean isPrev() {
+//        return prev;
+//    }
+//
+//    public boolean isNext() {
+//        return next;
+//    }
+//
+//    // total을 설정하면 realEnd 값을 자동 계산
+//    public void setTotal(int total) {
+//        this.total = total;
+//        this.realEnd = (int) Math.ceil(total / (double) rowCount); // realEnd는 total을 기반으로 계산됨
+//    }
 }
