@@ -38,7 +38,6 @@ document.querySelectorAll(".star-rating .star").forEach(function (star) {
     });
 });
 
-// 선택한 별과 그 이후 형제 요소들을 찾는 함수
 function getNextSiblings(elem) {
     let siblings = [];
     siblings.push(elem); // 자신 포함
@@ -48,74 +47,170 @@ function getNextSiblings(elem) {
     return siblings;
 }
 
-// 댓글 아이콘
+// 댓글 아이콘 툴팁
 const replyBtn = document.querySelector(".reply-btn");
-
-// 댓글 말풍선
 const replyPtag = document.querySelector(".action-tooltip-reply");
 
 replyBtn.addEventListener("mouseover", () => {
     replyPtag.style.display = "block";
 });
-
 replyBtn.addEventListener("mouseout", () => {
     replyPtag.style.display = "none";
 });
 
-// // 수수료 물음표 아이콘
-// const chargeIimage = document.querySelector(".charge-image");
-
-// // 수수료 말풍선
-// const chargePtag = document.querySelector(".charge-p");
-
-// chargeIimage.addEventListener("mouseover", () => {
-//     chargePtag.style.display = "block";
-// });
-
-// chargeIimage.addEventListener("mouseout", () => {
-//     chargePtag.style.display = "none";
-// });
-
 // 작품 신고 모달
-var modal = document.getElementById("report-modal");
-var btn = document.getElementById("report-btn");
-var span = document.getElementsByClassName("close")[0];
+const modal = document.getElementById("report-modal");
+const btn = document.getElementById("report-btn");
+const span = document.getElementsByClassName("close")[0];
 
-// 버튼을 클릭하면 모달을 보여줌
 btn.addEventListener("click", () => {
     modal.style.display = "block";
 });
-
-// x  클릭하면 모달을 닫기
 span.addEventListener("click", () => {
     modal.style.display = "none";
 });
-
-// 모달 바깥을 클릭하면 모달을 닫습니다
 window.addEventListener("click", (event) => {
-    if (event.target == modal) {
+    if (event.target === modal) {
         modal.style.display = "none";
     }
 });
 
 // 댓글 신고 모달
-var replyModal = document.getElementById("report-modal-reply");
-var replyReportBtn = document.querySelector(".btn-comment-report");
-var spanReply = document.getElementsByClassName("modal-reply-close")[0];
+const replyModal = document.getElementById("report-modal-reply");
+const replyReportBtn = document.querySelector(".btn-comment-report");
+const spanReply = document.getElementsByClassName("modal-reply-close")[0];
 
-// 버튼을 클릭하면 모달을 보여줌
 replyReportBtn.addEventListener("click", () => {
     replyModal.style.display = "block";
 });
-
-// x  클릭하면 모달을 닫기
 spanReply.addEventListener("click", () => {
     replyModal.style.display = "none";
 });
-
-// 모달 바깥을 클릭하면 모달을 닫습니다
 window.addEventListener("click", (event) => {
-    if (event.target == replyModal) {
+    if (event.target === replyModal) {
         replyModal.style.display = "none";
     }
+});
+
+// 비동기로 댓글 가져오기
+async function loadComments(page = 1) {
+    try {
+        const response = await fetch(`/api/comments?workId=${workId}&page=${page}`);
+        const data = await response.json();
+
+        const commentContainer = document.getElementById("comment-row");
+        commentContainer.innerHTML = ""; // 기존 댓글 내용 초기화
+
+        data.comments.forEach((comment) => {
+            const commentBox = document.createElement("div");
+            commentBox.className = "comment-box";
+            commentBox.innerHTML = `
+                <div class="comment-wrapper">
+                    <div class="write-user">
+                        <img src="/path/to/profile/${comment.profileImage}" class="comment-writer-img" />
+                        <div class="comment-writer-name">
+                            <div class="writer-name">${comment.profileNickName}</div>
+                            ${
+                comment.isAuthor
+                    ? `<button class="btn-comment-delete cursor" onclick="deleteComment(${comment.id})">삭제</button>`
+                    : ""
+            }
+                            <button class="btn-comment-report cursor">신고</button>
+                        </div>
+                    </div>
+                    <div class="comment">
+                        <a class="comment-content">${comment.replyContent}</a>
+                    </div>
+                    <div class="comment-date-created">${comment.createdDate}</div>
+                    <div class="review-score">${comment.star}</div>
+                </div>
+            `;
+            commentContainer.appendChild(commentBox);
+        });
+
+        // 댓글 수 업데이트
+        document.querySelectorAll(".reply-count").forEach((el) => (el.textContent = data.totalCount));
+        renderPagination(data.pagination);
+    } catch (error) {
+        console.error("Error loading comments:", error);
+    }
+}
+
+// 댓글 삭제 기능
+async function deleteComment(commentId) {
+    try {
+        const response = await fetch(`/api/comments/${commentId}`, {
+            method: "DELETE",
+        });
+        if (response.ok) {
+            loadComments(); // 댓글 목록 새로고침
+        } else {
+            console.error("Failed to delete comment");
+        }
+    } catch (error) {
+        console.error("Error deleting comment:", error);
+    }
+}
+
+// 댓글 작성 기능
+document.querySelector(".btn-create-comment").addEventListener("click", async (event) => {
+    event.preventDefault();
+
+    const content = document.getElementById("comment").value;
+    const starRating = document.querySelector(".star.selected").getAttribute("data-value");
+    const authorName = document.querySelector(".comment-writer-name").textContent;
+
+    if (!content) return alert("댓글 내용을 입력하세요.");
+
+    const commentData = { workId, content, star: starRating, authorName };
+    try {
+        const response = await fetch("/api/comments", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(commentData),
+        });
+        if (response.ok) {
+            loadComments(); // 댓글 새로고침
+            document.getElementById("comment").value = ""; // 댓글 입력창 초기화
+        } else {
+            console.error("Failed to submit comment");
+        }
+    } catch (error) {
+        console.error("Error submitting comment:", error);
+    }
+});
+
+// 댓글 페이징
+function renderPagination(pagination) {
+    const paginationContainer = document.querySelector(".pagination-box");
+    paginationContainer.innerHTML = "";
+
+    if (pagination.hasPreviousPage) {
+        const prevLink = document.createElement("a");
+        prevLink.className = "page-link";
+        prevLink.textContent = "이전";
+        prevLink.onclick = () => loadComments(pagination.previousPage);
+        paginationContainer.appendChild(prevLink);
+    }
+
+    for (let i = pagination.startPage; i <= pagination.endPage; i++) {
+        const pageLink = document.createElement("a");
+        pageLink.className = `page-link ${pagination.currentPage === i ? "active" : ""}`;
+        pageLink.textContent = i;
+        pageLink.onclick = () => loadComments(i);
+        paginationContainer.appendChild(pageLink);
+    }
+
+    if (pagination.hasNextPage) {
+        const nextLink = document.createElement("a");
+        nextLink.className = "page-link";
+        nextLink.textContent = "다음";
+        nextLink.onclick = () => loadComments(pagination.nextPage);
+        paginationContainer.appendChild(nextLink);
+    }
+}
+
+// 초기 로드
+document.addEventListener("DOMContentLoaded", () => {
+    loadComments(); // 댓글 불러오기
 });

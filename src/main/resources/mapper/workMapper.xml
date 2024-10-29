@@ -13,14 +13,22 @@
         select
             w.id, w.work_price, w.file_content, w.read_count, w.genre_type,
             p.post_title, p.post_content, p.member_profile_id, p.created_date, p.updated_date,
+            f.file_name as thumbnail_file_name, f.file_path as thumbnail_file_path,
             mp.profile_nickname
         from
             tbl_work w
                 join tbl_post p on w.id = p.id
                 join tbl_member_profile mp on p.member_profile_id = mp.id
+                left join (
+                select pf.post_id, f.file_name, f.file_path
+                from tbl_post_file pf
+                         join tbl_file f on pf.id = f.id
+                where pf.id = (select max(id) from tbl_post_file where post_id = pf.post_id)
+            ) as f on f.post_id = p.id
         where
             w.id = #{id}
     </select>
+
 
     <!-- 조회수 증가 -->
     <update id="increaseReadCount" parameterType="Long">
@@ -127,5 +135,4 @@
             pf.post_id = #{postId}
         order by pf.id
     </select>
-
 </mapper>

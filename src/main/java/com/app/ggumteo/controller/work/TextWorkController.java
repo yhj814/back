@@ -168,17 +168,25 @@ public class TextWorkController {
 
 
 
-    @GetMapping("/detail")
-    public void goTodetail(){;}
-//    @GetMapping("/detail/{id}")
-//    public String detail(@PathVariable("id") Long id, Model model) {
-//        // 해당 ID의 게시글을 조회
-//        WorkDTO work = workService.findWorkById(id);
-//
-//        // 게시글 정보를 모델에 추가하여 상세 페이지로 전달
-//        model.addAttribute("work", work);
-//
-//        return "text/detail";  // 상세 페이지 템플릿으로 이동
-//    }
+    @GetMapping("/detail/{id}")
+    public String detail(@PathVariable("id") Long id, Model model) {
+        // 작품 기본 정보를 조회
+        WorkDTO work = workService.findWorkById(id);
+
+        // 조회수 증가
+        workService.incrementReadCount(id);
+        log.info("Detail view의 WorkDTO: {}", work);
+
+
+        // 작품에 연결된 다중 파일 조회
+        List<PostFileDTO> postFiles = workService.findFilesByPostId(id);
+
+        // 모델에 데이터 추가
+        model.addAttribute("work", work); // 작품 기본 정보
+        model.addAttribute("postFiles", postFiles); // 다중 파일 정보
+
+        return "text/detail";  // 상세 페이지 템플릿으로 이동
+    }
+
 
 }
