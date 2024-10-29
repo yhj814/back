@@ -334,6 +334,20 @@ li:first-child > .page-link {
     text-decoration: none;
     border: 1px solid #00a878;
 }
+.page-item.active .page-link {
+    font-weight: bold;
+    color: #ffffff;
+    background-color: #00a878;
+    border-color: black;
+    cursor: default;
+}
+
+.page-item.disabled .page-link {
+    color: #6c757d;
+    pointer-events: none;
+    cursor: not-allowed;
+}
+
 .theme-ggumteo li {
     height: 100%;
     margin-left: 4px;

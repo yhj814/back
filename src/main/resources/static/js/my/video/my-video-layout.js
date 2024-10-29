@@ -1,13 +1,14 @@
 const myFundingListLayout = document.getElementById("my-funding-list");
+const myFundingListPaging = document.getElementById("my-funding-list-paging");
 
-const showList = (members) => {
+const showMyFundingList = ({fundingPostsByMember, myPagePagination}) => {
     let text = ``;
-    console.log("들어옴")
-    console.log(members)
+    let pagingText = ``;
 
-    members.forEach((member) => {
+
+    fundingPostsByMember.forEach((fundingPost) => {
         text += `
-         <div class="list-item">
+         <div class="list-item my-funding-posts">
             <div class="products-list">
                 <div class="flex-box">
                     <div class="products-text">
@@ -15,7 +16,7 @@ const showList = (members) => {
                         ><p
                                 class="my-products-title"
                         >
-                            ${member.postTitle}
+                            ${fundingPost.postTitle}
                         </p></a
                         >
                         <div
@@ -25,7 +26,7 @@ const showList = (members) => {
                             ><p
                                     class="btn smooth my-products-category"
                             >
-                                ${member.genreType}
+                                ${fundingPost.genreType}
                             </p></a
                             >
                             <div
@@ -39,7 +40,7 @@ const showList = (members) => {
                                 <div
                                         class="timeandcontent smooth"
                                 >
-                                   ${timeForToday(member.createdDate)}
+                                   ${timeForToday(fundingPost.createdDate)}
                                 </div>
                             </div>
                         </div>
@@ -47,7 +48,7 @@ const showList = (members) => {
                         ><p
                                 class="timeandcontent content products-description"
                         >
-                            ${member.postContent}
+                            ${fundingPost.postContent}
                         </p></a
                         >
                     </div>
@@ -69,7 +70,7 @@ const showList = (members) => {
                             src="/images/member/member-image.jpg"
                         />
                         <p class="author-name">
-                            ${member.profileNickname}
+                            ${fundingPost.profileNickname}
                         </p>
                     </div>
                     <div class="flex-box">
@@ -120,12 +121,39 @@ const showList = (members) => {
                         </div>
                     </div>
                 </div>
+                <div class="setting-table" style="border-top: 1px solid rgb(224, 224, 224); display: none;">
+<!--                settin-table -->
+                </div>
             </div>
         </div>
             `;
     });
-    myFundingListLayout.innerHTML += text;
+    myFundingListLayout.innerHTML = text;
 
+
+    if(myPagePagination.prev){
+        pagingText += `
+            <li class="page-item">
+                <a href="${myPagePagination.startPage - 1}" class="page-link" id="back" style="bottom: -15px"></a>
+            </li>
+        `
+    }
+    for(let i = myPagePagination.startPage; i <= myPagePagination.endPage; i++){
+        if(myPagePagination.page === i){
+            pagingText += `<li class="page-item"><div class="page-link">${i}</div></li>`
+        }else{
+            pagingText += `<li class="page-item"><a href="${i}" class="page-link active">${i}</a></li>`
+        }
+    }
+
+    if(myPagePagination.next) {
+        pagingText += `
+            <div><a href="${myPagePagination.endPage + 1}">다음</a></div>
+            <li class="page-item"><a href="${myPagePagination.endPage + 1}" class="page-link">다음</a></li>
+        `
+    }
+
+    myFundingListPaging.innerHTML = pagingText;
 }
 
 function timeForToday(datetime) {
@@ -163,4 +191,16 @@ function timeForToday(datetime) {
     gap = Math.floor(gap / 12);
 
     return `${gap}년 전`;
+}
+
+
+const showFundingBuyerList = (members) => {
+    let text = ``;
+
+    members.forEach((member) => {
+        text += `
+            `;
+    });
+    myFundingListLayout.innerHTML += text;
+
 }

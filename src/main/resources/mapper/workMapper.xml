@@ -62,15 +62,18 @@
     </delete>
 
     <!-- 작품 목록 조회 및 검색 -->
-    <select id="selectAllWithThumbnailAndSearch" resultType="workDTO">
+    <select id="selectAllWithThumbnailAndSearch" resultType="workDTO" parameterType="map">
         select
         w.id, w.work_price, w.read_count, w.genre_type,
         p.post_title, p.post_content, p.member_profile_id, p.created_date, p.updated_date,
         f.file_name as thumbnail_file_name, f.file_path as thumbnail_file_path,
         mp.profile_nickname as profile_nickname
-        from tbl_work w
-        join tbl_post p on w.id = p.id
-        join tbl_member_profile mp on p.member_profile_id = mp.id
+        from
+        tbl_work w
+        join
+        tbl_post p on w.id = p.id
+        join
+        tbl_member_profile mp on p.member_profile_id = mp.id
         left join (
         select pf.post_id, f.file_name, f.file_path
         from tbl_post_file pf
@@ -80,9 +83,9 @@
         where w.id is not null
         <if test="keyword != null and keyword != ''">
             and (
-            p.post_title like '%' || #{keyword} || '%'
-            or p.post_content like '%' || #{keyword} || '%'
-            or mp.profile_nickname like '%' || #{keyword} || '%'
+            p.post_title like concat('%', #{keyword}, '%')
+            or p.post_content like concat('%', #{keyword}, '%')
+            or mp.profile_nickname like concat('%', #{keyword}, '%')
             )
         </if>
         <if test="genreType != null and genreType != ''">
@@ -94,17 +97,18 @@
 
 
     <!-- 검색 조건이 포함된 총 작품 수 조회 -->
+<!--   꼭 concat 써라 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 제발 -->
     <select id="selectTotalWithSearch" parameterType="map">
         select count(*)
         from tbl_work w
         join tbl_post p on w.id = p.id
         join tbl_member_profile mp on p.member_profile_id = mp.id
         where w.id is not null
-        <if test="search.keyword != null and search.keyword != ''">
+        <if test="keyword != null and keyword != ''">
             and (
-            p.post_title like '%' || #{search.keyword} || '%'
-            or p.post_content like '%' || #{search.keyword} || '%'
-            or mp.profile_nickname like '%' || #{search.keyword} || '%'
+            p.post_title like concat('%', #{keyword}, '%')
+            or p.post_content like concat('%', #{keyword}, '%')
+            or mp.profile_nickname like concat('%', #{keyword}, '%')
             )
         </if>
         <if test="genreType != null and genreType != ''">
