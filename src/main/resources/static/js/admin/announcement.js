@@ -54,3 +54,29 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 });
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    function loadAnnouncements(page) {
+        fetch(`/admin/announcements/list?page=${page}`)
+            .then(response => response.text())
+            .then(html => {
+                document.querySelector(".announcement-container").innerHTML = html;
+            })
+            .catch(error => console.error("Error loading announcements:", error));
+    }
+
+    document.addEventListener("click", function (e) {
+        if (e.target.classList.contains("pagination-page-link") ||
+            e.target.classList.contains("pagination-prev-link") ||
+            e.target.classList.contains("pagination-next-link")) {
+            e.preventDefault(); // 링크 기본 동작 방지
+            const page = e.target.getAttribute("data-page"); // data-page 속성에서 페이지 번호 가져옴
+            if (page) {
+                loadAnnouncements(page);
+            }
+        }
+    });
+});
+
+

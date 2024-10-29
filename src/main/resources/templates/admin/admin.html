@@ -655,31 +655,20 @@
                                         </div>
 
                                         <!-- 공지사항 목록 뿌리는곳 -->
-                                        <div class="apply-table-row" th:each="announcement :${announcements}">
+                                        <div th:each="announcement : ${announcements}" class="apply-table-row">
                                             <div class="apply-table-cell">
-                                                <input
-                                                        type="checkbox"
-                                                        class="apply-checkbox"
-                                                />
+                                                <input type="checkbox" class="apply-checkbox" />
                                             </div>
                                             <div class="apply-table-cell" th:text="${announcement.id}"></div>
-                                            <div class="apply-table-cell" th:text="${announcement.createdDate}">
-                                            </div>
+                                            <div class="apply-table-cell" th:text="${announcement.createdDate}"></div>
                                             <div class="apply-table-cell" th:text="${announcement.announcementTitle}">
-
                                             </div>
                                             <div class="apply-table-cell" th:text="${announcement.announcementContent}">
                                             </div>
                                             <div class="apply-table-cell">
-                                                <button
-                                                        class="edit-btn status notice-edit"
-                                                >
-                                                    수정
-                                                </button>
+                                                <button class="edit-btn status notice-edit">수정</button>
                                             </div>
-                                            <div class="apply-table-cell">
-                                                <!-- 수정 날짜가 null이거나 비어있을 경우 "-" 표시 -->
-                                                <span th:text="${announcement.updatedDate != null ? announcement.updatedDate : '-'}"></span>
+                                            <div class="apply-table-cell" th:text="${announcement.updatedDate}">
                                             </div>
                                         </div>
                                     </div>
@@ -687,34 +676,23 @@
                                 <nav class="pagination">
                                     <ul class="pagination-list">
                                         <!-- 이전 페이지로 이동하는 버튼 -->
-                                        <li class="pagination-prev" th:if="${pagination.prev}">
-                                            <a
-                                                    th:href="@{/admin/announcements(page=${pagination.startPage - 1})}"
-                                                    class="pagination-prev-link"
-                                                    rel="prev nofollow"
-                                            >
+                                        <li th:classappend="${pagination.page > 1} ? '' : 'disabled'">
+                                            <a href="#" th:attr="data-page=${pagination.page - 1}"
+                                               class="pagination-prev-link" rel="prev nofollow">
                                                 <span class="pagination-prev-icon" aria-hidden="true">‹</span>
                                             </a>
                                         </li>
 
                                         <!-- 페이지 번호 버튼 -->
-                                        <li class="pagination-page" th:each="i : ${#numbers.sequence(pagination.startPage, pagination.endPage)}">
-                                            <a
-                                                    th:href="@{/admin/announcements(page=${i})}"
-                                                    class="pagination-page-link"
-                                                    th:class="${i == pagination.page ? 'active' : ''}"
-                                            >
-                                                <span th:text="${i}"></span>
-                                            </a>
+                                        <li th:each="i : ${#numbers.sequence(1, pagination.realEnd)}"
+                                            th:classappend="${i == pagination.page} ? 'active'">
+                                            <a href="#" th:attr="data-page=${i}" th:text="${i}" class="pagination-page-link"></a>
                                         </li>
 
                                         <!-- 다음 페이지로 이동하는 버튼 -->
-                                        <li class="pagination-next" th:if="${pagination.next}">
-                                            <a
-                                                    th:href="@{/admin/announcements(page=${pagination.startPage + 1})}"
-                                                    class="pagination-next-link"
-                                                    rel="next nofollow"
-                                            >
+                                        <li th:classappend="${pagination.page < pagination.realEnd} ? '' : 'disabled'">
+                                            <a href="#" th:attr="data-page=${pagination.page + 1}"
+                                               class="pagination-next-link" rel="next nofollow">
                                                 <span class="pagination-next-icon" aria-hidden="true">›</span>
                                             </a>
                                         </li>
@@ -5057,46 +5035,6 @@
                                         </div>
 
                                         <!-- Example row (Initial data) -->
-                                        <table>
-                                            <thead>
-                                            <tr>
-                                                <th>선택</th>
-                                                <th>번호</th>
-                                                <th>작성일</th>
-                                                <th>문의 제목</th>
-                                                <th>문의 내용</th>
-                                                <th>작성자</th>
-                                                <th>이메일</th>
-                                                <th>상태</th>
-                                                <th>답변 날짜</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            <tr th:each="inquiry, iterStat : ${inquiries}">
-                                                <div class="apply-table-row">
-                                                    <div class="apply-table-cell">
-                                                        <input type="checkbox" class="apply-checkbox" />
-                                                    </div>
-                                                    <div class="apply-table-cell" th:text="${iterStat.index + 1}"></div>
-                                                    <div class="apply-table-cell" th:text="${inquiry.postCreatedDate}"></div>
-                                                    <div class="apply-table-cell" th:text="${inquiry.postTitle}"></div>
-                                                    <div class="apply-table-cell" th:text="${inquiry.postContent}"></div>
-                                                    <div class="apply-table-cell" th:text="${inquiry.profileName}"></div>
-                                                    <div class="apply-table-cell" th:text="${inquiry.profileEmail}"></div>
-                                                    <div class="apply-table-cell">
-                                                        <button class="answered-btn status"
-                                                                th:class="${inquiry.inquiryStatus == '0' ? 'unanswered' : 'answered'}"
-                                                                th:text="${inquiry.inquiryStatus == '0' ? '미답변' : '답변 완료'}">
-                                                        </button>
-                                                    </div>
-                                                    <div class="apply-table-cell" th:text="${inquiry.adminAnswerCreatedDate}"></div>
-                                                </div>
-                                            </tr>
-                                            <tr th:if="${#lists.isEmpty(inquiries)}">
-                                                <td colspan="9">조회된 문의 사항이 없습니다.</td>
-                                            </tr>
-                                            </tbody>
-                                        </table>
                                         <div class="apply-table-row">
                                             <div class="apply-table-cell">
                                                 <input
