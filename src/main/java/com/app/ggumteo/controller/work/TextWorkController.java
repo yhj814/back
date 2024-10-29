@@ -8,6 +8,7 @@ import com.app.ggumteo.domain.file.PostFileDTO;
 import com.app.ggumteo.domain.file.PostFileVO;
 import com.app.ggumteo.domain.member.MemberVO;
 import com.app.ggumteo.domain.post.PostVO;
+import com.app.ggumteo.domain.reply.ReplyDTO;
 import com.app.ggumteo.domain.work.WorkDTO;
 import com.app.ggumteo.domain.work.WorkVO;
 import com.app.ggumteo.mapper.post.PostMapper;
@@ -15,6 +16,7 @@ import com.app.ggumteo.mapper.work.WorkMapper;
 import com.app.ggumteo.pagination.Pagination;
 import com.app.ggumteo.search.Search;
 import com.app.ggumteo.service.file.PostFileService;
+import com.app.ggumteo.service.reply.ReplyService;
 import com.app.ggumteo.service.work.WorkService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -35,9 +37,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Controller
 @RequestMapping("/text/*")
@@ -47,6 +47,7 @@ public class TextWorkController {
     private final WorkService workService;
     private final HttpSession session;
     private final PostFileService postFileService;
+    private final ReplyService replyService;
 
     // 모든 요청 전 세션에 테스트용 사용자 정보 설정
     @ModelAttribute
@@ -188,5 +189,20 @@ public class TextWorkController {
         return "text/detail";  // 상세 페이지 템플릿으로 이동
     }
 
+    // WorkController에 추가할 댓글 관리 메서드들
+    @GetMapping("/api/replies")
+    @ResponseBody
+    public ResponseEntity<?> getRepliesByWorkId(@RequestParam Long workId, @RequestParam(defaultValue = "1") int page) {
+        List<ReplyDTO> replies = replyService.selectRepliesByWorkId(workId);
+        int totalReplies = replyService.countRepliesByWorkId(workId);
+        double averageStar = replyService.selectAverageStarByWorkId(workId);
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("replies", replies);
+        response.put("totalCount", totalReplies);
+        response.put("averageStar", averageStar);
+
+        return ResponseEntity.ok(response);
+    }
 
 }

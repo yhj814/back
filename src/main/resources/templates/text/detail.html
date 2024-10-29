@@ -20,7 +20,7 @@
                 </a>
             </div>
         </div>
-        <div class="layout">
+        <div class="layout" data-work-id="${work.id}">
             <!-- 중간메인내용 -->
             <div class="container-wrapper">
                 <!-- 메인내용 -->
@@ -190,119 +190,118 @@
                         <div class="comment-area">
                             <div class="comment-count">
                                 댓글
-                                <a class="count-number reply-count">1</a>
+                                <a class="count-number reply-count" id="comment-count">0</a>
                             </div>
                             <div class="comment-row" id="comment-row">
-                                <div class="comment-list">
-                                    <div class="comment-group">
-                                        <div class="comment-box">
-                                            <div class="comment-wrapper">
-                                                <div class="write-user">
-                                                    <img
-                                                        src="https://yozm.wishket.com/static/img/default_avatar.png"
-                                                        class="comment-writer-img"
-                                                    />
-                                                    <div
-                                                        class="comment-writer-name"
-                                                    >
-                                                        <div
-                                                            class="writer-name"
-                                                        >
-                                                            댓글작성자
-                                                        </div>
-                                                        <div
-                                                            class="btn-comment-action"
-                                                        >
-                                                            <button
-                                                                class="btn-comment-delete cursor"
-                                                            >
-                                                                삭제
-                                                            </button>
-                                                            <img
-                                                                src="/static/images/video/report.jpg"
-                                                            />
-                                                            <button
-                                                                class="btn-comment-report cursor"
-                                                            >
-                                                                신고
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="comment">
-                                                    <a class="comment-content">
-                                                        댓글내용
-                                                    </a>
-                                                </div>
-                                                <div
-                                                    class="comment-date-created"
-                                                >
-                                                    2024.10.23
-                                                    <div class="comment-review">
-                                                        <div class="review-box">
-                                                            <div
-                                                                class="star-box"
-                                                            >
-                                                                <img
-                                                                    src="https://www.wishket.com/static/renewal/img/project/wishket-project-portfolio/icon-review-star-full.png"
-                                                                />
-                                                            </div>
-                                                            <span
-                                                                class="review-score"
-                                                                >5.0</span
-                                                            >
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="center-text pagination-box">
-                                    <ul class="pagination theme-ggumteo">
-                                        <li class="page-item">
-                                            <a id="page-btn" class="page-link"
-                                                >이전</a
-                                            >
-                                        </li>
-                                        <li class="page-item">
-                                            <a
-                                                id="page-btn"
-                                                class="page-link active"
-                                                >1</a
-                                            >
-                                        </li>
-                                        <li class="page-item">
-                                            <a id="page-btn" class="page-link"
-                                                >2</a
-                                            >
-                                        </li>
-                                        <li class="page-item">
-                                            <a id="page-btn" class="page-link"
-                                                >3</a
-                                            >
-                                        </li>
-                                        <li class="page-item">
-                                            <a id="page-btn" class="page-link"
-                                                >4</a
-                                            >
-                                        </li>
-                                        <li class="page-item">
-                                            <a id="page-btn" class="page-link"
-                                                >5</a
-                                            >
-                                        </li>
-                                        <!-- li채로 복사 -->
-                                        <li class="page-item">
-                                            <a id="page-btn" class="page-link"
-                                                >다음</a
-                                            >
-                                        </li>
-                                    </ul>
+<!--                                <div class="comment-list">-->
+<!--                                    <div class="comment-group">-->
+<!--                                        <div class="comment-box">-->
+<!--                                            <div class="comment-wrapper">-->
+<!--                                                <div class="write-user">-->
+<!--                                                    <img-->
+<!--                                                        src="https://yozm.wishket.com/static/img/default_avatar.png"-->
+<!--                                                        class="comment-writer-img"-->
+<!--                                                    />-->
+<!--                                                    <div-->
+<!--                                                        class="comment-writer-name"-->
+<!--                                                    >-->
+<!--                                                        <div-->
+<!--                                                            class="writer-name"-->
+<!--                                                        >-->
+<!--                                                            댓글작성자-->
+<!--                                                        </div>-->
+<!--                                                        <div-->
+<!--                                                            class="btn-comment-action"-->
+<!--                                                        >-->
+<!--                                                            <button-->
+<!--                                                                class="btn-comment-delete cursor"-->
+<!--                                                            >-->
+<!--                                                                삭제-->
+<!--                                                            </button>-->
+<!--                                                            <img-->
+<!--                                                                src="/static/images/video/report.jpg"-->
+<!--                                                            />-->
+<!--                                                            <button-->
+<!--                                                                class="btn-comment-report cursor"-->
+<!--                                                            >-->
+<!--                                                                신고-->
+<!--                                                            </button>-->
+<!--                                                        </div>-->
+<!--                                                    </div>-->
+<!--                                                </div>-->
+<!--                                                <div class="comment">-->
+<!--                                                    <a class="comment-content">-->
+<!--                                                        댓글내용-->
+<!--                                                    </a>-->
+<!--                                                </div>-->
+<!--                                                <div-->
+<!--                                                    class="comment-date-created"-->
+<!--                                                >-->
+<!--                                                    2024.10.23-->
+<!--                                                    <div class="comment-review">-->
+<!--                                                        <div class="review-box">-->
+<!--                                                            <div-->
+<!--                                                                class="star-box"-->
+<!--                                                            >-->
+<!--                                                                <img-->
+<!--                                                                    src="https://www.wishket.com/static/renewal/img/project/wishket-project-portfolio/icon-review-star-full.png"-->
+<!--                                                                />-->
+<!--                                                            </div>-->
+<!--                                                            <span-->
+<!--                                                                class="review-score"-->
+<!--                                                                >5.0</span-->
+<!--                                                            >-->
+<!--                                                        </div>-->
+<!--                                                    </div>-->
+<!--                                                </div>-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+                                <div id="pagination" class="center-text pagination-box">
+<!--                                    <ul class="pagination theme-ggumteo">-->
+<!--                                        <li class="page-item">-->
+<!--                                            <a id="page-btn" class="page-link"-->
+<!--                                                >이전</a-->
+<!--                                            >-->
+<!--                                        </li>-->
+<!--                                        <li class="page-item">-->
+<!--                                            <a-->
+<!--                                                id="page-btn"-->
+<!--                                                class="page-link active"-->
+<!--                                                >1</a-->
+<!--                                            >-->
+<!--                                        </li>-->
+<!--                                        <li class="page-item">-->
+<!--                                            <a id="page-btn" class="page-link"-->
+<!--                                                >2</a-->
+<!--                                            >-->
+<!--                                        </li>-->
+<!--                                        <li class="page-item">-->
+<!--                                            <a id="page-btn" class="page-link"-->
+<!--                                                >3</a-->
+<!--                                            >-->
+<!--                                        </li>-->
+<!--                                        <li class="page-item">-->
+<!--                                            <a id="page-btn" class="page-link"-->
+<!--                                                >4</a-->
+<!--                                            >-->
+<!--                                        </li>-->
+<!--                                        <li class="page-item">-->
+<!--                                            <a id="page-btn" class="page-link"-->
+<!--                                                >5</a-->
+<!--                                            >-->
+<!--                                        </li>-->
+<!--                                        &lt;!&ndash; li채로 복사 &ndash;&gt;-->
+<!--                                        <li class="page-item">-->
+<!--                                            <a id="page-btn" class="page-link"-->
+<!--                                                >다음</a-->
+<!--                                            >-->
+<!--                                        </li>-->
+<!--                                    </ul>-->
                                 </div>
                                 <div class="comment-writer">
-                                    <form
-                                        action=""
+                                    <form onsubmit="event.preventDefault();"
                                         class="reply-and-review-form"
                                     >
                                         <div class="write-user">
@@ -380,34 +379,11 @@
                                 <div class="work-price">
                                     <h3 class="price">
                                         <span>작품 가격</span>
-                                        <span class="price-detail"
-                                            >10,000원</span
+                                        <span class="price-detail" th:text="${work.workPrice + '원'}"
+                                            ></span
                                         >
                                     </h3>
-                                    <!-- <h3 class="price-charge">
-                                        <span
-                                            >수수료
-                                            <img
-                                                class="charge-image"
-                                                src="https://d2v80xjmx68n4w.cloudfront.net/assets/order/help.png"
-                                            />
-                                            <p
-                                                class="action-tooltip bottom-action charge-p"
-                                            >
-                                                구매가격의 10%
-                                            </p>
-                                        </span>
-                                        <span class="price-detail">
-                                            1,000원
-                                        </span>
-                                    </h3> -->
-                                    <!-- <div class="line"></div>
-                                    <h3 class="price-total">
-                                        <span>총 결제가격</span>
-                                        <span class="price-detail-total"
-                                            >11,000원</span
-                                        >
-                                    </h3> -->
+
                                 </div>
                             </a>
                             <div class="side-card-list-box">
@@ -759,5 +735,6 @@
             </div>
         </div>
     </body>
+
     <script src="/js/text/detail.js"></script>
 </html>
