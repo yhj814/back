@@ -208,13 +208,13 @@ function timeForToday(datetime) {
 }
 
 
-const showFundingBuyerList = (members) => {
-    let text = ``;
-
-    members.forEach((member) => {
-        text += `
-            `;
-    });
-    myFundingListLayout.innerHTML += text;
-
-}
+// const showFundingBuyerList = (members) => {
+//     let text = ``;
+//
+//     members.forEach((member) => {
+//         text += `
+//             `;
+//     });
+//     myFundingListLayout.innerHTML += text;
+//
+// }

@@ -18,13 +18,5 @@ const myPageService = (() => {
         }
     }
 
-    // const getFundingBuyerList = async (fundingPostId) => {
-    //     const response = await fetch(`/members/video/myFunding/${fundingPostId}`);
-    //     const buyersByFundingPost = await response.json();
-    //
-    //     console.log(buyersByFundingPost)
-    // }
-
-
     return {getMyFundingList: getMyFundingList}
 })()
