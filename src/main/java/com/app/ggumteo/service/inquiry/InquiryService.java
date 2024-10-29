@@ -13,5 +13,5 @@ public interface InquiryService {
 
     List<InquiryDTO> getList(AdminPagination pagination);
 
-    public int getTotal();
+    int getTotal();
 }

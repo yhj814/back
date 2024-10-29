@@ -38,18 +38,17 @@
                 left join
             tbl_admin_answer aa on i.id = aa.inquiry_id
         where
-            p.post_type = 'Inquiry'
+            p.post_type = 'INQUIRY'
         order by
             p.created_date desc
             LIMIT #{pagination.startRow}, #{pagination.rowCount}
     </select>
 
-    <!-- 전체 문의 사항 수 카운트 -->
     <select id="countInquiries" resultType="int">
         select COUNT(*)
         from tbl_post p
                  join tbl_inquiry i on p.id = i.id
-        where p.post_type = 'Inquiry'
+        where p.post_type = 'INQUIRY'
     </select>
 
 
