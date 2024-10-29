@@ -37,7 +37,6 @@ public class CoolSmsService {
 
     // SMS 발송 및 인증번호 생성 메서드
     public String sendSms(String to) throws CoolsmsException {
-        // 발송 요청 제한: 이전 요청 시간 확인 및 제한
         VerificationData existingData = verificationDataMap.get(to);
         if (existingData != null && (System.currentTimeMillis() - existingData.getGeneratedTime()) < EXPIRATION_TIME) {
             throw new CoolsmsException("인증번호 요청이 너무 빈번합니다. 잠시 후 다시 시도해주세요.", 429);
@@ -54,9 +53,17 @@ public class CoolSmsService {
         params.put("type", "sms");
         params.put("text", "인증번호는 [" + verificationCode + "] 입니다.");
 
-        coolsms.send(params); // 메시지 전송
+        try {
+            coolsms.send(params); // 메시지 전송
+            log.info("SMS 발송 성공: {}", params);
+        } catch (CoolsmsException e) {
+            log.error("SMS 발송 실패: {}", e.getMessage());
+            throw e; // 예외 재발생으로 컨트롤러에 전달
+        }
+
         return verificationCode; // 생성된 인증번호 반환
     }
+
 
     // 인증번호 확인 메서드
     public boolean verifyCode(String phoneNumber, String code) {

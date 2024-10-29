@@ -287,7 +287,8 @@
                                             type="text"
                                             value=""
                                     />
-                                    <button class="btn btn-certification-select" type="button" id="ex0">인증번호 요청</button>
+                                    <button class="btn btn-certification-select" type="button" id="requestEmailCode">인증번호 요청</button>
+                                        <img class="loading-icon" id="loadingGif" src="/images/main/loading.gif" alt="Loading...">
                                 </div>
                                     <div class="error-message">
                                         <i
@@ -302,10 +303,13 @@
                                 <label class="control-label required">이메일 인증</label>
                                 <div class="control-wrapper ">
                                     <div class="input-gap">
-                                        <input class="form-control " id="ex1" placeholder="인증번호를 입력하세요." type="text" />
-                                        <button class="btn btn-certification-select" type="button" id="ex2">인증번호 확인</button>
+                                        <input class="form-control " id="emailVerificationCode" placeholder="인증번호를 입력하세요." type="text" />
+                                        <button class="btn btn-certification-select" type="button" id="verifyEmailCode">인증번호 확인</button>
                                     </div>
-                                    <div class="error-message" id="ex3">인증번호를 입력하세요.</div>
+                                    <div class="error-message" id="emailVerificationError" style="display: none;"></div>
+                                    <div class="email-timer-container" style="display: none;">
+                                        <p>인증 유효 시간: <span id="emailTimerDisplay">3:00</span></p>
+                                    </div>
                                 </div>
                             </div>
                             <div class="form-group"
@@ -341,7 +345,13 @@
                                     <button class="btn btn-certification-select" type="button" id="verifyCode">인증번호 확인</button>
                                     </div>
                                     <div class="error-message" id="verificationError">인증번호를 입력하세요.</div>
+                                    <!-- 타이머 표시 영역 -->
+                                    <div class="timer-container" style="display: none;">
+                                        <p>인증번호 유효 시간: <span id="timerDisplay">3:00</span></p>
+                                    </div>
                                 </div>
+
+
                             </div>
                             <div class="form-group">
                                 <label class="control-label"
@@ -445,6 +455,8 @@
 </main>
 <footer></footer>
 </body>
-<script src="/js/main/sign-up2.js"></script>
+<script src="/js/main/email-send.js"></script>
+<script src="/js/main/phone-send.js"></script>
+<script src="/js/main/sign-up.js"></script>
 <script src="/js/audition/application-date.js"></script>
 </html>

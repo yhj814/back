@@ -18,6 +18,21 @@ spring:
       max-file-size: 40MB
       file-size-threshold: 100MB
 
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: topaz7107@gmail.com
+    password: hnjv kisx cmfh spjo
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+          ssl:
+            trust: smtp.gmail.com
+          ssl.protocols: TLSv1.2
+
 coolsms:
   api:
     key: NCS25G6A1FACZMHF
