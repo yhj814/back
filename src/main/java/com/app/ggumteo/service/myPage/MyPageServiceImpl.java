@@ -2,6 +2,7 @@ package com.app.ggumteo.service.myPage;
 
 import com.app.ggumteo.domain.funding.BuyFundingProductDTO;
 import com.app.ggumteo.domain.funding.FundingDTO;
+import com.app.ggumteo.domain.funding.MyFundingListDTO;
 import com.app.ggumteo.domain.member.MemberDTO;
 import com.app.ggumteo.domain.member.MemberVO;
 import com.app.ggumteo.pagination.MyPagePagination;
@@ -10,16 +11,15 @@ import com.app.ggumteo.repository.funding.FundingDAO;
 import com.app.ggumteo.repository.member.MemberDAO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Primary;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
-@Service
+@Repository
 @RequiredArgsConstructor
-@Primary
-@Transactional(rollbackFor = Exception.class)
 public class MyPageServiceImpl implements MyPageService {
     private final MemberDAO memberDAO;
     private final FundingDAO fundingDAO;
@@ -31,8 +31,14 @@ public class MyPageServiceImpl implements MyPageService {
     }
 
     @Override
-    public List<FundingDTO> getMyFundingList(MyPagePagination myPagePagination, Long memberId) {
-        return fundingDAO.findByMemberId(myPagePagination, memberId);
+    public MyFundingListDTO getMyFundingList(int page ,MyPagePagination myPagePagination, Long memberId) {
+        MyFundingListDTO myFundingListDTO = new MyFundingListDTO();
+        myPagePagination.setPage(page);
+        myPagePagination.setTotal(fundingDAO.getTotal(memberId));
+        myPagePagination.progress();
+        myFundingListDTO.setMyPagePagination(myPagePagination);
+        myFundingListDTO.setFundingPosts(fundingDAO.findByMemberId(myPagePagination, memberId));
+        return myFundingListDTO;
     }
 
     @Override

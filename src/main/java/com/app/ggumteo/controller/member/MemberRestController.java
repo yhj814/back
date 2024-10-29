@@ -2,6 +2,7 @@ package com.app.ggumteo.controller.member;
 
 import com.app.ggumteo.domain.funding.BuyFundingProductDTO;
 import com.app.ggumteo.domain.funding.FundingDTO;
+import com.app.ggumteo.domain.funding.MyFundingListDTO;
 import com.app.ggumteo.domain.member.MemberDTO;
 import com.app.ggumteo.domain.member.MemberVO;
 import com.app.ggumteo.pagination.MyPagePagination;
@@ -30,9 +31,10 @@ public class MemberRestController {
 
     // SELECT
     @ResponseBody
-    @GetMapping("/members/video/myFunding/{memberId}")
-    public List<FundingDTO> getMyFundingList(@PathVariable("memberId") Long memberId, MyPagePagination myPagePagination) {
-        return myPageService.getMyFundingList(myPagePagination, memberId);
+    @GetMapping("/members/video/myFunding/{memberId}/{page}")
+    public MyFundingListDTO getMyFundingList(@PathVariable("memberId") Long memberId, @PathVariable("page") int page, MyPagePagination myPagePagination)
+    {
+        return myPageService.getMyFundingList(page, myPagePagination, memberId);
     }
 
 //    // SELECT
