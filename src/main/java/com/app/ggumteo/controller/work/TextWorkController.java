@@ -113,7 +113,6 @@ public class TextWorkController {
         if (genreType == null) genreType = "";
         if (keyword == null) keyword = "";
 
-        log.info("검색어: {}, 장르: {}", keyword, genreType);
 
         // 페이지네이션 설정
         Pagination pagination = new Pagination();
@@ -123,12 +122,8 @@ public class TextWorkController {
         int totalWorks = workService.findTotalWithSearch(genreType, keyword); // 검색 조건을 고려한 총 작품 수
         pagination.setTotal(totalWorks); // 검색 결과에 따른 총 페이지 수 반영
         pagination.progress2();
-        log.info("총 작품 수 (검색 조건 적용): {}", totalWorks);
 
-        // 디버깅: 페이지네이션 정보 확인
-        log.info("Pagination - startPage: {}, endPage: {}, realEnd: {}, prev: {}, next: {}",
-                pagination.getStartPage(), pagination.getEndPage(), pagination.getRealEnd(),
-                pagination.isPrev(), pagination.isNext());
+
 
         // 검색어와 페이지네이션 데이터 기반으로 작품 목록 조회
         List<WorkDTO> works = workService.findAllWithThumbnailAndSearch(genreType, keyword, pagination);
