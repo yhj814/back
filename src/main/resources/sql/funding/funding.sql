@@ -32,11 +32,16 @@ insert into tbl_funding
 values (2, '액션', 5, 50000000, 3000000,1);
 
 
-SELECT f.id, f.genre_type, p.post_title, p.post_content, p.post_type, p.member_profile_id, p.created_date, p.updated_date, mp.profile_nickname, mp.member_id, m.profile_img_url
-FROM
+select f.id, f.genre_type, p.post_title, p.post_content, p.post_type, p.member_profile_id, p.created_date, p.updated_date, mp.profile_nickname, mp.member_id, m.profile_img_url
+from
     tbl_funding f
-        JOIN tbl_post p ON f.id = p.id
-        JOIN tbl_member_profile mp ON p.member_profile_id = mp.id
-        JOIN tbl_member m ON mp.member_id = m.id
-WHERE
-    m.id = 1;
+        join tbl_post p on f.id = p.id
+        join tbl_member_profile mp on p.member_profile_id = mp.id
+        join tbl_member m on mp.member_id = m.id and m.id = 1
+order by f.id desc
+limit 0, 2;
+
+select count(*) from tbl_funding f
+    join tbl_post p on f.id = p.id
+    join tbl_member_profile mp on p.member_profile_id = mp.id
+    join tbl_member m on mp.member_id = m.id and m.id = 1;
