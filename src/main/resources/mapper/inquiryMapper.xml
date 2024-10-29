@@ -3,19 +3,18 @@
 <mapper namespace="com.app.ggumteo.mapper.inquiry.InquiryMapper">
     <!-- 문의사항 삽입 -->
     <insert id="insertInquiry" parameterType="PostDTO">
-        INSERT INTO tbl_post (post_title, post_content, post_type, member_profile_id)
-        VALUES (#{postTitle}, #{postContent}, 'INQUIRY', #{memberProfileId})
+        insert into tbl_post (post_title, post_content, post_type, member_profile_id)
+        values (#{postTitle}, #{postContent}, 'INQUIRY', #{memberProfileId})
     </insert>
 
     <!-- 마지막 삽입된 ID 가져오기 -->
     <select id="getLastInsertId" resultType="Long">
-        SELECT LAST_INSERT_ID()
+        select LAST_INSERT_ID()
     </select>
 
     <!-- tbl_inquiry에 삽입 -->
     <insert id="insertInquiryToTblInquiry" parameterType="PostDTO">
-        INSERT INTO tbl_inquiry (id, inquiry_status)
-        VALUES (#{id}, '0')
+        insert into tbl_inquiry (id, inquiry_status)
+        values (#{id}, '0')
     </insert>
-
 </mapper>

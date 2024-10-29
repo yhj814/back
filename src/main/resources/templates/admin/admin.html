@@ -5100,10 +5100,7 @@
                             </div>
                         </div>
                         <!-- 여기까지 !!영상!! -->
-
-
                     </section>
-
                     <!-- section7: 문의 관리 -->
                     <section id="inquiry-section" class="common-section">
                         <!-- body_header -->
@@ -5122,11 +5119,10 @@
                                 문의 목록을 조회하고 1:1 문의에 답변합니다.
                             </p>
                         </div>
-
                         <div>
                             <div>
                                 <!-- body_layout -->
-                                <div class="common-layout-container inquiry">
+                                <div class="common-layout-container">
                                     <div class="filter-wrap">
                                         <div class="sort-filter-options">
                                                     <span
@@ -5207,26 +5203,8 @@
                                                 답변일자
                                             </div>
                                         </div>
-                                        <!-- 추가-->
-                                                <th:block th:each="inquiry : ${inquiries}">
-                                                    <div class="apply-table-row">
-                                                        <div class="apply-table-cell">
-                                                            <input type="checkbox" class="apply-checkbox"/>
-                                                        </div>
-                                                        <div class="apply-table-cell" th:text="${inquiry.postId}">Post ID</div>
-                                                        <div class="apply-table-cell" th:text="${inquiry.createdDate}">생성 날짜</div>
-                                                        <div class="apply-table-cell" th:text="${inquiry.postTitle}">문의 제목</div>
-                                                        <div class="apply-table-cell" th:text="${inquiry.postContent}">문의 내용</div>
-                                                        <div class="apply-table-cell" th:text="${inquiry.memberName}">회원 이름</div>
-                                                        <div class="apply-table-cell" th:text="${inquiry.memberEmail}">회원 이메일</div>
-                                                        <div class="apply-table-cell">
-                                                            <button  th:class="${inquiry.inquiryStatus == '0' ? 'answered-btn status unanswered' : 'answered-btn status completed'}">
-                                                                <span th:text="${inquiry.inquiryStatus == '0' ? '미답변' : '답변완료'}"></span>
-                                                            </button>
-                                                        </div>
-                                                        <div class="apply-table-cell" th:text="${inquiry.adminAnswerDate}">답변 날짜</div>
-                                                    </div>
-                                                </th:block>
+
+                                        <!-- Example row (Initial data) -->
                                         <div class="apply-table-row">
                                             <div class="apply-table-cell">
                                                 <input
@@ -5234,7 +5212,41 @@
                                                         class="apply-checkbox"
                                                 />
                                             </div>
-                                            <div class="apply-table-cell">2</div>
+                                            <div class="apply-table-cell">1</div>
+                                            <div class="apply-table-cell">
+                                                2024-01-01
+                                            </div>
+                                            <div class="apply-table-cell">
+                                                문의 제목 테스트
+                                            </div>
+
+                                            <div class="apply-table-cell">
+                                                문의 내용 테스트입니다.
+                                            </div>
+                                            <div class="apply-table-cell">
+                                                홍길동
+                                            </div>
+                                            <div class="apply-table-cell">test-service@gmail.com</div>
+                                            <div class="apply-table-cell">
+                                                <button
+                                                        class="answered-btn status unanswered"
+                                                >
+                                                    미답변
+                                                </button>
+                                            </div>
+                                            <div class="apply-table-cell">
+                                                2024-02-02
+                                            </div>
+                                        </div>
+
+                                        <div class="apply-table-row">
+                                            <div class="apply-table-cell">
+                                                <input
+                                                        type="checkbox"
+                                                        class="apply-checkbox"
+                                                />
+                                            </div>
+                                            <div class="apply-table-cell">4</div>
                                             <div class="apply-table-cell">
                                                 2024-01-01
                                             </div>
@@ -5260,43 +5272,24 @@
                                                 2024-02-02
                                             </div>
                                         </div>
-                                        <div class="apply-table-row">
-                                            <div class="apply-table-cell">
-                                                <input
-                                                        type="checkbox"
-                                                        class="apply-checkbox"
-                                                />
-                                            </div>
-                                            <div class="apply-table-cell">postID</div>
-                                            <div class="apply-table-cell">
-                                                post테이블에 created_date
-                                            </div>
-                                            <div class="apply-table-cell">
-                                                문의 제목 (post_title)
-                                            </div>
-
-                                            <div class="apply-table-cell">
-                                                문의 내용 (post_content)
-                                            </div>
-                                            <div class="apply-table-cell">
-                                                홍길동 member테이블에 member_name
-                                            </div>
-                                            <div class="apply-table-cell">member테이블에 member_email</div>
-                                            <div class="apply-table-cell">
-                                                <button
-                                                        class="answered-btn status unanswered"
-                                                >
-                                                    (inquiry테이블에) inquiry_status 0이 미답변 1이 답변
-                                                </button>
-                                            </div>
-                                            <div class="apply-table-cell">
-                                                (admin_answer테이블에) created_date
-                                            </div>
-                                        </div>
                                     </div>
                                 </div>
                                 <nav class="pagination">
                                     <ul class="pagination-list">
+                                        <!-- 처음 페이지로 이동하는 버튼 -->
+                                        <li class="pagination-first">
+                                            <a
+                                                    href="#"
+                                                    class="pagination-first-link"
+                                                    rel="nofollow"
+                                            >
+                                                        <span
+                                                                class="pagination-first-icon"
+                                                                aria-hidden="true"
+                                                        >«</span
+                                                        >
+                                            </a>
+                                        </li>
                                         <!-- 이전 페이지로 이동하는 버튼 -->
                                         <li class="pagination-prev">
                                             <a
@@ -5329,6 +5322,20 @@
                                                                 class="pagination-next-icon"
                                                                 aria-hidden="true"
                                                         >›</span
+                                                        >
+                                            </a>
+                                        </li>
+                                        <!-- 마지막 페이지로 이동하는 버튼 -->
+                                        <li class="pagination-last">
+                                            <a
+                                                    href="#"
+                                                    class="pagination-last-link"
+                                                    rel="nofollow"
+                                            >
+                                                        <span
+                                                                class="pagination-last-icon"
+                                                                aria-hidden="true"
+                                                        >»</span
                                                         >
                                             </a>
                                         </li>
@@ -5416,8 +5423,8 @@
                                 <div class="background-overlay"></div>
                             </div>
                         </div>
-
                     </section>
+
 
                     <!-- section8: 결제 관리 -->
                     <section id="payment-section" class="common-section">
@@ -5962,5 +5969,4 @@
 </svg>
 </body>
 <script src="/js/admin/admin.js"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- jQuery 사용 -->
 </html>

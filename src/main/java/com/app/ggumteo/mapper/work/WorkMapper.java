@@ -9,6 +9,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface WorkMapper {
@@ -41,7 +42,9 @@ public interface WorkMapper {
             @Param("pagination") Pagination pagination
     );
     // 검색 조건이 포함된 총 작품 수 조회
-    int selectTotalWithSearch(@Param("search") Search search, @Param("genreType") String genreType);
+    int selectTotalWithSearch(@Param("genreType") String genreType, @Param("keyword") String keyword);
+
+
 
 
     // 상세보기에서 다중 파일 조회

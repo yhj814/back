@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -63,9 +64,11 @@ public class WorkDAO {
 
 
     // 검색 조건이 포함된 총 작품 수 조회
-    public int findTotalWithSearch(Search searchParams, String genreType) {
-        return workMapper.selectTotalWithSearch(searchParams, genreType);
+    public int findTotalWithSearch(String genreType, String keyword) {
+        return workMapper.selectTotalWithSearch(genreType, keyword);
     }
+
+
 
 
     // 다중 파일 조회 (작품 상세보기)
