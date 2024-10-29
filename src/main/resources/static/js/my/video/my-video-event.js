@@ -8,13 +8,14 @@ myFundingListPaging.addEventListener("click", (e)=>{
     myPageService.getMyFundingList(globalThis.page, memberId, showMyFundingList);
     }
 });
-// const myFundingListToggleButton = document.querySelector(
-//     `.my-funding-posts .btn-icon-edit-my.${member.id}`
-// );
-// console.log(myFundingListToggleButton);
 
-// myFundingListLayout.addEventListener('click', (e) => {
-//         if(e.target.id === "getMyFundingBuyer") {
-//             alert("눌림")
-//         }
-// });
+const myFundingListToggleButton = document.querySelector(
+    `.my-funding-posts .btn-icon-edit-my.${member.id}`
+);
+console.log(myFundingListToggleButton);
+
+myFundingListLayout.addEventListener('click', (e) => {
+        if(e.target.id === "getMyFundingBuyer") {
+            alert("눌림")
+        }
+});

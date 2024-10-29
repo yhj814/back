@@ -87,6 +87,7 @@ const showMyFundingList = ({myFundingPosts, myPagePagination}) => {
                     <div class="flex-box">
                         <div class="btn-wrapper">
                             <button
+                            id="my-funding-Buyer-list-button"
                                 class="btn btn-action btn-icon-edit-my"
                                 name="toggle_btn"
                                 type="button"
@@ -165,6 +166,9 @@ const showMyFundingList = ({myFundingPosts, myPagePagination}) => {
                 <a href="${myPagePagination.endPage + 1}" class="page-link" style="bottom: -15px"></a>
             </li>
         `
+
+        console.log("다음1 : ", myPagePagination.next);
+        console.log("다음2 : ", myPagePagination.endPage + 1);
     }
 
     myFundingListPaging.innerHTML = pagingText;
