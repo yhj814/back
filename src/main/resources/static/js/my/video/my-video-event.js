@@ -10,15 +10,9 @@ myFundingListPaging.addEventListener("click", (e)=>{
 });
 
 myFundingListLayout.addEventListener('click', (e) => {
-    // console.log("4: ", myFundingListLayout);
-    console.log("5: ", e.target);
-    // console.log("6: ", e.target.id === "my-funding-Buyer-button");
-    //     if(e.target.id === "my-funding-Buyer-button") {
-    //         console.log("id: 들어옴");
-    //         console.log(e.target.classList);
-    //     };
-
-    // if(e.target.className === "my-funding-Buyer-button") {
-    //     console.log("className: 들어옴");
-    // };
+        if(e.target.id === "my-funding-buyer-btn") {
+            console.log(e.target);
+            console.log(e.target.classList[1]);
+            console.log(e.target.className);
+        };
 });

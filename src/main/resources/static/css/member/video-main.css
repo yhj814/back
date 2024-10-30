@@ -133,9 +133,6 @@ html {
     width: 298px;
     height: 52px;
 }
-.btn {
-    cursor: pointer;
-}
 .container.mypage .main-content-container .main-content .last-open-mypages .last-open-mypage .last-open-mypage-info {
     margin-left: 24px;
 }
@@ -406,16 +403,10 @@ p {
     border-radius: 8px;
 }
 .container.mypage .main-content-container .products-list .products-author-box .btn {
+    cursor: unset;
     padding: 8px;
     border: 0px;
     background: white;
-}
-.btn-action {
-    cursor: pointer;
-    position: relative;
-    width: 40px;
-    height: 40px;
-    border-radius: 8px;
 }
 .btn-wrapper .action-tooltip.bottom-action {
     top: -44px;
@@ -454,16 +445,14 @@ p {
     transform: translateX(-50%);
 }
 .icon-my-edit-off {
+    cursor: pointer;
     width: 21px;
     height: 21px;
     background-image: url(/images/member/plus.png);
 }
 
-
-.container.mypage .main-content-container .products-list .products-author-box .btn {
-    padding: 8px;
-}
 .icon-my-delete {
+    cursor: pointer;
     width: 24px;
     height: 24px;
     background-image: url(/images/member/delete.png);
@@ -1108,27 +1097,6 @@ body.partners_profile .edit-menu-box .profile-menu-setting .setting-table .setti
     border: 0px;
     background: white;
 }
-.btn-wrapper .action-tooltip.bottom-action {
-    top: -44px;
-    left: 50%;
-    transform: translate(-50%, 16px);
-}
-.btn-wrapper .action-tooltip {
-    opacity: 0;
-    transition: all .4s ease-in-out;
-    cursor: default;
-    position: absolute;
-    width: max-content;
-    color: #fff;
-    background-color: #212121;
-    border-radius: 6px;
-    padding: 2px 6px;
-    font-size: 11px;
-    font-weight: normal;
-    font-stretch: normal;
-    font-style: normal;
-    line-height: 1.27;
-}
 p {
     display: block;
     margin-block-start: 1em;
@@ -1143,17 +1111,6 @@ p {
     position: relative;
     width: max-content;
     border-radius: 8px;
-}
-.btn-wrapper .action-tooltip.bottom-action:after {
-    border-top: 4px solid #212121;
-    border-left: 3px solid rgba(0, 0, 0, 0);
-    border-right: 3px solid rgba(0, 0, 0, 0);
-    border-bottom: 4px solid rgba(0, 0, 0, 0);
-    content: "";
-    position: absolute;
-    top: 18px;
-    left: 50%;
-    transform: translateX(-50%);
 }
 .btn-action {
     cursor: pointer;

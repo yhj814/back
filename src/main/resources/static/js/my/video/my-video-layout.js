@@ -76,8 +76,7 @@ const showMyFundingList = ({myFundingPosts, myPagePagination}) => {
                     <div class="flex-box">
                         <div class="btn-wrapper">
                             <button
-                                id="my-funding-Buyer-button"
-                                class="btn btn-action btn-icon-edit-my ${myFundingPost.id}"
+                                class="btn btn-action btn-icon-edit-my"
                                 name="toggle_btn"
                                 type="button"
                             >
@@ -90,7 +89,8 @@ const showMyFundingList = ({myFundingPosts, myPagePagination}) => {
                                     class="edit-my-off"
                                 >
                                     <div
-                                        class="icon-my-edit-off"
+                                        id="my-funding-buyer-btn"
+                                        class="icon-my-edit-off ${myFundingPost.id}"
                                     ></div>
                                 </div>
                                 <div
@@ -196,10 +196,10 @@ function timeForToday(datetime) {
 }
 
 
-const showFundingBuyerList = (members) => {
+const showFundingBuyerList = (buyersByFundingPostId) => {
     let text = ``;
 
-    members.forEach((member) => {
+    buyersByFundingPostId.forEach((buyerByFundingPostId) => {
         text += `
             `;
     });
