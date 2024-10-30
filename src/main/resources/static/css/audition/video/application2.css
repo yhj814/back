@@ -448,6 +448,7 @@ button, input, select, textarea {
     display: none;
     float: left;
     color: #f33d12;
+    margin-bottom: 10px;
 }
 
 .form-horizontal .form-group:before, .form-horizontal .form-group:after {
@@ -726,6 +727,45 @@ ul, ol {
     margin-bottom: 2px;
 }
 
-.certification-input{
+.certification-input-email{
     display: none;
+}
+
+.certification-input-phone{
+    display: none;
+}
+
+.btn-certification-select {
+    position: relative;
+    padding-right: 25px; /* 버튼 내 여유 공간 추가 */
+}
+
+.loading-icon {
+    position: absolute;
+    right: 23%; /* 버튼 내부 우측 정렬 */
+    top: 56%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+    display: none; /* 기본 상태에서는 숨김 */
+}
+
+.email-timer-container{
+    margin-top: 5px;
+    margin-bottom: 10px;
+    float: left;
+}
+
+.email-timer-container p{
+    color: #2099bb;
+}
+
+.timer-container{
+    margin-top: 5px;
+    margin-bottom: 10px;
+    float: left;
+}
+
+.timer-container p{
+    color: #2099bb;
 }
