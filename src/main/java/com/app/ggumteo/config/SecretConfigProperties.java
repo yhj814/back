@@ -1,6 +1,7 @@
 package com.app.ggumteo.config;
 
 import jakarta.annotation.PostConstruct;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -10,7 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @Configuration
-
+@Getter
 public class SecretConfigProperties {
 
     private static final Logger logger = LoggerFactory.getLogger(SecretConfigProperties.class);
@@ -39,23 +40,5 @@ public class SecretConfigProperties {
         logger.info("Email Password: {}", emailPassword);
     }
 
-    public String getEmailUsername() {
-        return emailUsername;
-    }
 
-    public String getEmailPassword() {
-        return emailPassword;
-    }
-
-    public String getCoolSmsApiKey() {
-        return coolSmsApiKey;
-    }
-
-    public String getCoolSmsApiSecret() {
-        return coolSmsApiSecret;
-    }
-
-    public String getCoolSmsNumber() {
-        return coolSmsNumber;
-    }
 }
