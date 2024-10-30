@@ -51,22 +51,19 @@ public class ReplyController {
 
     // 댓글 작성
     @PostMapping("write")
-    public void write(@RequestBody ReplyDTO replyDTO, HttpSession session, HttpServletResponse response) {
+    public void write(@RequestBody ReplyDTO replyDTO, HttpSession session) {
         MemberProfileVO memberProfile = (MemberProfileVO) session.getAttribute("memberProfile");
 
-        // memberProfile이 없는 경우
         if (memberProfile == null) {
             System.out.println("로그인이 필요합니다.");
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // 401 상태 코드 설정
             return;
         }
 
-        // 댓글 작성 진행
         replyDTO.setProfileNickname(memberProfile.getProfileNickName());
-        replyDTO.setMemberProfileId(memberProfile.getId());
+        replyDTO.setMemberProfileId(memberProfile.getId());  // member_profile_id 설정
         replyService.insertReply(replyDTO);
-
     }
+
 
 
 
@@ -96,4 +93,15 @@ public class ReplyController {
             return ResponseEntity.status(500).body(Map.of("error", "별점 평균 조회 중 오류가 발생했습니다."));
         }
     }
+    // 댓글 수 조회
+    @GetMapping("/count")
+    public ResponseEntity<?> countRepliesByWorkId(@RequestParam Long workId) {
+        try {
+            int replyCount = replyService.countRepliesByWorkId(workId);
+            return ResponseEntity.ok(Map.of("totalCount", replyCount));
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(Map.of("error", "댓글 수 조회 중 오류가 발생했습니다."));
+        }
+    }
+
 }
