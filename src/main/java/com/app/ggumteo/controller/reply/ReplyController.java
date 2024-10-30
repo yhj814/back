@@ -1,9 +1,11 @@
 package com.app.ggumteo.controller.reply;
 
+import com.app.ggumteo.domain.member.MemberVO;
 import com.app.ggumteo.domain.reply.ReplyDTO;
 import com.app.ggumteo.domain.reply.ReplyListDTO;
 import com.app.ggumteo.pagination.Pagination;
 import com.app.ggumteo.service.reply.ReplyService;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -22,10 +24,27 @@ public class ReplyController {
 
     private final ReplyService replyService;
     private final ReplyDTO replyDTO;
+    private final HttpSession session;
+
+    @ModelAttribute
+    public void setTestMember(HttpSession session) {
+        if (session.getAttribute("member") == null) {
+            session.setAttribute("member", new MemberVO(
+                    1L,
+
+                    "",         // memberEmail
+                    "",
+                    "",              // profileUrl
+                    "",          // createdDate
+                    ""          // updatedDate
+            ));
+        }
+    }
 
     // 댓글 작성
     @PostMapping("write")
     public void write(@RequestBody ReplyDTO replyDTO) {
+
         log.info("들어옴!!");
         log.info(replyDTO.toString());
         replyService.insertReply(replyDTO);
