@@ -24,12 +24,12 @@ values ('정지수', '별쌤', '여'
 select * from tbl_post;
 insert into tbl_post
     (post_title, post_content, post_type, member_profile_id)
-values ('제목 test3', '내용 test3', '영상', 1);
+values ('제목 test9', '내용 test9', '영상', 1);
 
 select * from tbl_funding;
 insert into tbl_funding
     (id, genre_type, investor_number, target_price, converge_price, funding_status)
-values (2, '액션', 5, 50000000, 3000000,1);
+values (9, '애니메이션', 5, 50000000, 3000000,1);
 
 
 select f.id, f.genre_type, p.post_title, p.post_content, p.post_type, p.member_profile_id, p.created_date, p.updated_date, mp.profile_nickname, mp.member_id, m.profile_img_url
@@ -40,6 +40,14 @@ from
         join tbl_member m on mp.member_id = m.id and m.id = 1
 order by f.id desc
 limit 0, 2;
+
+select f.id, f.genre_type, p.post_title, p.post_content, p.post_type, p.member_profile_id, p.created_date, p.updated_date, mp.profile_nickname, mp.member_id, m.profile_img_url
+from
+    tbl_funding f
+        join tbl_post p on f.id = p.id
+        join tbl_member_profile mp on p.member_profile_id = mp.id
+        join tbl_member m on mp.member_id = m.id and m.id = 1
+order by f.id desc;
 
 select count(*) from tbl_funding f
     join tbl_post p on f.id = p.id

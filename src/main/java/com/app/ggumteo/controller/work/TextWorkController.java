@@ -113,7 +113,6 @@ public class TextWorkController {
         if (genreType == null) genreType = "";
         if (keyword == null) keyword = "";
 
-        log.info("검색어: {}, 장르: {}", keyword, genreType);
 
         // 페이지네이션 설정
         Pagination pagination = new Pagination();
@@ -123,12 +122,8 @@ public class TextWorkController {
         int totalWorks = workService.findTotalWithSearch(genreType, keyword); // 검색 조건을 고려한 총 작품 수
         pagination.setTotal(totalWorks); // 검색 결과에 따른 총 페이지 수 반영
         pagination.progress2();
-        log.info("총 작품 수 (검색 조건 적용): {}", totalWorks);
 
-        // 디버깅: 페이지네이션 정보 확인
-        log.info("Pagination - startPage: {}, endPage: {}, realEnd: {}, prev: {}, next: {}",
-                pagination.getStartPage(), pagination.getEndPage(), pagination.getRealEnd(),
-                pagination.isPrev(), pagination.isNext());
+
 
         // 검색어와 페이지네이션 데이터 기반으로 작품 목록 조회
         List<WorkDTO> works = workService.findAllWithThumbnailAndSearch(genreType, keyword, pagination);
@@ -173,17 +168,25 @@ public class TextWorkController {
 
 
 
-    @GetMapping("/detail")
-    public void goTodetail(){;}
-//    @GetMapping("/detail/{id}")
-//    public String detail(@PathVariable("id") Long id, Model model) {
-//        // 해당 ID의 게시글을 조회
-//        WorkDTO work = workService.findWorkById(id);
-//
-//        // 게시글 정보를 모델에 추가하여 상세 페이지로 전달
-//        model.addAttribute("work", work);
-//
-//        return "text/detail";  // 상세 페이지 템플릿으로 이동
-//    }
+    @GetMapping("/detail/{id}")
+    public String detail(@PathVariable("id") Long id, Model model) {
+        // 작품 기본 정보를 조회
+        WorkDTO work = workService.findWorkById(id);
+
+        // 조회수 증가
+        workService.incrementReadCount(id);
+        log.info("Detail view의 WorkDTO: {}", work);
+
+
+        // 작품에 연결된 다중 파일 조회
+        List<PostFileDTO> postFiles = workService.findFilesByPostId(id);
+
+        // 모델에 데이터 추가
+        model.addAttribute("work", work); // 작품 기본 정보
+        model.addAttribute("postFiles", postFiles); // 다중 파일 정보
+
+        return "text/detail";  // 상세 페이지 템플릿으로 이동
+    }
+
 
 }

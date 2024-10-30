@@ -58,10 +58,6 @@ public class InquiryController {
         return new RedirectView("/admin/admin");
     }
 
-    // 관리자 페이지에서 문의사항 목록 조회
-    @GetMapping("/admin")
-    public String showAdminPage() {
-        return "admin/admin";
-    }
+
 }
 

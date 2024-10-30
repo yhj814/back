@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" th:action="@{/admin/admin}" th:object="${adminDTO}">
+<html lang="en">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -578,7 +578,6 @@
                                 공지사항을 작성하고 조회합니다.
                             </p>
                         </div>
-
                         <div>
                             <div>
                                 <!-- body_layout -->
@@ -600,7 +599,7 @@
                                                     class="filter-search-input"
                                                     placeholder="통합검색"
                                             />
-                                            <button class="selected-btn notice-write">
+                                            <button class="selected-btn notice-write" id="openModal">
                                                 공지사항 작성
                                             </button>
                                             <button class="selected-btn">
@@ -655,24 +654,21 @@
                                             </div>
                                         </div>
 
-                                        <!-- Example row (Initial data) -->
-                                        <div class="apply-table-row">
+                                        <!-- 공지사항 목록 뿌리는곳 -->
+                                        <div class="apply-table-row" th:each="announcement :${announcements}">
                                             <div class="apply-table-cell">
                                                 <input
                                                         type="checkbox"
                                                         class="apply-checkbox"
                                                 />
                                             </div>
-                                            <div class="apply-table-cell">1</div>
-                                            <div class="apply-table-cell">
-                                                2024-01-01
+                                            <div class="apply-table-cell" th:text="${announcement.id}"></div>
+                                            <div class="apply-table-cell" th:text="${announcement.createdDate}">
                                             </div>
-                                            <div class="apply-table-cell">
-                                                공지사항 제목 테스트입니다. 내용이 길어지면 생략되어서 보여집니다.
-                                            </div>
+                                            <div class="apply-table-cell" th:text="${announcement.announcementTitle}">
 
-                                            <div class="apply-table-cell">
-                                                공지사항 내용 테스트입니다. 내용이 길어지면 생략되어서 보여집니다.
+                                            </div>
+                                            <div class="apply-table-cell" th:text="${announcement.announcementContent}">
                                             </div>
                                             <div class="apply-table-cell">
                                                 <button
@@ -682,200 +678,54 @@
                                                 </button>
                                             </div>
                                             <div class="apply-table-cell">
-                                                2024-02-02
-                                            </div>
-                                        </div>
-                                        <div class="apply-table-row">
-                                            <div class="apply-table-cell">
-                                                <input
-                                                        type="checkbox"
-                                                        class="apply-checkbox"
-                                                />
-                                            </div>
-                                            <div class="apply-table-cell">2</div>
-                                            <div class="apply-table-cell">
-                                                2024-01-01
-                                            </div>
-                                            <div class="apply-table-cell">
-                                                공지사항 제목 테스트입니다. 내용이 길어지면 생략되어서 보여집니다.
-                                            </div>
-
-                                            <div class="apply-table-cell">
-                                                공지사항 내용 테스트입니다. 내용이 길어지면 생략되어서 보여집니다.
-                                            </div>
-                                            <div class="apply-table-cell">
-                                                <button
-                                                        class="edit-btn status notice-edit"
-                                                >
-                                                    수정
-                                                </button>
-                                            </div>
-                                            <div class="apply-table-cell">
-                                                2024-02-02
-                                            </div>
-                                        </div>
-                                        <div class="apply-table-row">
-                                            <div class="apply-table-cell">
-                                                <input
-                                                        type="checkbox"
-                                                        class="apply-checkbox"
-                                                />
-                                            </div>
-                                            <div class="apply-table-cell">3</div>
-                                            <div class="apply-table-cell">
-                                                2024-01-01
-                                            </div>
-                                            <div class="apply-table-cell">
-                                                공지사항 제목 테스트입니다. 내용이 길어지면 생략되어서 보여집니다.
-                                            </div>
-
-                                            <div class="apply-table-cell">
-                                                공지사항 내용 테스트입니다. 내용이 길어지면 생략되어서 보여집니다.
-                                            </div>
-                                            <div class="apply-table-cell">
-                                                <button
-                                                        class="edit-btn status notice-edit"
-                                                >
-                                                    수정
-                                                </button>
-                                            </div>
-                                            <div class="apply-table-cell">
-                                                2024-02-02
-                                            </div>
-                                        </div>
-                                        <div class="apply-table-row">
-                                            <div class="apply-table-cell">
-                                                <input
-                                                        type="checkbox"
-                                                        class="apply-checkbox"
-                                                />
-                                            </div>
-                                            <div class="apply-table-cell">4</div>
-                                            <div class="apply-table-cell">
-                                                2024-01-01
-                                            </div>
-                                            <div class="apply-table-cell">
-                                                공지사항 제목 테스트입니다. 내용이 길어지면 생략되어서 보여집니다.
-                                            </div>
-
-                                            <div class="apply-table-cell">
-                                                공지사항 내용 테스트입니다. 내용이 길어지면 생략되어서 보여집니다.
-                                            </div>
-                                            <div class="apply-table-cell">
-                                                <button
-                                                        class="edit-btn status notice-edit"
-                                                >
-                                                    수정
-                                                </button>
-                                            </div>
-                                            <div class="apply-table-cell">
-                                                -
-                                            </div>
-                                        </div>
-                                        <div class="apply-table-row">
-                                            <div class="apply-table-cell">
-                                                <input
-                                                        type="checkbox"
-                                                        class="apply-checkbox"
-                                                />
-                                            </div>
-                                            <div class="apply-table-cell">5</div>
-                                            <div class="apply-table-cell">
-                                                2024-01-01
-                                            </div>
-                                            <div class="apply-table-cell">
-                                                공지사항 제목 테스트입니다. 내용이 길어지면 생략되어서 보여집니다.
-                                            </div>
-
-                                            <div class="apply-table-cell">
-                                                공지사항 내용 테스트입니다. 내용이 길어지면 생략되어서 보여집니다.
-                                            </div>
-                                            <div class="apply-table-cell">
-                                                <button
-                                                        class="edit-btn status notice-edit"
-                                                >
-                                                    수정
-                                                </button>
-                                            </div>
-                                            <div class="apply-table-cell">
-                                                -
+                                                <!-- 수정 날짜가 null이거나 비어있을 경우 "-" 표시 -->
+                                                <span th:text="${announcement.updatedDate != null ? announcement.updatedDate : '-'}"></span>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <nav class="pagination">
                                     <ul class="pagination-list">
-                                        <!-- 처음 페이지로 이동하는 버튼 -->
-                                        <li class="pagination-first">
-                                            <a
-                                                    href="#"
-                                                    class="pagination-first-link"
-                                                    rel="nofollow"
-                                            >
-                                                        <span
-                                                                class="pagination-first-icon"
-                                                                aria-hidden="true"
-                                                        >«</span
-                                                        >
-                                            </a>
-                                        </li>
                                         <!-- 이전 페이지로 이동하는 버튼 -->
-                                        <li class="pagination-prev">
+                                        <li class="pagination-prev" th:if="${pagination.prev}">
                                             <a
-                                                    href="#"
+                                                    th:href="@{/admin/announcements(page=${pagination.startPage - 1})}"
                                                     class="pagination-prev-link"
                                                     rel="prev nofollow"
                                             >
-                                                        <span
-                                                                class="pagination-prev-icon"
-                                                                aria-hidden="true"
-                                                        >‹</span
-                                                        >
+                                                <span class="pagination-prev-icon" aria-hidden="true">‹</span>
                                             </a>
                                         </li>
+
                                         <!-- 페이지 번호 버튼 -->
-                                        <li class="pagination-page active">
-                                            <a href="#" class="pagination-page-link"
-                                            >1</a
+                                        <li class="pagination-page" th:each="i : ${#numbers.sequence(pagination.startPage, pagination.endPage)}">
+                                            <a
+                                                    th:href="@{/admin/announcements(page=${i})}"
+                                                    class="pagination-page-link"
+                                                    th:class="${i == pagination.page ? 'active' : ''}"
                                             >
+                                                <span th:text="${i}"></span>
+                                            </a>
                                         </li>
 
                                         <!-- 다음 페이지로 이동하는 버튼 -->
-                                        <li class="pagination-next">
+                                        <li class="pagination-next" th:if="${pagination.next}">
                                             <a
-                                                    href="#"
+                                                    th:href="@{/admin/announcements(page=${pagination.startPage + 1})}"
                                                     class="pagination-next-link"
                                                     rel="next nofollow"
                                             >
-                                                        <span
-                                                                class="pagination-next-icon"
-                                                                aria-hidden="true"
-                                                        >›</span
-                                                        >
-                                            </a>
-                                        </li>
-                                        <!-- 마지막 페이지로 이동하는 버튼 -->
-                                        <li class="pagination-last">
-                                            <a
-                                                    href="#"
-                                                    class="pagination-last-link"
-                                                    rel="nofollow"
-                                            >
-                                                        <span
-                                                                class="pagination-last-icon"
-                                                                aria-hidden="true"
-                                                        >»</span
-                                                        >
+                                                <span class="pagination-next-icon" aria-hidden="true">›</span>
                                             </a>
                                         </li>
                                     </ul>
                                 </nav>
                             </div>
                             <!-- 공지사항 작성 모달창 -->
-                            <div class="notice-full-modal write">
+                            <div class="notice-full-modal write" style="display: none;">
                                 <div class="edit-modal">
                                     <div class="modal-content">
-                                        <span class="close-button">&times;</span>
+                                        <span class="close-button" onclick="document.querySelector('.notice-full-modal').style.display='none'">&times;</span>
                                         <h2>공지사항 작성</h2>
                                         <form class="edit-form">
                                             <div>
@@ -883,25 +733,27 @@
                                                 <input
                                                         type="text"
                                                         class="edit-post-title"
+                                                        id="edit-post-title"
                                                 />
 
                                                 <label for="edit-post-content">공지사항 내용:</label>
                                                 <textarea
                                                         class="edit-post-content"
+                                                        id="edit-post-content"
                                                         name="edit-post-content"
                                                 ></textarea>
                                             </div>
 
                                             <!-- 저장 버튼 -->
                                             <div class="save">
-                                                <button type="button" class="save-button">
+                                                <button type="button" class="save-button" onclick="saveAnnouncement()">
                                                     등록하기
                                                 </button>
                                             </div>
                                         </form>
                                     </div>
                                 </div>
-                                <div class="background-overlay"></div>
+                                <div class="background-overlay" onclick="document.querySelector('.notice-full-modal').style.display='none'"></div>
                             </div>
                             <!-- 공지사항 수정 모달창 -->
                             <div class="notice-full-modal edit">
@@ -5205,6 +5057,46 @@
                                         </div>
 
                                         <!-- Example row (Initial data) -->
+                                        <table>
+                                            <thead>
+                                            <tr>
+                                                <th>선택</th>
+                                                <th>번호</th>
+                                                <th>작성일</th>
+                                                <th>문의 제목</th>
+                                                <th>문의 내용</th>
+                                                <th>작성자</th>
+                                                <th>이메일</th>
+                                                <th>상태</th>
+                                                <th>답변 날짜</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr th:each="inquiry, iterStat : ${inquiries}">
+                                                <div class="apply-table-row">
+                                                    <div class="apply-table-cell">
+                                                        <input type="checkbox" class="apply-checkbox" />
+                                                    </div>
+                                                    <div class="apply-table-cell" th:text="${iterStat.index + 1}"></div>
+                                                    <div class="apply-table-cell" th:text="${inquiry.postCreatedDate}"></div>
+                                                    <div class="apply-table-cell" th:text="${inquiry.postTitle}"></div>
+                                                    <div class="apply-table-cell" th:text="${inquiry.postContent}"></div>
+                                                    <div class="apply-table-cell" th:text="${inquiry.profileName}"></div>
+                                                    <div class="apply-table-cell" th:text="${inquiry.profileEmail}"></div>
+                                                    <div class="apply-table-cell">
+                                                        <button class="answered-btn status"
+                                                                th:class="${inquiry.inquiryStatus == '0' ? 'unanswered' : 'answered'}"
+                                                                th:text="${inquiry.inquiryStatus == '0' ? '미답변' : '답변 완료'}">
+                                                        </button>
+                                                    </div>
+                                                    <div class="apply-table-cell" th:text="${inquiry.adminAnswerCreatedDate}"></div>
+                                                </div>
+                                            </tr>
+                                            <tr th:if="${#lists.isEmpty(inquiries)}">
+                                                <td colspan="9">조회된 문의 사항이 없습니다.</td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
                                         <div class="apply-table-row">
                                             <div class="apply-table-cell">
                                                 <input
@@ -5276,20 +5168,6 @@
                                 </div>
                                 <nav class="pagination">
                                     <ul class="pagination-list">
-                                        <!-- 처음 페이지로 이동하는 버튼 -->
-                                        <li class="pagination-first">
-                                            <a
-                                                    href="#"
-                                                    class="pagination-first-link"
-                                                    rel="nofollow"
-                                            >
-                                                        <span
-                                                                class="pagination-first-icon"
-                                                                aria-hidden="true"
-                                                        >«</span
-                                                        >
-                                            </a>
-                                        </li>
                                         <!-- 이전 페이지로 이동하는 버튼 -->
                                         <li class="pagination-prev">
                                             <a
@@ -5322,20 +5200,6 @@
                                                                 class="pagination-next-icon"
                                                                 aria-hidden="true"
                                                         >›</span
-                                                        >
-                                            </a>
-                                        </li>
-                                        <!-- 마지막 페이지로 이동하는 버튼 -->
-                                        <li class="pagination-last">
-                                            <a
-                                                    href="#"
-                                                    class="pagination-last-link"
-                                                    rel="nofollow"
-                                            >
-                                                        <span
-                                                                class="pagination-last-icon"
-                                                                aria-hidden="true"
-                                                        >»</span
                                                         >
                                             </a>
                                         </li>
@@ -5968,5 +5832,6 @@
     </symbol>
 </svg>
 </body>
+<script src="/js/admin/announcement.js"></script>
 <script src="/js/admin/admin.js"></script>
 </html>
