@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import java.io.Serializable;
 
 @Component
-@Getter @ToString @EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@Getter @Setter @ToString @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @NoArgsConstructor
 @AllArgsConstructor
 public class MemberVO implements Serializable {

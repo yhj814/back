@@ -17,7 +17,7 @@ public class MemberProfileMapperTests {
 
     @Test
     public void testInsert() {
-        Long memberId = 1L;
+        Long memberId = 9L;
 
         // tbl_member_profile에 삽입할 데이터 생성
         MemberProfileDTO memberProfileDTO = new MemberProfileDTO();

@@ -9,7 +9,7 @@ create table tbl_member(
 
 select * from tbl_member;
 
-
+DELETE from tbl_member where id = 1;
 
 insert into tbl_member (member_email, profile_img_url)
 values ( 'john.doe@example.com', 'profile.jpg');
