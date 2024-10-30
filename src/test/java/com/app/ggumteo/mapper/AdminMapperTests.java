@@ -2,11 +2,18 @@ package com.app.ggumteo.mapper;
 
 import com.app.ggumteo.domain.admin.AdminDTO;
 import com.app.ggumteo.domain.admin.AdminVO;
+import com.app.ggumteo.domain.inquiry.InquiryDTO;
 import com.app.ggumteo.mapper.admin.AdminMapper;
+import com.app.ggumteo.mapper.inquiry.InquiryMapper;
+import com.app.ggumteo.pagination.AdminPagination;
+import io.swagger.v3.oas.models.security.SecurityScheme;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import java.util.List;
 
 @SpringBootTest
 @Slf4j
@@ -14,6 +21,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 public class AdminMapperTests {
     @Autowired
     private AdminMapper adminMapper;
+    private InquiryMapper inquiryMapper;
 
     @Test
     public void testInsert() {
@@ -36,4 +44,5 @@ public class AdminMapperTests {
             log.info("{}","인증번호 없음");
         }
     }
+
 }

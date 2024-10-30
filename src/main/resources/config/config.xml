@@ -16,12 +16,16 @@
         <typeAlias type="com.app.ggumteo.domain.inquiry.InquiryDTO" alias="inquiryDTO"/>
         <typeAlias type="com.app.ggumteo.domain.funding.FundingDTO" alias="fundingDTO"/>
         <typeAlias type="com.app.ggumteo.domain.work.WorkVO" alias="workVO"/>
+        <typeAlias type="com.app.ggumteo.domain.reply.ReplyVO" alias="replyVO"/>
+        <typeAlias type="com.app.ggumteo.domain.reply.ReplyDTO" alias="replyDTO"/>
         <typeAlias type="com.app.ggumteo.domain.work.WorkDTO" alias="workDTO"/>
         <typeAlias type="com.app.ggumteo.domain.file.FileVO" alias="fileVO"/>
         <typeAlias type="com.app.ggumteo.domain.file.PostFileVO" alias="postFileVO"/>
         <typeAlias type="com.app.ggumteo.domain.file.PostFileDTO" alias="postFileDTO"/>
         <typeAlias type="com.app.ggumteo.domain.audition.AuditionDTO" alias="auditionDTO"/>
         <typeAlias type="com.app.ggumteo.domain.member.MemberProfileVO" alias="memberProfileVO"/>
+        <typeAlias type="com.app.ggumteo.domain.admin.AnnouncementVO" alias="announcementVO"/>
+        <typeAlias type="com.app.ggumteo.domain.admin.AnnouncementDTO" alias="announcementDTO"/>
     </typeAliases>
 
 </configuration>
