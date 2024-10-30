@@ -211,13 +211,14 @@ const showFundingBuyerList = (buyersByFundingPostId) => {
     console.log("layout-1 :",showFundingBuyerList)
     console.log("layout-2 :",buyersByFundingPostId)
 
-    let text = `<div
-                            class="setting-tr-group"
-                            style="
-                            border-bottom: solid 1px
-                                #e0e0e0;
-                            padding-bottom: 0px;
-                        "
+    let text = `<div>
+                            <div
+                                class="setting-tr-group"
+                                style="
+                                border-bottom: solid 1px
+                                    #e0e0e0;
+                                padding-bottom: 0px;
+                            "
                     >`;
 
     buyersByFundingPostId.forEach((buyerByFundingPostId) => {
@@ -300,7 +301,8 @@ const showFundingBuyerList = (buyersByFundingPostId) => {
         console.log("layout-4 :", buyerByFundingPostId);
         console.log("layout-5 :", text)
     });
-    text += `</div>`;
+    text += `    </div>
+            </div>`;
 
     console.log("layout-6 :",text);
 
