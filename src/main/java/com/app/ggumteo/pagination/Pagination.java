@@ -66,6 +66,8 @@ public class Pagination {
         this.startRow--;
     }
 
+
+
 //    // Thymeleaf에서 사용할 수 있는 getter 메서드 추가
 //    public boolean isPrev() {
 //        return prev;

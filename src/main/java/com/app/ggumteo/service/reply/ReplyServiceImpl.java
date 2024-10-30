@@ -35,7 +35,7 @@ public class ReplyServiceImpl implements ReplyService {
         ReplyListDTO replyListDTO = new ReplyListDTO();
         pagination.setPage(page);
         pagination.setTotal(replyDAO.countRepliesByWorkId(workId));
-        pagination.progress();
+        pagination.progress2();
         replyListDTO.setPagination(pagination);
         replyListDTO.setReplies(replyDAO.selectRepliesByWorkId(workId, pagination));
         return replyListDTO;

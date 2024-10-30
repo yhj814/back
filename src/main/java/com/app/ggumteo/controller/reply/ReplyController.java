@@ -80,9 +80,10 @@ public class ReplyController {
     }
     // 댓글 숫자 세기
     @GetMapping("/count/{workId}")
-    public void getReplyCount(@PathVariable Long workId) {
+    public int getReplyCount(@PathVariable Long workId) {
         int replyCount = replyService.countRepliesByWorkId(workId);
         log.info("댓글 수 for workId {}: {}", workId, replyCount);
+        return replyCount;
     }
 
     // 작품의 평균 별점 조회

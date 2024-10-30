@@ -9,12 +9,14 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
     }
 
+
     const paginationContainer = document.getElementById("pagination");
 
     // 댓글 목록 및 페이지네이션 표시 함수
     const showList = ({ replies, pagination }) => {
         let text = ``;
         let pagingText = ``;
+
 
         replies.forEach((reply) => {
             text += `
@@ -59,8 +61,8 @@ document.addEventListener("DOMContentLoaded", () => {
             console.log("pagination 요소와 데이터가 유효합니다.");
 
             // 이전 버튼
-            if (pagination.prev) {
-                pagingText += `<li class="page-item"><a class="page-link" href="javascript:loadReplies(${pagination.startPage - 1})">이전</a></li>`;
+            if (pagination.startPage > 1) {
+                pagingText += `<li class="page-item prev"><a class="page-link" href="javascript:loadReplies(${pagination.startPage - 1})">  </a></li>`;
             }
 
             // 페이지 번호
@@ -73,8 +75,8 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
             // 다음 버튼
-            if (pagination.next) {
-                pagingText += `<li class="page-item"><a class="page-link" href="javascript:loadReplies(${pagination.endPage + 1})">다음</a></li>`;
+            if (replies.length === pagination.rowCount && pagination.endPage < pagination.realEnd) {
+                pagingText += `<li class="page-item next"><a class="page-link" href="javascript:loadReplies(${pagination.endPage + 1})">  </a></li>`;
             }
 
             paginationContainer.innerHTML = pagingText;
@@ -83,6 +85,34 @@ document.addEventListener("DOMContentLoaded", () => {
             paginationContainer.innerHTML = "";  // pagination 데이터가 없을 때 비우기
         }
     };
+    //댓글 갯수 구하기. 맨 위에 있어야함
+    const updateReplyCount = async (workId) => {
+        try {
+            // replyService를 통해 댓글 총 개수 조회
+            const totalCount = await replyService.getReplyCount(workId);
+
+            console.log("총 댓글 수:", totalCount); // 로그로 확인
+
+            // `total-reply-count` 요소에 댓글 수 업데이트
+            const totalReplyCountElement = document.getElementById("total-reply-count");
+            if (totalReplyCountElement) {
+                totalReplyCountElement.textContent = totalCount;
+            } else {
+                console.error("`total-reply-count` 요소를 찾을 수 없습니다.");
+            }
+
+            // `comment-count` 요소에 댓글 수 업데이트
+            const commentCountElement = document.getElementById("comment-count");
+            if (commentCountElement) {
+                commentCountElement.textContent = totalCount;
+            } else {
+                console.error("`comment-count` 요소를 찾을 수 없습니다.");
+            }
+        } catch (error) {
+            console.error("댓글 수를 불러오는 중 오류 발생:", error);
+        }
+    };
+    updateReplyCount(workId);
 
     // 댓글 불러오기 함수
     const loadReplies = (page = 1) => {
@@ -103,7 +133,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 console.log("총 댓글 개수:", totalCount); // 테스트 출력
 
                 if (totalReplyCountElement) {
-                    totalReplyCountElement.textContent = totalCount; // 댓글 총합 개수 업데이트
+                    totalReplyCountElement.textContent = totalCount;
+                    updateReplyCount(workId); // 댓글 총합 개수 업데이트
                 } else {
                     console.error("total-reply-count 요소를 찾을 수 없습니다.");
                 }
@@ -139,6 +170,7 @@ document.addEventListener("DOMContentLoaded", () => {
             star.classList.remove("selected");
         });
         loadReplies();
+        updateReplyCount(workId);
     });
 
     // 댓글 삭제 이벤트
@@ -147,38 +179,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // 성공적으로 삭제된 경우 댓글 목록 다시 로드
         if (success) {
-            loadReplies();  // 새로고침 없이 댓글 목록을 다시 불러옵니다.
+            loadReplies();
+            updateReplyCount(workId);// 새로고침 없이 댓글 목록을 다시 불러옵니다.
         } else {
             alert("댓글 삭제에 실패했습니다.");
         }
     };
 
-    const updateReplyCount = async (workId) => {
-        try {
-            // replyService를 통해 댓글 총 개수 조회
-            const totalCount = await replyService.getReplyCount(workId);
-
-            console.log("총 댓글 수:", totalCount); // 로그로 확인
-
-            // `total-reply-count` 요소에 댓글 수 업데이트
-            const totalReplyCountElement = document.getElementById("total-reply-count");
-            if (totalReplyCountElement) {
-                totalReplyCountElement.textContent = totalCount;
-            } else {
-                console.error("`total-reply-count` 요소를 찾을 수 없습니다.");
-            }
-
-            // `comment-count` 요소에 댓글 수 업데이트
-            const commentCountElement = document.getElementById("comment-count");
-            if (commentCountElement) {
-                commentCountElement.textContent = totalCount;
-            } else {
-                console.error("`comment-count` 요소를 찾을 수 없습니다.");
-            }
-        } catch (error) {
-            console.error("댓글 수를 불러오는 중 오류 발생:", error);
-        }
-    };
 
     // 신고 버튼 이벤트 추가 함수
     const addReportEvent = () => {
