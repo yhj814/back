@@ -122,8 +122,18 @@ const showMyFundingList = ({myFundingPosts, myPagePagination}) => {
                         </div>
                     </div>
                 </div>
-                <div class="setting-table" style="border-top: 1px solid rgb(224, 224, 224); display: none;">
-<!--                settin-table -->
+                <div class="setting-table funding-buyer-${myFundingPost.id}" style="border-top: 1px solid rgb(224, 224, 224); display: none;">
+                    <div class="setting-th">
+                        <div class="setting-td size-l">
+                            이름/이메일
+                        </div>
+                        <div class="center-text setting-td size-s">
+                            금액
+                        </div>
+                        <div class="center-text setting-td trueorfalse">
+                            발송 여부
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -197,12 +207,91 @@ function timeForToday(datetime) {
 
 
 const showFundingBuyerList = (buyersByFundingPostId) => {
-    let text = ``;
+
+    let text = `<div
+                            class="setting-tr-group"
+                            style="
+                            border-bottom: solid 1px
+                                #e0e0e0;
+                            padding-bottom: 0px;
+                        "
+                    >`;
 
     buyersByFundingPostId.forEach((buyerByFundingPostId) => {
-        text += `
+        text += `  <div class="price-member setting-tr" style="padding-top: 7px">
+                        <div
+                                class="setting-td with-sub size-l"
+                        >
+                            <div
+                                    class="membername major-span"
+                            >
+                                ${buyerByFundingPostId.profileName}
+                            </div>
+                            <div
+                                    class="memberemail sub-span"
+                            >
+                                ${buyerByFundingPostId.profileEmail}
+                            </div>
+                        </div>
+                        <div
+                                class="center-text price-member setting-td with-text primary size-s"
+                                style="
+                                margin-bottom: 35px;
+                            "
+                        >
+                             ${buyerByFundingPostId.productPrice} 원
+                        </div>
+                        <div
+                                class="center-text setting-td with-btn trueorfalse"
+                        >
+                            <div
+                                    class="btn-group choice-group"
+                            >
+                                <div
+                                        class="btn-choice btn-public active"
+                                >
+                                    <input
+                                            checked=""
+                                            class="radio-value"
+                                            name="is_secret_employment"
+                                            type="radio"
+                                            value="false"
+                                    /><span
+                                        class="name"
+                                >보냄</span
+                                >
+                                </div>
+                                <div
+                                        class="btn-choice btn-secret"
+                                >
+                                    <input
+                                            class="radio-value"
+                                            name="is_secret_employment"
+                                            type="radio"
+                                            value="true"
+                                    /><span
+                                        class="name"
+                                >안보냄</span
+                                >
+                                </div>
+                            </div>
+                        </div>
+                        <label
+                                class="switch"
+                                style="
+                                display: none;
+                            "
+                        >
+                            <input
+                                    class="media-checkbox"
+                                    type="checkbox"
+                            />
+                            <span
+                                    class="slider round"
+                            ></span>
+                        </label>
+                   </div>
             `;
     });
-    myFundingListLayout.innerHTML += text;
-
+    text = `</div>`;
 }

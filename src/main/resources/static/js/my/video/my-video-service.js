@@ -10,17 +10,17 @@ const myPageService = (() => {
         }
     }
 
-    const getFundingBuyerList = async (fundingPostId) => {
+    const getFundingBuyerList = async (fundingPostId, callback) => {
         const response = await fetch(`/members/video/myFunding/getBuyerList/${fundingPostId}`);
         const buyersByFundingPostId = await response.json();
 
         console.log("1: ", getFundingBuyerList);
         console.log("2: ", response);
         console.log("3: ", buyersByFundingPostId);
+
+        if(callback){
+            callback(buyersByFundingPostId);
+        }
     }
-
-
-
-
     return {getMyFundingList: getMyFundingList, getFundingBuyerList: getFundingBuyerList}
 })()

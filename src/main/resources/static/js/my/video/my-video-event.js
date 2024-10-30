@@ -1,5 +1,6 @@
 
 myPageService.getMyFundingList(1, memberId, showMyFundingList);
+myPageService.getFundingBuyerList( 1, showFundingBuyerList);
 
 myFundingListPaging.addEventListener("click", (e)=>{
     e.preventDefault();
@@ -12,7 +13,11 @@ myFundingListPaging.addEventListener("click", (e)=>{
 myFundingListLayout.addEventListener('click', (e) => {
         if(e.target.id === "my-funding-buyer-btn") {
             console.log(e.target);
-            console.log(e.target.classList[1]);
-            console.log(e.target.className);
-        };
+            const myFundingPostId = e.target.classList[1];
+            console.log("myFundingPostId :",myFundingPostId);
+            // console.log(document.querySelector(`.funding-buyer-${myFundingPostId}`));
+            const fundingBuyerTable  = document.querySelector(`.funding-buyer-${myFundingPostId}`);
+            console.log(fundingBuyerTable);
+            fundingBuyerTable.style.display = "block";
+        }
 });
