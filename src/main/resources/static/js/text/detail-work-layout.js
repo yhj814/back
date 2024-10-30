@@ -1,56 +1,3 @@
-const replyService = (() => {
-    // 댓글 작성 함수
-    const write = async (replyData) => {
-        try {
-            const response = await fetch("/replies/write", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(replyData)
-            });
-
-            if (response.ok) {
-                console.log("댓글 작성 성공");
-            } else {
-                console.error("댓글 작성 실패");
-            }
-        } catch (error) {
-            console.error("댓글 작성 중 오류:", error);
-        }
-    };
-
-    // 댓글 리스트 가져오기 함수
-    const getList = async (page, workId, callback) => {
-        try {
-            const response = await fetch(`/replies/${workId}/${page}`);
-            if (!response.ok) throw new Error("댓글 로딩 실패");
-
-            const data = await response.json();
-            console.log("댓글 리스트 불러오기 성공:", data);
-
-            if (callback) callback(data);
-            return data;
-        } catch (error) {
-            console.error("Error loading replies:", error);
-        }
-    };
-
-    // 댓글 삭제 함수
-    const remove = async (replyId) => {
-        try {
-            const response = await fetch(`/replies/${replyId}`, {
-                method: "DELETE",
-            });
-            if (!response.ok) throw new Error("댓글 삭제 실패");
-            console.log("댓글 삭제 성공");
-            return response.json();
-        } catch (error) {
-            console.error("Error deleting reply:", error);
-        }
-    };
-
-    return { write, getList, remove };
-})();
-
 document.addEventListener("DOMContentLoaded", () => {
     console.log("DOMContentLoaded 이벤트 호출됨");
 
@@ -196,8 +143,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // 댓글 삭제 이벤트
     window.deleteReply = async (replyId) => {
-        await replyService.remove(replyId);
-        loadReplies();
+        const success = await replyService.remove(replyId);
+
+        // 성공적으로 삭제된 경우 댓글 목록 다시 로드
+        if (success) {
+            loadReplies();  // 새로고침 없이 댓글 목록을 다시 불러옵니다.
+        } else {
+            alert("댓글 삭제에 실패했습니다.");
+        }
     };
 
     // 신고 버튼 이벤트 추가 함수
@@ -261,52 +214,4 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     loadReplies();
-});
-
-document.addEventListener("DOMContentLoaded", () => {
-    console.log("DOMContentLoaded 이벤트 호출됨");
-
-    const reportBtn = document.getElementById("report-btn");
-    const reportModal = document.getElementById("report-modal");
-    const closeBtn = document.querySelector("#report-modal .close");
-
-    // 작품 신고하기 버튼 클릭 시 모달 표시
-    reportBtn.addEventListener("click", () => {
-        reportModal.style.display = "block";
-    });
-
-    // 작품 신고 모달 닫기 버튼 (X) 클릭 시 모달 숨기기
-    closeBtn.addEventListener("click", () => {
-        reportModal.style.display = "none";
-    });
-
-    // 모달 외부를 클릭했을 때 모달 숨기기
-    window.addEventListener("click", (event) => {
-        if (event.target === reportModal) {
-            reportModal.style.display = "none";
-        }
-    });
-
-    // 댓글 신고 모달 관련 설정
-    const replyModal = document.getElementById("report-modal-reply");
-    const closeReplyModalBtn = document.querySelector("#report-modal-reply .modal-reply-close");
-
-    // 댓글 신고 버튼 클릭 시 모달 표시 (이벤트 위임)
-    document.addEventListener("click", (event) => {
-        if (event.target.classList.contains("btn-comment-report")) {
-            replyModal.style.display = "block";
-        }
-    });
-
-    // 댓글 신고 모달 닫기 버튼 (X) 클릭 시 모달 숨기기
-    closeReplyModalBtn.addEventListener("click", () => {
-        replyModal.style.display = "none";
-    });
-
-    // 모달 외부를 클릭했을 때 댓글 신고 모달 숨기기
-    window.addEventListener("click", (event) => {
-        if (event.target === replyModal) {
-            replyModal.style.display = "none";
-        }
-    });
 });

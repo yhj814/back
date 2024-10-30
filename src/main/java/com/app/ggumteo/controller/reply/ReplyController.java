@@ -64,10 +64,6 @@ public class ReplyController {
         replyService.insertReply(replyDTO);
     }
 
-
-
-
-
     // 댓글 삭제
     @DeleteMapping("/{id}")
     public void deleteReply(@PathVariable Long id) {
@@ -82,26 +78,10 @@ public class ReplyController {
                                            Model model) {
         return replyService.selectRepliesByWorkId(page, pagination, workId);
     }
+    // 댓글 숫자 세기
+  @GetMapping("/count")
+    public void getReplyCount(@PathVariable Long workId) {
 
-    // 작품의 평균 별점 조회
-    @GetMapping("/average-star")
-    public ResponseEntity<?> getAverageStarByWorkId(@RequestParam Long workId) {
-        try {
-            double averageStar = replyService.selectAverageStarByWorkId(workId);
-            return ResponseEntity.ok(Map.of("averageStar", averageStar));
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body(Map.of("error", "별점 평균 조회 중 오류가 발생했습니다."));
-        }
-    }
-    // 댓글 수 조회
-    @GetMapping("/count")
-    public ResponseEntity<?> countRepliesByWorkId(@RequestParam Long workId) {
-        try {
-            int replyCount = replyService.countRepliesByWorkId(workId);
-            return ResponseEntity.ok(Map.of("totalCount", replyCount));
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body(Map.of("error", "댓글 수 조회 중 오류가 발생했습니다."));
-        }
-    }
+  }
 
 }
