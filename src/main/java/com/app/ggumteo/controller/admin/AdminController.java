@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
 @Controller
 @RequiredArgsConstructor
 @Slf4j
@@ -68,56 +69,40 @@ public class AdminController {
         return ResponseEntity.ok("공지사항이 성공적으로 등록되었습니다.");
     }
 
-    // 공지사항 목록 조회
+//    공지사항조회
     @GetMapping("/announcements")
-    public String listAnnouncements(@RequestParam(value = "page", defaultValue = "1") Integer page, Model model) {
+    @ResponseBody
+    public Map<String, Object> listAnnouncements(
+            @RequestParam(value = "page", defaultValue = "1") Integer page,
+            @RequestParam(value = "order", defaultValue = "created_date") String order) { // 정렬 기준 추가
+
         AdminPagination pagination = new AdminPagination();
         pagination.setPage(page);
         pagination.setTotal(announcementService.getTotalAnnouncements());
         pagination.progress();
 
-        List<AnnouncementVO> announcements = announcementService.getAllAnnouncements(pagination);
+        List<AnnouncementVO> announcements = announcementService.getAllAnnouncements(pagination, order);
 
-        log.info("Announcements List:");
-        announcements.forEach(announcement -> log.info("{}", announcement));
-        log.info("Pagination Details - Current Page: {}, Start Row: {}, End Row: {}, Total: {}",
-                pagination.getPage(), pagination.getStartRow(), pagination.getEndRow(), pagination.getTotal());
+        Map<String, Object> response = new HashMap<>();
+        response.put("announcements", announcements);
+        response.put("pagination", pagination);
 
-        model.addAttribute("announcements", announcements);
-        model.addAttribute("pagination", pagination);
-
-        return "admin/admin"; // 공지사항 목록 페이지
+        return response;
     }
 
-    @GetMapping("/announcements/list")
-    public String getAnnouncementsFragment(@RequestParam(value = "page", defaultValue = "1") Integer page, Model model) {
-        AdminPagination pagination = new AdminPagination();
-        pagination.setPage(page);
-        pagination.setTotal(announcementService.getTotalAnnouncements());
-        pagination.progress();
-
-        List<AnnouncementVO> announcements = announcementService.getAllAnnouncements(pagination);
-        model.addAttribute("announcements", announcements);
-        model.addAttribute("pagination", pagination);
-
-        return "admin/admin :: #announcement-list"; // 공지사항 목록만 반환
+    // 공지사항 수정
+    @PostMapping("/announcement/update")
+    @ResponseBody
+    public ResponseEntity<String> updateAnnouncement(@RequestBody AnnouncementVO announcementVO) {
+        announcementService.updateAnnouncement(announcementVO);
+        return ResponseEntity.ok("공지사항이 성공적으로 수정되었습니다.");
     }
 
-
-//    @GetMapping("/inquiry")
-//    public String getList(@ModelAttribute AdminPagination pagination, Model model) {
-//        List<InquiryDTO> inquiryList = inquiryService.getList(pagination);
-//        int totalInquiries = inquiryService.getTotal();
-//
-//        pagination.setTotal(totalInquiries); // 전체 문의 수 설정
-//        pagination.progress(); // 페이지네이션 진행
-//
-//        log.info("Inquiry List: {}", inquiryList);
-//        log.info("Pagination: {}", pagination);
-//
-//        model.addAttribute("inquiries", inquiryList);
-//        model.addAttribute("pagination", pagination);
-//
-//        return "admin/admin"; // 템플릿 경로
-//    }
+    // 공지사항 삭제
+    @PostMapping("/announcement/delete")
+    @ResponseBody
+    public ResponseEntity<String> deleteAnnouncements(@RequestBody List<Integer> ids) {
+        announcementService.deleteAnnouncements(ids);
+        return ResponseEntity.ok("선택한 공지사항이 성공적으로 삭제되었습니다.");
+    }
 }

@@ -22,8 +22,8 @@ public class AnnouncementServiceImpl implements AnnouncementService {
     }
     // 공지사항 전체 조회 (페이지네이션 포함)
     @Override
-    public List<AnnouncementVO> getAllAnnouncements(AdminPagination pagination) {
-        return announcementDAO.findAll(pagination);
+    public List<AnnouncementVO> getAllAnnouncements(AdminPagination pagination, String order) {
+        return announcementDAO.findAll(pagination, order);
     }
 
     // 총 공지사항 수 조회
@@ -31,4 +31,17 @@ public class AnnouncementServiceImpl implements AnnouncementService {
     public int getTotalAnnouncements() {
         return announcementDAO.countTotal();
     }
+
+    // 공지사항 수정
+    @Override
+    public void updateAnnouncement(AnnouncementVO announcementVO) {
+        announcementDAO.update(announcementVO);
+    }
+
+    // 공지사항 삭제
+    @Override
+    public void deleteAnnouncements(List<Integer> ids) {
+        announcementDAO.deleteByIds(ids);
+    }
+
 }

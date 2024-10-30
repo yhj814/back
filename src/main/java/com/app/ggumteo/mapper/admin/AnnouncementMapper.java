@@ -13,8 +13,16 @@ public interface AnnouncementMapper {
     public void insert(AnnouncementVO announcementVO);
 
 //    공지사항 전체조회
-    public List<AnnouncementVO> selectAll(@Param("pagination")AdminPagination pagination);
+    List<AnnouncementVO> selectAll(@Param("pagination") AdminPagination pagination, @Param("order") String order);
 
 //    총 공지사항 수 조회
     int countTotal();
+
+//    공지사항 수정
+    void updateAnnouncement(@Param("announcement") AnnouncementVO announcementVO);
+
+//     공지사항 삭제
+    void deleteAnnouncements(@Param("ids") List<Integer> ids);
+
+
 }

@@ -13,17 +13,27 @@ import java.util.List;
 public class AnnouncementDAO {
     private final AnnouncementMapper announcementMapper;
 
-//    공지사항작성
+    // 공지사항작성
     public void save(AnnouncementVO announcementVO) {
         announcementMapper.insert(announcementVO);
     }
     // 공지사항 전체 조회 (페이지네이션 포함)
-    public List<AnnouncementVO> findAll(AdminPagination pagination) {
-        return announcementMapper.selectAll(pagination);
+    public List<AnnouncementVO> findAll(AdminPagination pagination, String order) {
+        return announcementMapper.selectAll(pagination, order);
     }
 
     // 총 공지사항 수 조회
     public int countTotal() {
         return announcementMapper.countTotal();
+    }
+
+    //  공지사항 수정
+    public void update(AnnouncementVO announcementVO) {
+        announcementMapper.updateAnnouncement(announcementVO);
+    }
+
+    // 공지사항 삭제
+    public void deleteByIds(List<Integer> ids) {
+        announcementMapper.deleteAnnouncements(ids);
     }
 }

@@ -581,14 +581,14 @@
                         <div>
                             <div>
                                 <!-- body_layout -->
-                                <div class="common-layout-container">
+                                <div class="common-layout-container" id="announcement-id">
                                     <div class="filter-wrap">
                                         <div class="sort-filter-options">
                                                     <span
-                                                            class="sort-filter-option selected"
+                                                            class="sort-filter-option selected" id="announcement-list-created-date"
                                                     >등록일 순</span
                                                     >
-                                            <span class="sort-filter-option"
+                                            <span class="sort-filter-option" id="announcement-list-updated-date"
                                             >수정날짜 순</span
                                             >
                                         </div>
@@ -596,13 +596,13 @@
                                         <div class="action-buttons">
                                             <input
                                                     type="text"
-                                                    class="filter-search-input"
+                                                    class="filter-search-input" id="announcement-list-search"
                                                     placeholder="통합검색"
                                             />
                                             <button class="selected-btn notice-write" id="openModal">
                                                 공지사항 작성
                                             </button>
-                                            <button class="selected-btn">
+                                            <button class="selected-btn" id="announcement-delete-btn">
                                                 공지사항 삭제
                                             </button>
                                         </div>
@@ -617,7 +617,7 @@
                                             >
                                                 <input
                                                         type="checkbox"
-                                                        class="select-all"
+                                                        class="select-all" id="announcement-list-select-all"
                                                 />
                                             </div>
                                             <div
@@ -653,81 +653,15 @@
                                                 수정 날짜
                                             </div>
                                         </div>
-
-                                        <!-- 공지사항 목록 뿌리는곳 -->
-                                        <div class="apply-table-row">
-                                            <div class="apply-table-cell">
-                                                <input
-                                                        type="checkbox"
-                                                        class="apply-checkbox"
-                                                />
-                                            </div>
-                                            <div class="apply-table-cell">1 (공지사항Id)</div>
-                                            <div class="apply-table-cell">
-                                                2024-01-01  (createdDate)
-                                            </div>
-                                            <div class="apply-table-cell">
-                                                공지사항 제목 테스트입니다. 내용이 길어지면 생략되어서 보여집니다.
-                                                (공지사항title)
-                                            </div>
-
-                                            <div class="apply-table-cell">
-                                                공지사항 내용 테스트입니다. 내용이 길어지면 생략되어서 보여집니다.
-                                                (공지사항content)
-                                            </div>
-                                            <div class="apply-table-cell">
-                                                <button
-                                                        class="edit-btn status notice-edit"
-                                                >
-                                                    수정
-                                                    (나중에 할거라 냅두기)
-                                                </button>
-                                            </div>
-                                            <div class="apply-table-cell">
-                                                2024-02-02
-                                                (updateDate) 이건 나중에 공지사항 수정하면 바뀔 데이터
-                                            </div>
+                                        <div id="announcement-list" >
+                                            <!-- JavaScript가 여기에 공지사항 목록을 동적으로 추가 -->
                                         </div>
-
                                     </div>
                                 </div>
-                                <nav class="pagination">
+                                <!-- 페이지 네비게이션 -->
+                                <nav class="pagination" id="pagination-announcement">
                                     <ul class="pagination-list">
-                                        <!-- 이전 페이지로 이동하는 버튼 -->
-                                        <li class="pagination-prev">
-                                            <a
-                                                    href="#"
-                                                    class="pagination-prev-link"
-                                                    rel="prev nofollow"
-                                            >
-                                                        <span
-                                                                class="pagination-prev-icon"
-                                                                aria-hidden="true"
-                                                        >‹</span
-                                                        >
-                                            </a>
-                                        </li>
-                                        <!-- 페이지 번호 버튼 -->
-                                        <li class="pagination-page active">
-                                            <a href="#" class="pagination-page-link"
-                                            >1</a
-                                            >
-                                        </li>
-
-                                        <!-- 다음 페이지로 이동하는 버튼 -->
-                                        <li class="pagination-next">
-                                            <a
-                                                    href="#"
-                                                    class="pagination-next-link"
-                                                    rel="next nofollow"
-                                            >
-                                                        <span
-                                                                class="pagination-next-icon"
-                                                                aria-hidden="true"
-                                                        >›</span
-                                                        >
-                                            </a>
-                                        </li>
+                                        <!-- JavaScript로 페이지 버튼을 동적으로 생성 -->
                                     </ul>
                                 </nav>
                             </div>
@@ -766,7 +700,7 @@
                                 <div class="background-overlay" onclick="document.querySelector('.notice-full-modal').style.display='none'"></div>
                             </div>
                             <!-- 공지사항 수정 모달창 -->
-                            <div class="notice-full-modal edit">
+                            <div class="notice-full-modal edit" >
                                 <div class="edit-modal">
                                     <div class="modal-content">
                                         <span class="close-button">&times;</span>
@@ -774,33 +708,23 @@
                                         <form class="edit-form">
                                             <div>
                                                 <label for="edit-post-title">공지사항 제목:</label>
-                                                <input
-                                                        type="text"
-                                                        class="edit-post-title"
-                                                        value="공지사항 수정 제목 테스트입니다. 수정 가능합니다."
-                                                />
-
+                                                <input type="text" class="edit-post-title"  />
                                                 <label for="edit-post-content">공지사항 내용:</label>
-                                                <textarea
-                                                        class="edit-post-content"
-                                                        name="edit-post-content"
-                                                >공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다.</textarea>
+                                                <textarea class="edit-post-content" name="edit-post-content" ></textarea>
                                             </div>
                                             <!-- 저장 버튼 -->
                                             <div class="save">
-                                                <button type="button" class="save-button">
-                                                    수정하기
-                                                </button>
+                                                <button type="button" class="save-button">수정하기</button>
                                             </div>
                                         </form>
                                     </div>
                                 </div>
                                 <div class="background-overlay"></div>
                             </div>
+
                         </div>
 
                     </section>
-
                     <!-- section3: 작품 관리 -->
                     <section id="work-section" class="common-section">
                         <!-- body_header -->

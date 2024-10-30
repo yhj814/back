@@ -7,15 +7,45 @@
         values (#{announcementTitle}, #{announcementContent})
     </insert>
 
-    <!-- 공지사항 조회 (페이지네이션 포함) -->
+    <!-- 공지사항 조회 (페이지네이션 포함, 동적 정렬) -->
     <select id="selectAll" resultType="AnnouncementVO">
-        SELECT * FROM tbl_announcement
-        ORDER BY created_date DESC
-            LIMIT #{pagination.startRow}, #{pagination.rowCount}
+        SELECT *
+        FROM tbl_announcement
+        ORDER BY
+        <choose>
+            <when test="order == 'createdDate'">
+                created_date DESC
+            </when>
+            <when test="order == 'updatedDate'">
+                COALESCE(updated_date, created_date) DESC
+            </when>
+            <otherwise>
+                created_date DESC
+            </otherwise>
+        </choose>
+        LIMIT #{pagination.startRow}, #{pagination.rowCount}
     </select>
 
     <!-- 총 공지사항 수 조회 -->
     <select id="countTotal" resultType="int">
         SELECT COUNT(*) FROM tbl_announcement
     </select>
+
+    <!-- 공지사항 수정 -->
+    <update id="updateAnnouncement">
+        UPDATE tbl_announcement
+        SET announcement_title = #{announcement.announcementTitle},
+            announcement_content = #{announcement.announcementContent},
+            updated_date = CURRENT_TIMESTAMP
+        WHERE id = #{announcement.id}
+    </update>
+
+    <!-- 공지사항 삭제 -->
+    <delete id="deleteAnnouncements">
+        DELETE FROM tbl_announcement
+        WHERE id IN
+        <foreach item="id" collection="ids" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
 </mapper>
