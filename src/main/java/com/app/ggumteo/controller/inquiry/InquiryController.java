@@ -54,8 +54,8 @@ public class InquiryController {
         log.info("문의사항이 성공적으로 저장되었습니다.");
 
         model.addAttribute("message", "문의사항이 성공적으로 작성되었습니다.");
-        // 추후 변경
-        return new RedirectView("/admin/admin");
+        // 메인페이지로 이동
+        return new RedirectView("/main/main");
     }
 
 

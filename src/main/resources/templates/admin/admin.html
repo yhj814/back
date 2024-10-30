@@ -655,44 +655,77 @@
                                         </div>
 
                                         <!-- 공지사항 목록 뿌리는곳 -->
-                                        <div id="announcement-list">
-                                            <div th:each="announcement : ${announcements}" class="apply-table-row">
-                                                <div class="apply-table-cell">
-                                                    <input type="checkbox" class="apply-checkbox" />
-                                                </div>
-                                                <div class="apply-table-cell" th:text="${announcement.id}"></div>
-                                                <div class="apply-table-cell" th:text="${announcement.createdDate}"></div>
-                                                <div class="apply-table-cell" th:text="${announcement.announcementTitle}"></div>
-                                                <div class="apply-table-cell" th:text="${announcement.announcementContent}"></div>
-                                                <div class="apply-table-cell">
-                                                    <button class="edit-btn status notice-edit">수정</button>
-                                                </div>
-                                                <div class="apply-table-cell" th:text="${announcement.updatedDate}"></div>
+                                        <div class="apply-table-row">
+                                            <div class="apply-table-cell">
+                                                <input
+                                                        type="checkbox"
+                                                        class="apply-checkbox"
+                                                />
+                                            </div>
+                                            <div class="apply-table-cell">1 (공지사항Id)</div>
+                                            <div class="apply-table-cell">
+                                                2024-01-01  (createdDate)
+                                            </div>
+                                            <div class="apply-table-cell">
+                                                공지사항 제목 테스트입니다. 내용이 길어지면 생략되어서 보여집니다.
+                                                (공지사항title)
+                                            </div>
+
+                                            <div class="apply-table-cell">
+                                                공지사항 내용 테스트입니다. 내용이 길어지면 생략되어서 보여집니다.
+                                                (공지사항content)
+                                            </div>
+                                            <div class="apply-table-cell">
+                                                <button
+                                                        class="edit-btn status notice-edit"
+                                                >
+                                                    수정
+                                                    (나중에 할거라 냅두기)
+                                                </button>
+                                            </div>
+                                            <div class="apply-table-cell">
+                                                2024-02-02
+                                                (updateDate) 이건 나중에 공지사항 수정하면 바뀔 데이터
                                             </div>
                                         </div>
+
                                     </div>
                                 </div>
                                 <nav class="pagination">
                                     <ul class="pagination-list">
                                         <!-- 이전 페이지로 이동하는 버튼 -->
-                                        <li th:classappend="${pagination.page > 1} ? '' : 'disabled'">
-                                            <a href="#" th:attr="data-page=${pagination.page - 1}"
-                                               class="pagination-prev-link" rel="prev nofollow">
-                                                <span class="pagination-prev-icon" aria-hidden="true">‹</span>
+                                        <li class="pagination-prev">
+                                            <a
+                                                    href="#"
+                                                    class="pagination-prev-link"
+                                                    rel="prev nofollow"
+                                            >
+                                                        <span
+                                                                class="pagination-prev-icon"
+                                                                aria-hidden="true"
+                                                        >‹</span
+                                                        >
                                             </a>
                                         </li>
-
                                         <!-- 페이지 번호 버튼 -->
-                                        <li th:each="i : ${#numbers.sequence(1, pagination.realEnd)}"
-                                            th:classappend="${i == pagination.page} ? 'active'">
-                                            <a href="#" th:attr="data-page=${i}" th:text="${i}" class="pagination-page-link"></a>
+                                        <li class="pagination-page active">
+                                            <a href="#" class="pagination-page-link"
+                                            >1</a
+                                            >
                                         </li>
 
                                         <!-- 다음 페이지로 이동하는 버튼 -->
-                                        <li th:classappend="${pagination.page < pagination.realEnd} ? '' : 'disabled'">
-                                            <a href="#" th:attr="data-page=${pagination.page + 1}"
-                                               class="pagination-next-link" rel="next nofollow">
-                                                <span class="pagination-next-icon" aria-hidden="true">›</span>
+                                        <li class="pagination-next">
+                                            <a
+                                                    href="#"
+                                                    class="pagination-next-link"
+                                                    rel="next nofollow"
+                                            >
+                                                        <span
+                                                                class="pagination-next-icon"
+                                                                aria-hidden="true"
+                                                        >›</span
+                                                        >
                                             </a>
                                         </li>
                                     </ul>
