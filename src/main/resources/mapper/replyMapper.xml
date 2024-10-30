@@ -15,13 +15,12 @@
         where id = #{id}
     </delete>
 
-    <!-- 특정 작품에 대한 댓글 목록 조회 -->
-    <select id="selectRepliesByWorkId" parameterType="Long" resultType="replyDTO">
+    <select id="selectRepliesByWorkId" resultType="replyDTO">
         select
             r.id,
-            r.reply_content as replyContent,
-            r.member_profile_id as memberProfileId,
-            r.work_id as workId,
+            r.reply_content,
+            r.member_profile_id,
+            r.work_id,
             r.created_date as createDate,
             r.star,
             mp.profile_nickname as profileNickname
@@ -29,7 +28,9 @@
                  join tbl_member_profile mp on r.member_profile_id = mp.id
         where r.work_id = #{workId}
         order by r.created_date desc
+            limit #{pagination.startRow}, #{pagination.rowCount}
     </select>
+
 
     <!-- 작품의 평균 별점 조회 -->
     <select id="selectAverageStarByWorkId" parameterType="Long" resultType="double">

@@ -1,6 +1,8 @@
 package com.app.ggumteo.service.reply;
 
 import com.app.ggumteo.domain.reply.ReplyDTO;
+import com.app.ggumteo.domain.reply.ReplyListDTO;
+import com.app.ggumteo.pagination.Pagination;
 import com.app.ggumteo.repository.reply.ReplyDAO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -29,8 +31,14 @@ public class ReplyServiceImpl implements ReplyService {
 
     // 특정 작품에 대한 댓글 목록 조회
     @Override
-    public List<ReplyDTO> selectRepliesByWorkId(Long workId) {
-        return replyDAO.selectRepliesByWorkId(workId);
+    public ReplyListDTO selectRepliesByWorkId(int page, Pagination pagination, Long workId) {
+        ReplyListDTO replyListDTO = new ReplyListDTO();
+        pagination.setPage(page);
+        pagination.setTotal(replyDAO.countRepliesByWorkId(workId));
+        pagination.progress();
+        replyListDTO.setPagination(pagination);
+        replyListDTO.setReplies(replyDAO.selectRepliesByWorkId(workId, pagination));
+        return replyListDTO;
     }
 
     // 작품의 평균 별점 조회

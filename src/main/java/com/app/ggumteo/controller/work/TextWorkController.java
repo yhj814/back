@@ -171,38 +171,21 @@ public class TextWorkController {
 
     @GetMapping("/detail/{id}")
     public String detail(@PathVariable("id") Long id, Model model) {
-        // 작품 기본 정보를 조회
         WorkDTO work = workService.findWorkById(id);
-
-        // 조회수 증가
         workService.incrementReadCount(id);
         log.info("Detail view의 WorkDTO: {}", work);
 
-
-        // 작품에 연결된 다중 파일 조회
         List<PostFileDTO> postFiles = workService.findFilesByPostId(id);
 
-        // 모델에 데이터 추가
-        model.addAttribute("work", work); // 작품 기본 정보
-        model.addAttribute("postFiles", postFiles); // 다중 파일 정보
+        model.addAttribute("work", work);
+        model.addAttribute("postFiles", postFiles);
 
-        return "text/detail";  // 상세 페이지 템플릿으로 이동
+        // workId 값을 JavaScript로 전달하기 위해 추가
+        model.addAttribute("workId", work.getId());
+
+        return "text/detail";
     }
 
-    // WorkController에 추가할 댓글 관리 메서드들
-    @GetMapping("/api/replies")
-    @ResponseBody
-    public ResponseEntity<?> getRepliesByWorkId(@RequestParam Long workId, @RequestParam(defaultValue = "1") int page) {
-        List<ReplyDTO> replies = replyService.selectRepliesByWorkId(workId);
-        int totalReplies = replyService.countRepliesByWorkId(workId);
-        double averageStar = replyService.selectAverageStarByWorkId(workId);
 
-        Map<String, Object> response = new HashMap<>();
-        response.put("replies", replies);
-        response.put("totalCount", totalReplies);
-        response.put("averageStar", averageStar);
-
-        return ResponseEntity.ok(response);
-    }
 
 }

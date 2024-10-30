@@ -20,8 +20,8 @@
                 </a>
             </div>
         </div>
-        <div class="layout" data-work-id="${work.id}">
-            <!-- 중간메인내용 -->
+        <div class="layout" th:attr="data-work-id=${work.id}">
+        <!-- 중간메인내용 -->
             <div class="container-wrapper">
                 <!-- 메인내용 -->
                 <div class="content-container-wrapper">
@@ -34,14 +34,14 @@
                             <div class="detail-info">
                                 <div class="flex-box author-info content-meta">
                                     <img
-                                        src="/static/images/text/318743_20240926_4c9cbec414bb32ee.png"
+                                        src="/images/text/318743_20240926_4c9cbec414bb32ee.png"
                                         class="content-meta-elem author-image pc-only"
                                     />
                                     <div class="content-meta-elem pc-only">
                                         <p class="link-underline-text writer" th:text="${work.profileNickName}">작성자</p>
                                     </div>
                                     <img
-                                        src="/static/images/text/icon-clock.png"
+                                        src="/images/text/icon-clock.png"
                                         class="content-meta-elem meta-icon"
                                     />
                                     <div class="content-meta-elem time" th:text="${work.createdDate.substring(0, 10)}">
@@ -117,7 +117,7 @@
                                 </div>
                                 <div class="report">
                                     <img
-                                        src="/static/images/video/report.jpg"
+                                        src="/images/video/report.jpg"
                                     />
                                     <button id="report-btn">신고하기</button>
                                 </div>
@@ -193,112 +193,7 @@
                                 <a class="count-number reply-count" id="comment-count">0</a>
                             </div>
                             <div class="comment-row" id="comment-row">
-<!--                                <div class="comment-list">-->
-<!--                                    <div class="comment-group">-->
-<!--                                        <div class="comment-box">-->
-<!--                                            <div class="comment-wrapper">-->
-<!--                                                <div class="write-user">-->
-<!--                                                    <img-->
-<!--                                                        src="https://yozm.wishket.com/static/img/default_avatar.png"-->
-<!--                                                        class="comment-writer-img"-->
-<!--                                                    />-->
-<!--                                                    <div-->
-<!--                                                        class="comment-writer-name"-->
-<!--                                                    >-->
-<!--                                                        <div-->
-<!--                                                            class="writer-name"-->
-<!--                                                        >-->
-<!--                                                            댓글작성자-->
-<!--                                                        </div>-->
-<!--                                                        <div-->
-<!--                                                            class="btn-comment-action"-->
-<!--                                                        >-->
-<!--                                                            <button-->
-<!--                                                                class="btn-comment-delete cursor"-->
-<!--                                                            >-->
-<!--                                                                삭제-->
-<!--                                                            </button>-->
-<!--                                                            <img-->
-<!--                                                                src="/static/images/video/report.jpg"-->
-<!--                                                            />-->
-<!--                                                            <button-->
-<!--                                                                class="btn-comment-report cursor"-->
-<!--                                                            >-->
-<!--                                                                신고-->
-<!--                                                            </button>-->
-<!--                                                        </div>-->
-<!--                                                    </div>-->
-<!--                                                </div>-->
-<!--                                                <div class="comment">-->
-<!--                                                    <a class="comment-content">-->
-<!--                                                        댓글내용-->
-<!--                                                    </a>-->
-<!--                                                </div>-->
-<!--                                                <div-->
-<!--                                                    class="comment-date-created"-->
-<!--                                                >-->
-<!--                                                    2024.10.23-->
-<!--                                                    <div class="comment-review">-->
-<!--                                                        <div class="review-box">-->
-<!--                                                            <div-->
-<!--                                                                class="star-box"-->
-<!--                                                            >-->
-<!--                                                                <img-->
-<!--                                                                    src="https://www.wishket.com/static/renewal/img/project/wishket-project-portfolio/icon-review-star-full.png"-->
-<!--                                                                />-->
-<!--                                                            </div>-->
-<!--                                                            <span-->
-<!--                                                                class="review-score"-->
-<!--                                                                >5.0</span-->
-<!--                                                            >-->
-<!--                                                        </div>-->
-<!--                                                    </div>-->
-<!--                                                </div>-->
-<!--                                            </div>-->
-<!--                                        </div>-->
-<!--                                    </div>-->
-<!--                                </div>-->
                                 <div id="pagination" class="center-text pagination-box">
-<!--                                    <ul class="pagination theme-ggumteo">-->
-<!--                                        <li class="page-item">-->
-<!--                                            <a id="page-btn" class="page-link"-->
-<!--                                                >이전</a-->
-<!--                                            >-->
-<!--                                        </li>-->
-<!--                                        <li class="page-item">-->
-<!--                                            <a-->
-<!--                                                id="page-btn"-->
-<!--                                                class="page-link active"-->
-<!--                                                >1</a-->
-<!--                                            >-->
-<!--                                        </li>-->
-<!--                                        <li class="page-item">-->
-<!--                                            <a id="page-btn" class="page-link"-->
-<!--                                                >2</a-->
-<!--                                            >-->
-<!--                                        </li>-->
-<!--                                        <li class="page-item">-->
-<!--                                            <a id="page-btn" class="page-link"-->
-<!--                                                >3</a-->
-<!--                                            >-->
-<!--                                        </li>-->
-<!--                                        <li class="page-item">-->
-<!--                                            <a id="page-btn" class="page-link"-->
-<!--                                                >4</a-->
-<!--                                            >-->
-<!--                                        </li>-->
-<!--                                        <li class="page-item">-->
-<!--                                            <a id="page-btn" class="page-link"-->
-<!--                                                >5</a-->
-<!--                                            >-->
-<!--                                        </li>-->
-<!--                                        &lt;!&ndash; li채로 복사 &ndash;&gt;-->
-<!--                                        <li class="page-item">-->
-<!--                                            <a id="page-btn" class="page-link"-->
-<!--                                                >다음</a-->
-<!--                                            >-->
-<!--                                        </li>-->
-<!--                                    </ul>-->
                                 </div>
                                 <div class="comment-writer">
                                     <form onsubmit="event.preventDefault();"
