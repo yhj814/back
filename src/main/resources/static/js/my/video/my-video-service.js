@@ -19,7 +19,7 @@ const myPageService = (() => {
         console.log("3: ", buyersByFundingPostId);
 
         if(callback){
-            callback(buyersByFundingPostId);
+            return callback(buyersByFundingPostId);
         }
     }
     return {getMyFundingList: getMyFundingList, getFundingBuyerList: getFundingBuyerList}

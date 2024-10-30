@@ -208,6 +208,9 @@ function timeForToday(datetime) {
 
 const showFundingBuyerList = (buyersByFundingPostId) => {
 
+    console.log("layout-1 :",showFundingBuyerList)
+    console.log("layout-2 :",buyersByFundingPostId)
+
     let text = `<div
                             class="setting-tr-group"
                             style="
@@ -218,7 +221,7 @@ const showFundingBuyerList = (buyersByFundingPostId) => {
                     >`;
 
     buyersByFundingPostId.forEach((buyerByFundingPostId) => {
-        text += `  <div class="price-member setting-tr" style="padding-top: 7px">
+        text += `<div class="price-member setting-tr" style="padding-top: 7px">
                         <div
                                 class="setting-td with-sub size-l"
                         >
@@ -292,6 +295,14 @@ const showFundingBuyerList = (buyersByFundingPostId) => {
                         </label>
                    </div>
             `;
+
+        console.log("layout-3 :", buyersByFundingPostId);
+        console.log("layout-4 :", buyerByFundingPostId);
+        console.log("layout-5 :", text)
     });
-    text = `</div>`;
+    text += `</div>`;
+
+    console.log("layout-6 :",text);
+
+    return text;
 }
