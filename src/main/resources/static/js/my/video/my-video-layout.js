@@ -76,8 +76,8 @@ const showMyFundingList = ({myFundingPosts, myPagePagination}) => {
                     <div class="flex-box">
                         <div class="btn-wrapper">
                             <button
-                            id="my-funding-Buyer-list-button"
-                                class="btn btn-action btn-icon-edit-my"
+                                id="my-funding-Buyer-button"
+                                class="btn btn-action btn-icon-edit-my ${myFundingPost.id}"
                                 name="toggle_btn"
                                 type="button"
                             >
@@ -135,7 +135,7 @@ const showMyFundingList = ({myFundingPosts, myPagePagination}) => {
     if(myPagePagination.prev){
         pagingText += `
             <li class="page-item">
-                <a href="${myPagePagination.startPage - 1}" class="page-link" id="back" style="bottom: -15px"></a>
+                <a href="${myPagePagination.startPage - 1}" class="page-link back"></a>
             </li>
         `
     }
@@ -150,7 +150,7 @@ const showMyFundingList = ({myFundingPosts, myPagePagination}) => {
     if(myPagePagination.next) {
         pagingText += `
             <li class="page-item">
-                <a href="${myPagePagination.endPage + 1}" class="page-link" id="next" style="bottom: -15px"></a>
+                <a href="${myPagePagination.endPage + 1}" class="page-link next"></a>
             </li>
         `
     }

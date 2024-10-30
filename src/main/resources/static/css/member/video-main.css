@@ -305,7 +305,7 @@ html {
 }
 
    .list-item {
-    padding: 32px 0px;
+    padding: 25px 0px;
     border-bottom: 1px solid;
 }
 .flex-box {
@@ -376,11 +376,6 @@ p {
     white-space: normal; /* 줄바꿈 허용 */
     word-wrap: break-word; /* 단어가 길 경우 줄 바꿈 */
 }
-
-
-
-
-
 
 .container.mypage .main-content-container .products-list .products-author-box {
     width: 562px;
@@ -483,10 +478,10 @@ p {
 .content {
     color: #757575;
 }
+
 .pagination {
     display: block !important;
     text-align: center;
-    padding: 0px 0px 120px 0px;
 }
 ul {
     list-style: none;
@@ -529,19 +524,21 @@ ul li {
     cursor: pointer;
 }
 
-#back{
+.page-link.back{
     background-image: url(/images/member/next.png);
     text-indent: -999999px;
     background-position: center;
     background-repeat: no-repeat;
     transform: rotate(-180deg);
+    bottom: -15px
 }
 
-#next {
+.page-link.next {
     background-image: url(/images/member/next.png);
     text-indent: -999999px;
     background-position: center;
     background-repeat: no-repeat;
+    bottom: -15px
 }
 .pagination.theme-yozm .page-link:hover {
     z-index: 2;
@@ -572,12 +569,6 @@ body.partners_profile .edit-menu-box .profile-menu-setting .setting-table .setti
 .trueorfalse {
     width: 192px;
     margin-left: 20px;
-}
-.setting-tr-group {
-    display: inline-block;
-    padding-bottom: 12px;
-    margin-bottom: 12px;
-    border-bottom: solid 1px #e0e0e0;
 }
 .setting-tr {
     height: auto;
@@ -654,11 +645,6 @@ body.partners_profile .edit-menu-box .profile-menu-setting .setting-table .setti
     align-items: center;
 }
 
-#replybackornext {
-    margin-bottom: -150px;
-    margin-top: -40px;
-    margin-right: 0px;
-}
 .sidebar-menu-name{
     font-size: 14px;
     line-height: 24px;
@@ -988,7 +974,6 @@ body.partners_profile .edit-menu-box .profile-menu-setting .setting-table .setti
 .setting-tr-group {
     display: inline-block;
     padding-bottom: 12px;
-    margin-bottom: 12px;
     border-bottom: solid 1px #e0e0e0;
 }
 .setting-tr {
@@ -1063,14 +1048,11 @@ body.partners_profile .edit-menu-box .profile-menu-setting .setting-table .setti
     align-items: center;
 }
 
-#replybackornext {
-    margin-bottom: -220px;
-    margin-top: -40px;
+.back-or-next {
+    margin: 0px auto;
     padding-left: 615px;
 }
 .reply{
-   
-    padding-bottom: 200px;
     padding-left: 10px;
 }
 .pagination2 {
@@ -1106,12 +1088,7 @@ body.partners_profile .edit-menu-box .profile-menu-setting .setting-table .setti
     height: 100%;
     margin-left: 4px;
 }
-.pagination2.theme-yozm li:last-child>.page-link {
-    background-image: url(https://yozm.wishket.com/renewal/img/news/icon_page_next.png);
-    text-indent: -999999px;
-    background-position: center;
-    background-repeat: no-repeat;
-}
+
 .pagination2 li {
     display: inline-block;
     cursor: pointer;
@@ -1383,12 +1360,6 @@ p {
 }
 .setting-td {
     display: inline-block;
-}
-.setting-tr-group {
-    display: inline-block;
-    padding-bottom: 12px;
-    margin-bottom: 12px;
-    border-bottom: solid 1px #e0e0e0;
 }
 .setting-tr {
     height: auto;
