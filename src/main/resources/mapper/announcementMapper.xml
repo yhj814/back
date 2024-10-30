@@ -7,43 +7,52 @@
         values (#{announcementTitle}, #{announcementContent})
     </insert>
 
-    <!-- 공지사항 조회 (페이지네이션 포함, 동적 정렬) -->
+    <!-- 공지사항 조회 (페이지네이션 포함, 날짜필터, 검색 추가) -->
     <select id="selectAll" resultType="AnnouncementVO">
-        SELECT *
-        FROM tbl_announcement
+        select *
+        from tbl_announcement
+        where (#{search} is null or #{search} = ''
+        or announcement_title like concat('%', #{search}, '%')
+        or announcement_content like concat('%', #{search}, '%')
+        or cast(id as char) like concat('%', #{search}, '%'))
         ORDER BY
         <choose>
             <when test="order == 'createdDate'">
-                created_date DESC
+                created_date desc
             </when>
             <when test="order == 'updatedDate'">
-                COALESCE(updated_date, created_date) DESC
+                coalesce(updated_date, created_date) desc
             </when>
             <otherwise>
-                created_date DESC
+                created_date desc
             </otherwise>
         </choose>
-        LIMIT #{pagination.startRow}, #{pagination.rowCount}
+        limit #{pagination.startRow}, #{pagination.rowCount}
     </select>
 
-    <!-- 총 공지사항 수 조회 -->
+    <!-- 총 공지사항 수 조회 (검색어 포함) -->
     <select id="countTotal" resultType="int">
-        SELECT COUNT(*) FROM tbl_announcement
+        select COUNT(*)
+        from tbl_announcement
+        where (#{search} is null or #{search} = ''
+            or announcement_title LIKE concat('%', #{search}, '%')
+            or announcement_content LIKE concat('%', #{search}, '%')
+            or cast(id as char) like concat('%', #{search}, '%'))
     </select>
 
     <!-- 공지사항 수정 -->
     <update id="updateAnnouncement">
-        UPDATE tbl_announcement
-        SET announcement_title = #{announcement.announcementTitle},
+        update tbl_announcement
+        set announcement_title = #{announcement.announcementTitle},
             announcement_content = #{announcement.announcementContent},
-            updated_date = CURRENT_TIMESTAMP
-        WHERE id = #{announcement.id}
+            updated_date = current_timestamp
+        where id = #{announcement.id}
     </update>
 
     <!-- 공지사항 삭제 -->
     <delete id="deleteAnnouncements">
-        DELETE FROM tbl_announcement
-        WHERE id IN
+        delete from tbl_announcement
+        where id in
         <foreach item="id" collection="ids" open="(" separator="," close=")">
             #{id}
         </foreach>

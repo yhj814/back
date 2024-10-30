@@ -20,16 +20,17 @@ public class AnnouncementServiceImpl implements AnnouncementService {
     public void write(AnnouncementVO announcementVO) {
         announcementDAO.save(announcementVO);
     }
-    // 공지사항 전체 조회 (페이지네이션 포함)
+
+    // 공지사항 전체 조회 (페이지네이션, 정렬, 검색)
     @Override
-    public List<AnnouncementVO> getAllAnnouncements(AdminPagination pagination, String order) {
-        return announcementDAO.findAll(pagination, order);
+    public List<AnnouncementVO> getAllAnnouncements(AdminPagination pagination, String order, String search) {
+        return announcementDAO.findAll(pagination, order, search);
     }
 
-    // 총 공지사항 수 조회
+    // 총 공지사항 수 조회 (검색 포함)
     @Override
-    public int getTotalAnnouncements() {
-        return announcementDAO.countTotal();
+    public int getTotalAnnouncements(String search) {
+        return announcementDAO.countTotal(search);
     }
 
     // 공지사항 수정
@@ -43,5 +44,4 @@ public class AnnouncementServiceImpl implements AnnouncementService {
     public void deleteAnnouncements(List<Integer> ids) {
         announcementDAO.deleteByIds(ids);
     }
-
 }

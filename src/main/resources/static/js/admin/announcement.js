@@ -1,26 +1,23 @@
 // 페이지가 로드될 때 초기 데이터를 불러와서 표시
 document.addEventListener('DOMContentLoaded', function () {
-    loadAnnouncements(1,'createdDate'); // 첫 페이지를 로드하여 초기 화면 구성
-    setDeleteButtonListener(); // 삭제 버튼 이벤트 리스너 등록
-    setSelectAllListener(); // 전체 선택 체크박스 리스너 등록
-    setSaveButtonListener(); // 공지사항 저장 버튼 리스너 등록
-});
+    loadAnnouncements(1,'','createdDate'); // 첫 페이지를 로드하여 초기 화면 구성
+    setDeleteButtonListener(); // 삭제 버튼 이벤트 리스너
+    setSelectAllListener(); // 전체 선택 체크박스 리스너
+    setSaveButtonListener(); // 공지사항 저장 버튼 리스너
 
-
-// 8글자 초과 시 '...' 처리 함수
-function truncateText(selector, maxLength = 8) {
-    const elements = document.querySelectorAll(selector);
-    elements.forEach(element => {
-        const text = element.innerText;
-        if (text.length > maxLength) {
-            element.innerText = text.slice(0, maxLength) + '...';
+    // 검색 필드에서 Enter 키 이벤트 리스너
+    const searchInput = document.getElementById('announcement-list-search');
+    searchInput.addEventListener('keypress', function (event) {
+        if (event.key === 'Enter') {
+            event.preventDefault(); // Enter 기본 동작 방지
+            performSearch(); // 검색 수행 함수 호출
         }
     });
-}
+});
 
-// 공지사항 목록 로드 함수
-function loadAnnouncements(page,order= 'createdDate') {
-    fetch(`/admin/announcements?page=${page}&order=${order}`)
+// 공지사항 목록 로드
+function loadAnnouncements(page, search = '',order= 'createdDate') {
+    fetch(`/admin/announcements?page=${page}&order=${order}&search=${encodeURIComponent(search)}`)
         .then(response => response.json())
         .then(data => {
             const announcements = data.announcements;
@@ -29,7 +26,7 @@ function loadAnnouncements(page,order= 'createdDate') {
             const container = document.querySelector('#announcement-id #announcement-list');
             container.innerHTML = ''; // 기존 목록 초기화
 
-            // 공지사항 목록을 HTML로 변환하여 추가
+            // 공지사항 목록을 HTML로 변환
             announcements.forEach(announcement => {
                 const row = `
                     <div class="apply-table-row">
@@ -57,8 +54,8 @@ function loadAnnouncements(page,order= 'createdDate') {
             truncateText('#announcement-id .announcement-title', 8);
             truncateText('#announcement-id .announcement-content', 8);
 
-            // 페이지 버튼 업데이트
-            updatePagination(pagination, page, order);
+            // 페이지 버튼
+            updatePagination(pagination, page, search, order);
 
             // 수정 버튼 클릭 시 모달창 열기
             setEditButtonListeners();
@@ -66,21 +63,14 @@ function loadAnnouncements(page,order= 'createdDate') {
             // 전체 선택 상태 초기화
             document.querySelector('#announcement-list-select-all').checked = false;
 
-            // 개별 체크박스 리스너 등록
+            // 개별 체크박스 리스너
             setIndividualCheckboxListeners();
         })
         .catch(error => console.error('Error fetching announcements:', error));
 }
 
-// 정렬 필터 옵션 클릭 이벤트 등록
-document.querySelector('#announcement-list-created-date').addEventListener('click', () => {
-    loadAnnouncements(1, 'createdDate');
-});
-document.querySelector('#announcement-list-updated-date').addEventListener('click', () => {
-    loadAnnouncements(1, 'updatedDate');
-});
 
-// 공지사항 저장 함수
+// 공지사항 작성과 동시에 목록에 뿌리기
 function saveAnnouncement() {
     const title = document.getElementById('edit-post-title').value;
     const content = document.getElementById('edit-post-content').value;
@@ -96,6 +86,7 @@ function saveAnnouncement() {
         announcementContent: content
     };
 
+    // 목록조회
     fetch('/admin/announcement', {
         method: 'POST',
         headers: {
@@ -106,7 +97,8 @@ function saveAnnouncement() {
         .then(response => {
             if (response.ok) {
                 alert("공지사항이 등록되었습니다.");
-                loadAnnouncements(1); // 공지사항 작성 후 목록 갱신
+                // 공지사항 작성 후 목록 갱신
+                loadAnnouncements(1);
 
                 // 모달 닫기 및 입력 필드 초기화
                 closeModal();
@@ -120,86 +112,26 @@ function saveAnnouncement() {
         });
 }
 
-// 모달 열기
+// 공지사항 작성 모달 열기
 document.getElementById("openModal").onclick = function() {
     document.querySelector('.notice-full-modal').style.display = 'block';
 };
 
-// 모달 닫기 함수
+// 공지사항 작성,수정 모달 닫기
 function closeModal() {
     document.querySelector('.notice-full-modal').style.display = 'none';
     document.getElementById('edit-post-title').value = '';
     document.getElementById('edit-post-content').value = '';
 }
 
-// 공지사항 저장 버튼 리스너 추가 함수
+// 공지사항 작성 ,수정 저장 버튼 리스너
 function setSaveButtonListener() {
     const saveButton = document.querySelector('.save-button');
     saveButton.onclick = saveAnnouncement;
 }
 
-// 전체 선택 체크박스 리스너 추가 함수
-function setSelectAllListener() {
-    const selectAllCheckbox = document.querySelector('#announcement-list-select-all');
 
-    selectAllCheckbox.addEventListener('change', function () {
-        const checkboxes = document.querySelectorAll('#announcement-id .apply-checkbox');
-        checkboxes.forEach(checkbox => {
-            checkbox.checked = selectAllCheckbox.checked;
-        });
-    });
-}
-
-// 개별 체크박스 리스너 등록 함수
-function setIndividualCheckboxListeners() {
-    const selectAllCheckbox = document.querySelector('#announcement-list-select-all');
-    const checkboxes = document.querySelectorAll('#announcement-id .apply-checkbox');
-
-    checkboxes.forEach(checkbox => {
-        checkbox.addEventListener('change', function () {
-            // 개별 체크박스가 하나라도 해제되면 전체 선택 해제
-            if (!checkbox.checked) {
-                selectAllCheckbox.checked = false;
-            } else {
-                // 모든 체크박스가 선택된 경우에만 전체 선택 체크박스 체크
-                const allChecked = Array.from(checkboxes).every(cb => cb.checked);
-                selectAllCheckbox.checked = allChecked;
-            }
-        });
-    });
-}
-
-// 삭제 버튼에 이벤트 리스너 추가 함수
-function setDeleteButtonListener() {
-    const deleteButton = document.querySelector('#announcement-delete-btn');
-    deleteButton.addEventListener('click', deleteAnnouncements);
-}
-
-// 공지사항 삭제 함수
-function deleteAnnouncements() {
-    const selectedIds = Array.from(document.querySelectorAll('#announcement-id .apply-checkbox:checked'))
-        .map(checkbox => checkbox.getAttribute('data-id'));
-
-    if (selectedIds.length === 0) {
-        alert('삭제할 공지사항을 선택하세요.');
-        return;
-    }
-
-    fetch('/admin/announcement/delete', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(selectedIds),
-    })
-        .then(response => response.text())
-        .then(data => {
-            alert('선택한 공지사항이 성공적으로 삭제되었습니다.');
-            loadAnnouncements(1); // 삭제 후 목록 갱신
-        })
-        .catch(error => console.error('Error deleting announcements:', error));
-}
-// 수정 버튼에 이벤트 리스너 추가 함수
+// 수정 버튼에 이벤트 리스너
 function setEditButtonListeners() {
     const editButtons = document.querySelectorAll('#announcement-id .notice-edit');
     const noticeModal = document.querySelector('.notice-full-modal.edit');
@@ -241,7 +173,7 @@ function setEditButtonListeners() {
     });
 }
 
-// 공지사항 수정 함수
+// 공지사항 수정
 function updateAnnouncement(id, newTitle, newContent) {
     fetch('/admin/announcement/update', {
         method: 'POST',
@@ -261,34 +193,126 @@ function updateAnnouncement(id, newTitle, newContent) {
         })
         .catch(error => console.error('Error updating announcement:', error))
         .finally(() => {
-            // 모달창 닫기
+            // 작성 모달창 닫기
             const noticeModal = document.querySelector('.notice-full-modal.edit');
             noticeModal.style.display = 'none';
         });
 }
-// 페이지 버튼 업데이트 함수
-function updatePagination(pagination, currentPage, order) {
+
+
+// 삭제 버튼에 이벤트 리스너
+function setDeleteButtonListener() {
+    const deleteButton = document.querySelector('#announcement-delete-btn');
+    deleteButton.addEventListener('click', deleteAnnouncements);
+}
+
+// 공지사항 삭제
+function deleteAnnouncements() {
+    const selectedIds = Array.from(document.querySelectorAll('#announcement-id .apply-checkbox:checked'))
+        .map(checkbox => checkbox.getAttribute('data-id'));
+
+    if (selectedIds.length === 0) {
+        alert('삭제할 공지사항을 선택하세요.');
+        return;
+    }
+
+    fetch('/admin/announcement/delete', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(selectedIds),
+    })
+        .then(response => response.text())
+        .then(data => {
+            alert('선택한 공지사항이 성공적으로 삭제되었습니다.');
+            loadAnnouncements(1); // 삭제 후 목록 갱신
+        })
+        .catch(error => console.error('Error deleting announcements:', error));
+}
+
+// 전체 선택 체크박스 리스너
+function setSelectAllListener() {
+    const selectAllCheckbox = document.querySelector('#announcement-list-select-all');
+
+    selectAllCheckbox.addEventListener('change', function () {
+        const checkboxes = document.querySelectorAll('#announcement-id .apply-checkbox');
+        checkboxes.forEach(checkbox => {
+            checkbox.checked = selectAllCheckbox.checked;
+        });
+    });
+}
+
+// 개별 체크박스 리스너
+function setIndividualCheckboxListeners() {
+    const selectAllCheckbox = document.querySelector('#announcement-list-select-all');
+    const checkboxes = document.querySelectorAll('#announcement-id .apply-checkbox');
+
+    checkboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', function () {
+            // 개별 체크박스가 하나라도 해제되면 전체 선택 해제
+            if (!checkbox.checked) {
+                selectAllCheckbox.checked = false;
+            } else {
+                // 모든 체크박스가 선택된 경우에만 전체 선택 체크박스 체크
+                const allChecked = Array.from(checkboxes).every(cb => cb.checked);
+                selectAllCheckbox.checked = allChecked;
+            }
+        });
+    });
+}
+
+// 정렬 필터 옵션 클릭 이벤트
+// 작성일 순
+document.querySelector('#announcement-list-created-date').addEventListener('click', () => {
+    loadAnnouncements(1, '','createdDate');
+});
+
+// 수정 날짜
+document.querySelector('#announcement-list-updated-date').addEventListener('click', () => {
+    loadAnnouncements(1,'', 'updatedDate');
+});
+
+// 검색 수행 함수
+function performSearch() {
+    const searchKeyword = document.getElementById('announcement-list-search').value.trim();
+    loadAnnouncements(1, searchKeyword, 'createdDate'); // 검색어와 함께 첫 페이지 로드 (기본 정렬: 등록일 순)
+}
+
+// 8글자 초과 시 8자리 뒤에 '...' 처리
+function truncateText(selector, maxLength = 8) {
+    const elements = document.querySelectorAll(selector);
+    elements.forEach(element => {
+        const text = element.innerText;
+        if (text.length > maxLength) {
+            element.innerText = text.slice(0, maxLength) + '...';
+        }
+    });
+}
+
+// 페이지 버튼 (검색과 정렬을 포함하여 호출)
+function updatePagination(pagination, currentPage, search, order) {
     const paginationContainer = document.querySelector('#pagination-announcement .pagination-list');
     paginationContainer.innerHTML = ''; // 기존 페이지 버튼 초기화
 
-    // 이전 페이지 버튼 (비활성화 조건 포함)
+    // 이전 페이지 버튼 (비활성화 조건 포함 1페이지에서 더이상 이동하지 않음)
     paginationContainer.innerHTML += `
         <li class="pagination-prev ${currentPage === 1 ? 'disabled' : ''}">
-            <a href="#" onclick="loadAnnouncements(${Math.max(currentPage - 1, 1)}, '${order}')">&lt;</a>
+            <a href="#" onclick="loadAnnouncements(${Math.max(currentPage - 1, 1)}, '${search}', '${order}')">&lt;</a>
         </li>`;
 
     // 페이지 번호 버튼 생성
     for (let i = pagination.startPage; i <= pagination.endPage; i++) {
         paginationContainer.innerHTML += `
             <li class="pagination-page ${i === currentPage ? 'active' : ''}">
-                <a href="#" onclick="loadAnnouncements(${i}, '${order}')">${i}</a>
+                <a href="#" onclick="loadAnnouncements(${i}, '${search}', '${order}')">${i}</a>
             </li>`;
     }
 
-    // 다음 페이지 버튼 (비활성화 조건 포함)
+    // 다음 페이지 버튼 (비활성화 조건 포함 마지막 페이지에서 이동하지 않음)
     paginationContainer.innerHTML += `
         <li class="pagination-next ${currentPage === pagination.realEnd ? 'disabled' : ''}">
-            <a href="#" onclick="loadAnnouncements(${Math.min(currentPage + 1, pagination.realEnd)}, '${order}')">&gt;</a>
+            <a href="#" onclick="loadAnnouncements(${Math.min(currentPage + 1, pagination.realEnd)}, '${search}', '${order}')">&gt;</a>
         </li>`;
 }
 

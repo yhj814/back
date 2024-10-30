@@ -17,14 +17,14 @@ public class AnnouncementDAO {
     public void save(AnnouncementVO announcementVO) {
         announcementMapper.insert(announcementVO);
     }
-    // 공지사항 전체 조회 (페이지네이션 포함)
-    public List<AnnouncementVO> findAll(AdminPagination pagination, String order) {
-        return announcementMapper.selectAll(pagination, order);
+    // 공지사항 전체 조회 (페이지네이션, 정렬, 검색)
+    public List<AnnouncementVO> findAll(AdminPagination pagination, String order, String search) {
+        return announcementMapper.selectAll(pagination, order, search);
     }
 
-    // 총 공지사항 수 조회
-    public int countTotal() {
-        return announcementMapper.countTotal();
+    // 총 공지사항 수 조회 (검색 포함)
+    public int countTotal(String search) {
+        return announcementMapper.countTotal(search);
     }
 
     //  공지사항 수정

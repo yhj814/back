@@ -69,19 +69,20 @@ public class AdminController {
         return ResponseEntity.ok("공지사항이 성공적으로 등록되었습니다.");
     }
 
-//    공지사항조회
+    // 공지사항 조회 (검색 및 정렬 기능 포함)
     @GetMapping("/announcements")
     @ResponseBody
     public Map<String, Object> listAnnouncements(
             @RequestParam(value = "page", defaultValue = "1") Integer page,
-            @RequestParam(value = "order", defaultValue = "created_date") String order) { // 정렬 기준 추가
+            @RequestParam(value = "order", defaultValue = "createdDate") String order, // 정렬
+            @RequestParam(value = "search", required = false) String search) { // 검색
 
         AdminPagination pagination = new AdminPagination();
         pagination.setPage(page);
-        pagination.setTotal(announcementService.getTotalAnnouncements());
+        pagination.setTotal(announcementService.getTotalAnnouncements(search)); // 검색에 따른 총 개수
         pagination.progress();
 
-        List<AnnouncementVO> announcements = announcementService.getAllAnnouncements(pagination, order);
+        List<AnnouncementVO> announcements = announcementService.getAllAnnouncements(pagination, order, search);
 
         Map<String, Object> response = new HashMap<>();
         response.put("announcements", announcements);

@@ -17,6 +17,7 @@ public class AdminPagination {
     private boolean prev, next;       // 이전/다음 페이지 여부 표시
     private int total;                // 전체 데이터 개수
     private String order;             // 데이터 정렬 기준
+    private String search;            // 검색어 필드
 
     // 더보기 기능을 위한 다음 페이지의 게시글 1개를 추가로 가져오는 변수
     private int moreRowcount;
