@@ -29,8 +29,8 @@
                     <div class="content-container" name="content-container">
                         <!-- 작품 썸네일, 제목 -->
                         <div class="detail-header">
-                            <a href="" class="category">장르</a>
-                            <h1 class="title">작품 제목</h1>
+                            <div class="category" th:text="${work.genreType}">장르</div>
+                            <h1 class="title" th:text="${work.postTitle}">작품 제목</h1>
                             <div class="detail-info">
                                 <div class="flex-box author-info content-meta">
                                     <img
@@ -38,15 +38,13 @@
                                         class="content-meta-elem author-image pc-only"
                                     />
                                     <div class="content-meta-elem pc-only">
-                                        <p class="link-underline-text writer">
-                                            작성자
-                                        </p>
+                                        <p class="link-underline-text writer" th:text="${work.profileNickName}">작성자</p>
                                     </div>
                                     <img
                                         src="/static/images/text/icon-clock.png"
                                         class="content-meta-elem meta-icon"
                                     />
-                                    <div class="content-meta-elem time">
+                                    <div class="content-meta-elem time" th:text="${work.createdDate.substring(0, 10)}">
                                         2024.10.25
                                     </div>
                                     <div class="review-box">
@@ -55,36 +53,35 @@
                                                 src="https://www.wishket.com/static/renewal/img/project/wishket-project-portfolio/icon-review-star-full.png"
                                             />
                                         </div>
-                                        <span class="review-score">5.0</span>
+                                        <span id="total" class="review-score">5.0</span>
                                     </div>
                                     <div class="content-meta-view flex-box">
                                         <img
                                             src="https://yozm.wishket.com/static/renewal/img/news/icon-view.png"
                                         />
-                                        <span class="views">10</span>
+                                        <span class="views" th:text="${work.readCount}">10</span>
                                     </div>
                                 </div>
                                 <div class="thumbnail">
                                     <img
-                                        src="/static/images/text/thumbnail.jpg"
+                                            th:src="@{'/text/display?fileName=' + ${work.thumbnailFilePath}}" alt="Thumbnail"
                                     />
                                 </div>
                             </div>
                         </div>
                         <!-- 작품 내용 -->
                         <div class="content">
-                            <p>글의 내용</p>
+                            <p th:text="${work.postContent}">글의 내용</p>
                             <hr />
                             <!-- 띄어쓰기용 -->
                             <p>&nbsp;</p>
                         </div>
-                        <div class="upload-img">
-                            <img src="/static/images/text/upload-img.jpg" />
+<!--  마지막 파일은 안가져오도록 함. 구글링함 postFiles 중 마지막.-->
+                        <div class="upload-img" th:each="file, iterStat : ${postFiles}" th:if="${!iterStat.last}">
+                            <img th:src="@{'/text/display?fileName=' + ${file.filePath}}" alt="Uploaded Image" />
                         </div>
                         <div class="upload-content">
-                            <p>
-                                글 작성작성에서 이미지 업로드 할경우 이미지에
-                                맞는 설명 들어오는 자리
+                            <p th:text="${work.fileContent}">
                             </p>
                             <hr />
                             <!-- 띄어쓰기용 -->

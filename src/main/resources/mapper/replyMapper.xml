@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.app.ggumteo.mapper.reply.ReplyMapper">
+
+
+    <!-- 댓글 삽입 -->
+    <insert id="insertReply" useGeneratedKeys="true" keyProperty="id" parameterType="replyDTO">
+        insert into tbl_reply (reply_content, member_profile_id, work_id, star)
+        values (#{replyContent}, #{memberProfileId}, #{workId}, #{star})
+    </insert>
+
+    <!-- 댓글 삭제 -->
+    <delete id="deleteReplyById" parameterType="Long">
+        delete from tbl_reply
+        where id = #{id}
+    </delete>
+
+    <!-- 특정 작품에 대한 댓글 목록 조회 -->
+    <select id="selectRepliesByWorkId" parameterType="Long" resultType="replyDTO">
+        select
+            r.id,
+            r.reply_content as replyContent,
+            r.member_profile_id as memberProfileId,
+            r.work_id as workId,
+            r.created_date as createDate,
+            r.star,
+            mp.profile_nickname as profileNickname
+        from tbl_reply r
+                 join tbl_member_profile mp on r.member_profile_id = mp.id
+        where r.work_id = #{workId}
+        order by r.created_date desc
+    </select>
+
+    <!-- 작품의 평균 별점 조회 -->
+    <select id="selectAverageStarByWorkId" parameterType="Long" resultType="double">
+        select coalesce(avg(star), 0) as averageStar
+        from tbl_reply
+        where work_id = #{workId}
+    </select>
+
+
+    <select id="countRepliesByWorkId" parameterType="Long" resultType="int">
+        select count(*)
+        from tbl_reply
+        where work_id = #{workId}
+    </select>
+
+
+</mapper>

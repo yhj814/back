@@ -6,24 +6,24 @@ import lombok.extern.slf4j.Slf4j;
 @Data
 @Slf4j
 public class MyPagePagination {
-    private Integer page;
-    private int startRow;
-    private int endRow;
-    private int rowCount;
-    private int pageCount;
-    private int startPage;
-    private int endPage;
-    private int realEnd;
-    private boolean prev, next;
-    private int total;
+    private Integer page; // 페이지
+    private int startRow; // 시작 행
+    private int endRow; // 끝 행
+    private int rowCount; // 행 갯수
+    private int pageCount; // 페이지 갯수
+    private int startPage; // 시작 페이지
+    private int endPage; // 끝 페이지
+    private int realEnd; // 진짜 끝
+    private boolean prev, next; // 이전, 다음
+    private int total; // 전체
     private String order;
 
     public void progress() {
         this.page = page == null ? 1 : page;
-        this.rowCount = 5;
-        this.pageCount = 5;
-        this.endRow = page * rowCount;
-        this.startRow = endRow - rowCount + 1;
+        this.rowCount = 2; // 행 갯수 2개
+        this.pageCount = 2; // 페이지 갯수 2개
+        this.endRow = page * rowCount; // 끝 행 = 페이지 * 행 갯수
+        this.startRow = endRow - rowCount + 1; // 시작 행 = 끝 행 - 행 갯수 + 1
         this.endPage = (int)(Math.ceil(page / (double)pageCount) * pageCount);
         this.startPage = endPage - pageCount + 1;
         this.realEnd = (int)Math.ceil(total / (double)rowCount);
