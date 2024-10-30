@@ -41,7 +41,7 @@ public class MyPageServiceTests {
         memberVO = myPageService.getMember(1L).get();
         myPagePagination.setTotal(myPageService.getTotal(memberVO.getId()));
         myPagePagination.progress();
-        MyFundingListDTO fundingList = myPageService.getMyFundingList(1 ,myPagePagination, memberVO.getId());
+        MyFundingListDTO fundingList = myPageService.getMyFundingList(1, myPagePagination, memberVO.getId());
 
         log.info("service-test={}", fundingList.toString());
 
@@ -55,11 +55,9 @@ public class MyPageServiceTests {
 
     @Test
     public void testGetFundingBuyerList() {
-
-
-//        List<BuyFundingProductDTO> fundingBuyerList = myPageService.getFundingBuyerList(1L);
-//        for (BuyFundingProductDTO buyFundingProductDTO : fundingBuyerList) {
-//            log.info("{}", buyFundingProductDTO);
-//        }
+        List<BuyFundingProductDTO> buyFundingProducts = myPageService.getFundingBuyerList(1L);
+        for (BuyFundingProductDTO buyFundingProductDTO : buyFundingProducts) {
+            log.info("{}", buyFundingProductDTO);
+        }
     }
 }

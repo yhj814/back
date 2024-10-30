@@ -53,7 +53,7 @@ SELECT f.id ,bfp.id AS '펀딩상품 구매 ID', bfp.funding_send_status AS '발
 FROM
     tbl_buy_funding_product bfp
         JOIN tbl_funding_product fp ON bfp.funding_product_id = fp.id
-        JOIN tbl_funding f ON fp.funding_id = f.id AND f.id = 1
+        JOIN tbl_funding f ON fp.funding_id = f.id AND f.id = 3
         JOIN tbl_post p ON f.id = p.id
         JOIN tbl_member_profile mp ON p.member_profile_id = mp.id
         JOIN tbl_member m ON mp.member_id = m.id AND m.id = 1

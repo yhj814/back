@@ -41,10 +41,10 @@ public class MemberRestController {
         return myPageService.getMyFundingList(page, myPagePagination, memberId);
     }
 
-//    // SELECT
-//    @ResponseBody
-//    @GetMapping("/members/video/myFunding/{fundingPostId}")
-//    public List<BuyFundingProductDTO> getFundingBuyerList(@PathVariable("fundingPostId") Long fundingPostId) {
-//        return myPageService.getFundingBuyerList(fundingPostId);
-//    }
+    // SELECT
+    @ResponseBody
+    @GetMapping("/members/video/myFunding/getBuyerList/{fundingPostId}")
+    public List<BuyFundingProductDTO> getFundingBuyerList(@PathVariable("fundingPostId") Long fundingPostId) {
+        return myPageService.getFundingBuyerList(fundingPostId);
+    }
 }

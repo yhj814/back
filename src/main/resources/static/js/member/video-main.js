@@ -82,7 +82,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // 세 번째 기능: "구매한 사람들" 버튼 클릭 시 설정 테이블 표시/숨김
 
     const toggleButtons = document.querySelectorAll(
-        '.btn-icon-edit-my[name="toggle_btn"]'
+        '.icon-my-edit-off'
     );
 
 
