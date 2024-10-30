@@ -3,9 +3,11 @@ package com.app.ggumteo.service.inquiry;
 
 import com.app.ggumteo.domain.inquiry.InquiryDTO;
 import com.app.ggumteo.domain.post.PostDTO;
+import com.app.ggumteo.mapper.inquiry.InquiryMapper;
 import com.app.ggumteo.pagination.AdminPagination;
 import com.app.ggumteo.repository.inquiry.InquiryDAO;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,9 +18,11 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @Transactional(rollbackFor = Exception.class)
+@Slf4j
 public class InquiryServiceImpl implements InquiryService {
 
     private final InquiryDAO inquiryDAO; // final로 선언하여 주입받도록 설정
+    private final InquiryMapper inquiryMapper;
 
     @Override
     public void writeInquiry(PostDTO postDTO) {
@@ -31,5 +35,18 @@ public class InquiryServiceImpl implements InquiryService {
 
         // tbl_inquiry에 삽입
         inquiryDAO.insertInquiryToTblInquiry(postDTO);
+    }
+
+    @Override
+    public List<InquiryDTO> getList(AdminPagination pagination) {
+        log.info("Fetching inquiry list with pagination: {}", pagination);
+        List<InquiryDTO> inquiries = inquiryDAO.findAllInquiry(pagination);
+        log.info("Fetched inquiries: {}", inquiries);
+        return inquiries;
+    }
+
+    @Override
+    public int getTotal(){
+        return inquiryDAO.getTotalInquiry();
     }
 }

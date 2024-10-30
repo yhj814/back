@@ -56,8 +56,7 @@
                         꿈터는 여러분의 꿈을 응원합니다.
                     </p>
                     <p class="p-medium-2">
-                        자신의 꿈을 향해 거침없이 도전하세요. 꿈터가
-                        도와드립니다.
+                        작성하신 내용은 마이페이지에서 수정 가능합니다.
                     </p>
                 </div>
                 <div class="content">
@@ -133,9 +132,11 @@
                             </div>
                         </div>
                         <form
-                                action=""
+                                action="/sign-up"
+                                method="post"
                                 class="form-horizontal has-validation-callback"
                                 id="base-edit-form"
+                                enctype="multipart/form-data"
                                 style="
                                         border-bottom: 1px dashed #dedede;
                                         padding-bottom: 25px;
@@ -260,7 +261,6 @@
                                             name="profileAge}"
                                             placeholder="만 나이를 입력해주세요."
                                             type="text"
-                                            style="width: 55%"
                                             value=""
                                     />
 
@@ -278,6 +278,7 @@
                                 >
 
                                 <div class="control-wrapper">
+                                    <div class="input-gap">
                                     <input
                                             class="form-control"
                                             data-exception="yes"
@@ -286,7 +287,9 @@
                                             type="text"
                                             value=""
                                     />
-
+                                    <button class="btn btn-certification-select" type="button" id="requestEmailCode">인증번호 요청</button>
+                                        <img class="loading-icon" id="loadingGif" src="/images/main/loading.gif" alt="Loading...">
+                                </div>
                                     <div class="error-message">
                                         <i
                                                 class="fa fa-exclamation-circle"
@@ -296,11 +299,26 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group">
+                            <div class="form-group certification-input-email">
+                                <label class="control-label required">이메일 인증</label>
+                                <div class="control-wrapper ">
+                                    <div class="input-gap">
+                                        <input class="form-control " id="emailVerificationCode" placeholder="인증번호를 입력하세요." type="text" />
+                                        <button class="btn btn-certification-select" type="button" id="verifyEmailCode">인증번호 확인</button>
+                                    </div>
+                                    <div class="error-message" id="emailVerificationError" style="display: none;"></div>
+                                    <div class="email-timer-container" style="display: none;">
+                                        <p>인증 유효 시간: <span id="emailTimerDisplay">3:00</span></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group"
+                            >
                                 <label class="control-label"
                                 >연락처</label
                                 >
                                 <div class="control-wrapper">
+                                    <div class="input-gap">
                                     <input
                                             class="form-control"
                                             data-exception="yes"
@@ -309,13 +327,31 @@
                                             type="text"
                                             value=""
                                     />
-                                    <div class="error-message">
+                                    <button class="btn btn-certification-select" type="button" id="requestVerificationCode">인증번호 요청</button>
+                                    </div>
+                                        <div class="error-message">
                                         <i
                                                 class="fa fa-exclamation-circle"
                                         ></i>
                                         올바른 전화번호를 입력해주세요.
                                     </div>
                                 </div>
+                            </div>
+                            <div class="form-group certification-input-phone">
+                                <label class="control-label required">전화번호 인증</label>
+                                <div class="control-wrapper ">
+                                    <div class="input-gap">
+                                    <input class="form-control " id="verificationCode" placeholder="인증번호를 입력하세요." type="text" />
+                                    <button class="btn btn-certification-select" type="button" id="verifyCode">인증번호 확인</button>
+                                    </div>
+                                    <div class="error-message" id="verificationError">인증번호를 입력하세요.</div>
+                                    <!-- 타이머 표시 영역 -->
+                                    <div class="timer-container" style="display: none;">
+                                        <p>인증번호 유효 시간: <span id="timerDisplay">3:00</span></p>
+                                    </div>
+                                </div>
+
+
                             </div>
                             <div class="form-group">
                                 <label class="control-label"
@@ -408,7 +444,7 @@
                                     id="consulting_apply_button"
                                     type="button"
                             >
-                                모집 신청 하기
+                                작성 완료
                             </button>
                         </form>
                     </div>
@@ -419,6 +455,8 @@
 </main>
 <footer></footer>
 </body>
-<script src="/js/audition/application2.js"></script>
+<script src="/js/main/email-send.js"></script>
+<script src="/js/main/phone-send.js"></script>
+<script src="/js/main/sign-up.js"></script>
 <script src="/js/audition/application-date.js"></script>
 </html>

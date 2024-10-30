@@ -2,8 +2,11 @@ package com.app.ggumteo.service;
 
 import com.app.ggumteo.domain.funding.BuyFundingProductDTO;
 import com.app.ggumteo.domain.funding.FundingDTO;
+import com.app.ggumteo.domain.funding.MyFundingListDTO;
 import com.app.ggumteo.domain.member.MemberDTO;
 import com.app.ggumteo.domain.member.MemberVO;
+import com.app.ggumteo.mapper.FundingMapperTests;
+import com.app.ggumteo.pagination.MyPagePagination;
 import com.app.ggumteo.service.myPage.MyPageService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -33,19 +36,20 @@ public class MyPageServiceTests {
 
     @Test
     public void testGetMyFundingPosts() {
-        List<FundingDTO> fundingPosts = myPageService.getMyFundingList(1L);
-//        fundingMapper.selectByMemberId(1L).stream().map(FundingDTO::toString).forEach(log::info);
+        MemberVO memberVO = null;
+        MyPagePagination myPagePagination = new MyPagePagination();
+        memberVO = myPageService.getMember(1L).get();
+        myPagePagination.setTotal(myPageService.getTotal(memberVO.getId()));
+        myPagePagination.progress();
+        MyFundingListDTO fundingList = myPageService.getMyFundingList(1, myPagePagination, memberVO.getId());
 
-        for (FundingDTO fundingDTO : fundingPosts) {
-            log.info("{}", fundingDTO);
-        }
-    }
+        log.info("service-test={}", fundingList.toString());
 
-    @Test
-    public void testGetFundingBuyerList() {
-        List<BuyFundingProductDTO> fundingBuyerList = myPageService.getFundingBuyerList(1L);
-        for (BuyFundingProductDTO buyFundingProductDTO : fundingBuyerList) {
-            log.info("{}", buyFundingProductDTO);
-        }
+//        List<FundingDTO> fundingPosts = myPageService.getMyFundingList(1L);
+////        fundingMapper.selectByMemberId(1L).stream().map(FundingDTO::toString).forEach(log::info);
+//
+//        for (FundingDTO fundingDTO : fundingPosts) {
+//            log.info("{}", fundingDTO);
+//        }
     }
 }

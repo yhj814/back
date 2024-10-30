@@ -12,8 +12,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 public class PostMapperTests {
     @Autowired
     private PostMapper postMapper;
-    @Autowired
-    private InquiryMapper inquiryMapper;
 
     @Test
     public void testInsert() {
@@ -21,7 +19,6 @@ public class PostMapperTests {
         postDTO.setPostTitle("문의제목1");
         postDTO.setPostContent("문의합니다");
         postDTO.setPostType("INQUIRY");
-        postDTO.setMemberProfileId(1L);
         postMapper.insert(postDTO.toVO());
         log.info("{}","게시글 등록성공!");
     }

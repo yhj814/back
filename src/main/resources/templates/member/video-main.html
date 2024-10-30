@@ -1688,23 +1688,8 @@
 <!--                                    내 펀딩 목록(구매자, 수정 버튼) -->
 <!--                                        구매자 버튼 클릭 시 구매자 목록 -->
                                     </div>
-                                    <ul class="pagination theme-yozm mypage-page">
-                                        <li class="page-item">
-                                            <a
-                                                class="page-link"
-                                                id="back"
-                                                style="bottom: -15px"
-                                            ></a>
-                                        </li>
-                                        <li class="page-item">
-                                            <a class="page-link active">1</a>
-                                        </li>
-                                        <li class="page-item">
-                                            <a class="page-link">2</a>
-                                        </li>
-                                        <li class="page-item">
-                                            <a class="page-link">다음</a>
-                                        </li>
+                                    <ul class="pagination theme-yozm mypage-page" id="my-funding-list-paging">
+<!--                                        내 펀딩 목록 페이징-->
                                     </ul>
                                 </div>
                             </div>
@@ -6475,7 +6460,6 @@
     </body>
     <script th:inline="javascript">
         const memberId = [[${member.id}]];
-
     </script>
     <script src="/js/member/video-main.js"></script>
     <script src="/js/my/video/my-video-service.js"></script>

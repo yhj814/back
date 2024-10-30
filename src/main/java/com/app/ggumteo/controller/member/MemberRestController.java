@@ -2,8 +2,10 @@ package com.app.ggumteo.controller.member;
 
 import com.app.ggumteo.domain.funding.BuyFundingProductDTO;
 import com.app.ggumteo.domain.funding.FundingDTO;
+import com.app.ggumteo.domain.funding.MyFundingListDTO;
 import com.app.ggumteo.domain.member.MemberDTO;
 import com.app.ggumteo.domain.member.MemberVO;
+import com.app.ggumteo.pagination.MyPagePagination;
 import com.app.ggumteo.service.member.MemberService;
 import com.app.ggumteo.service.myPage.MyPageService;
 import lombok.RequiredArgsConstructor;
@@ -29,15 +31,20 @@ public class MemberRestController {
 
     // SELECT
     @ResponseBody
-    @GetMapping("/members/video/funding/{memberId}")
-    public List<FundingDTO> getMyFundingList(@PathVariable("memberId") Long memberId) {
-        return myPageService.getMyFundingList(memberId);
+    @GetMapping("/members/video/myFunding/{memberId}/{page}")
+    public MyFundingListDTO getMyFundingList(@PathVariable("memberId") Long memberId
+            , @PathVariable("page") int page, MyPagePagination myPagePagination) {
+
+        log.info("test 4={}", page);
+        log.info("test 5={}", myPagePagination);
+        log.info("test 6={}", memberId);
+        return myPageService.getMyFundingList(page, myPagePagination, memberId);
     }
 
     // SELECT
     @ResponseBody
-    @GetMapping("/members/video/funding-buyer/{memberId}")
-    public List<BuyFundingProductDTO> getFundingBuyerList(@PathVariable("memberId") Long memberId) {
-        return myPageService.getFundingBuyerList(memberId);
+    @GetMapping("/members/video/myFunding/{fundingPostId}")
+    public List<BuyFundingProductDTO> getFundingBuyerList(@PathVariable("fundingPostId") Long fundingPostId) {
+        return myPageService.getFundingBuyerList(fundingPostId);
     }
 }

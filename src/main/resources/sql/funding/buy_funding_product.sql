@@ -47,16 +47,16 @@ FROM
 WHERE
     m.id = 1;
 
-SELECT bfp.id, bfp.funding_send_status
+SELECT f.id ,bfp.id AS '펀딩상품 구매 ID', bfp.funding_send_status AS '발송 여부'
      , fp.product_name, fp.product_price
-     , bfp_mp .profile_name, bfp_mp .profile_email
+     , bfp_mp .profile_name AS '구매자 이름', bfp_mp .profile_email AS '구매자 이메일'
 FROM
     tbl_buy_funding_product bfp
         JOIN tbl_funding_product fp ON bfp.funding_product_id = fp.id
-        JOIN tbl_funding f ON fp.funding_id = f.id
+        JOIN tbl_funding f ON fp.funding_id = f.id AND f.id = 1
         JOIN tbl_post p ON f.id = p.id
         JOIN tbl_member_profile mp ON p.member_profile_id = mp.id
-        JOIN tbl_member m ON mp.member_id = m.id
-        JOIN tbl_member_profile bfp_mp ON bfp.member_profile_id = bfp_mp.id
-WHERE
-    m.id = 1;
+        JOIN tbl_member m ON mp.member_id = m.id AND m.id = 1
+        JOIN tbl_member_profile bfp_mp ON bfp.member_profile_id = bfp_mp.id;
+
+-- 그 회원의 펀딩 포스트 Id
