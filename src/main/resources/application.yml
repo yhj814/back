@@ -21,8 +21,6 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
-    username: topaz7107@gmail.com
-    password: hnjv kisx cmfh spjo
     properties:
       mail:
         smtp:
@@ -33,11 +31,6 @@ spring:
             trust: smtp.gmail.com
           ssl.protocols: TLSv1.2
 
-coolsms:
-  api:
-    key: NCS25G6A1FACZMHF
-    secret: ANWHAYC8JXWP0M89KARI1ATUJUCPSWV3
-    number: 01090455160
 
 mybatis:
   config-location: classpath:/config/config.xml

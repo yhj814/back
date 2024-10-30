@@ -727,7 +727,11 @@ ul, ol {
     margin-bottom: 2px;
 }
 
-.certification-input{
+.certification-input-email{
+    display: none;
+}
+
+.certification-input-phone{
     display: none;
 }
 

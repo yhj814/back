@@ -20,23 +20,35 @@ function validateField(input, regex, errorMessageText) {
     }
 }
 
-// 타이머 관련 변수
-let timerInterval;
-let timeRemaining = 180; // 3분(180초) 타이머
-let isPhoneVerified = false; // 인증 완료 여부 확인용
+// 전화번호 인증 관련 변수
+let phoneTimerInterval;
+const initialPhoneTimeRemaining = 180; // 3분(180초) 타이머
+let phoneTimeRemaining = initialPhoneTimeRemaining;
+let isPhoneVerified = false;
 
-// 전화번호 입력 필드
 const phoneField = document.querySelector("input[name='profilePhone']");
-const requestButton = document.getElementById("requestVerificationCode");
-const verifyButton = document.getElementById("verifyCode");
+const requestPhoneButton = document.getElementById("requestVerificationCode");
+const verifyPhoneButton = document.getElementById("verifyCode");
+const phoneTimerDisplay = document.getElementById("timerDisplay");
+const phoneVerificationError = document.getElementById("verificationError");
+const phoneCertificationInput = document.querySelector(".certification-input-phone"); // 전화번호 인증 필드
 
-// 인증번호 요청 버튼 클릭 시 타이머와 인증 로직 시작
-requestButton.addEventListener("click", async function () {
+// 전화번호 인증번호 요청 버튼 클릭 시
+requestPhoneButton.addEventListener("click", async function () {
     const phoneRegex = /^(010|011|016|017|018|019)-\d{3,4}-\d{4}$/;
 
     if (validateField(phoneField, phoneRegex, "올바른 전화번호를 입력해주세요.")) {
         const plainPhoneNumber = phoneField.value.replace(/-/g, "");
-        requestButton.disabled = true; // 버튼 비활성화
+        requestPhoneButton.disabled = true;
+
+        // 타이머 및 만료 메시지 초기화
+        phoneVerificationError.style.display = "none"; // 만료 메시지 숨김
+        document.querySelector(".timer-container").style.display = "block"; // 타이머 컨테이너 표시
+        phoneTimerDisplay.textContent = "3:00"; // 타이머 초기화
+        phoneTimerDisplay.style.color = "#2099bb";
+
+        clearInterval(phoneTimerInterval); // 기존 타이머 중지
+        phoneTimeRemaining = initialPhoneTimeRemaining; // 타이머 시간 초기화
 
         try {
             const response = await fetch("/sms/send", {
@@ -50,53 +62,44 @@ requestButton.addEventListener("click", async function () {
             });
 
             if (response.ok) {
-                const message = await response.text();
-                alert(message); // 성공 메시지 출력
-                startTimer(); // 타이머 시작
-                document.querySelector(".timer-container").style.display = "block"; // 타이머 표시
+                alert("인증번호가 전화번호로 발송되었습니다."); // 성공 메시지 출력
+                phoneCertificationInput.style.display = "block"; // 전화번호 인증 필드 표시
+
+                startPhoneTimer(); // 타이머 시작
             } else {
-                alert("인증번호 요청에 실패했습니다. 잠시 후 다시 시도해주세요.");
+                alert("전화번호 인증번호 요청에 실패했습니다. 잠시 후 다시 시도해주세요.");
             }
         } catch (error) {
             console.error("Error:", error);
         } finally {
-            requestButton.disabled = false; // 응답 후 버튼 활성화
+            requestPhoneButton.disabled = false;
         }
     }
 });
 
-// 타이머 시작 함수
-function startTimer() {
-    const timerDisplay = document.getElementById("timerDisplay");
-    timeRemaining = 180; // 3분 초기화
+// 전화번호 타이머 시작 함수
+function startPhoneTimer() {
+    clearInterval(phoneTimerInterval); // 기존 타이머 초기화
 
-    // 기존 타이머가 실행 중일 경우 초기화
-    if (timerInterval) {
-        clearInterval(timerInterval);
-    }
-
-    // 타이머 업데이트
-    timerInterval = setInterval(() => {
-        timeRemaining--;
-        const minutes = Math.floor(timeRemaining / 60);
-        const seconds = timeRemaining % 60;
-        timerDisplay.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-
-        if (timeRemaining <= 0) {
-            clearInterval(timerInterval);
-            timerDisplay.textContent = "인증 시간 만료. 다시 요청해 주세요.";
-            timerDisplay.style.color = "red"
-            isPhoneVerified = false; // 인증 완료 여부 초기화
-            console.log("타이머가 종료되었습니다."); // 타이머 종료 로그
+    phoneTimerInterval = setInterval(() => {
+        if (phoneTimeRemaining <= 0) {
+            clearInterval(phoneTimerInterval); // 타이머 종료
+            phoneTimerDisplay.textContent = "인증 시간 만료. 다시 요청해 주세요.";
+            phoneTimerDisplay.style.color = "red"; // 만료 메시지 색상 변경
+            phoneVerificationError.style.display = "none"; // 이전 만료 메시지 숨김
+            return;
         }
+
+        const minutes = Math.floor(phoneTimeRemaining / 60);
+        const seconds = phoneTimeRemaining % 60;
+        phoneTimerDisplay.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+        phoneTimeRemaining--; // 타이머 시간 감소
     }, 1000);
 }
 
-// 인증번호 확인 버튼 클릭 시
-verifyButton.addEventListener("click", async function () {
+// 전화번호 인증번호 확인 버튼 클릭 시
+verifyPhoneButton.addEventListener("click", async function () {
     const verificationCode = document.getElementById("verificationCode").value;
-    const verificationError = document.getElementById("verificationError"); // 에러/성공 메시지 표시 영역
-    verifyButton.disabled = true; // 인증번호 확인 버튼 비활성화
 
     try {
         const response = await fetch("/sms/verify", {
@@ -111,24 +114,20 @@ verifyButton.addEventListener("click", async function () {
         });
 
         const data = await response.text();
-        console.log("서버 응답:", data); // 서버 응답 확인용 로그
         if (data === "인증에 성공하였습니다.") {
-            isPhoneVerified = true; // 인증 완료
-            clearInterval(timerInterval); // 타이머 중지
+            isPhoneVerified = true;
+            clearInterval(phoneTimerInterval); // 타이머 종료
             document.querySelector(".timer-container").style.display = "none"; // 타이머 숨김
-            verificationError.style.display = "block";
-            verificationError.textContent = "인증이 완료되었습니다."; // 성공 메시지 출력
-            verificationError.style.color = "#2099bb"; // 성공 메시지 색상
+            phoneVerificationError.textContent = "전화번호 인증이 완료되었습니다.";
+            phoneVerificationError.style.display = "block";
+            phoneVerificationError.style.color = "#2099bb";
         } else {
             isPhoneVerified = false;
-            verificationError.style.display = "block";
-            verificationError.textContent = data; // 에러 메시지 출력
-            verificationError.style.color = "red"; // 에러 메시지 색상
-            console.log("인증 실패: ", data); // 인증 실패 로그
+            phoneVerificationError.textContent = data;
+            phoneVerificationError.style.display = "block";
+            phoneVerificationError.style.color = "red";
         }
     } catch (error) {
         console.error("Error:", error);
-    } finally {
-        verifyButton.disabled = false; // 응답 후 버튼 활성화
     }
 });

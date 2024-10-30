@@ -22,7 +22,7 @@ function validateField(input, regex, errorMessageText) {
 
 // 이메일 인증 관련 변수
 let emailTimerInterval;
-const initialEmailTimeRemaining = 10; // 10초 타이머
+const initialEmailTimeRemaining = 180; // 180초 타이머
 let emailTimeRemaining = initialEmailTimeRemaining;
 let isEmailVerified = false;
 
@@ -30,8 +30,9 @@ const emailField = document.querySelector("input[name='profileEmail']");
 const emailRequestButton = document.getElementById("requestEmailCode");
 const emailVerifyButton = document.getElementById("verifyEmailCode");
 const loadingGif = document.getElementById("loadingGif");
-const timerDisplay = document.getElementById("emailTimerDisplay");
-const verificationError = document.getElementById("emailVerificationError");
+const emailTimerDisplay = document.getElementById("emailTimerDisplay");
+const emailVerificationError = document.getElementById("emailVerificationError");
+const emailCertificationInput = document.querySelector(".certification-input-email"); // 이메일 인증 필드
 
 // 이메일 인증번호 요청 버튼 클릭 시
 emailRequestButton.addEventListener("click", async function () {
@@ -42,9 +43,10 @@ emailRequestButton.addEventListener("click", async function () {
         loadingGif.style.display = "block"; // 로딩 GIF 표시
 
         // 타이머 및 만료 메시지 초기화
-        verificationError.style.display = "none"; // 만료 메시지 숨김
-        document.querySelector(".email-timer-container").style.display = "block"; // 타이머 컨테이너 표시
-        timerDisplay.textContent = "0:10"; // 타이머 초기화
+        emailVerificationError.style.display = "none"; // 만료 메시지 숨김
+        document.querySelector(".email-timer-container").style.display = "block"; // 이메일 타이머 컨테이너 표시
+        emailTimerDisplay.textContent = "3:00"; // 타이머 초기화
+        emailTimerDisplay.style.color = "#2099bb";
 
         clearInterval(emailTimerInterval); // 기존 타이머 중지
         emailTimeRemaining = initialEmailTimeRemaining; // 타이머 시간 초기화
@@ -62,7 +64,7 @@ emailRequestButton.addEventListener("click", async function () {
 
             if (response.ok) {
                 alert("인증번호가 이메일로 발송되었습니다."); // 성공 메시지 출력
-                document.querySelector(".certification-input").classList.remove("certification-input"); // 인증번호 입력 div 표시
+                emailCertificationInput.style.display = "block"; // 이메일 인증 필드 표시
 
                 startEmailTimer(); // 타이머 시작
             } else {
@@ -84,14 +86,15 @@ function startEmailTimer() {
     emailTimerInterval = setInterval(() => {
         if (emailTimeRemaining <= 0) {
             clearInterval(emailTimerInterval); // 타이머 종료
-            timerDisplay.textContent = "인증 시간 만료. 다시 요청해 주세요.";
-            verificationError.style.display = "none"; // 이전 만료 메세지 숨김
+            emailTimerDisplay.textContent = "인증 시간 만료. 다시 요청해 주세요.";
+            emailTimerDisplay.style.color = "red";
+            emailVerificationError.style.display = "none"; // 이전 만료 메세지 숨김
             return;
         }
 
         const minutes = Math.floor(emailTimeRemaining / 60);
         const seconds = emailTimeRemaining % 60;
-        timerDisplay.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+        emailTimerDisplay.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
         emailTimeRemaining--; // 타이머 시간 감소
     }, 1000);
 }
@@ -117,14 +120,14 @@ emailVerifyButton.addEventListener("click", async function () {
             isEmailVerified = true;
             clearInterval(emailTimerInterval); // 타이머 종료
             document.querySelector(".email-timer-container").style.display = "none"; // 타이머 숨김
-            verificationError.textContent = "이메일 인증이 완료되었습니다.";
-            verificationError.style.display = "block";
-            verificationError.style.color = "#2099bb";
+            emailVerificationError.textContent = "이메일 인증이 완료되었습니다.";
+            emailVerificationError.style.display = "block";
+            emailVerificationError.style.color = "#2099bb";
         } else {
             isEmailVerified = false;
-            verificationError.textContent = data;
-            verificationError.style.display = "block";
-            verificationError.style.color = "red";
+            emailVerificationError.textContent = data;
+            emailVerificationError.style.display = "block";
+            emailVerificationError.style.color = "red";
         }
     } catch (error) {
         console.error("Error:", error);
