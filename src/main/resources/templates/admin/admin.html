@@ -655,20 +655,19 @@
                                         </div>
 
                                         <!-- 공지사항 목록 뿌리는곳 -->
-                                        <div th:each="announcement : ${announcements}" class="apply-table-row">
-                                            <div class="apply-table-cell">
-                                                <input type="checkbox" class="apply-checkbox" />
-                                            </div>
-                                            <div class="apply-table-cell" th:text="${announcement.id}"></div>
-                                            <div class="apply-table-cell" th:text="${announcement.createdDate}"></div>
-                                            <div class="apply-table-cell" th:text="${announcement.announcementTitle}">
-                                            </div>
-                                            <div class="apply-table-cell" th:text="${announcement.announcementContent}">
-                                            </div>
-                                            <div class="apply-table-cell">
-                                                <button class="edit-btn status notice-edit">수정</button>
-                                            </div>
-                                            <div class="apply-table-cell" th:text="${announcement.updatedDate}">
+                                        <div id="announcement-list">
+                                            <div th:each="announcement : ${announcements}" class="apply-table-row">
+                                                <div class="apply-table-cell">
+                                                    <input type="checkbox" class="apply-checkbox" />
+                                                </div>
+                                                <div class="apply-table-cell" th:text="${announcement.id}"></div>
+                                                <div class="apply-table-cell" th:text="${announcement.createdDate}"></div>
+                                                <div class="apply-table-cell" th:text="${announcement.announcementTitle}"></div>
+                                                <div class="apply-table-cell" th:text="${announcement.announcementContent}"></div>
+                                                <div class="apply-table-cell">
+                                                    <button class="edit-btn status notice-edit">수정</button>
+                                                </div>
+                                                <div class="apply-table-cell" th:text="${announcement.updatedDate}"></div>
                                             </div>
                                         </div>
                                     </div>

@@ -91,9 +91,6 @@ public class AdminController {
 
     @GetMapping("/announcements/list")
     public String getAnnouncementsFragment(@RequestParam(value = "page", defaultValue = "1") Integer page, Model model) {
-        if (page == null) {
-            page = 1; // 기본값 설정
-        }
         AdminPagination pagination = new AdminPagination();
         pagination.setPage(page);
         pagination.setTotal(announcementService.getTotalAnnouncements());
@@ -101,8 +98,9 @@ public class AdminController {
 
         List<AnnouncementVO> announcements = announcementService.getAllAnnouncements(pagination);
         model.addAttribute("announcements", announcements);
+        model.addAttribute("pagination", pagination);
 
-        return "admin/admin :: .apply-table-row"; // apply-table-row만 반환
+        return "admin/admin :: #announcement-list"; // 공지사항 목록만 반환
     }
 
 

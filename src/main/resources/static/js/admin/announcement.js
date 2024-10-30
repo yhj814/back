@@ -61,22 +61,26 @@ document.addEventListener("DOMContentLoaded", function () {
         fetch(`/admin/announcements/list?page=${page}`)
             .then(response => response.text())
             .then(html => {
-                document.querySelector(".announcement-container").innerHTML = html;
+                document.querySelector("#announcement-list").innerHTML = html;
             })
             .catch(error => console.error("Error loading announcements:", error));
     }
 
+    // 페이지네이션 버튼 클릭 이벤트
     document.addEventListener("click", function (e) {
         if (e.target.classList.contains("pagination-page-link") ||
             e.target.classList.contains("pagination-prev-link") ||
             e.target.classList.contains("pagination-next-link")) {
-            e.preventDefault(); // 링크 기본 동작 방지
-            const page = e.target.getAttribute("data-page"); // data-page 속성에서 페이지 번호 가져옴
+            e.preventDefault(); // 기본 링크 동작 방지
+            const page = e.target.getAttribute("data-page"); // data-page 속성에서 페이지 번호 가져오기
             if (page) {
-                loadAnnouncements(page);
+                loadAnnouncements(page); // AJAX로 목록 업데이트
             }
         }
     });
 });
+
+
+
 
 
