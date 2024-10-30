@@ -119,7 +119,7 @@
                                     <img
                                         src="/images/video/report.jpg"
                                     />
-                                    <button id="report-btn">신고하기</button>
+                                    <button id="report-btn">작품 신고하기</button>
                                 </div>
                                 <!-- 작품 신고 모달창 -->
                                 <div id="report-modal" class="modal">
@@ -631,6 +631,10 @@
             </div>
         </div>
     </body>
+    <script th:inline="javascript">
+        const memberProfileExists = [[${session.memberProfile != null}]];
+    </script>
+
 
     <script src="/js/text/detail.js"></script>
 </html>

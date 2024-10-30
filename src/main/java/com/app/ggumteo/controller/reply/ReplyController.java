@@ -1,10 +1,12 @@
 package com.app.ggumteo.controller.reply;
 
+import com.app.ggumteo.domain.member.MemberProfileVO;
 import com.app.ggumteo.domain.member.MemberVO;
 import com.app.ggumteo.domain.reply.ReplyDTO;
 import com.app.ggumteo.domain.reply.ReplyListDTO;
 import com.app.ggumteo.pagination.Pagination;
 import com.app.ggumteo.service.reply.ReplyService;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,29 +28,48 @@ public class ReplyController {
     private final ReplyDTO replyDTO;
     private final HttpSession session;
 
+    // 모든 요청 전 세션에 테스트용 사용자 정보 설정
     @ModelAttribute
-    public void setTestMember(HttpSession session) {
-        if (session.getAttribute("member") == null) {
-            session.setAttribute("member", new MemberVO(
-                    1L,
-
-                    "",         // memberEmail
+    public void setTestMemberProfile(HttpSession session) {
+        if (session.getAttribute("memberProfile") == null) {
+            session.setAttribute("memberProfile", new MemberProfileVO(
+                    2L,
                     "",
-                    "",              // profileUrl
-                    "",          // createdDate
-                    ""          // updatedDate
+                    "",
+                    "",
+                    30,
+                    "",
+                    "",
+                    "",
+                    2L,
+                    "",    // createdDate (example)
+                    ""     // updatedDate (example)
             ));
         }
     }
 
+
     // 댓글 작성
     @PostMapping("write")
-    public void write(@RequestBody ReplyDTO replyDTO) {
+    public void write(@RequestBody ReplyDTO replyDTO, HttpSession session, HttpServletResponse response) {
+        MemberProfileVO memberProfile = (MemberProfileVO) session.getAttribute("memberProfile");
 
-        log.info("들어옴!!");
-        log.info(replyDTO.toString());
+        // memberProfile이 없는 경우
+        if (memberProfile == null) {
+            System.out.println("로그인이 필요합니다.");
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // 401 상태 코드 설정
+            return;
+        }
+
+        // 댓글 작성 진행
+        replyDTO.setProfileNickname(memberProfile.getProfileNickName());
+        replyDTO.setMemberProfileId(memberProfile.getId());
         replyService.insertReply(replyDTO);
+
     }
+
+
+
 
     // 댓글 삭제
     @DeleteMapping("/{id}")

@@ -4,14 +4,17 @@ const replyService = (() => {
         try {
             const response = await fetch("/replies/write", {
                 method: "POST",
-                headers: { "Content-Type": "application/json; charset=utf-8" },
-                body: JSON.stringify(replyData),
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(replyData)
             });
-            if (!response.ok) throw new Error("댓글 작성 실패");
-            console.log("댓글 작성 성공");
-            return response.json();
+
+            if (response.ok) {
+                console.log("댓글 작성 성공");
+            } else {
+                console.error("댓글 작성 실패");
+            }
         } catch (error) {
-            console.error("Error writing reply:", error);
+            console.error("댓글 작성 중 오류:", error);
         }
     };
 
@@ -147,15 +150,19 @@ document.addEventListener("DOMContentLoaded", () => {
         event.preventDefault();
 
         const replyContent = document.getElementById("comment").value;
-        const starRating = document.querySelector(".star.selected")?.getAttribute("data-value");
+        const starRating = document.querySelector(".star-rating .star.selected")?.getAttribute("data-value");
 
         if (!replyContent) return alert("댓글 내용을 입력하세요.");
+        if (!starRating) return alert("별점을 선택하세요.");  // 별점이 선택되지 않으면 경고
 
         const replyData = { workId, replyContent, star: starRating };
+        console.log("작성할 댓글 데이터:", replyData); // 서버로 보내기 전 데이터 확인
+
         await replyService.write(replyData);
         document.getElementById("comment").value = "";
         loadReplies();
     });
+
 
     // 댓글 삭제 이벤트
     window.deleteReply = async (replyId) => {
@@ -172,96 +179,118 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         });
     };
+    // 별점 클릭 이벤트
+    document.querySelectorAll(".star-rating .star").forEach(function (star) {
+        star.addEventListener("click", function () {
+            let value = this.getAttribute("data-value");
+
+            // 모든 별의 선택 상태 초기화
+            document.querySelectorAll(".star-rating .star").forEach(function (s) {
+                s.classList.remove("selected");
+            });
+
+            // 클릭한 별과 그 이전 별들 선택 상태로 변경
+            this.classList.add("selected");
+            let nextSiblings = getNextSiblings(this);
+            nextSiblings.forEach(function (sibling) {
+                sibling.classList.add("selected");
+            });
+
+            console.log("Selected rating:", value);
+        });
+
+        star.addEventListener("mouseover", function () {
+            document.querySelectorAll(".star-rating .star").forEach(function (s) {
+                s.classList.remove("hover");
+            });
+            this.classList.add("hover");
+            let nextSiblings = getNextSiblings(this);
+            nextSiblings.forEach(function (sibling) {
+                sibling.classList.add("hover");
+            });
+        });
+
+        star.addEventListener("mouseout", function () {
+            document.querySelectorAll(".star-rating .star").forEach(function (s) {
+                s.classList.remove("hover");
+            });
+        });
+    });
+    function getNextSiblings(elem) {
+        let siblings = [];
+        siblings.push(elem);
+        while ((elem = elem.previousElementSibling)) {
+            siblings.push(elem);
+        }
+        return siblings;
+    }
+    // 댓글 아이콘 툴팁
+    const replyBtn = document.querySelector(".reply-btn");
+    const replyPtag = document.querySelector(".action-tooltip-reply");
+
+    replyBtn.addEventListener("mouseover", () => {
+        replyPtag.style.display = "block";
+    });
+    replyBtn.addEventListener("mouseout", () => {
+        replyPtag.style.display = "none";
+    });
+
+// 작품 신고 모달
+    const modal = document.getElementById("report-modal");
+    const btn = document.getElementById("report-btn");
+    const span = document.getElementsByClassName("close")[0];
+
+    btn.addEventListener("click", () => {
+        modal.style.display = "block";
+    });
+    span.addEventListener("click", () => {
+        modal.style.display = "none";
+    });
+    window.addEventListener("click", (event) => {
+        if (event.target === modal) {
+            modal.style.display = "none";
+        }
+    });
+
+// 댓글 신고 모달
+    const replyModal = document.getElementById("report-modal-reply");
+    const spanReply = document.getElementsByClassName("modal-reply-close")[0];
+
+    spanReply.addEventListener("click", () => {
+        replyModal.style.display = "none";
+    });
+    window.addEventListener("click", (event) => {
+        if (event.target === replyModal) {
+            replyModal.style.display = "none";
+        }
+    });
 
     loadReplies();
 });
 
 
 
-// 별점 클릭 이벤트
-document.querySelectorAll(".star-rating .star").forEach(function (star) {
-    star.addEventListener("click", function () {
-        let value = this.getAttribute("data-value");
 
-        // 모든 별의 선택 상태 초기화
-        document.querySelectorAll(".star-rating .star").forEach(function (s) {
-            s.classList.remove("selected");
-        });
 
-        // 클릭한 별과 그 이전 별들 선택 상태로 변경
-        this.classList.add("selected");
-        let nextSiblings = getNextSiblings(this);
-        nextSiblings.forEach(function (sibling) {
-            sibling.classList.add("selected");
-        });
+// // 별점 클릭 이벤트
+// document.querySelectorAll(".star-rating .star").forEach(function (star) {
+//     star.addEventListener("click", function () {
+//         let value = this.getAttribute("data-value");
+//
+//         // 모든 별의 선택 상태 초기화
+//         document.querySelectorAll(".star-rating .star").forEach(function (s) {
+//             s.classList.remove("selected");
+//         });
+//
+//         // 클릭한 별과 그 이전 별들만 선택 상태로 변경
+//         for (let i = 1; i <= value; i++) {
+//             document.querySelector(`.star-rating .star[data-value="${i}"]`).classList.add("selected");
+//         }
+//
+//         console.log("Selected rating:", value);
+//     });
+// });
 
-        console.log("Selected rating:", value);
-    });
 
-    star.addEventListener("mouseover", function () {
-        document.querySelectorAll(".star-rating .star").forEach(function (s) {
-            s.classList.remove("hover");
-        });
-        this.classList.add("hover");
-        let nextSiblings = getNextSiblings(this);
-        nextSiblings.forEach(function (sibling) {
-            sibling.classList.add("hover");
-        });
-    });
 
-    star.addEventListener("mouseout", function () {
-        document.querySelectorAll(".star-rating .star").forEach(function (s) {
-            s.classList.remove("hover");
-        });
-    });
-});
 
-function getNextSiblings(elem) {
-    let siblings = [];
-    siblings.push(elem);
-    while ((elem = elem.previousElementSibling)) {
-        siblings.push(elem);
-    }
-    return siblings;
-}
-
-// 댓글 아이콘 툴팁
-const replyBtn = document.querySelector(".reply-btn");
-const replyPtag = document.querySelector(".action-tooltip-reply");
-
-replyBtn.addEventListener("mouseover", () => {
-    replyPtag.style.display = "block";
-});
-replyBtn.addEventListener("mouseout", () => {
-    replyPtag.style.display = "none";
-});
-
-// 작품 신고 모달
-const modal = document.getElementById("report-modal");
-const btn = document.getElementById("report-btn");
-const span = document.getElementsByClassName("close")[0];
-
-btn.addEventListener("click", () => {
-    modal.style.display = "block";
-});
-span.addEventListener("click", () => {
-    modal.style.display = "none";
-});
-window.addEventListener("click", (event) => {
-    if (event.target === modal) {
-        modal.style.display = "none";
-    }
-});
-
-// 댓글 신고 모달
-const replyModal = document.getElementById("report-modal-reply");
-const spanReply = document.getElementsByClassName("modal-reply-close")[0];
-
-spanReply.addEventListener("click", () => {
-    replyModal.style.display = "none";
-});
-window.addEventListener("click", (event) => {
-    if (event.target === replyModal) {
-        replyModal.style.display = "none";
-    }
-});
