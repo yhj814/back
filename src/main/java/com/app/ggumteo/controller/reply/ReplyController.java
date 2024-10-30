@@ -79,9 +79,16 @@ public class ReplyController {
         return replyService.selectRepliesByWorkId(page, pagination, workId);
     }
     // 댓글 숫자 세기
-  @GetMapping("/count")
+    @GetMapping("/count/{workId}")
     public void getReplyCount(@PathVariable Long workId) {
+        int replyCount = replyService.countRepliesByWorkId(workId);
+        log.info("댓글 수 for workId {}: {}", workId, replyCount);
+    }
 
-  }
-
+    // 작품의 평균 별점 조회
+    @GetMapping("/average-star/{workId}")
+    public void getAverageStar(@PathVariable Long workId) {
+        double averageStar = replyService.selectAverageStarByWorkId(workId);
+        log.info("평균 별점 for workId {}: {}", workId, averageStar);
+    }
 }

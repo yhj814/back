@@ -49,6 +49,35 @@ const replyService = (() => {
             console.error("Error deleting reply:", error);
             return false; // 삭제 실패
         }
+    };  // 댓글 수 조회 함수
+    const getReplyCount = async (workId) => {
+        try {
+            const response = await fetch(`/replies/count/${workId}`);
+            if (!response.ok) throw new Error("댓글 수 조회 실패");
+
+            const count = await response.json();
+            console.log("댓글 수:", count);
+            return count;
+        } catch (error) {
+            console.error("Error fetching reply count:", error);
+            return 0; // 오류 발생 시 댓글 수를 0으로 반환
+        }
     };
-    return { write, getList, remove };
+
+    // 평균 별점 조회 함수
+    const getAverageStar = async (workId) => {
+        try {
+            const response = await fetch(`/replies/average-star/${workId}`);
+            if (!response.ok) throw new Error("평균 별점 조회 실패");
+
+            const { averageStar } = await response.json();
+            console.log("평균 별점:", averageStar);
+            return averageStar;
+        } catch (error) {
+            console.error("Error fetching average star:", error);
+            return 0; // 오류 발생 시 평균 별점을 0으로 반환
+        }
+    };
+
+    return { write, getList, remove, getReplyCount, getAverageStar };
 })();

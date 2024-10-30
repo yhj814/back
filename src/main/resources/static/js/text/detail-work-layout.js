@@ -153,6 +153,33 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     };
 
+    const updateReplyCount = async (workId) => {
+        try {
+            // replyService를 통해 댓글 총 개수 조회
+            const totalCount = await replyService.getReplyCount(workId);
+
+            console.log("총 댓글 수:", totalCount); // 로그로 확인
+
+            // `total-reply-count` 요소에 댓글 수 업데이트
+            const totalReplyCountElement = document.getElementById("total-reply-count");
+            if (totalReplyCountElement) {
+                totalReplyCountElement.textContent = totalCount;
+            } else {
+                console.error("`total-reply-count` 요소를 찾을 수 없습니다.");
+            }
+
+            // `comment-count` 요소에 댓글 수 업데이트
+            const commentCountElement = document.getElementById("comment-count");
+            if (commentCountElement) {
+                commentCountElement.textContent = totalCount;
+            } else {
+                console.error("`comment-count` 요소를 찾을 수 없습니다.");
+            }
+        } catch (error) {
+            console.error("댓글 수를 불러오는 중 오류 발생:", error);
+        }
+    };
+
     // 신고 버튼 이벤트 추가 함수
     const addReportEvent = () => {
         document.querySelectorAll(".btn-comment-report").forEach((btn) => {
