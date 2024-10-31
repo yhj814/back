@@ -46,17 +46,14 @@ public class TextWorkController {
     @ModelAttribute
     public void setTestMember(HttpSession session) {
         if (session.getAttribute("member") == null) {
-            session.setAttribute("member", new MemberVO(
-                    2L,
+            session.setAttribute("member", new MemberVO(2L, "", "", "", "", ""));
+        }
 
-                    "",         // memberEmail
-                    "",
-                    "",              // profileUrl
-                    "",          // createdDate
-                    ""          // updatedDate
-            ));
+        if (session.getAttribute("memberProfile") == null) {
+            session.setAttribute("memberProfile", new MemberProfileVO(2L, "", "", "", 99, "", "", "",2L,"",""));
         }
     }
+
 
     @GetMapping("write")
     public void goToWriteForm() {;}
@@ -180,7 +177,7 @@ public class TextWorkController {
     }
 
     @PostMapping("/order")
-    public void completePayment(@RequestBody Map<String, Object> paymentData) {
+    public ResponseEntity<String> completePayment(@RequestBody Map<String, Object> paymentData) {
 
         Long workId = Long.parseLong(paymentData.get("workId").toString());
         Long memberProfileId = Long.parseLong(paymentData.get("memberProfileId").toString());
@@ -188,7 +185,7 @@ public class TextWorkController {
         MemberProfileVO memberProfile = (MemberProfileVO) session.getAttribute("memberProfile");
         if (memberProfile == null) {
             log.error("세션에서 memberProfile 정보를 찾을 수 없습니다.");
-            return;
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("세션에 멤버 프로필 정보가 없습니다.");
         }
 
         BuyWorkDTO buyWorkDTO = new BuyWorkDTO();
@@ -201,7 +198,11 @@ public class TextWorkController {
 
         log.info("BuyWorkDTO 정보 확인: {}", buyWorkDTO);
         buyWorkService.savePurchase(buyWorkDTO.toVO());
+
+        // JSON 형식의 응답을 반환
+        return ResponseEntity.ok("결제 정보가 성공적으로 저장되었습니다.");
     }
+
 
 
 
