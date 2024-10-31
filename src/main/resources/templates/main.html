@@ -4,9 +4,18 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link rel="stylesheet" href="/css/main/main.css" />
+        <link rel="stylesheet" th:href="@{/css/header/logout.css}">
+        <link rel="stylesheet" th:href="@{/css/header/login.css}">
+        <link rel="stylesheet" th:href="@{/css/footer/footer.css}">
         <title>메인 테스트</title>
     </head>
     <body class="body">
+    <th:block th:if="${isLoggedIn}">
+        <div th:replace="~{header-login :: header}"></div>
+    </th:block>
+    <th:block th:if="${!isLoggedIn}">
+        <div th:replace="~{header-logout :: header}"></div>
+    </th:block>
         <!-- 메인 -->
         <main class="main">
             <div class="ggumteo-do-not-fail">
@@ -193,6 +202,10 @@
                 </section>
             </div>
         </main>
+    <footer th:replace="~{footer.html :: footer}"></footer>
     </body>
     <script src="/js/main/main.js"></script>
+    <script th:src="@{/js/header/header-logout.js}"></script>
+    <script th:src="@{/js/header/header-login.js}"></script>
+    <script th:src="@{/js/header/logout-click.js}"></script>
 </html>

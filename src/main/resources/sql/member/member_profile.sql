@@ -25,7 +25,7 @@ alter table tbl_member_profile
 alter table tbl_member_profile
     add created_date datetime default current_timestamp;
 
-DELETE from tbl_member_profile where id = 2;
+DELETE from tbl_member_profile where profile_age = 12;
 
 insert into tbl_member_profile(profile_name,profile_nickname,profile_gender,profile_age,profile_email,profile_phone,member_id)
 value ('테스트1','닉네임1','남','20','qwqw@gmail.com','01012121212','1');
