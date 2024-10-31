@@ -8,6 +8,7 @@ import com.app.ggumteo.domain.file.PostFileDTO;
 import com.app.ggumteo.domain.file.PostFileVO;
 import com.app.ggumteo.domain.member.MemberVO;
 import com.app.ggumteo.domain.post.PostVO;
+import com.app.ggumteo.domain.reply.ReplyDTO;
 import com.app.ggumteo.domain.work.WorkDTO;
 import com.app.ggumteo.domain.work.WorkVO;
 import com.app.ggumteo.mapper.post.PostMapper;
@@ -15,6 +16,7 @@ import com.app.ggumteo.mapper.work.WorkMapper;
 import com.app.ggumteo.pagination.Pagination;
 import com.app.ggumteo.search.Search;
 import com.app.ggumteo.service.file.PostFileService;
+import com.app.ggumteo.service.reply.ReplyService;
 import com.app.ggumteo.service.work.WorkService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -35,9 +37,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Controller
 @RequestMapping("/text/*")
@@ -47,6 +47,7 @@ public class TextWorkController {
     private final WorkService workService;
     private final HttpSession session;
     private final PostFileService postFileService;
+    private final ReplyService replyService;
 
     // 모든 요청 전 세션에 테스트용 사용자 정보 설정
     @ModelAttribute
@@ -170,23 +171,21 @@ public class TextWorkController {
 
     @GetMapping("/detail/{id}")
     public String detail(@PathVariable("id") Long id, Model model) {
-        // 작품 기본 정보를 조회
         WorkDTO work = workService.findWorkById(id);
-
-        // 조회수 증가
         workService.incrementReadCount(id);
         log.info("Detail view의 WorkDTO: {}", work);
 
-
-        // 작품에 연결된 다중 파일 조회
         List<PostFileDTO> postFiles = workService.findFilesByPostId(id);
 
-        // 모델에 데이터 추가
-        model.addAttribute("work", work); // 작품 기본 정보
-        model.addAttribute("postFiles", postFiles); // 다중 파일 정보
+        model.addAttribute("work", work);
+        model.addAttribute("postFiles", postFiles);
 
-        return "text/detail";  // 상세 페이지 템플릿으로 이동
+        // workId 값을 JavaScript로 전달하기 위해 추가
+        model.addAttribute("workId", work.getId());
+
+        return "text/detail";
     }
+
 
 
 }

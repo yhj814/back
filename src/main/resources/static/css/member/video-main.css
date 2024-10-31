@@ -133,9 +133,6 @@ html {
     width: 298px;
     height: 52px;
 }
-.btn {
-    cursor: pointer;
-}
 .container.mypage .main-content-container .main-content .last-open-mypages .last-open-mypage .last-open-mypage-info {
     margin-left: 24px;
 }
@@ -305,7 +302,7 @@ html {
 }
 
    .list-item {
-    padding: 32px 0px;
+    padding: 25px 0px;
     border-bottom: 1px solid;
 }
 .flex-box {
@@ -377,11 +374,6 @@ p {
     word-wrap: break-word; /* 단어가 길 경우 줄 바꿈 */
 }
 
-
-
-
-
-
 .container.mypage .main-content-container .products-list .products-author-box {
     width: 562px;
     justify-content: space-between;
@@ -411,16 +403,10 @@ p {
     border-radius: 8px;
 }
 .container.mypage .main-content-container .products-list .products-author-box .btn {
+    cursor: unset;
     padding: 8px;
     border: 0px;
     background: white;
-}
-.btn-action {
-    cursor: pointer;
-    position: relative;
-    width: 40px;
-    height: 40px;
-    border-radius: 8px;
 }
 .btn-wrapper .action-tooltip.bottom-action {
     top: -44px;
@@ -459,16 +445,14 @@ p {
     transform: translateX(-50%);
 }
 .icon-my-edit-off {
+    cursor: pointer;
     width: 21px;
     height: 21px;
     background-image: url(/images/member/plus.png);
 }
 
-
-.container.mypage .main-content-container .products-list .products-author-box .btn {
-    padding: 8px;
-}
 .icon-my-delete {
+    cursor: pointer;
     width: 24px;
     height: 24px;
     background-image: url(/images/member/delete.png);
@@ -483,11 +467,10 @@ p {
 .content {
     color: #757575;
 }
+
 .pagination {
     display: block !important;
     text-align: center;
-    line-height: 155px;
-    padding: 0px 0px 120px 0px;
 }
 ul {
     list-style: none;
@@ -529,24 +512,29 @@ ul li {
 .pagination li a {
     cursor: pointer;
 }
-.pagination.theme-yozm li:last-child>.page-link {
+
+.page-link.back{
     background-image: url(/images/member/next.png);
     text-indent: -999999px;
     background-position: center;
     background-repeat: no-repeat;
+    transform: rotate(-180deg);
+    bottom: -15px
+}
+
+.page-link.next {
+    background-image: url(/images/member/next.png);
+    text-indent: -999999px;
+    background-position: center;
+    background-repeat: no-repeat;
+    bottom: -15px
 }
 .pagination.theme-yozm .page-link:hover {
     z-index: 2;
     border-radius: 8px;
     background-color: #fafafa;
 }
-#back{
-    background-image: url(/images/member/next.png);
-    text-indent: -999999px;
-    background-position: center;
-    background-repeat: no-repeat;
-    transform: rotate(-180deg);
-}
+
 body.partners_profile .edit-menu-box .profile-menu-setting .setting-table .setting-th {
     padding: 12px 0;
     border-top: solid 1px #212121;
@@ -570,12 +558,6 @@ body.partners_profile .edit-menu-box .profile-menu-setting .setting-table .setti
 .trueorfalse {
     width: 192px;
     margin-left: 20px;
-}
-.setting-tr-group {
-    display: inline-block;
-    padding-bottom: 12px;
-    margin-bottom: 12px;
-    border-bottom: solid 1px #e0e0e0;
 }
 .setting-tr {
     height: auto;
@@ -652,11 +634,6 @@ body.partners_profile .edit-menu-box .profile-menu-setting .setting-table .setti
     align-items: center;
 }
 
-#replybackornext {
-    margin-bottom: -150px;
-    margin-top: -40px;
-    margin-right: 0px;
-}
 .sidebar-menu-name{
     font-size: 14px;
     line-height: 24px;
@@ -986,9 +963,9 @@ body.partners_profile .edit-menu-box .profile-menu-setting .setting-table .setti
 .setting-tr-group {
     display: inline-block;
     padding-bottom: 12px;
-    margin-bottom: 12px;
     border-bottom: solid 1px #e0e0e0;
 }
+
 .setting-tr {
     height: auto;
     overflow: hidden;
@@ -1061,14 +1038,11 @@ body.partners_profile .edit-menu-box .profile-menu-setting .setting-table .setti
     align-items: center;
 }
 
-#replybackornext {
-    margin-bottom: -220px;
-    margin-top: -40px;
+.back-or-next {
+    margin: 0px auto;
     padding-left: 615px;
 }
 .reply{
-   
-    padding-bottom: 200px;
     padding-left: 10px;
 }
 .pagination2 {
@@ -1104,12 +1078,7 @@ body.partners_profile .edit-menu-box .profile-menu-setting .setting-table .setti
     height: 100%;
     margin-left: 4px;
 }
-.pagination2.theme-yozm li:last-child>.page-link {
-    background-image: url(https://yozm.wishket.com/renewal/img/news/icon_page_next.png);
-    text-indent: -999999px;
-    background-position: center;
-    background-repeat: no-repeat;
-}
+
 .pagination2 li {
     display: inline-block;
     cursor: pointer;
@@ -1129,27 +1098,6 @@ body.partners_profile .edit-menu-box .profile-menu-setting .setting-table .setti
     border: 0px;
     background: white;
 }
-.btn-wrapper .action-tooltip.bottom-action {
-    top: -44px;
-    left: 50%;
-    transform: translate(-50%, 16px);
-}
-.btn-wrapper .action-tooltip {
-    opacity: 0;
-    transition: all .4s ease-in-out;
-    cursor: default;
-    position: absolute;
-    width: max-content;
-    color: #fff;
-    background-color: #212121;
-    border-radius: 6px;
-    padding: 2px 6px;
-    font-size: 11px;
-    font-weight: normal;
-    font-stretch: normal;
-    font-style: normal;
-    line-height: 1.27;
-}
 p {
     display: block;
     margin-block-start: 1em;
@@ -1164,17 +1112,6 @@ p {
     position: relative;
     width: max-content;
     border-radius: 8px;
-}
-.btn-wrapper .action-tooltip.bottom-action:after {
-    border-top: 4px solid #212121;
-    border-left: 3px solid rgba(0, 0, 0, 0);
-    border-right: 3px solid rgba(0, 0, 0, 0);
-    border-bottom: 4px solid rgba(0, 0, 0, 0);
-    content: "";
-    position: absolute;
-    top: 18px;
-    left: 50%;
-    transform: translateX(-50%);
 }
 .btn-action {
     cursor: pointer;
@@ -1381,12 +1318,6 @@ p {
 }
 .setting-td {
     display: inline-block;
-}
-.setting-tr-group {
-    display: inline-block;
-    padding-bottom: 12px;
-    margin-bottom: 12px;
-    border-bottom: solid 1px #e0e0e0;
 }
 .setting-tr {
     height: auto;

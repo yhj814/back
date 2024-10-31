@@ -12,7 +12,7 @@ document.getElementById("logout-btn").addEventListener("click", function (event)
         .then(response => {
             if (response.ok) {
                 // 로그아웃 성공 시, 원하는 경로로 이동
-                window.location.href = "/header-logout"; // 로그아웃 후 이동할 페이지
+                window.location.href = "/main"; // 로그아웃 후 이동할 페이지
             } else {
                 console.error("로그아웃 실패:", response.statusText);
             }

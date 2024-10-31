@@ -80,17 +80,22 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     // 세 번째 기능: "구매한 사람들" 버튼 클릭 시 설정 테이블 표시/숨김
+
     const toggleButtons = document.querySelectorAll(
-        '.btn-icon-edit-my[name="toggle_btn"]'
+        '.icon-my-edit-off'
     );
 
+
     // 모든 setting-table을 숨깁니다.
+
     const settingTables = document.querySelectorAll(".setting-table");
     settingTables.forEach(function (table) {
         table.style.display = "none"; // 처음엔 숨김
     });
 
+
     // 버튼 클릭 시 설정 테이블을 표시/숨김 처리하는 이벤트 리스너
+
     toggleButtons.forEach(function (button, index) {
         button.addEventListener("click", function () {
             const settingTable = settingTables[index];

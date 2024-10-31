@@ -6,10 +6,11 @@ import com.app.ggumteo.domain.member.MemberVO;
 import java.util.Optional;
 
 public interface MemberService {
-    public void join(MemberVO memberVO);
+    public MemberVO join(MemberVO memberVO);
 
     public Optional<MemberVO> getKakaoMember(String memberEmail);
 
-
+    // 로그인 시 프로필 이미지 업데이트
+    public void updateProfileImgUrl(String memberEmail, String profileImgUrl);
 
 }

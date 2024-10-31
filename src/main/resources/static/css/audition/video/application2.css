@@ -690,11 +690,12 @@ ul, ol {
 .btn-delete-resume {
     position: absolute;
     cursor: pointer;
-    right: 1px;
-    top: 0px;
+    right: -5px;
+    top: 2px;
 }
 
 .tooltip-group .file-name-viewer {
+    margin-top: 4px;
     margin-left: 22px;
     max-width: 548px;
     overflow: hidden;
@@ -740,9 +741,13 @@ ul, ol {
     padding-right: 25px; /* 버튼 내 여유 공간 추가 */
 }
 
+.loading-icon-wrap{
+    position: relative;
+}
+
 .loading-icon {
     position: absolute;
-    right: 23%; /* 버튼 내부 우측 정렬 */
+    right: -9%; /* 버튼 내부 우측 정렬 */
     top: 56%;
     transform: translateY(-50%);
     width: 20px;

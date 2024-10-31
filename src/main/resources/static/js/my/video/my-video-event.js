@@ -9,13 +9,19 @@ myFundingListPaging.addEventListener("click", (e)=>{
     }
 });
 
-const myFundingListToggleButton = document.querySelector(
-    `.my-funding-posts .btn-icon-edit-my.${member.id}`
-);
-console.log(myFundingListToggleButton);
+myFundingListLayout.addEventListener('click', async (e) => {
+        if(e.target.id === "my-funding-buyer-btn") {
+            const myFundingPostId = e.target.classList[1];
+            console.log("myFundingPostId :",myFundingPostId);
 
-myFundingListLayout.addEventListener('click', (e) => {
-        if(e.target.id === "getMyFundingBuyer") {
-            alert("눌림")
+            const fundingBuyerTable  = document.querySelector(`.setting-table.funding-buyer-${myFundingPostId}`);
+
+            fundingBuyerTable.style.display = "block";
+
+            fundingBuyerTable.innerHTML += await myPageService.getFundingBuyerList(myFundingPostId, showFundingBuyerList);
+
+            console.log("1??", fundingBuyerTable);
+            console.log("3??", myPageService.getFundingBuyerList(myFundingPostId, showFundingBuyerList));
+            console.log("4??", fundingBuyerTable.innerHTML);
         }
 });

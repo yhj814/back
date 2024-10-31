@@ -2,6 +2,7 @@ package com.app.ggumteo.repository.reply;
 
 import com.app.ggumteo.domain.reply.ReplyDTO;
 import com.app.ggumteo.mapper.reply.ReplyMapper;
+import com.app.ggumteo.pagination.Pagination;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -24,8 +25,8 @@ public class ReplyDAO {
     }
 
     // 특정 작품에 대한 댓글 목록 조회
-    public List<ReplyDTO> selectRepliesByWorkId(Long workId) {
-        return replyMapper.selectRepliesByWorkId(workId);
+    public List<ReplyDTO> selectRepliesByWorkId(Long workId, Pagination pagination) {
+       return replyMapper.selectRepliesByWorkId(workId, pagination);
     }
 
     // 작품의 평균 별점 조회
