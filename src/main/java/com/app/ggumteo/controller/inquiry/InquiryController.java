@@ -37,8 +37,8 @@ public class InquiryController {
     // 문의사항 제출
     @PostMapping("/write")
     public RedirectView submitInquiry(@RequestParam String postTitle,
-                                @RequestParam String postContent,
-                                @RequestParam Long memberProfileId,
+                                      @RequestParam String postContent,
+                                      @RequestParam Long memberProfileId,
                                 Model model) {
         log.info("문의사항 제출 요청 - 제목: {}, 내용: {}", postTitle, postContent);
 
