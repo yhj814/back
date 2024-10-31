@@ -17,9 +17,8 @@ public class MemberProfileServiceImpl implements MemberProfileService {
     private final MemberProfileDAO memberProfileDAO;
 
     @Override
-    public void write(MemberProfileDTO memberProfileDTO) {
+    public MemberProfileDTO write(MemberProfileDTO memberProfileDTO) {
         MemberProfileVO memberProfileVO = new MemberProfileVO();
-        memberProfileVO.setId(memberProfileDTO.getId());
         memberProfileVO.setProfileName(memberProfileDTO.getProfileName());
         memberProfileVO.setProfileNickName(memberProfileDTO.getProfileNickName());
         memberProfileVO.setProfileGender(memberProfileDTO.getProfileGender());
@@ -29,6 +28,10 @@ public class MemberProfileServiceImpl implements MemberProfileService {
         memberProfileVO.setProfileEtc(memberProfileDTO.getProfileEtc());
         memberProfileVO.setMemberId(memberProfileDTO.getMemberId());
 
+        // 저장 후 자동 생성된 ID를 설정
         memberProfileDAO.save(memberProfileVO);
+        memberProfileDTO.setId(memberProfileVO.getId());  // 생성된 ID를 DTO에 설정하여 반환
+
+        return memberProfileDTO;  // DTO 객체 반환
     }
 }
