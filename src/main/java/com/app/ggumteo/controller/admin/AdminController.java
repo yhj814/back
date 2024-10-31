@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
 @Controller
 @RequiredArgsConstructor
 @Slf4j
@@ -42,23 +43,22 @@ public class AdminController {
     public Map<String, Object> verifyCode(@ModelAttribute AdminDTO adminDTO) {
         Map<String, Object> response = new HashMap<>();
         boolean isVerified = adminService.verifyAdminCode(adminDTO.getAdminVerifyCode());
+
         if (isVerified) {
             response.put("success", true);
             log.info("인증번호 : {} 관리자 인증성공!! ", adminDTO.getAdminVerifyCode());
-            // 리다이렉트
             response.put("redirect", "/admin/admin");
         } else {
             log.info("인증실패 !!");
             response.put("success", false);
         }
-        // JSON 형태로 반환
+
         return response;
     }
 
     // 관리자 페이지
     @GetMapping("/admin")
     public String showAdminPage() {
-
         return "admin/admin";
     }
 
@@ -69,47 +69,41 @@ public class AdminController {
         return ResponseEntity.ok("공지사항이 성공적으로 등록되었습니다.");
     }
 
-    // 공지사항 목록 조회
+    // 공지사항 조회 (검색 및 정렬 기능 포함)
     @GetMapping("/announcements")
-    public String listAnnouncements(@RequestParam(value = "page", defaultValue = "1") Integer page, Model model) {
-        // 페이지네이션 객체 생성
+    @ResponseBody
+    public Map<String, Object> listAnnouncements(
+            @RequestParam(value = "page", defaultValue = "1") Integer page,
+            @RequestParam(value = "order", defaultValue = "createdDate") String order, // 정렬
+            @RequestParam(value = "search", required = false) String search) { // 검색
+
         AdminPagination pagination = new AdminPagination();
         pagination.setPage(page);
-        pagination.setTotal(announcementService.getTotalAnnouncements());
+        pagination.setTotal(announcementService.getTotalAnnouncements(search)); // 검색에 따른 총 개수
         pagination.progress();
 
-        // 공지사항 목록 조회
-        List<AnnouncementVO> announcements = announcementService.getAllAnnouncements(pagination);
+        List<AnnouncementVO> announcements = announcementService.getAllAnnouncements(pagination, order, search);
 
-        // 조회된 데이터와 페이지네이션 정보 로그 출력
-        log.info("Announcements List:");
-        for (AnnouncementVO announcement : announcements) {
-            log.info("{}", announcement); // AnnouncementVO의 toString() 메서드에 의해 출력
-        }
-        log.info("Pagination Details - Current Page: {}, Start Row: {}, End Row: {}, Total: {}",
-                pagination.getPage(), pagination.getStartRow(), pagination.getEndRow(), pagination.getTotal());
+        Map<String, Object> response = new HashMap<>();
+        response.put("announcements", announcements);
+        response.put("pagination", pagination);
 
-        // 모델에 데이터 추가
-        model.addAttribute("announcements", announcements);
-        model.addAttribute("pagination", pagination);
-
-        return "admin/admin"; // 공지사항 목록 페이지
+        return response;
     }
 
-    @GetMapping("/inquiry")
-    public String getList(@ModelAttribute AdminPagination pagination, Model model) {
-        List<InquiryDTO> inquiryList = inquiryService.getList(pagination);
-        int totalInquiries = inquiryService.getTotal();
+    // 공지사항 수정
+    @PostMapping("/announcement/update")
+    @ResponseBody
+    public ResponseEntity<String> updateAnnouncement(@RequestBody AnnouncementVO announcementVO) {
+        announcementService.updateAnnouncement(announcementVO);
+        return ResponseEntity.ok("공지사항이 성공적으로 수정되었습니다.");
+    }
 
-        pagination.setTotal(totalInquiries); // 전체 문의 수 설정
-        pagination.progress(); // 페이지네이션 진행
-
-        log.info("Inquiry List: {}", inquiryList);
-        log.info("Pagination: {}", pagination);
-
-        model.addAttribute("inquiries", inquiryList);
-        model.addAttribute("pagination", pagination);
-
-        return "admin/admin"; // 템플릿 경로
+    // 공지사항 삭제
+    @PostMapping("/announcement/delete")
+    @ResponseBody
+    public ResponseEntity<String> deleteAnnouncements(@RequestBody List<Integer> ids) {
+        announcementService.deleteAnnouncements(ids);
+        return ResponseEntity.ok("선택한 공지사항이 성공적으로 삭제되었습니다.");
     }
 }
