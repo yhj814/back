@@ -17,8 +17,7 @@ public class InquiryDTO {
     private String postCreatedDate;  // 게시물 생성 날짜
     private String profileName;  // 프로필 이름
     private String profileEmail;  // 프로필 이메일
-    private String inquiryStatus;  // 문의 상태
-    private String adminAnswerCreatedDate;  // 관리자 답변 생성 날짜
+    private String inquiryStatus;  // 문의 상태 기본은 NO
 }
 
 

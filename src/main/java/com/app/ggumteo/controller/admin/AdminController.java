@@ -106,4 +106,22 @@ public class AdminController {
         announcementService.deleteAnnouncements(ids);
         return ResponseEntity.ok("선택한 공지사항이 성공적으로 삭제되었습니다.");
     }
+
+    // 문의사항 목록 조회 (페이징 처리 포함)
+    @GetMapping("/inquiries")
+    @ResponseBody
+    public Map<String, Object> listInquiries(@RequestParam(value = "page", defaultValue = "1") Integer page) {
+        AdminPagination pagination = new AdminPagination();
+        pagination.setPage(page);
+        pagination.setTotal(inquiryService.getTotalInquiries());
+        pagination.progress();
+
+        List<InquiryDTO> inquiries = inquiryService.getInquiries(pagination);
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("inquiries", inquiries);
+        response.put("pagination", pagination);
+
+        return response;
+    }
 }

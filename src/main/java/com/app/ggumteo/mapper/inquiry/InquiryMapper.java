@@ -3,9 +3,9 @@ package com.app.ggumteo.mapper.inquiry;
 import com.app.ggumteo.domain.inquiry.InquiryDTO;
 import com.app.ggumteo.domain.post.PostDTO;
 import com.app.ggumteo.pagination.AdminPagination;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+
 
 import java.util.List;
 
@@ -19,7 +19,9 @@ public interface InquiryMapper {
     // 마지막 삽입된 ID를 가져오는 메서드
     Long getLastInsertId();
 
-    List<InquiryDTO> selectInquiryAll(@Param("pagination") AdminPagination pagination);
+    // 페이징 처리된 전체 문의사항 가져오기
+    List<InquiryDTO> selectAll(@Param("pagination")AdminPagination pagination);
 
-    int countInquiries();
+    // 총 문의사항 개수 조회
+    int countTotal();
 }

@@ -7,6 +7,8 @@ create table tbl_admin_answer (
        references tbl_inquiry(id)
 );
 
+drop table tbl_admin_answer;
+
 select *from tbl_admin_answer;
 
 insert into tbl_admin_answer

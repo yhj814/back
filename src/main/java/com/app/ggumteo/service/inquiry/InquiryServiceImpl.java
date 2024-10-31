@@ -21,8 +21,7 @@ import java.util.List;
 @Slf4j
 public class InquiryServiceImpl implements InquiryService {
 
-    private final InquiryDAO inquiryDAO; // final로 선언하여 주입받도록 설정
-    private final InquiryMapper inquiryMapper;
+    private final InquiryDAO inquiryDAO;
 
     @Override
     public void writeInquiry(PostDTO postDTO) {
@@ -38,15 +37,13 @@ public class InquiryServiceImpl implements InquiryService {
     }
 
     @Override
-    public List<InquiryDTO> getList(AdminPagination pagination) {
-        log.info("Fetching inquiry list with pagination: {}", pagination);
-        List<InquiryDTO> inquiries = inquiryDAO.findAllInquiry(pagination);
-        log.info("Fetched inquiries: {}", inquiries);
-        return inquiries;
+    public List<InquiryDTO> getInquiries(AdminPagination pagination) {
+        return inquiryDAO.selectAll(pagination);
     }
 
     @Override
-    public int getTotal(){
-        return inquiryDAO.getTotalInquiry();
+    public int getTotalInquiries() {
+        return inquiryDAO.countTotal();
     }
 }
+
