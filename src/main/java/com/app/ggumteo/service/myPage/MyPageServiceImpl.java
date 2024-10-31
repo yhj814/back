@@ -37,25 +37,10 @@ public class MyPageServiceImpl implements MyPageService {
     public MyFundingListDTO getMyFundingList(int page ,MyPagePagination myPagePagination, Long memberId) {
         MyFundingListDTO myFundingListDTO = new MyFundingListDTO();
         myPagePagination.setPage(page);
-
-        log.info("test -2={}", myPagePagination);
-
         myPagePagination.setTotal(fundingDAO.getTotal(memberId));
-
-        log.info("test -1={}", myPagePagination);
-
         myPagePagination.progress();
-
-        log.info("test 0={}", myPagePagination);
-
         myFundingListDTO.setMyPagePagination(myPagePagination);
-
-        log.info("test 1={}", myFundingListDTO);
-
         myFundingListDTO.setMyFundingPosts(fundingDAO.findByMemberId(myPagePagination, memberId));
-
-        log.info("test 2={}", myFundingListDTO);
-        log.info("test 3={}", fundingDAO);
 
         return myFundingListDTO;
     }
@@ -67,6 +52,6 @@ public class MyPageServiceImpl implements MyPageService {
 
     @Override
     public List<BuyFundingProductDTO> getFundingBuyerList(Long fundingPostId) {
-        return fundingDAO.findBuyerByMemberId(fundingPostId);
+        return fundingDAO.findBuyerByFundingPostId(fundingPostId);
     }
 }

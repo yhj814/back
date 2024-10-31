@@ -511,10 +511,13 @@ video {
     table-layout: fixed; /* 모든 열이 지정된 비율에 맞게 크기를 고정 */
     text-align: center;
 }
-
-.apply-table-row {
+#announcement-list{
     display: table-row;
 }
+
+/*.apply-table-row {*/
+/*    display: table-row;*/
+/*}*/
 .apply-table-cell {
     display: table-cell;
     box-sizing: border-box; /* padding과 border를 포함한 크기 조정 */
@@ -1059,19 +1062,19 @@ h1.common-header-description {
 /* 첫번째 열 */
 #notice-section .apply-header-cell:nth-child(2),
 #notice-section .apply-table-cell:nth-child(2) {
-    width: 2%;
+    width: 4%;
 }
 
 /* 두번째 열 */
 #notice-section .apply-header-cell:nth-child(3),
 #notice-section .apply-table-cell:nth-child(3) {
-    width: 5%;
+    width: 11%;
 }
 
 /* 세번째 열 */
 #notice-section .apply-header-cell:nth-child(4),
 #notice-section .apply-table-cell:nth-child(4) {
-    width: 9%;
+    width: 11%;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -1080,7 +1083,7 @@ h1.common-header-description {
 /* 네번째 열 */
 #notice-section .apply-header-cell:nth-child(5),
 #notice-section .apply-table-cell:nth-child(5) {
-    width: 13%;
+    width: 12%;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -1089,13 +1092,13 @@ h1.common-header-description {
 /* 다섯번째 열 */
 #notice-section .apply-header-cell:nth-child(6),
 #notice-section .apply-table-cell:nth-child(6) {
-    width: 4%;
+    width: 9%;
 }
 
 /* 여섯번째 열 */
 #notice-section .apply-header-cell:nth-child(7),
 #notice-section .apply-table-cell:nth-child(7) {
-    width: 5%;
+    width: 11%;
 }
 
 /* section3 : 작품 관리 */
@@ -1726,4 +1729,10 @@ h1.common-header-description {
     top: 36px;
     left: 50%;
     transform: translateX(-50%);
+}
+
+.width{
+    width: 200px;
+    margin: 0 auto;
+    text-overflow: ellipsis;
 }

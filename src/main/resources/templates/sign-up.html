@@ -8,9 +8,17 @@
             rel="stylesheet"
             href="/css/audition/video/application2.css"
     />
+    <link rel="stylesheet" th:href="@{/css/header/logout.css}">
+    <link rel="stylesheet" th:href="@{/css/header/login.css}">
+    <link rel="stylesheet" th:href="@{/css/footer/footer.css}">
 </head>
 <body>
-<header class="header"></header>
+<th:block th:if="${isLoggedIn}">
+    <div th:replace="~{header-login :: header}"></div>
+</th:block>
+<th:block th:if="${!isLoggedIn}">
+    <div th:replace="~{header-logout :: header}"></div>
+</th:block>
 <main>
     <div id="wrap">
         <div class="container">
@@ -278,7 +286,7 @@
                                 >
 
                                 <div class="control-wrapper">
-                                    <div class="input-gap">
+                                    <div class="input-gap loading-icon-wrap">
                                     <input
                                             class="form-control"
                                             data-exception="yes"
@@ -384,6 +392,7 @@
                                     <input
                                             accept=".pdf, .docx, .doc, .hwp"
                                             class="temp-upload-resume"
+                                            name="profileFile"
                                             hidden=""
                                             type="file"
                                     />
@@ -453,10 +462,13 @@
         </div>
     </div>
 </main>
-<footer></footer>
+<footer th:replace="~{footer.html :: footer}"></footer>
 </body>
 <script src="/js/main/email-send.js"></script>
 <script src="/js/main/phone-send.js"></script>
 <script src="/js/main/sign-up.js"></script>
 <script src="/js/audition/application-date.js"></script>
+<script th:src="@{/js/header/header-logout.js}"></script>
+<script th:src="@{/js/header/header-login.js}"></script>
+<script th:src="@{/js/header/logout-click.js}"></script>
 </html>

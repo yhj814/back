@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-    // 유효성 검사 함수 (이메일, 전화번호, 인증번호 전용)
+    // 유효성 검사 함수 (이메일, 전화번호 전용 - 인증번호는 제외)
     function validateField(input, regex, errorMessageText) {
         const errorMessage = input.closest(".input-gap")
             ? input.closest(".input-gap").parentElement.querySelector(".error-message")
@@ -99,24 +99,14 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         // 전화번호 필드 유효성 검사
+        const phoneField = document.querySelector("input[name='profilePhone']");
         const phoneRegex = /^(010|011|016|017|018|019)-\d{3,4}-\d{4}$/;
         if (!validateField(phoneField, phoneRegex, "올바른 전화번호를 입력해주세요.")) {
             isValid = false;
         }
 
-        // 인증번호 필드 유효성 검사
-        const codeRegex = /^\d{4}$/;
-        const emailCodeField = document.getElementById("emailVerificationCode");
-        const phoneCodeField = document.getElementById("verificationCode");
-        if (!validateField(emailCodeField, codeRegex, "4자리 인증번호를 입력해주세요.")) {
-            isValid = false;
-        }
-        if (!validateField(phoneCodeField, codeRegex, "4자리 인증번호를 입력해주세요.")) {
-            isValid = false;
-        }
-
-        // 기타 필드 유효성 검사
-        document.querySelectorAll(".form-control").forEach(function (input) {
+        // 기타 필드 유효성 검사 (인증번호 필드는 제외)
+        document.querySelectorAll(".form-control:not(#emailVerificationCode):not(#verificationCode)").forEach(function (input) {
             const errorMessage = input.closest(".input-gap")
                 ? input.closest(".input-gap").parentElement.querySelector(".error-message")
                 : input.parentElement.querySelector(".error-message");

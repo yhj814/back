@@ -581,14 +581,14 @@
                         <div>
                             <div>
                                 <!-- body_layout -->
-                                <div class="common-layout-container">
+                                <div class="common-layout-container" id="announcement-id">
                                     <div class="filter-wrap">
                                         <div class="sort-filter-options">
                                                     <span
-                                                            class="sort-filter-option selected"
-                                                    >등록일 순</span
+                                                            class="sort-filter-option selected" id="announcement-list-created-date"
+                                                    >작성일 순</span
                                                     >
-                                            <span class="sort-filter-option"
+                                            <span class="sort-filter-option" id="announcement-list-updated-date"
                                             >수정날짜 순</span
                                             >
                                         </div>
@@ -596,13 +596,13 @@
                                         <div class="action-buttons">
                                             <input
                                                     type="text"
-                                                    class="filter-search-input"
+                                                    class="filter-search-input" id="announcement-list-search"
                                                     placeholder="통합검색"
                                             />
                                             <button class="selected-btn notice-write" id="openModal">
                                                 공지사항 작성
                                             </button>
-                                            <button class="selected-btn">
+                                            <button class="selected-btn" id="announcement-delete-btn">
                                                 공지사항 삭제
                                             </button>
                                         </div>
@@ -617,7 +617,7 @@
                                             >
                                                 <input
                                                         type="checkbox"
-                                                        class="select-all"
+                                                        class="select-all" id="announcement-list-select-all"
                                                 />
                                             </div>
                                             <div
@@ -653,71 +653,15 @@
                                                 수정 날짜
                                             </div>
                                         </div>
-
-                                        <!-- 공지사항 목록 뿌리는곳 -->
-                                        <div class="apply-table-row" th:each="announcement :${announcements}">
-                                            <div class="apply-table-cell">
-                                                <input
-                                                        type="checkbox"
-                                                        class="apply-checkbox"
-                                                />
-                                            </div>
-                                            <div class="apply-table-cell" th:text="${announcement.id}"></div>
-                                            <div class="apply-table-cell" th:text="${announcement.createdDate}">
-                                            </div>
-                                            <div class="apply-table-cell" th:text="${announcement.announcementTitle}">
-
-                                            </div>
-                                            <div class="apply-table-cell" th:text="${announcement.announcementContent}">
-                                            </div>
-                                            <div class="apply-table-cell">
-                                                <button
-                                                        class="edit-btn status notice-edit"
-                                                >
-                                                    수정
-                                                </button>
-                                            </div>
-                                            <div class="apply-table-cell">
-                                                <!-- 수정 날짜가 null이거나 비어있을 경우 "-" 표시 -->
-                                                <span th:text="${announcement.updatedDate != null ? announcement.updatedDate : '-'}"></span>
-                                            </div>
+                                        <div id="announcement-list" >
+                                            <!-- JavaScript가 여기에 공지사항 목록을 동적으로 추가 -->
                                         </div>
                                     </div>
                                 </div>
-                                <nav class="pagination">
+                                <!-- 페이지 네비게이션 -->
+                                <nav class="pagination" id="pagination-announcement">
                                     <ul class="pagination-list">
-                                        <!-- 이전 페이지로 이동하는 버튼 -->
-                                        <li class="pagination-prev" th:if="${pagination.prev}">
-                                            <a
-                                                    th:href="@{/admin/announcements(page=${pagination.startPage - 1})}"
-                                                    class="pagination-prev-link"
-                                                    rel="prev nofollow"
-                                            >
-                                                <span class="pagination-prev-icon" aria-hidden="true">‹</span>
-                                            </a>
-                                        </li>
-
-                                        <!-- 페이지 번호 버튼 -->
-                                        <li class="pagination-page" th:each="i : ${#numbers.sequence(pagination.startPage, pagination.endPage)}">
-                                            <a
-                                                    th:href="@{/admin/announcements(page=${i})}"
-                                                    class="pagination-page-link"
-                                                    th:class="${i == pagination.page ? 'active' : ''}"
-                                            >
-                                                <span th:text="${i}"></span>
-                                            </a>
-                                        </li>
-
-                                        <!-- 다음 페이지로 이동하는 버튼 -->
-                                        <li class="pagination-next" th:if="${pagination.next}">
-                                            <a
-                                                    th:href="@{/admin/announcements(page=${pagination.startPage + 1})}"
-                                                    class="pagination-next-link"
-                                                    rel="next nofollow"
-                                            >
-                                                <span class="pagination-next-icon" aria-hidden="true">›</span>
-                                            </a>
-                                        </li>
+                                        <!-- JavaScript로 페이지 버튼을 동적으로 생성 -->
                                     </ul>
                                 </nav>
                             </div>
@@ -756,7 +700,7 @@
                                 <div class="background-overlay" onclick="document.querySelector('.notice-full-modal').style.display='none'"></div>
                             </div>
                             <!-- 공지사항 수정 모달창 -->
-                            <div class="notice-full-modal edit">
+                            <div class="notice-full-modal edit" >
                                 <div class="edit-modal">
                                     <div class="modal-content">
                                         <span class="close-button">&times;</span>
@@ -764,33 +708,23 @@
                                         <form class="edit-form">
                                             <div>
                                                 <label for="edit-post-title">공지사항 제목:</label>
-                                                <input
-                                                        type="text"
-                                                        class="edit-post-title"
-                                                        value="공지사항 수정 제목 테스트입니다. 수정 가능합니다."
-                                                />
-
+                                                <input type="text" class="edit-post-title"  />
                                                 <label for="edit-post-content">공지사항 내용:</label>
-                                                <textarea
-                                                        class="edit-post-content"
-                                                        name="edit-post-content"
-                                                >공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다. 공지사항 수정 내용 테스트입니다. 수정 가능합니다.</textarea>
+                                                <textarea class="edit-post-content" name="edit-post-content" ></textarea>
                                             </div>
                                             <!-- 저장 버튼 -->
                                             <div class="save">
-                                                <button type="button" class="save-button">
-                                                    수정하기
-                                                </button>
+                                                <button type="button" class="save-button">수정하기</button>
                                             </div>
                                         </form>
                                     </div>
                                 </div>
                                 <div class="background-overlay"></div>
                             </div>
+
                         </div>
 
                     </section>
-
                     <!-- section3: 작품 관리 -->
                     <section id="work-section" class="common-section">
                         <!-- body_header -->
@@ -5057,46 +4991,6 @@
                                         </div>
 
                                         <!-- Example row (Initial data) -->
-                                        <table>
-                                            <thead>
-                                            <tr>
-                                                <th>선택</th>
-                                                <th>번호</th>
-                                                <th>작성일</th>
-                                                <th>문의 제목</th>
-                                                <th>문의 내용</th>
-                                                <th>작성자</th>
-                                                <th>이메일</th>
-                                                <th>상태</th>
-                                                <th>답변 날짜</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            <tr th:each="inquiry, iterStat : ${inquiries}">
-                                                <div class="apply-table-row">
-                                                    <div class="apply-table-cell">
-                                                        <input type="checkbox" class="apply-checkbox" />
-                                                    </div>
-                                                    <div class="apply-table-cell" th:text="${iterStat.index + 1}"></div>
-                                                    <div class="apply-table-cell" th:text="${inquiry.postCreatedDate}"></div>
-                                                    <div class="apply-table-cell" th:text="${inquiry.postTitle}"></div>
-                                                    <div class="apply-table-cell" th:text="${inquiry.postContent}"></div>
-                                                    <div class="apply-table-cell" th:text="${inquiry.profileName}"></div>
-                                                    <div class="apply-table-cell" th:text="${inquiry.profileEmail}"></div>
-                                                    <div class="apply-table-cell">
-                                                        <button class="answered-btn status"
-                                                                th:class="${inquiry.inquiryStatus == '0' ? 'unanswered' : 'answered'}"
-                                                                th:text="${inquiry.inquiryStatus == '0' ? '미답변' : '답변 완료'}">
-                                                        </button>
-                                                    </div>
-                                                    <div class="apply-table-cell" th:text="${inquiry.adminAnswerCreatedDate}"></div>
-                                                </div>
-                                            </tr>
-                                            <tr th:if="${#lists.isEmpty(inquiries)}">
-                                                <td colspan="9">조회된 문의 사항이 없습니다.</td>
-                                            </tr>
-                                            </tbody>
-                                        </table>
                                         <div class="apply-table-row">
                                             <div class="apply-table-cell">
                                                 <input

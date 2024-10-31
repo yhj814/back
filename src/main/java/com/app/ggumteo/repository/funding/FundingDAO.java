@@ -28,7 +28,7 @@ public class FundingDAO {
 
 
 //    구매자 목록 조회
-    public List<BuyFundingProductDTO> findBuyerByMemberId(Long fundingPostId) {
-        return fundingMapper.selectBuyerByMemberId(fundingPostId);
+    public List<BuyFundingProductDTO> findBuyerByFundingPostId(Long fundingPostId) {
+        return fundingMapper.selectBuyerByFundingPostId(fundingPostId);
     }
 }

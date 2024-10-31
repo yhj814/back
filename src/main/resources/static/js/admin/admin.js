@@ -111,9 +111,7 @@ showStatusEditModal("#member-section");
 function showNoticeModal(type) {
     const modal = document.querySelector(`.notice-full-modal.${type}`);
     const openBtns = document.querySelectorAll(
-        type === "write"
-            ? ".notice-write.selected-btn"
-            : ".edit-btn.notice-edit"
+        type === "write" ? ".notice-write.selected-btn" : ".notice-edit.edit-btn"
     );
     const closeBtn = modal.querySelector(".close-button");
     const backgroundOverlay = modal.querySelector(".background-overlay");
@@ -558,9 +556,9 @@ showMesaageModal("#work-section");
 showMesaageModal("#funding-section");
 
 // **문의사항 답변 모달창**
-function showAnsweredModal() {
-    const btns = document.querySelectorAll(`.answered-btn`);
-    const modal = document.querySelector(`.answered-modal`);
+function showAnsweredModal(sectionId, type) {
+    const btns = document.querySelectorAll(`.answered-btn.${type}`);
+    const modal = document.querySelector(`.answered-modal.${type}`);
     const closeBtn = modal.querySelector(".close-button");
     const backgroundOverlay = modal.querySelector(".background-overlay");
 
@@ -689,30 +687,3 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 });
-
-// 로그아웃 누를시 인증번호페이지로 이동
-const adminLogOut =document.querySelector(".logout-btn");
-adminLogOut.addEventListener("click",()=>{
-    window.location.href="/admin/verify";
-    alert("관리자 로그아웃 !");
-});
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

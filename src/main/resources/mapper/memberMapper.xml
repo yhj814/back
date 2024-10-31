@@ -1,14 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.app.ggumteo.mapper.member.MemberMapper">
-    <insert id="insert">
+    <insert id="insert" parameterType="memberVO" useGeneratedKeys="true" keyProperty="id">
         <choose>
             <when test="memberEmail != null">
-                insert into tbl_member(member_email, profile_img_url)
-                values (#{memberEmail},#{profileImgUrl})
+                insert into tbl_member(member_email, profile_img_url, member_status)
+                values (#{memberEmail},#{profileImgUrl}, #{memberStatus})
             </when>
         </choose>
     </insert>
+
+    <update id="updateProfileImgUrl">
+        UPDATE tbl_member
+        SET profile_img_url = #{profileImgUrl}
+        WHERE member_email = #{memberEmail}
+    </update>
 
     <select id="selectByMemberEmailForKakao">
         select id, member_email, profile_img_url, created_date, updated_date
