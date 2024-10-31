@@ -6,3 +6,4 @@ create table tbl_member_profile_file (
     constraint fk_member_profile_file_member_profile foreign key (member_profile_id)
     references tbl_member_profile (id)
 );
+
