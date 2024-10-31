@@ -6,7 +6,7 @@
         <title>모집 목록 페이지</title>
         <link
             rel="stylesheet"
-            href="/static/css/audition/video/audition-list.css"
+            href="/css/audition/video/audition-list.css"
         />
     </head>
     <body>
@@ -40,9 +40,11 @@
                                     <input
                                         type="text"
                                         class="theme-ggumteo search-input"
+                                        id="searchKeyword"
                                         placeholder="원하는 작품을 찾아보세요"
+                                        th:value="${keyword}"
                                     />
-                                    <i class="search-btn">
+                                    <i class="search-btn" onclick="searchAuditions()">
                                         <img
                                             src="https://www.wishket.com/static/renewal/img/stack/icon-search.png"
                                         />
@@ -54,146 +56,79 @@
                         <section class="section-search" id="recruit-info">
                             <div class="header">
                                 <h2 class="tit-section">모집정보</h2>
-                                <span class="cnt-result">총 38,947건</span>
+                                <span class="cnt-result">총 <span th:text="${totalCount}">0</span>건</span>
                             </div>
                             <div id="recruit-info-list" main-search="y">
-                                <div class="content">
-                                    <div class="item-recruit">
+                                <div class="content" >
+                                    <div class="item-recruit" th:each="audition : ${auditions}">
                                         <div class="area-badge">
-                                            <span class="badge"> 배우 </span>
+                                            <span  th:switch="${audition.auditionField}">
+                                            <span class="badge" th:case="'1'">배우</span>
+                                            <span class="badge" th:case="'2'">스텝</span>
+                                            <span class="badge" th:case="'3'">감독</span>
+                                            <span class="badge" th:case="'4'">기타</span>
+                                        </span>
                                         </div>
                                         <div class="area-job">
                                             <h2 class="job-tit">
                                                 <a
                                                     target="-blank"
-                                                    title="[역삼역] 단편영화 배우모집합니다."
+                                                    title=""
                                                     href=""
                                                 >
-                                                    <span>
-                                                        [역삼역] 단편영화 배우
-                                                        모집합니다.
-                                                        <b>배우</b>
-                                                        채용
+                                                    <span th:text="${audition.postTitle}">
+
                                                     </span>
                                                 </a>
                                             </h2>
                                             <div class="job-date">
-                                                <span class="date"
-                                                    >~ 11/07(목)</span
+                                                <span class="date" th:text="'~' +${audition.auditionDeadLine}"
+                                                    ></span
                                                 >
-                                                <button class="sri-btn-xs">
+                                                <button class="sri-btn-xs" th:if="${audition.auditionStatus == '모집중'}">
                                                     <span
                                                         class="sri-btn-immediately"
-                                                        >모집중</span
+                                                        th:text="${audition.auditionStatus}"
+                                                        ></span
                                                     >
                                                 </button>
                                                 <button
                                                     class="sri-btn-xs sri-btn-sm"
+                                                    th:if="${audition.auditionStatus == '모집완료'}"
                                                 >
                                                     <span
                                                         class="sri-btn-immediately btn-gray"
-                                                        >모집완료</span
+                                                        th:text="${audition.auditionStatus}"
+                                                        ></span
                                                     >
                                                 </button>
                                             </div>
                                             <div class="job-condition">
-                                                <span
-                                                    ><a target="-blank" href=""
-                                                        >서울</a
-                                                    >
-                                                    <a target="-blank" href=""
-                                                        >강남구</a
-                                                    ></span
+                                                <span th:text="${audition.auditionLocation}"></span
                                                 >
-                                                <span>신입·경력</span>
+                                                <span th:text="${audition.auditionCareer}"></span>
                                             </div>
                                             <div class="job-sector">
-                                                <b>200000원</b>| <b>5명</b
+                                                <b style="margin-right: 4px;" th:text="${audition.expectedAmount}"></b>| <b th:text="${audition.auditionPersonnel} + '명'"></b
                                                 ><span class="job-day"
-                                                    >등록일 24/10/08</span
+                                                       th:text="'등록일' + ${audition.createdDate}"></span
                                                 >
                                             </div>
                                         </div>
                                         <div class="area-corp">
                                             <strong class="corp-name">
-                                                <a
+                                                <div
                                                     href=""
                                                     target="-blank"
                                                     class="track-event data-layer"
+                                                    th:text="${audition.profileNickName}"
                                                 >
-                                                    홍길동
-                                                </a>
-                                            </strong>
-                                            <span class="corp-affiliate"
-                                                >홍길동@gmail.com</span
-                                            >
-                                        </div>
-                                        <div
-                                            class="similar-recruit"
-                                            style="display: none"
-                                        ></div>
-                                    </div>
-                                    <div class="item-recruit">
-                                        <div class="area-badge">
-                                            <span class="badge"> 배우 </span>
-                                        </div>
-                                        <div class="area-job">
-                                            <h2 class="job-tit">
-                                                <a
-                                                    target="-blank"
-                                                    title="[역삼역] 단편영화 배우모집합니다."
-                                                    href=""
-                                                >
-                                                    <span>
-                                                        [역삼역] 단편영화 배우
-                                                        모집합니다.
-                                                        <b>배우</b>
-                                                        채용
-                                                    </span>
-                                                </a>
-                                            </h2>
-                                            <div class="job-date">
-                                                <span class="date"
-                                                    >~ 11/07(목)</span
-                                                >
-                                                <button class="sri-btn-xs">
-                                                    <span
-                                                        class="sri-btn-immediately"
-                                                        >모집중</span
-                                                    >
-                                                </button>
-                                            </div>
-                                            <div class="job-condition">
-                                                <span
-                                                    ><a target="-blank" href=""
-                                                        >서울</a
-                                                    >
-                                                    <a target="-blank" href=""
-                                                        >강남구</a
-                                                    ></span
-                                                >
-                                                <span>신입·경력</span>
-                                            </div>
-                                            <div class="job-sector">
-                                                <b>200000원</b>| <b>5명</b>
 
-                                                <span class="job-day"
-                                                    >등록일 24/10/08</span
-                                                >
-                                            </div>
-                                        </div>
-                                        <div class="area-corp">
-                                            <strong class="corp-name">
-                                                <a
-                                                    href=""
-                                                    target="-blank"
-                                                    class="track-event data-layer"
-                                                >
-                                                    홍길동
-                                                </a>
+                                                </div>
                                             </strong>
                                             <span class="corp-affiliate"
-                                                >홍길동@gmail.com</span
+                                                  th:text="${audition.profileEmail}"
+                                                ></span
                                             >
                                         </div>
                                         <div
@@ -201,270 +136,90 @@
                                             style="display: none"
                                         ></div>
                                     </div>
-                                    <div class="item-recruit">
-                                        <div class="area-badge">
-                                            <span class="badge"> 배우 </span>
-                                        </div>
-                                        <div class="area-job">
-                                            <h2 class="job-tit">
-                                                <a
-                                                    target="-blank"
-                                                    title="[역삼역] 단편영화 배우모집합니다."
-                                                    href=""
-                                                >
-                                                    <span>
-                                                        [역삼역] 단편영화 배우
-                                                        모집합니다.
-                                                        <b>배우</b>
-                                                        채용
-                                                    </span>
+                                    <div class="content-bottom">
+                                        <ul class="pagination">
+                                            <!-- 이전 버튼 -->
+                                            <li th:classappend="${!pagination.prev} ? 'disabled'">
+                                                <a href="#recruit-info"
+                                                   class="btnPrev page-move track-event"
+                                                   th:if="${pagination.prev}"
+                                                   th:href="@{/audition/video/audition-list(page=${pagination.startPage - 10}, keyword=${keyword})}">
+                                                    이전
                                                 </a>
-                                            </h2>
-                                            <div class="job-date">
-                                                <span class="date"
-                                                    >~ 11/07(목)</span
-                                                >
-                                                <button class="sri-btn-xs">
-                                                    <span
-                                                        class="sri-btn-immediately"
-                                                        >모집중</span
-                                                    >
-                                                </button>
-                                            </div>
-                                            <div class="job-condition">
-                                                <span
-                                                    ><a target="-blank" href=""
-                                                        >서울</a
-                                                    >
-                                                    <a target="-blank" href=""
-                                                        >강남구</a
-                                                    ></span
-                                                >
-                                                <span>신입·경력</span>
-                                            </div>
-                                            <div class="job-sector">
-                                                <b>200000원</b>| <b>5명</b
-                                                ><span class="job-day"
-                                                    >등록일 24/10/08</span
-                                                >
-                                            </div>
-                                        </div>
-                                        <div class="area-corp">
-                                            <strong class="corp-name">
-                                                <a
-                                                    href=""
-                                                    target="-blank"
-                                                    class="track-event data-layer"
-                                                >
-                                                    홍길동
+                                                <span th:unless="${pagination.prev}"></span>
+                                            </li>
+
+                                            <!-- 페이지 번호 버튼 -->
+                                            <li th:each="i : ${#numbers.sequence(pagination.startPage, pagination.endPage)}"
+                                                th:class="${pagination.page == i} ? 'page-item active' : 'page-item'">
+                                                <a href="#recruit-info"
+                                                   class="page page-move track-event"
+                                                   th:href="@{/audition/video/audition-list(page=${i}, keyword=${keyword})}"
+                                                   th:text="${i}">
                                                 </a>
-                                            </strong>
-                                            <span class="corp-affiliate"
-                                                >홍길동@gmail.com</span
-                                            >
-                                        </div>
-                                        <div
-                                            class="similar-recruit"
-                                            style="display: none"
-                                        ></div>
+                                            </li>
+                                            <!-- 다음 버튼 -->
+                                            <li th:classappend="${!pagination.next} ? 'disabled'">
+                                                <a href="#recruit-info"
+                                                   class="btnNext page-move track-event"
+                                                   th:if="${pagination.next}"
+                                                   th:href="@{/audition/video/audition-list(page=${pagination.endPage + 1}, keyword=${keyword})}">
+                                                    다음
+                                                </a>
+                                                <span th:unless="${pagination.next}"></span>
+                                            </li>
+                                        </ul>
                                     </div>
+
                                 </div>
-                                <div class="content-bottom">
-                                    <div class="pagination">
-                                        <a
-                                            href="#recruit-info"
-                                            class="btnPrev page-move track-event"
-                                            data-track-event="total-search|search-recruit|pagination|10"
-                                            page="10"
-                                            title="이전"
-                                            >이전</a
-                                        >
-                                        <span class="page">1</span>
-                                        <a
-                                            href="#recruit-info"
-                                            page="2"
-                                            class="page page-move track-event"
-                                            data-track-event="total-search|search-recruit|pagination|2"
-                                            ><span>2</span></a
-                                        >
-                                        <a
-                                            href="#recruit-info"
-                                            page="3"
-                                            class="page page-move track-event"
-                                            data-track-event="total-search|search-recruit|pagination|3"
-                                            ><span>3</span></a
-                                        >
-                                        <a
-                                            href="#recruit-info"
-                                            page="4"
-                                            class="page page-move track-event"
-                                            data-track-event="total-search|search-recruit|pagination|4"
-                                            ><span>4</span></a
-                                        >
-                                        <a
-                                            href="#recruit-info"
-                                            page="5"
-                                            class="page page-move track-event"
-                                            data-track-event="total-search|search-recruit|pagination|5"
-                                            ><span>5</span></a
-                                        >
-                                        <a
-                                            href="#recruit-info"
-                                            page="6"
-                                            class="page page-move track-event"
-                                            data-track-event="total-search|search-recruit|pagination|6"
-                                            ><span>6</span></a
-                                        >
-                                        <a
-                                            href="#recruit-info"
-                                            page="7"
-                                            class="page page-move track-event"
-                                            data-track-event="total-search|search-recruit|pagination|7"
-                                            ><span>7</span></a
-                                        >
-                                        <a
-                                            href="#recruit-info"
-                                            page="8"
-                                            class="page page-move track-event"
-                                            data-track-event="total-search|search-recruit|pagination|8"
-                                            ><span>8</span></a
-                                        >
-                                        <a
-                                            href="#recruit-info"
-                                            page="9"
-                                            class="page page-move track-event"
-                                            data-track-event="total-search|search-recruit|pagination|9"
-                                            ><span>9</span></a
-                                        >
-                                        <a
-                                            href="#recruit-info"
-                                            page="10"
-                                            class="page page-move track-event"
-                                            data-track-event="total-search|search-recruit|pagination|10"
-                                            ><span>10</span></a
-                                        >
-                                        <a
-                                            href="#recruit-info"
-                                            class="btnNext page-move track-event"
-                                            data-track-event="total-search|search-recruit|pagination|11"
-                                            page="11"
-                                            title="다음"
-                                            >다음</a
-                                        >
-                                    </div>
-                                </div>
-                            </div>
                             <div class="recruit-list-media">
                                 <div class="recruit-container"></div>
                             </div>
                         </section>
                         <section class="section-search-media">
-                            <div class="recruit-container-media">
+                            <div id="mediaList">
+                            <div class="recruit-container-media" th:each="audition : ${auditions}">
                                 <div class="item-recruit">
                                     <div class="area-badge">
-                                        <span class="badge"> 배우 </span>
+                                            <span  th:switch="${audition.auditionField}">
+                                            <span class="badge" th:case="'1'">배우</span>
+                                            <span class="badge" th:case="'2'">스텝</span>
+                                            <span class="badge" th:case="'3'">감독</span>
+                                            <span class="badge" th:case="'4'">기타</span>
+                                        </span>
                                     </div>
-                                    <p class="tit">
+                                    <p class="tit" th:text="${audition.postTitle}">
                                         [역삼역]단편영화 배우 모집합니다.
                                     </p>
                                     <div class="meta">
-                                        <span>서울 강남구</span
-                                        ><span>경력무관</span>
+                                        <span th:text="${audition.auditionLocation}">서울 강남구</span
+                                        ><span th:text="${audition.auditionCareer}">경력무관</span>
                                     </div>
                                     <div class="corp client">
-                                        <span class="corp_name">홍길동</span>
-                                        <div class="corp_thumb size-s">
-                                            <img
-                                                src="/static/images/audition/profile.png"
-                                                border="0"
-                                                loading="lazy"
-                                                alt=""
-                                            />
-                                        </div>
+                                        <span class="corp_name" th:text="${audition.profileNickName}">홍길동</span>
                                     </div>
                                     <div class="applicant">
-                                        <span class="date">~11.01(금)</span>
+                                        <span class="date" th:text="'~' +${audition.auditionDeadLine} + '까지'">~11.01(금)</span>
                                     </div>
                                 </div>
-
-                                <button class="sri-btn-xs sri_btn_sm">
-                                    <span class="sri-btn-immediately"
-                                        >모집중</span
-                                    >
+                                <button class="sri-btn-xs sri-btn-sm" th:if="${audition.auditionStatus == '모집중'}">
+                                                    <span
+                                                            class="sri-btn-immediately"
+                                                            th:text="${audition.auditionStatus}"
+                                                    ></span
+                                                    >
+                                </button>
+                                <button
+                                        class="sri-btn-xs sri-btn-sm"
+                                        th:if="${audition.auditionStatus == '모집완료'}"
+                                >
+                                                    <span
+                                                            class="sri-btn-immediately btn-gray"
+                                                            th:text="${audition.auditionStatus}"
+                                                    ></span
+                                                    >
                                 </button>
                             </div>
-                            <div class="recruit-container-media">
-                                <div class="item-recruit">
-                                    <div class="area-badge">
-                                        <span class="badge"> 배우 </span>
-                                    </div>
-                                    <p class="tit">
-                                        [역삼역]단편영화 배우 모집합니다.
-                                    </p>
-                                    <div class="meta">
-                                        <span>서울 강남구</span
-                                        ><span>경력무관</span>
-                                    </div>
-                                    <div class="corp client">
-                                        <span class="corp_name">홍길동</span>
-                                        <div class="corp_thumb size-s">
-                                            <img
-                                                src="/static/images/audition/profile.png"
-                                                border="0"
-                                                loading="lazy"
-                                                alt=""
-                                            />
-                                        </div>
-                                    </div>
-                                    <div class="applicant">
-                                        <span class="date">~11.01(금)</span>
-                                    </div>
-                                </div>
-
-                                <button class="sri-btn-xs sri_btn_sm">
-                                    <span class="sri-btn-immediately"
-                                        >모집중</span
-                                    >
-                                </button>
-                                <button class="sri-btn-xs sri-btn-sm">
-                                    <span class="sri-btn-immediately btn-gray"
-                                        >모집완료</span
-                                    >
-                                </button>
-                            </div>
-                            <div class="recruit-container-media">
-                                <div class="item-recruit">
-                                    <div class="area-badge">
-                                        <span class="badge"> 배우 </span>
-                                    </div>
-                                    <p class="tit">
-                                        [역삼역]단편영화 배우 모집합니다.
-                                    </p>
-                                    <div class="meta">
-                                        <span>서울 강남구</span
-                                        ><span>경력무관</span>
-                                    </div>
-                                    <div class="corp client">
-                                        <span class="corp_name">홍길동</span>
-                                        <div class="corp_thumb size-s">
-                                            <img
-                                                src="/static/images/audition/profile.png"
-                                                border="0"
-                                                loading="lazy"
-                                                alt=""
-                                            />
-                                        </div>
-                                    </div>
-                                    <div class="applicant">
-                                        <span class="date">~11.01(금)</span>
-                                    </div>
-                                </div>
-
-                                <button class="sri-btn-xs sri_btn_sm">
-                                    <span class="sri-btn-immediately"
-                                        >모집중</span
-                                    >
-                                </button>
                             </div>
                         </section>
                     </form>
@@ -473,5 +228,5 @@
         </main>
         <footer></footer>
     </body>
-    <script src="/static/js/audition/audition-list.js"></script>
+    <script src="/js/audition/audition-list.js"></script>
 </html>
