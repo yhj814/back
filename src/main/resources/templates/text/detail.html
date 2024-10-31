@@ -4,6 +4,7 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>글 상세</title>
+        <script src="https://js.bootpay.co.kr/bootpay-5.0.1.min.js" type="application/javascript"></script>
         <link rel="stylesheet" href="/css/text/detail.css" />
     </head>
     <body>
@@ -20,7 +21,10 @@
                 </a>
             </div>
         </div>
-        <div class="layout" th:attr="data-work-id=${work.id}">
+        <div class="layout" th:attr="data-work-id=${work.id},data-member-id=${session.memberProfile.id},
+               data-profile-name=${session.memberProfile.profileName},
+               data-profile-phone=${session.memberProfile.profilePhone},
+               data-profile-email=${session.memberProfile.profileEmail}">
         <!-- 중간메인내용 -->
             <div class="container-wrapper">
                 <!-- 메인내용 -->
@@ -278,7 +282,7 @@
                                 </div>
                             </a>
                             <div class="side-card-list-box">
-                                <button class="buy-btn cursor" type="button">
+                                <button class="buy-btn cursor" type="button" id="paymentButton">
                                     구매하기
                                 </button>
                             </div>
@@ -626,9 +630,7 @@
             </div>
         </div>
     </body>
-    <script th:inline="javascript">
-        const memberProfileExists = [[${session.memberProfile != null}]];
-    </script>
+    <script src="/js/text/detail-work-pay.js"></script>
     <script src="/js/text/detail-work-service.js"></script>
     <script src="/js/text/detail-work-layout.js"></script>
     <script src="/js/text/detail-work-event.js"></script>
