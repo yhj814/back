@@ -1,10 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.app.ggumteo.mapper.member.MemberProfileMapper">
-    <insert id="insert">
-                insert into tbl_member_profile(profile_name, profile_nickname, profile_gender, profile_age,
-                profile_email, profile_phone, profile_etc, member_id)
-                values (#{profileName}, #{profileNickName}, #{profileGender}, #{profileAge}, #{profileEmail},
-                        #{profilePhone}, #{profileEtc}, #{memberId})
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        INSERT INTO tbl_member_profile (
+            profile_name, profile_nickname, profile_gender, profile_age,
+            profile_email, profile_phone, profile_etc, member_id
+        )
+        VALUES (
+                   #{profileName}, #{profileNickName}, #{profileGender}, #{profileAge},
+                   #{profileEmail}, #{profilePhone}, #{profileEtc}, #{memberId}
+               )
     </insert>
+
 </mapper>
