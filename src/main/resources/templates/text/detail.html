@@ -20,8 +20,8 @@
                 </a>
             </div>
         </div>
-        <div class="layout">
-            <!-- 중간메인내용 -->
+        <div class="layout" th:attr="data-work-id=${work.id}">
+        <!-- 중간메인내용 -->
             <div class="container-wrapper">
                 <!-- 메인내용 -->
                 <div class="content-container-wrapper">
@@ -34,14 +34,14 @@
                             <div class="detail-info">
                                 <div class="flex-box author-info content-meta">
                                     <img
-                                        src="/static/images/text/318743_20240926_4c9cbec414bb32ee.png"
+                                        src="/images/text/318743_20240926_4c9cbec414bb32ee.png"
                                         class="content-meta-elem author-image pc-only"
                                     />
                                     <div class="content-meta-elem pc-only">
                                         <p class="link-underline-text writer" th:text="${work.profileNickName}">작성자</p>
                                     </div>
                                     <img
-                                        src="/static/images/text/icon-clock.png"
+                                        src="/images/text/icon-clock.png"
                                         class="content-meta-elem meta-icon"
                                     />
                                     <div class="content-meta-elem time" th:text="${work.createdDate.substring(0, 10)}">
@@ -107,8 +107,9 @@
                                                     />
                                                     <p
                                                         class="bottom-action-count reply-count"
+                                                        id="total-reply-count"
                                                     >
-                                                        1
+
                                                     </p>
                                                 </div>
                                             </button>
@@ -117,9 +118,9 @@
                                 </div>
                                 <div class="report">
                                     <img
-                                        src="/static/images/video/report.jpg"
+                                        src="/images/video/report.jpg"
                                     />
-                                    <button id="report-btn">신고하기</button>
+                                    <button id="report-btn">작품 신고하기</button>
                                 </div>
                                 <!-- 작품 신고 모달창 -->
                                 <div id="report-modal" class="modal">
@@ -190,186 +191,75 @@
                         <div class="comment-area">
                             <div class="comment-count">
                                 댓글
-                                <a class="count-number reply-count">1</a>
+                                <a class="count-number reply-count" id="comment-count">0</a>
                             </div>
                             <div class="comment-row" id="comment-row">
-                                <div class="comment-list">
-                                    <div class="comment-group">
-                                        <div class="comment-box">
-                                            <div class="comment-wrapper">
-                                                <div class="write-user">
-                                                    <img
-                                                        src="https://yozm.wishket.com/static/img/default_avatar.png"
-                                                        class="comment-writer-img"
-                                                    />
-                                                    <div
-                                                        class="comment-writer-name"
-                                                    >
-                                                        <div
-                                                            class="writer-name"
-                                                        >
-                                                            댓글작성자
-                                                        </div>
-                                                        <div
-                                                            class="btn-comment-action"
-                                                        >
-                                                            <button
-                                                                class="btn-comment-delete cursor"
-                                                            >
-                                                                삭제
-                                                            </button>
-                                                            <img
-                                                                src="/static/images/video/report.jpg"
-                                                            />
-                                                            <button
-                                                                class="btn-comment-report cursor"
-                                                            >
-                                                                신고
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="comment">
-                                                    <a class="comment-content">
-                                                        댓글내용
-                                                    </a>
-                                                </div>
-                                                <div
-                                                    class="comment-date-created"
-                                                >
-                                                    2024.10.23
-                                                    <div class="comment-review">
-                                                        <div class="review-box">
-                                                            <div
-                                                                class="star-box"
-                                                            >
-                                                                <img
-                                                                    src="https://www.wishket.com/static/renewal/img/project/wishket-project-portfolio/icon-review-star-full.png"
-                                                                />
-                                                            </div>
-                                                            <span
-                                                                class="review-score"
-                                                                >5.0</span
-                                                            >
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="center-text pagination-box">
-                                    <ul class="pagination theme-ggumteo">
-                                        <li class="page-item">
-                                            <a id="page-btn" class="page-link"
-                                                >이전</a
-                                            >
-                                        </li>
-                                        <li class="page-item">
-                                            <a
-                                                id="page-btn"
-                                                class="page-link active"
-                                                >1</a
-                                            >
-                                        </li>
-                                        <li class="page-item">
-                                            <a id="page-btn" class="page-link"
-                                                >2</a
-                                            >
-                                        </li>
-                                        <li class="page-item">
-                                            <a id="page-btn" class="page-link"
-                                                >3</a
-                                            >
-                                        </li>
-                                        <li class="page-item">
-                                            <a id="page-btn" class="page-link"
-                                                >4</a
-                                            >
-                                        </li>
-                                        <li class="page-item">
-                                            <a id="page-btn" class="page-link"
-                                                >5</a
-                                            >
-                                        </li>
-                                        <!-- li채로 복사 -->
-                                        <li class="page-item">
-                                            <a id="page-btn" class="page-link"
-                                                >다음</a
-                                            >
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div class="comment-writer">
-                                    <form
-                                        action=""
-                                        class="reply-and-review-form"
-                                    >
-                                        <div class="write-user">
-                                            <img
-                                                src="https://yozm.wishket.com/static/img/default_avatar.png"
-                                                class="comment-writer-img"
-                                            />
-                                            <a class="comment-writer-name"
-                                                >댓글작성자</a
-                                            >
-                                        </div>
-                                        <textarea
+
+
+                            </div>
+                            <div id="pagination" class="center-text pagination-box">
+
+                            </div>
+                            <div class="comment-writer">
+                                <form onsubmit="event.preventDefault();"
+                                      class="reply-and-review-form"
+                                >
+
+                                    <textarea
                                             class="comment comment-textarea"
                                             id="comment"
                                             maxlength="500"
                                             name="comment"
                                             placeholder="방금 읽은 콘텐츠 어떠셨나요? 자유롭게 의견을 남겨주세요."
                                             rows="6"
-                                        ></textarea>
-                                        <div
+                                    ></textarea>
+                                    <div
                                             class="check-length comment-length"
-                                        >
-                                            0/500
-                                        </div>
-                                        <div class="comment-guide">
-                                            건전한 댓글 문화를 위해 불쾌감을
-                                            주는 욕설, 특정 대상을 비하하는
-                                            댓글은 표시가 제한됩니다.
-                                        </div>
-                                        <div class="btn-create-div">
-                                            <div class="star-a">별점</div>
-                                            <div class="star-rating">
+                                    >
+                                        0/500
+                                    </div>
+                                    <div class="comment-guide">
+                                        건전한 댓글 문화를 위해 불쾌감을
+                                        주는 욕설, 특정 대상을 비하하는
+                                        댓글은 표시가 제한됩니다.
+                                    </div>
+                                    <div class="btn-create-div">
+                                        <div class="star-a">별점</div>
+                                        <div class="star-rating">
                                                 <span
-                                                    class="star"
-                                                    data-value="1"
-                                                    >&#9733;</span
+                                                        class="star"
+                                                        data-value="1"
+                                                >&#9733;</span
                                                 >
-                                                <span
+                                            <span
                                                     class="star"
                                                     data-value="2"
-                                                    >&#9733;</span
-                                                >
-                                                <span
+                                            >&#9733;</span
+                                            >
+                                            <span
                                                     class="star"
                                                     data-value="3"
-                                                    >&#9733;</span
-                                                >
-                                                <span
+                                            >&#9733;</span
+                                            >
+                                            <span
                                                     class="star"
                                                     data-value="4"
-                                                    >&#9733;</span
-                                                >
-                                                <span
+                                            >&#9733;</span
+                                            >
+                                            <span
                                                     class="star"
                                                     data-value="5"
-                                                    >&#9733;</span
-                                                >
-                                                <button
+                                            >&#9733;</span
+                                            >
+                                            <button
                                                     class="btn-create-comment cursor"
                                                     type="submit"
-                                                >
-                                                    작성하기
-                                                </button>
-                                            </div>
+                                            >
+                                                작성하기
+                                            </button>
                                         </div>
-                                    </form>
-                                </div>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -380,34 +270,11 @@
                                 <div class="work-price">
                                     <h3 class="price">
                                         <span>작품 가격</span>
-                                        <span class="price-detail"
-                                            >10,000원</span
+                                        <span class="price-detail" th:text="${work.workPrice + '원'}"
+                                            ></span
                                         >
                                     </h3>
-                                    <!-- <h3 class="price-charge">
-                                        <span
-                                            >수수료
-                                            <img
-                                                class="charge-image"
-                                                src="https://d2v80xjmx68n4w.cloudfront.net/assets/order/help.png"
-                                            />
-                                            <p
-                                                class="action-tooltip bottom-action charge-p"
-                                            >
-                                                구매가격의 10%
-                                            </p>
-                                        </span>
-                                        <span class="price-detail">
-                                            1,000원
-                                        </span>
-                                    </h3> -->
-                                    <!-- <div class="line"></div>
-                                    <h3 class="price-total">
-                                        <span>총 결제가격</span>
-                                        <span class="price-detail-total"
-                                            >11,000원</span
-                                        >
-                                    </h3> -->
+
                                 </div>
                             </a>
                             <div class="side-card-list-box">
@@ -759,5 +626,10 @@
             </div>
         </div>
     </body>
-    <script src="/js/text/detail.js"></script>
+    <script th:inline="javascript">
+        const memberProfileExists = [[${session.memberProfile != null}]];
+    </script>
+    <script src="/js/text/detail-work-service.js"></script>
+    <script src="/js/text/detail-work-layout.js"></script>
+    <script src="/js/text/detail-work-event.js"></script>
 </html>

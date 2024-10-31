@@ -1,6 +1,7 @@
 package com.app.ggumteo.mapper.reply;
 
 import com.app.ggumteo.domain.reply.ReplyDTO;
+import com.app.ggumteo.pagination.Pagination;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -16,7 +17,7 @@ public interface ReplyMapper {
     void deleteReplyById(@Param("id") Long id);
 
     // 특정 작품에 대한 댓글 목록 조회
-    List<ReplyDTO> selectRepliesByWorkId(@Param("workId") Long workId);
+    List<ReplyDTO> selectRepliesByWorkId(@Param("workId") Long workId, @Param("pagination") Pagination pagination);
 
     // 작품의 평균 별점 조회
     Double selectAverageStarByWorkId(@Param("workId") Long workId);
