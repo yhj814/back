@@ -2,19 +2,11 @@ package com.app.ggumteo.controller.work;
 
 
 
-import com.app.ggumteo.constant.PostType;
-import com.app.ggumteo.domain.file.FileVO;
+import com.app.ggumteo.enums.PostType;
 import com.app.ggumteo.domain.file.PostFileDTO;
-import com.app.ggumteo.domain.file.PostFileVO;
 import com.app.ggumteo.domain.member.MemberVO;
-import com.app.ggumteo.domain.post.PostVO;
-import com.app.ggumteo.domain.reply.ReplyDTO;
 import com.app.ggumteo.domain.work.WorkDTO;
-import com.app.ggumteo.domain.work.WorkVO;
-import com.app.ggumteo.mapper.post.PostMapper;
-import com.app.ggumteo.mapper.work.WorkMapper;
 import com.app.ggumteo.pagination.Pagination;
-import com.app.ggumteo.search.Search;
 import com.app.ggumteo.service.file.PostFileService;
 import com.app.ggumteo.service.reply.ReplyService;
 import com.app.ggumteo.service.work.WorkService;
@@ -32,11 +24,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Controller

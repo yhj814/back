@@ -10,18 +10,17 @@ myFundingListPaging.addEventListener("click", (e)=>{
 });
 
 myFundingListLayout.addEventListener('click', async (e) => {
+
         if(e.target.id === "my-funding-buyer-btn") {
             const myFundingPostId = e.target.classList[1];
             console.log("myFundingPostId :",myFundingPostId);
-
             const fundingBuyerTable  = document.querySelector(`.setting-table.funding-buyer-${myFundingPostId}`);
-
-            fundingBuyerTable.style.display = "block";
-
             fundingBuyerTable.innerHTML += await myPageService.getFundingBuyerList(myFundingPostId, showFundingBuyerList);
+            fundingBuyerTable.style.display = "block";
+            fundingBuyerTable.classList.add("block")
+            console.log(e.target.classList[2]);
 
-            console.log("1??", fundingBuyerTable);
-            console.log("3??", myPageService.getFundingBuyerList(myFundingPostId, showFundingBuyerList));
-            console.log("4??", fundingBuyerTable.innerHTML);
+        } else if (fundingBuyerTable.style.display = "block") {
+            console.log(e.target.classList[2]);
         }
 });

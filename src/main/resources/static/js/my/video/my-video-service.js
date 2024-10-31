@@ -14,10 +14,6 @@ const myPageService = (() => {
         const response = await fetch(`/members/video/myFunding/getBuyerList/${fundingPostId}`);
         const buyersByFundingPostId = await response.json();
 
-        console.log("1: ", getFundingBuyerList);
-        console.log("2: ", response);
-        console.log("3: ", buyersByFundingPostId);
-
         if(callback){
             return callback(buyersByFundingPostId);
         }

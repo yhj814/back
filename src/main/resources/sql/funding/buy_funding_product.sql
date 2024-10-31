@@ -1,8 +1,9 @@
 create table tbl_buy_funding_product (
     id bigint unsigned auto_increment primary key,
-    member_profile_id bigint unsigned not null, -- 구매자
-    funding_product_id bigint unsigned not null,
-    funding_send_status varchar(255) default 0,
+    member_profile_id bigint unsigned not null, -- 회원 프로필(구매자) FK
+    funding_product_id bigint unsigned not null, -- 펀딩 상품 FK
+    funding_send_status varchar(255) default 'NO', -- NO: 안보냄, YES: 보냄
+    created_date datetime default current_timestamp,
     constraint fk_buy_funding_product_member_profile foreign key (member_profile_id)
     references tbl_member_profile (id),
     constraint fk_buy_funding_product_funding_product foreign key (funding_product_id)
@@ -53,7 +54,7 @@ SELECT f.id ,bfp.id AS '펀딩상품 구매 ID', bfp.funding_send_status AS '발
 FROM
     tbl_buy_funding_product bfp
         JOIN tbl_funding_product fp ON bfp.funding_product_id = fp.id
-        JOIN tbl_funding f ON fp.funding_id = f.id AND f.id = 3
+        JOIN tbl_funding f ON fp.funding_id = f.id
         JOIN tbl_post p ON f.id = p.id
         JOIN tbl_member_profile mp ON p.member_profile_id = mp.id
         JOIN tbl_member m ON mp.member_id = m.id AND m.id = 1
