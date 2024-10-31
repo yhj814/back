@@ -3,6 +3,8 @@ package com.app.ggumteo.controller.audition;
 import com.app.ggumteo.constant.PostType;
 import com.app.ggumteo.domain.audition.AuditionDTO;
 import com.app.ggumteo.domain.member.MemberVO;
+import com.app.ggumteo.pagination.AuditionPagination;
+import com.app.ggumteo.pagination.Pagination;
 import com.app.ggumteo.service.audition.AuditionService;
 import com.app.ggumteo.service.file.PostFileService;
 import jakarta.servlet.http.HttpServletResponse;
@@ -11,10 +13,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Collections;
+import java.util.List;
 
 @Controller
 @Slf4j
@@ -61,7 +65,7 @@ public class VideoAuditionController {
 //          PostType을 VIDEO로 고정
             auditionDTO.setPostType(PostType.VIDEO.name());
             auditionDTO.setAuditionStatus("모집중");
-            auditionDTO.setMemberId(member.getId());
+            auditionDTO.setMemberProfileId(member.getId());
 
 //          audition과 Post저장
             auditionService.write(auditionDTO);
@@ -83,4 +87,37 @@ public class VideoAuditionController {
             return ResponseEntity.status(500).body(Collections.singletonMap("error", "저장 중 오류가 발생했습니다."));
         }
     }
+
+    @GetMapping("/audition-list")
+    public String list(
+            @RequestParam(value = "keyword", required = false) String keyword,
+            @RequestParam(value = "page", defaultValue = "1") int page,
+            Model model) {
+
+        if (keyword == null) keyword = "";
+
+        // 페이지네이션 설정
+        AuditionPagination pagination = new AuditionPagination();
+        pagination.setPage(page);
+
+        int totalAudition = auditionService.findTotal();
+        int totalSearchAudition = auditionService.findTotalAuditionsSearch(keyword);
+
+        // 검색어가 없을 때는 totalAudition, 있을 때는 totalSearchAudition을 사용
+        int totalCount = keyword.isEmpty() ? totalAudition : totalSearchAudition;
+        pagination.setTotal(totalCount);
+        pagination.progress();
+
+        // 검색어와 페이지네이션 데이터 기반으로 작품 목록 조회
+        List<AuditionDTO> auditions = auditionService.findAllAuditions(keyword, pagination);
+
+        model.addAttribute("auditions", auditions);
+        model.addAttribute("keyword", keyword);
+        model.addAttribute("pagination", pagination);
+        model.addAttribute("totalCount", totalCount); // 총 게시글 수 전달
+
+        return "/audition/video/audition-list";
+    }
+
+
 }
