@@ -3,12 +3,16 @@ package com.app.ggumteo.service.audition;
 import com.app.ggumteo.domain.audition.AuditionDTO;
 import com.app.ggumteo.domain.audition.AuditionVO;
 import com.app.ggumteo.domain.post.PostVO;
+import com.app.ggumteo.pagination.AuditionPagination;
+import com.app.ggumteo.pagination.Pagination;
 import com.app.ggumteo.repository.audition.AuditionDAO;
 import com.app.ggumteo.repository.post.PostDAO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @Primary
@@ -26,7 +30,7 @@ public class AuditionServiceImpl implements AuditionService {
         postVO.setPostTitle(auditionDTO.getPostTitle());
         postVO.setPostContent(auditionDTO.getPostContent());
         postVO.setPostType(auditionDTO.getPostType());
-        postVO.setMemberProfileId(auditionDTO.getMemberId());
+        postVO.setMemberProfileId(auditionDTO.getMemberProfileId());
 
         postDAO.save(postVO);
         Long postId = postVO.getId();
@@ -49,6 +53,26 @@ public class AuditionServiceImpl implements AuditionService {
         auditionDAO.save(auditionVO);
 
         auditionDTO.setId(postId);
+    }
+
+    @Override
+    public AuditionDTO findAuditionById(Long id) {return auditionDAO.findAuditionById(id);}
+
+    @Override
+    public List<AuditionDTO> findAllAuditions(String keyword, AuditionPagination pagination) {
+        pagination.progress();
+
+        return auditionDAO.findAllAuditions(keyword, pagination);
+    }
+
+    @Override
+    public int findTotal(){
+        return auditionDAO.findTotalAuditions();
+    }
+
+    @Override
+    public int findTotalAuditionsSearch(String keyword) {
+        return auditionDAO.findTotalAuditionsSearch(keyword);
     }
 
 
