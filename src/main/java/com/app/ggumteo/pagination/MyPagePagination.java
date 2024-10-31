@@ -5,18 +5,18 @@ import lombok.extern.slf4j.Slf4j;
 
 @Data
 @Slf4j
-public class MyPagePagination extends Pagination {
-    private Integer page; // 페이지
-    private int startRow; // 시작 행
-    private int endRow; // 끝 행
-    private int rowCount; // 행 갯수
-    private int pageCount; // 페이지 갯수
-    private int startPage; // 시작 페이지
-    private int endPage; // 끝 페이지
-    private int realEnd; // 진짜 끝
-    private boolean prev, next; // 이전, 다음
-    private int total; // 전체
-    private String order;
+public class MyPagePagination {
+    protected Integer page; // 페이지
+    protected int startRow; // 시작 행
+    protected int endRow; // 끝 행
+    protected int rowCount; // 행 갯수
+    protected int pageCount; // 페이지 갯수
+    protected int startPage; // 시작 페이지
+    protected int endPage; // 끝 페이지
+    protected int realEnd; // 진짜 끝
+    protected boolean prev, next; // 이전, 다음
+    protected int total; // 전체
+    protected String order;
 
     public void progress() {
         this.page = page == null ? 1 : page;

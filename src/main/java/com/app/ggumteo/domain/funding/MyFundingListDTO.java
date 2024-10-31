@@ -1,6 +1,6 @@
 package com.app.ggumteo.domain.funding;
 
-import com.app.ggumteo.pagination.MyPagePagination;
+import com.app.ggumteo.pagination.WorkAndFundingPagination;
 import lombok.*;
 import org.springframework.stereotype.Component;
 
@@ -10,5 +10,5 @@ import java.util.List;
 @Getter @Setter @ToString
 public class MyFundingListDTO {
     private List<FundingDTO> myFundingPosts;
-    private MyPagePagination myPagePagination;
+    private WorkAndFundingPagination workAndFundingPagination;
 }

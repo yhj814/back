@@ -9,7 +9,7 @@
                 join tbl_member_profile mp on p.member_profile_id = mp.id
                 join tbl_member m on mp.member_id = m.id and m.id = #{memberId}
         order by f.id desc
-            limit #{myPagePagination.startRow}, #{myPagePagination.rowCount};
+            limit #{workAndFundingPagination.startRow}, #{workAndFundingPagination.rowCount};
     </select>
 
     <select id="selectCount">
