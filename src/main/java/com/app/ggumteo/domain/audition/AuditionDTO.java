@@ -15,7 +15,10 @@ public class AuditionDTO {
     private String postTitle;
     private String postContent;
     private String postType;
-    private Long memberId;
+    private String profileName;
+    private String profileNickName;
+    private String profileEmail;
+    private Long memberProfileId;
     private int auditionField;
     private String auditionCareer;
     private String expectedAmount;
@@ -37,6 +40,6 @@ public class AuditionDTO {
     }
 
     public PostVO toPostVO() {
-        return new PostVO(id, postTitle, postContent, postType, memberId, createdDate,updatedDate);
+        return new PostVO(id, postTitle, postContent, postType, memberProfileId, createdDate,updatedDate);
     }
 }

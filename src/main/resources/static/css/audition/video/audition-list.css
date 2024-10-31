@@ -473,17 +473,37 @@ a {
     padding: 12px 39px;
     min-height: 20px;
     border-top: 1px solid #e6e6e6;
-    text-align: right;
+    text-align: center;
+    margin: 40px auto 50px;
 }
 
 .pagination {
     margin-top: 30px;
     font-size: 0;
-    text-align: center;
 }
 
 .content-bottom .pagination {
+    display: flex;
+    justify-content: center;
     margin: 9px 0 10px;
+}
+
+.active{
+    color: #2099bb;
+    border-color: #bdbdbd;
+    border-radius: 2px;
+}
+
+.page-item.active .page{
+    font-weight: bold;
+    color: #ffffff;
+    background-color: #2099bb;
+    border-color: black;
+    cursor: default;
+}
+
+.page-wrap{
+    display: flex;
 }
 
 .pagination span.page, .pagination button.page, .pagination a.page {
