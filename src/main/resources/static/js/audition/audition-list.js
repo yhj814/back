@@ -9,4 +9,12 @@ document.addEventListener("DOMContentLoaded", () => {
             input.style.outline = "none";
         });
     });
+
+
+
 });
+function searchAuditions() {
+    const keyword = document.getElementById('searchKeyword').value.trim();
+    const url = `/audition/video/audition-list?page=1&keyword=${encodeURIComponent(keyword)}`;
+    window.location.href = url;
+}
