@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Data
 @Slf4j
-public class MyPagePagination {
+public class MyPagePagination extends Pagination {
     private Integer page; // 페이지
     private int startRow; // 시작 행
     private int endRow; // 끝 행

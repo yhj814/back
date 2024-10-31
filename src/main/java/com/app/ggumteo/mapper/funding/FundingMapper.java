@@ -18,5 +18,5 @@ public interface FundingMapper {
     public int selectCount(Long memberId);
 
 //    구매자 목록 조회
-    public List<BuyFundingProductDTO> selectBuyerByMemberId(Long fundingPostId);
+    public List<BuyFundingProductDTO> selectBuyerByFundingPostId(Long fundingPostId);
 }

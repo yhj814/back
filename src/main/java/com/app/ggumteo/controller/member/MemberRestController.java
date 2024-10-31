@@ -43,7 +43,7 @@ public class MemberRestController {
 
     // SELECT
     @ResponseBody
-    @GetMapping("/members/video/myFunding/{fundingPostId}")
+    @GetMapping("/members/video/myFunding/getBuyerList/{fundingPostId}")
     public List<BuyFundingProductDTO> getFundingBuyerList(@PathVariable("fundingPostId") Long fundingPostId) {
         return myPageService.getFundingBuyerList(fundingPostId);
     }

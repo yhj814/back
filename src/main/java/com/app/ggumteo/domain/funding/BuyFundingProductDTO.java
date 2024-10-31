@@ -18,6 +18,7 @@ public class BuyFundingProductDTO {
     private String productPrice; // 상품 가격
     private String profileName; // 구매자 이름
     private String profileEmail; // 구매자 이메일
+    private Long memberId;
 
     public BuyFundingProductVO toVO() {
         return new BuyFundingProductVO(id, memberProfileId, fundingProductId, fundingSendStatus);
