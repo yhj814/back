@@ -79,7 +79,8 @@ function updatePagination(pagination, currentPage, search, order) {
 }
 
 //------------------------------------------------------------------------------------------------------------------
-//문의사항 목록
+// 문의사항
+
 const inquiryLayout = {
     renderInquiries(inquiries) {
         const inquiryList = document.getElementById("inquiry-list");
@@ -90,43 +91,64 @@ const inquiryLayout = {
             inquiryItem.classList.add("apply-table-row");
 
             inquiryItem.innerHTML = `
-                <div class="apply-table-cell">
-                    <input type="checkbox" class="apply-checkbox" />
-                </div>
-                <div class="apply-table-cell">${inquiry.postId}</div>
-                <div class="apply-table-cell">${inquiry.postCreatedDate}</div>
-                <div class="apply-table-cell inquiry-title" 
-                     data-original-title="${inquiry.postTitle}">
-                    ${this.truncateText(inquiry.postTitle, 8)}
-                </div>
-                <div class="apply-table-cell inquiry-content" 
-                     data-original-content="${inquiry.postContent}">
-                    ${this.truncateText(inquiry.postContent, 8)}
-                </div>
-                <div class="apply-table-cell">${inquiry.profileName}</div>
-                <div class="apply-table-cell">${inquiry.profileEmail}</div>
-                <div class="apply-table-cell">
-                    <button class="answered-btn status ${
+            <div class="apply-table-cell">
+                <input type="checkbox" class="apply-checkbox" />
+            </div>
+            <div class="apply-table-cell">${inquiry.postId}</div>
+            <div class="apply-table-cell">${inquiry.postCreatedDate}</div>
+            <div class="apply-table-cell inquiry-title" 
+                 data-original-title="${inquiry.postTitle}">
+                ${this.truncateText(inquiry.postTitle, 8)}
+            </div>
+            <div class="apply-table-cell inquiry-content" 
+                 data-original-content="${inquiry.postContent}">
+                ${this.truncateText(inquiry.postContent, 8)}
+            </div>
+            <div class="apply-table-cell">${inquiry.profileName}</div>
+            <div class="apply-table-cell">${inquiry.profileEmail}</div>
+            <div class="apply-table-cell">
+                <button class="answered-btn status ${
                 inquiry.inquiryStatus === "NO" ? "unanswered" : "completed"
-            }">
-                        ${inquiry.inquiryStatus === "NO" ? "미답변" : "답변 완료"}
-                    </button>
-                </div>
-                <div class="apply-table-cell">
-                    ${inquiry.inquiryStatus === "NO" ? "" : inquiry.answerDate}
-                </div>
-            `;
+            }" data-inquiry-id="${inquiry.postId}">
+                    ${inquiry.inquiryStatus === "NO" ? "미답변" : "답변 완료"}
+                </button>
+            </div>
+            <div class="apply-table-cell answer-content" style="display: none">
+                ${inquiry.inquiryStatus === "NO" ? "" : inquiry.answerContent || ""}
+            </div>
+            <div class="apply-table-cell answer-date">
+                ${inquiry.inquiryStatus === "NO" ? "" : inquiry.answerDate || ""}
+            </div>
+        `;
             inquiryList.appendChild(inquiryItem);
         });
 
-
-        //체크박스 이벤트
+        // 체크박스 이벤트
         inquiryCheckboxListeners();
 
         // 미답변 버튼 이벤트 추가
         noAnswerModalEvents();
-
     },
+
+    // 답변 등록 후 화면 업데이트 메서드
+    updateInquiryStatus(inquiryId, answerInfo) {
+        const inquiryRow = document.querySelector(`.answered-btn[data-inquiry-id="${inquiryId}"]`).closest('.apply-table-row');
+
+        const statusButton = inquiryRow.querySelector('.answered-btn');
+        statusButton.textContent = "답변 완료";
+        statusButton.classList.remove("unanswered");
+        statusButton.classList.add("completed");
+
+        // 답변 내용 셀 업데이트
+        const answerContentCell = inquiryRow.querySelector('.answer-content');
+        answerContentCell.textContent = answerInfo.answerContent;
+
+        // 답변 날짜 셀 업데이트
+        const answerDateCell = inquiryRow.querySelector('.answer-date');
+        answerDateCell.textContent  = answerInfo.createdDate;
+        console.log(answerInfo);
+    },
+
     // 텍스트 길이에 따라 잘라내는 함수
     truncateText(text, maxLength) {
         return text.length > maxLength ? text.slice(0, maxLength) + '...' : text;
@@ -157,5 +179,4 @@ const inquiryLayout = {
                 <a href="#" onclick="inquiryEvent.loadInquiries(${Math.min(currentPage + 1, pagination.realEnd)})">&gt;</a>
             </li>`;
     }
-
 };

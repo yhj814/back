@@ -1400,19 +1400,19 @@ h1.common-header-description {
 /* 첫번째 열 */
 #inquiry-section .apply-header-cell:nth-child(2),
 #inquiry-section .apply-table-cell:nth-child(2) {
-    width: 3%;
+    width: 5%;
 }
 
 /* 두번째 열 */
 #inquiry-section .apply-header-cell:nth-child(3),
 #inquiry-section .apply-table-cell:nth-child(3) {
-    width: 12%;
+    width: 15%;
 }
 
 /* 세번째 열 */
 #inquiry-section .apply-header-cell:nth-child(4),
 #inquiry-section .apply-table-cell:nth-child(4) {
-    width: 10%;
+    width: 14%;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -1422,7 +1422,7 @@ h1.common-header-description {
 /* 네번째 열 */
 #inquiry-section .apply-header-cell:nth-child(5),
 #inquiry-section .apply-table-cell:nth-child(5) {
-    width: 12%;
+    width: 14%;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -1431,7 +1431,7 @@ h1.common-header-description {
 /* 다섯번째 열 */
 #inquiry-section .apply-header-cell:nth-child(6),
 #inquiry-section .apply-table-cell:nth-child(6) {
-    width: 6%;
+    width: 5%;
 }
 
 /* 여섯번째 열 */
@@ -1443,13 +1443,13 @@ h1.common-header-description {
 /* 일곱 열 */
 #inquiry-section .apply-header-cell:nth-child(8),
 #inquiry-section .apply-table-cell:nth-child(8) {
-    width: 8%;
+    width: 12%;
 }
 
 /* 여덟 열 */
 #inquiry-section .apply-header-cell:nth-child(9),
 #inquiry-section .apply-table-cell:nth-child(9) {
-    width: 12%;
+    width: 13%;
 }
 
 /*section8: 결제 관리  */

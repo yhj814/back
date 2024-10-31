@@ -5,6 +5,7 @@ import com.app.ggumteo.domain.post.PostDTO;
 import com.app.ggumteo.pagination.AdminPagination;
 
 import java.util.List;
+import java.util.Map;
 
 
 public interface InquiryService {
@@ -16,4 +17,11 @@ public interface InquiryService {
 
     // 총 문의사항 개수 조회
     int getTotalInquiries();
+
+    // 문의 상태 업데이트 및 답변 등록 후 답변 내용과 생성일 반환
+    Map<String, Object> registerAnswer(Long inquiryId, String answerContent ,String answerDate);
+
+
 }
+
+

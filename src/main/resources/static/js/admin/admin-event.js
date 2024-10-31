@@ -147,7 +147,6 @@ const inquiryEvent = {
             }
         });
     }
-
 };
 
 // 초기 로드 및 이벤트 설정
@@ -155,6 +154,7 @@ document.addEventListener("DOMContentLoaded", () => {
     inquiryEvent.loadInquiries(); // 첫 페이지 로드
     inquiryEvent.setupEventListeners();
     inquirySelectAllListener();
+    noAnswerModalEvents();
 });
 
 // 전체 선택 체크박스 리스너
@@ -176,11 +176,9 @@ function inquiryCheckboxListeners() {
 
     checkboxes.forEach(checkbox => {
         checkbox.addEventListener('change', function () {
-            // 개별 체크박스가 하나라도 해제되면 전체 선택 해제
             if (!checkbox.checked) {
                 selectAllCheckbox.checked = false;
             } else {
-                // 모든 체크박스가 선택된 경우에만 전체 선택 체크박스 체크
                 const allChecked = Array.from(checkboxes).every(cb => cb.checked);
                 selectAllCheckbox.checked = allChecked;
             }
@@ -188,32 +186,80 @@ function inquiryCheckboxListeners() {
     });
 }
 
-// 미답변일때 답변가능한 모달창 열기
-function noAnswerModalEvents() {
-    const noAnswerBtns = document.querySelectorAll('#inquiry-list .unanswered');
-    const noAnswerInquiryModal = document.getElementById('inquiry-modal');
 
-    noAnswerBtns.forEach(noAnswerBtn => {
-        noAnswerBtn.addEventListener('click', function () {
-            // 부모 요소에서 제목과 내용 가져오기
-            const inquiryRow = noAnswerBtn.closest('.apply-table-row');
+// 미답변일 때 답변 가능한 모달창 열기
+function noAnswerModalEvents() {
+    const answerBtns = document.querySelectorAll('#inquiry-list .answered-btn');
+    const noAnswerInquiryModal = document.getElementById('inquiry-modal');
+    const answerForm = document.getElementById('answer-form');
+    const modalComment = document.getElementById('modal-comment');
+
+    answerBtns.forEach(answerBtn => {
+        answerBtn.addEventListener('click', function () {
+            const inquiryRow = answerBtn.closest('.apply-table-row');
+            const inquiryId = answerBtn.getAttribute('data-inquiry-id');
             const postTitle = inquiryRow.querySelector('.inquiry-title').getAttribute('data-original-title');
             const postContent = inquiryRow.querySelector('.inquiry-content').getAttribute('data-original-content');
-            // 모달창의 제목과 내용 필드에 데이터 설정
+            const isCompleted = answerBtn.classList.contains('completed');
+            const answerContent = isCompleted ? inquiryRow.querySelector('.answer-content').textContent : '';
+
             document.getElementById('modal-post-title').value = postTitle;
             document.getElementById('modal-post-content').value = postContent;
+            modalComment.value = answerContent.trimStart();
+            modalComment.readOnly = isCompleted;
+            document.getElementById('save-answer').style.display = isCompleted ? 'none' : 'block';
 
-            // 모달창 열기
             noAnswerInquiryModal.style.display = 'block';
+
+            if (!isCompleted) {
+                answerForm.onsubmit = async function (e) {
+                    alert("답변 완료");
+                    // e.preventDefault();
+                    const newAnswerContent = modalComment.value.trim(); // 공백 제거
+
+                    if (newAnswerContent.trim()) {
+                        try {
+                            const response = await inquiryService.postAnswer(inquiryId, newAnswerContent);
+                            console.log("Update Inquiry Status Response:", response);
+                            inquiryLayout.updateInquiryStatus(inquiryId, {
+                                answerContent: newAnswerContent,
+                                answerDate: response.createdDate
+                            });
+
+                            // 모달 닫기 및 입력 초기화
+                            modalComment.value = '';
+                            noAnswerInquiryModal.style.display = 'none';
+                        } catch (error) {
+                            console.error("답변 등록 중 오류 발생:", error);
+                        }
+                    } else {
+                        alert("답변 내용을 입력해주세요.");
+                    }
+                };
+            } else {
+                answerForm.onsubmit = null;
+            }
         });
     });
 
-    // 모달 닫기 버튼과 배경 클릭 이벤트 설정
     document.getElementById('close-modal').addEventListener('click', () => {
         noAnswerInquiryModal.style.display = 'none';
+        modalComment.value = '';
     });
+
     document.getElementById('modal-overlay').addEventListener('click', () => {
         noAnswerInquiryModal.style.display = 'none';
+        modalComment.value = '';
     });
 }
+
+
+
+
+
+
+
+
+
+
 

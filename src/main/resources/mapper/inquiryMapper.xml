@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.app.ggumteo.mapper.inquiry.InquiryMapper">
+
     <!-- 문의사항 삽입 -->
     <insert id="insertInquiry" parameterType="PostDTO">
         insert into tbl_post (post_title, post_content, post_type, member_profile_id)
@@ -21,18 +22,21 @@
     <!-- 전체 문의사항 가져오기 -->
     <select id="selectAll" resultType="InquiryDTO">
         select p.id as postId,
-               p.post_title as postTitle,
-               p.post_content as postContent,
-               p.created_date as postCreatedDate,
-               mp.profile_name as profileName,
-               mp.profile_email as profileEmail,
-               i.inquiry_status as inquiryStatus
+        p.post_title as postTitle,
+        p.post_content as postContent,
+        p.created_date as postCreatedDate,
+        mp.profile_name as profileName,
+        mp.profile_email as profileEmail,
+        i.inquiry_status as inquiryStatus,
+        a.admin_answer_content as answerContent,       <!-- 답변 내용 추가 -->
+        a.created_date as answerDate                   <!-- 답변 생성 날짜 추가 -->
         from tbl_post p
-                 join tbl_inquiry i on p.id = i.id
-                 join tbl_member_profile mp on p.member_profile_id = mp.id
+        join tbl_inquiry i on p.id = i.id
+        join tbl_member_profile mp on p.member_profile_id = mp.id
+        left join tbl_admin_answer a on i.id = a.inquiry_id  <!-- 답변 테이블 left join -->
         where p.post_type = 'INQUIRY'
         order by p.created_date desc
-            limit #{pagination.startRow}, #{pagination.rowCount}
+        limit #{pagination.startRow}, #{pagination.rowCount}
     </select>
 
     <!-- 총 문의사항 개수 조회 -->
@@ -42,4 +46,29 @@
                  join tbl_inquiry i on p.id = i.id
         where p.post_type = 'INQUIRY'
     </select>
+
+    <!-- 문의사항 상태 업데이트 -->
+    <update id="updateInquiryStatus" parameterType="map">
+        update tbl_inquiry
+        set inquiry_status = 'YES'
+        where id = #{inquiryId}
+    </update>
+
+    <!-- 답변 삽입 후 내용과 생성일 반환 -->
+    <insert id="insertAdminAnswer" parameterType="map">
+        insert into tbl_admin_answer (admin_answer_content, inquiry_id)
+        values (#{answerContent}, #{inquiryId})
+    </insert>
+
+    <!-- 답변 내용 및 생성일 조회 -->
+    <select id="getAnswerContentAndDate" parameterType="Long" resultType="map">
+        select admin_answer_content as answerContent, created_date as answerDate
+        from tbl_admin_answer
+        where inquiry_id = #{inquiryId}
+        order by created_date desc
+            limit 1
+    </select>
+
 </mapper>
+
+

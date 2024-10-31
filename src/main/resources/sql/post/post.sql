@@ -14,4 +14,3 @@ select *from tbl_post;
 
 SELECT * FROM tbl_post WHERE post_type = 'INQUIRY';
 
-

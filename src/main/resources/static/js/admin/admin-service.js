@@ -112,9 +112,31 @@ function truncateText(selector, maxLength = 8) {
 //문의사항
 
 const inquiryService = {
+    // 문의사항 목록 조회 (페이지 기반 페이징 처리)
     async fetchInquiries(page = 1) {
         const response = await fetch(`/admin/inquiries?page=${page}`);
         if (!response.ok) throw new Error("Failed to fetch inquiries");
         return await response.json();
+    },
+
+    // 답변 등록 (특정 inquiryId에 대한 답변 내용 전송)
+    async postAnswer(inquiryId, answerContent ) {
+
+        const response = await fetch(`/admin/inquiries/${inquiryId}/answer`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ answerContent })
+        });
+        console.log("Attempting to post answer for inquiryId:", inquiryId);
+
+        if (!response.ok) throw new Error("Failed to post answer");
+
+        // 응답에서 답변 내용과 답변 생성일을 포함한 객체를 반환
+        const result = await response.json();
+        console.log("Response from server:", result);
+        return { createdDate: result.createdDate, answerContent };
     }
 };
+
