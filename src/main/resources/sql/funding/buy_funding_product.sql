@@ -48,9 +48,9 @@ FROM
 WHERE
     m.id = 1;
 
-SELECT f.id AS 'funding ID',bfp.id AS 'buy_funding_product ID', bfp.funding_send_status AS '발송 여부'
-     , fp.id AS 'funding_product ID' ,fp.product_name, fp.product_price
-     , bfp_mp.id AS '구매자 profile ID' ,bfp_mp .profile_name AS '구매자 이름', bfp_mp .profile_email AS '구매자 이메일'
+SELECT bfp.id AS 'buy_funding_product ID', bfp.funding_product_id AS 'funding_product ID', bfp.funding_send_status AS '발송 여부'
+      ,fp.product_name, fp.product_price, fp.funding_id AS 'funding ID'
+     ,bfp_mp.profile_name AS '구매자 이름', bfp_mp.profile_email AS '구매자 이메일'
 FROM
     tbl_buy_funding_product bfp
         JOIN tbl_funding_product fp ON bfp.funding_product_id = fp.id

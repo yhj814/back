@@ -27,6 +27,7 @@ myFundingListLayout.addEventListener('click', async (e) => {
                 globalThis.pageB = 1;
                 fundingBuyerTable.innerHTML += await myPageService.getFundingBuyerList(globalThis.pageB, myFundingPostId, showFundingBuyerList);
                 console.log("들어옴 : ", fundingBuyerTable.innerHTML);
+                const sendButton = document.querySelector(".btn-choice.btn-public");
 
                 fundingBuyerTable.addEventListener('click', async (e) => {
                     e.preventDefault();
@@ -37,7 +38,8 @@ myFundingListLayout.addEventListener('click', async (e) => {
                         fundingBuyerTable.innerHTML = await myPageService.getFundingBuyerList(globalThis.pageB, myFundingPostId, showFundingBuyerList);
                         console.log("내 펀딩 구매자 목록 페이지: ", globalThis.pageB);
                     }
-                })
+                });
+
             }
             // 2. 펀딩 구매자 테이블에 목록을 추가하지 말고 펀딩 구매자 테이블을 화면에 보여줘라.
             // 펀딩 구매자 테이블을 화면에서 보여줘라.
