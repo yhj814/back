@@ -2,6 +2,7 @@ package com.app.ggumteo.service.audition;
 
 import com.app.ggumteo.domain.audition.AuditionDTO;
 import com.app.ggumteo.domain.audition.AuditionVO;
+import com.app.ggumteo.domain.file.PostFileDTO;
 import com.app.ggumteo.pagination.AuditionPagination;
 import com.app.ggumteo.pagination.Pagination;
 
@@ -17,4 +18,6 @@ public interface AuditionService {
     int findTotal();
 
     int findTotalAuditionsSearch(String keyword);
+
+    List<PostFileDTO> findAllPostFiles(Long postId);
 }

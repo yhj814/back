@@ -31,7 +31,6 @@ public class KakaoController {
             Optional<MemberVO> existingMember = memberService.getKakaoMember(kakaoInfo.get().getMemberEmail());
 
             if (existingMember.isEmpty()) {
-                kakaoInfo.get().setMemberStatus("모집중");
                 MemberVO newMember = kakaoInfo.get().toVO();
                 newMember = memberService.join(newMember);  // join 후 id가 포함된 newMember를 반환받음
                 session.setAttribute("member", newMember);
