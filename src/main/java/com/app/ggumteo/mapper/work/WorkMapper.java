@@ -44,9 +44,12 @@ public interface WorkMapper {
     // 검색 조건이 포함된 총 작품 수 조회
     int selectTotalWithSearch(@Param("genreType") String genreType, @Param("keyword") String keyword);
 
-
-
-
     // 상세보기에서 다중 파일 조회
     List<PostFileDTO> selectFilesByPostId(Long postId);
+
+    // 같은 장르의 최신순 3개 작품 조회
+    List<WorkDTO> selectThreeByGenre(@Param("genreType") String genreType, @Param("workId") Long workId);
+
+    // 작가의 다른 최신 작품 3개 조회
+    List<WorkDTO> selectThreeByAuthor(@Param("memberProfileId") Long memberProfileId, @Param("workId") Long workId);
 }

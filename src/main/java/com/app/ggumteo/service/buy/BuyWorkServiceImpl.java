@@ -17,3 +17,4 @@ public class BuyWorkServiceImpl implements BuyWorkService {
         buyWorkDAO.savePurchase(buyWorkVO);
     }
 }
+

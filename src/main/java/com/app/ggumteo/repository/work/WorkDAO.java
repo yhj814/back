@@ -76,5 +76,13 @@ public class WorkDAO {
         return workMapper.selectFilesByPostId(postId);
     }
 
+    // 같은 장르의 최신순 3개 작품 조회
+    public List<WorkDTO> findThreeByGenre(String genreType, Long workId) {
+        return workMapper.selectThreeByGenre(genreType, workId);
+    }
+    public List<WorkDTO> findThreeByAuthor(Long memberProfileId, Long workId) {
+        return workMapper.selectThreeByAuthor(memberProfileId, workId);
+    }
+
 
 }
