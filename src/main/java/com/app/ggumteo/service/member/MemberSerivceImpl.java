@@ -1,6 +1,7 @@
 package com.app.ggumteo.service.member;
 
 import com.app.ggumteo.domain.member.MemberDTO;
+import com.app.ggumteo.domain.member.MemberProfileDTO;
 import com.app.ggumteo.domain.member.MemberVO;
 import com.app.ggumteo.mapper.member.MemberMapper;
 import com.app.ggumteo.repository.member.MemberDAO;
@@ -44,5 +45,9 @@ public class MemberSerivceImpl implements MemberService {
         memberDAO.updateProfileImgUrl(memberEmail, profileImgUrl);
     }
 
+    @Override
+    public Optional<MemberProfileDTO> getMemberProfileByMemberId(Long memberId) {
+        return memberDAO.findByMemberId(memberId);
+    }
 
 }

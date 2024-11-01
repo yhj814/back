@@ -17,6 +17,37 @@ function setupEventListeners(imgBox) {
         fileUpload.click();
     });
 
+    const fileUploadInputs = document.querySelectorAll('input[type="file"]');
+
+    // 각 파일 업로드 필드에 대해 change 이벤트 리스너 추가
+    fileUploadInputs.forEach((fileInput) => {
+        fileInput.addEventListener("change", function () {
+            const file = fileInput.files[0];
+            if (file) {
+                const formData = new FormData();
+                formData.append("file", file);
+
+                // 파일 서버로 업로드
+                fetch("/audition/video/upload", {
+                    method: "POST",
+                    body: formData,
+                })
+                    .then((response) => response.json())
+                    .then((data) => {
+                        if (data.fileName && data.filePath) {
+                            console.log("파일이 성공적으로 업로드되었습니다.");
+                        } else {
+                            console.error("파일 업로드 중 오류가 발생했습니다.");
+                        }
+                    })
+                    .catch((error) => {
+                        console.error("Error:", error);
+                    });
+            }
+        });
+    });
+
+
     const btnDeleteImage = imgBox.querySelector(".btn-edit-item:nth-child(2)");
     btnDeleteImage.addEventListener("click", function () {
         // 미리보기 이미지 및 관련 요소 초기화

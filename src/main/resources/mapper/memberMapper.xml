@@ -22,6 +22,26 @@
         where member_email = #{email}
     </select>
 
+    <!-- member_id로 member_profile 정보를 가져오는 쿼리 -->
+    <select id="getMemberProfileByMemberId" parameterType="long" resultType="memberProfileDTO">
+        SELECT
+            id,
+            profile_name,
+            profile_nickname,
+            profile_gender,
+            profile_age,
+            profile_email,
+            profile_phone,
+            profile_etc,
+            member_id,
+            created_date,
+            updated_date
+        FROM
+            tbl_member_profile
+        WHERE
+            member_id = #{memberId}
+    </select>
+
     <!--  마이페이지 목록 조회할 때 member id 조회가 필요하여 작성함.   -->
     <select id="selectById" resultType="memberVO">
         select id, member_email, profile_img_url

@@ -20,6 +20,7 @@ public class AuditionDTO {
     private String profileEmail;
     private String profileImageUrl;
     private Long memberProfileId;
+    private Long memberId;
     private int auditionField;
     private String auditionCareer;
     private String expectedAmount;
