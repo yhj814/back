@@ -1,5 +1,6 @@
 package com.app.ggumteo.service.myPage;
 
+import com.app.ggumteo.aspect.annotation.MyPageLogStatus;
 import com.app.ggumteo.domain.funding.BuyFundingProductDTO;
 import com.app.ggumteo.domain.funding.FundingDTO;
 import com.app.ggumteo.domain.funding.MyFundingBuyerListDTO;
@@ -39,6 +40,7 @@ public class MyPageServiceImpl implements MyPageService {
 
     //    내 펀딩 게시물 전체 조회
     @Override
+    @MyPageLogStatus
     public MyFundingListDTO getMyFundingList(int page , WorkAndFundingPagination workAndFundingPagination, Long memberId) {
         MyFundingListDTO myFundingPosts = new MyFundingListDTO();
         workAndFundingPagination.setPage(page);
