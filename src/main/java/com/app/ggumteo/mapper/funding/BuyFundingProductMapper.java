@@ -12,7 +12,10 @@ import java.util.Optional;
 
 @Mapper
 public interface BuyFundingProductMapper {
-//    구매자 목록 조회
-    public List<BuyFundingProductDTO> selectBuyerByFundingPostId(
+//    펀딩 구매자 목록 조회
+    public List<BuyFundingProductDTO> selectByFundingPostId(
             @Param("settingTablePagination") SettingTablePagination settingTablePagination ,Long fundingPostId);
+
+//    내 펀딩 게시물 하나의 구매자 전체 갯수
+    public int selectCount(Long fundingPostId);
 }

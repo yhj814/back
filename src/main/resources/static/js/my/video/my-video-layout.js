@@ -5,7 +5,7 @@ const showMyFundingList = ({myFundingPosts, workAndFundingPagination}) => {
     let text = ``;
     let pagingText = ``;
 
-    myFundingPosts.forEach((myFundingPost, index) => {
+    myFundingPosts.forEach((myFundingPost) => {
 
         text += `
          <div class="list-item my-funding-posts">
@@ -206,7 +206,7 @@ function timeForToday(datetime) {
 }
 
 
-const showFundingBuyerList = (buyersByFundingPostId) => {
+const showFundingBuyerList = ({myFundingBuyers, settingTablePagination}) => {
     let text = `<div>
                             <div
                                 class="setting-tr-group"
@@ -217,20 +217,20 @@ const showFundingBuyerList = (buyersByFundingPostId) => {
                             "
                     >`;
 
-    buyersByFundingPostId.forEach((buyerByFundingPostId) => {
-        text += `<div class="price-member setting-tr funding-${buyerByFundingPostId.id}" style="padding-top: 7px">
+    myFundingBuyers.forEach((myFundingBuyer) => {
+        text += `<div class="price-member setting-tr funding-${myFundingBuyer.id}" style="padding-top: 7px">
                         <div
                                 class="setting-td with-sub size-l"
                         >
                             <div
                                     class="membername major-span"
                             >
-                                ${buyerByFundingPostId.profileName}
+                                ${myFundingBuyer.profileName}
                             </div>
                             <div
                                     class="memberemail sub-span"
                             >
-                                ${buyerByFundingPostId.profileEmail}
+                                ${myFundingBuyer.profileEmail}
                             </div>
                         </div>
                         <div
@@ -239,7 +239,7 @@ const showFundingBuyerList = (buyersByFundingPostId) => {
                                 margin-bottom: 35px;
                             "
                         >
-                             ${buyerByFundingPostId.productPrice} 원
+                             ${myFundingBuyer.productPrice} 원
                         </div>
                         <div
                                 class="center-text setting-td with-btn trueorfalse"
@@ -294,7 +294,26 @@ const showFundingBuyerList = (buyersByFundingPostId) => {
             `;
 
     });
-    text += `    </div>
+    text += `</div>`;
+
+    text += `<ul class="pagination theme-yozm mypage-page back-or-next">`;
+
+    if(settingTablePagination.prev){
+        text += `
+            <li class="page-item">
+                <a href="${settingTablePagination.startPage - 1}" class="page-link back"></a>
+            </li>
+        `
+    }
+
+    if(settingTablePagination.next) {
+        text += `
+            <li class="page-item">
+                <a href="${settingTablePagination.endPage + 1}" class="page-link next"></a>
+            </li>
+        `
+    }
+    text += `     </ul>
             </div>`;
 
     return text;

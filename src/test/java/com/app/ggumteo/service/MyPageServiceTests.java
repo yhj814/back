@@ -1,9 +1,6 @@
 package com.app.ggumteo.service;
 
-import com.app.ggumteo.domain.funding.BuyFundingProductDTO;
-import com.app.ggumteo.domain.funding.FundingDTO;
-import com.app.ggumteo.domain.funding.FundingVO;
-import com.app.ggumteo.domain.funding.MyFundingListDTO;
+import com.app.ggumteo.domain.funding.*;
 import com.app.ggumteo.domain.member.MemberDTO;
 import com.app.ggumteo.domain.member.MemberVO;
 import com.app.ggumteo.mapper.FundingMapperTests;
@@ -32,9 +29,7 @@ public class MyPageServiceTests {
         memberDTO.setId(1L);
 
         Optional<MemberVO> foundMemberInfo = myPageService.getMember(memberDTO.getId());
-
         foundMemberInfo.map(MemberVO::toString).ifPresent(log::info);
-
     }
 
     @Test
@@ -42,28 +37,23 @@ public class MyPageServiceTests {
         MemberVO memberVO = null;
         WorkAndFundingPagination workAndFundingPagination = new WorkAndFundingPagination();
         memberVO = myPageService.getMember(1L).get();
-        workAndFundingPagination.setTotal(myPageService.getTotal(memberVO.getId()));
+        workAndFundingPagination.setTotal(myPageService.getMyFundingPostsTotal(memberVO.getId()));
         workAndFundingPagination.progress();
-        MyFundingListDTO fundingList = myPageService.getMyFundingList(1, workAndFundingPagination, memberVO.getId());
+        MyFundingListDTO myFundingPosts = myPageService.getMyFundingList(1, workAndFundingPagination, memberVO.getId());
 
-        log.info("service-test={}", fundingList.toString());
-
-//        List<FundingDTO> fundingPosts = myPageService.getMyFundingList(1L);
-////        fundingMapper.selectByMemberId(1L).stream().map(FundingDTO::toString).forEach(log::info);
-//
-//        for (FundingDTO fundingDTO : fundingPosts) {
-//            log.info("{}", fundingDTO);
-//        }
+        log.info("GetMyFundingPosts-test={}", myFundingPosts.toString());
     }
 
-//    @Test
-//    public void testGetFundingBuyerList() {
-//        FundingDTO fundingDTO = null;
-//        SettingTablePagination settingTablePagination = new SettingTablePagination();
-//        List<BuyFundingProductDTO> buyFundingProducts = myPageService.getFundingBuyerList(1L);
-//        for (BuyFundingProductDTO buyFundingProductDTO : buyFundingProducts) {
-//            log.info("{}", buyFundingProductDTO);
-//      }
-//  }
+    @Test
+    public void testGetMyFundingBuyerList() {
+        FundingDTO fundingDTO = null;
+        SettingTablePagination settingTablePagination = new SettingTablePagination();
+        fundingDTO = myPageService.getFunding(9L).get();
+        settingTablePagination.setTotal(myPageService.getMyFundingPostBuyerTotal(fundingDTO.getId()));
+        settingTablePagination.progress();
+        MyFundingBuyerListDTO myFundingBuyers = myPageService.getMyFundingBuyerList(1, settingTablePagination, fundingDTO.getId());
+
+        log.info("GetMyFundingBuyerList-test={}", myFundingBuyers.toString());
+  }
 
 }
