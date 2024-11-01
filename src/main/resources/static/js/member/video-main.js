@@ -61,23 +61,23 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 
     // 두 번째 기능: 공개/비공개 선택 버튼 클릭 이벤트 설정
-    const choiceGroups = document.querySelectorAll(".btn-group.choice-group");
-
-    choiceGroups.forEach(function (group) {
-        const btnPublic = group.querySelector(".btn-choice.btn-public");
-        const btnSecret = group.querySelector(".btn-choice.btn-secret");
-
-        // 클릭 이벤트 설정
-        function toggleActiveClass(event) {
-            // 두 버튼에 active 클래스를 교환
-            btnPublic.classList.toggle("active");
-            btnSecret.classList.toggle("active");
-        }
-
-        // 각 버튼에 이벤트 리스너 추가
-        btnPublic.addEventListener("click", toggleActiveClass);
-        btnSecret.addEventListener("click", toggleActiveClass);
-    });
+    // const choiceGroups = document.querySelectorAll(".btn-group.choice-group");
+    //
+    // choiceGroups.forEach(function (group) {
+    //     const btnPublic = group.querySelector(".btn-choice.btn-public");
+    //     const btnSecret = group.querySelector(".btn-choice.btn-secret");
+    //
+    //     // 클릭 이벤트 설정
+    //     function toggleActiveClass(event) {
+    //         // 두 버튼에 active 클래스를 교환
+    //         btnPublic.classList.toggle("active");
+    //         btnSecret.classList.toggle("active");
+    //     }
+    //
+    //     // 각 버튼에 이벤트 리스너 추가
+    //     btnPublic.addEventListener("click", toggleActiveClass);
+    //     btnSecret.addEventListener("click", toggleActiveClass);
+    // });
 
     // 세 번째 기능: "구매한 사람들" 버튼 클릭 시 설정 테이블 표시/숨김
 

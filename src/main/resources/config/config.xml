@@ -29,6 +29,7 @@
         <typeAlias type="com.app.ggumteo.domain.member.MemberProfileDTO" alias="memberProfileDTO"/>
         <typeAlias type="com.app.ggumteo.domain.admin.AnnouncementVO" alias="announcementVO"/>
         <typeAlias type="com.app.ggumteo.domain.admin.AnnouncementDTO" alias="announcementDTO"/>
+        <typeAlias type="com.app.ggumteo.domain.funding.BuyFundingProductDTO" alias="buyFundingProductDTO"/>
     </typeAliases>
 
 </configuration>

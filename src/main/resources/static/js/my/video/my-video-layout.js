@@ -5,7 +5,7 @@ const showMyFundingList = ({myFundingPosts, workAndFundingPagination}) => {
     let text = ``;
     let pagingText = ``;
 
-    myFundingPosts.forEach((myFundingPost, index) => {
+    myFundingPosts.forEach((myFundingPost) => {
 
         text += `
          <div class="list-item my-funding-posts">
@@ -123,18 +123,7 @@ const showMyFundingList = ({myFundingPosts, workAndFundingPagination}) => {
                     </div>
                 </div>
                 <div class="setting-table funding-buyer-${myFundingPost.id}" style="border-top: 1px solid rgb(224, 224, 224); display: none;">
-                    <div class="setting-th">
-                        <div class="setting-td size-l">
-                            이름/이메일
-                        </div>
-                        <div class="center-text setting-td size-s">
-                            금액
-                        </div>
-                        <div class="center-text setting-td trueorfalse">
-                            발송 여부
-                        </div>
-                    </div>
-                </div>
+                 </div>    
             </div>
         </div>
             `;
@@ -148,6 +137,8 @@ const showMyFundingList = ({myFundingPosts, workAndFundingPagination}) => {
                 <a href="${workAndFundingPagination.startPage - 1}" class="page-link back"></a>
             </li>
         `
+        console.log("펀딩 게시물 목록/이전 : ", workAndFundingPagination.prev);
+        console.log("펀딩 게시물 목록/이전 : ", pagingText);
     }
     for(let i=workAndFundingPagination.startPage; i<=workAndFundingPagination.endPage; i++){
         if(workAndFundingPagination.page === i){
@@ -163,6 +154,8 @@ const showMyFundingList = ({myFundingPosts, workAndFundingPagination}) => {
                 <a href="${workAndFundingPagination.endPage + 1}" class="page-link next"></a>
             </li>
         `
+        console.log("펀딩 게시물 목록/다음 : ", workAndFundingPagination.next);
+        console.log("펀딩 게시물 목록/다음 : ", pagingText);
     }
 
     myFundingListPaging.innerHTML = pagingText;
@@ -206,8 +199,21 @@ function timeForToday(datetime) {
 }
 
 
-const showFundingBuyerList = (buyersByFundingPostId) => {
-    let text = `<div>
+const showFundingBuyerList = ({myFundingBuyers, settingTablePagination}) => {
+
+    let text = `<div class="setting-th">
+                                <div class="setting-td size-l">
+                                    이름/이메일
+                                </div>
+                                <div class="center-text setting-td size-s">
+                                    금액
+                                </div>
+                                <div class="center-text setting-td trueorfalse">
+                                    발송 여부
+                                </div>
+                        </div>
+                       `
+    text += `<div>
                             <div
                                 class="setting-tr-group"
                                 style="
@@ -217,20 +223,20 @@ const showFundingBuyerList = (buyersByFundingPostId) => {
                             "
                     >`;
 
-    buyersByFundingPostId.forEach((buyerByFundingPostId) => {
-        text += `<div class="price-member setting-tr funding-${buyerByFundingPostId.id}" style="padding-top: 7px">
+    myFundingBuyers.forEach((myFundingBuyer) => {
+        text += `<div class="price-member setting-tr buy-funding-product-${myFundingBuyer.id}" style="padding-top: 7px">
                         <div
                                 class="setting-td with-sub size-l"
                         >
                             <div
                                     class="membername major-span"
                             >
-                                ${buyerByFundingPostId.profileName}
+                                ${myFundingBuyer.profileName}
                             </div>
                             <div
                                     class="memberemail sub-span"
                             >
-                                ${buyerByFundingPostId.profileEmail}
+                                ${myFundingBuyer.profileEmail}
                             </div>
                         </div>
                         <div
@@ -239,7 +245,7 @@ const showFundingBuyerList = (buyersByFundingPostId) => {
                                 margin-bottom: 35px;
                             "
                         >
-                             ${buyerByFundingPostId.productPrice} 원
+                             ${myFundingBuyer.productPrice}원
                         </div>
                         <div
                                 class="center-text setting-td with-btn trueorfalse"
@@ -247,28 +253,47 @@ const showFundingBuyerList = (buyersByFundingPostId) => {
                             <div
                                     class="btn-group choice-group"
                             >
+                            `
+        console.log(myFundingBuyer.fundingSendStatus);
+            if(myFundingBuyer.fundingSendStatus === "NO") {
+                        text += `
+                                <div
+                                        class="btn-choice btn-public"
+                                >`
+                              }else{
+                        text += `
                                 <div
                                         class="btn-choice btn-public active"
                                 >
-                                    <input
+                                `
+                            }
+                        text +=  `<input
                                             checked=""
                                             class="radio-value"
                                             name="is_secret_employment"
                                             type="radio"
-                                            value="false"
+                                            value="YES"
                                     /><span
                                         class="name"
                                 >보냄</span
                                 >
-                                </div>
+                                </div>`
+        if(myFundingBuyer.fundingSendStatus === "NO") {
+            text += `
+                                <div
+                                        class="btn-choice btn-secret active"
+                                >`
+        } else {
+            text += `
                                 <div
                                         class="btn-choice btn-secret"
-                                >
-                                    <input
+                                >`
+        }
+         text +=        `<input
                                             class="radio-value"
                                             name="is_secret_employment"
                                             type="radio"
-                                            value="true"
+                                            value="NO"
                                     /><span
                                         class="name"
                                 >안보냄</span
@@ -296,6 +321,29 @@ const showFundingBuyerList = (buyersByFundingPostId) => {
     });
     text += `    </div>
             </div>`;
+
+    text += `<ul class="pagination theme-yozm mypage-page back-or-next">`;
+
+    if(settingTablePagination.prev){
+        text += `
+            <li class="page-item">
+                <a href="${settingTablePagination.startPage - 1}" class="page-link back"></a>
+            </li>
+        `
+        console.log("구매자 목록/이전 : ", settingTablePagination.prev);
+        console.log("구매자 목록/이전 : ", text);
+    }
+
+    if(settingTablePagination.next) {
+        text += `
+            <li class="page-item">
+                <a href="${settingTablePagination.endPage + 1}" class="page-link next"></a>
+            </li>
+        `
+        console.log("구매자 목록/다음 : ",settingTablePagination.next);
+        console.log("구매자 목록/다음 : ",text);
+    }
+    text += `    </ul>`;
 
     return text;
 }
