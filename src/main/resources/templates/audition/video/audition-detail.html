@@ -10,8 +10,16 @@
         rel="stylesheet"
         href="/css/audition/video/audition-detail.css"
     />
+    <link rel="stylesheet" th:href="@{/css/header/logout.css}">
+    <link rel="stylesheet" th:href="@{/css/header/login.css}">
+    <link rel="stylesheet" th:href="@{/css/footer/footer.css}">
     <body>
-        <header></header>
+    <th:block th:if="${isLoggedIn}">
+        <div th:replace="~{header-login :: header}"></div>
+    </th:block>
+    <th:block th:if="${!isLoggedIn}">
+        <div th:replace="~{header-logout :: header}"></div>
+    </th:block>
         <main>
             <div class="gaia">
                 <div class="detail-detail-view">
@@ -461,7 +469,10 @@
                 </div>
             </div>
         </main>
-        <footer></footer>
+    <footer th:replace="~{footer.html :: footer}"></footer>
     </body>
     <script src="/js/audition/detail.js"></script>
+    <script th:src="@{/js/header/header-logout.js}"></script>
+    <script th:src="@{/js/header/header-login.js}"></script>
+    <script th:src="@{/js/header/logout-click.js}"></script>
 </html>
