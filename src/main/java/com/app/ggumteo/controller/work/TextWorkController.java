@@ -50,7 +50,7 @@ public class TextWorkController {
     private final WorkService workService;
     private final HttpSession session;
     private final PostFileService postFileService;
-    private final BuyWorkService buyWorkService;
+    private final ReplyService replyService;
 
    @ModelAttribute
     public void setTestMember(HttpSession session) {

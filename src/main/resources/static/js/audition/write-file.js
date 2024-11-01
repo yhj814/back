@@ -71,13 +71,13 @@ document.querySelector(".img-add").addEventListener("click", function () {
                     <div class="img-box-title">작품 영상, 이미지 등록</div>
                     <div class="img-box-text">작품 결과물 혹은 설명을 돕는 이미지를 선택해 주세요.</div>
                     <div class="img-box-help"><span>· 이미지 최적 사이즈: 가로 720px</span></div>
-                    <input id="file-upload-${timestamp}" type="file" accept="image/*,video/*" style="display: none;" />
+                    <input id="file-upload-${timestamp}" name="auditionFile" type="file" accept="image/*,video/*" style="display: none;" />
                 </div>
             </div>
             <div class="img-caption-box" style="display: none;">
-                <div class="default-input-partner">
-                    <input type="text" class="img-caption-box-content" placeholder="올린 파일에 대한 설명을 입력해주세요." />
-                </div>
+<!--                <div class="default-input-partner">-->
+<!--                    <input type="text" class="img-caption-box-content" placeholder="올린 파일에 대한 설명을 입력해주세요." />-->
+<!--                </div>-->
             </div>
         </div>
     `;

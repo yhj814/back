@@ -3,10 +3,13 @@ package com.app.ggumteo.controller.audition;
 import com.app.ggumteo.constant.PostType;
 import com.app.ggumteo.domain.audition.AuditionDTO;
 import com.app.ggumteo.domain.file.PostFileDTO;
+import com.app.ggumteo.domain.member.MemberDTO;
+import com.app.ggumteo.domain.member.MemberProfileVO;
 import com.app.ggumteo.domain.member.MemberVO;
 import com.app.ggumteo.pagination.AuditionPagination;
 import com.app.ggumteo.service.audition.AuditionService;
 import com.app.ggumteo.service.file.PostFileService;
+import com.app.ggumteo.service.member.MemberService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,13 +38,25 @@ public class VideoAuditionController {
     private final HttpSession session;
     private final PostFileService postFileService;
 
+    @ModelAttribute
+    public void setTestMember(HttpSession session) {
+        if (session.getAttribute("member") == null) {
+            session.setAttribute("member", new MemberVO(30L, "", "", "http://k.kakaocdn.net/dn/XNNxB/btsrDKpsP5F/lrYqF9WFuitw8rTsLsvdf0/img_640x640.jpg", "", ""));
+        }
+        if (session.getAttribute("memberProfile") == null) {
+            session.setAttribute("memberProfile", new MemberProfileVO(19L, "", "", "", 99, "", "", "", 30L, "", ""));
+        }
+
+    }
+
+
     // write 화면으로 이동
     @GetMapping("audition-write")
     public void goToWritePage() {
         if (session.getAttribute("member") == null) {
             // 테스트용 MemberVO 설정
             session.setAttribute("member", new MemberVO(
-                    19L,
+                    30L,
                     "",         // memberEmail
                     "",
                     "",              // profileUrl
@@ -68,16 +83,7 @@ public class VideoAuditionController {
             auditionDTO.setMemberProfileId(member.getId());
 
             // audition과 Post 저장
-            auditionService.write(auditionDTO);
-
-            // 파일 저장 로직 호출 (auditionFile 저장)
-            if (auditionFiles != null && auditionFiles.length > 0) {
-                for (MultipartFile file : auditionFiles) {
-                    if (!file.isEmpty()) {
-                        postFileService.saveFile(file, auditionDTO.getId());
-                    }
-                }
-            }
+            auditionService.write(auditionDTO, auditionFiles);
 
             return ResponseEntity.ok(Collections.singletonMap("success", true));
         } catch (Exception e) {
@@ -117,37 +123,35 @@ public class VideoAuditionController {
     @GetMapping("/display")
     @ResponseBody
     public ResponseEntity<byte[]> display(@RequestParam("fileName") String fileName) throws IOException {
-        String rootPath = "C:/ggumteofile/uploads/";
-        File file = new File(rootPath + fileName);
-
-        log.info("Attempting to load file from path: {}", file.getAbsolutePath());
-
-        if (!file.exists()) {
-            log.error("File not found at path: {}", file.getAbsolutePath());
+        byte[] fileData = postFileService.getFileData(fileName);
+        if (fileData == null) {
             return ResponseEntity.notFound().build();
         }
 
-        byte[] imageBytes = FileCopyUtils.copyToByteArray(file);
         HttpHeaders headers = new HttpHeaders();
-
-        String contentType = Files.probeContentType(file.toPath());
-        if (contentType != null) {
-            headers.setContentType(MediaType.parseMediaType(contentType));
-        }
-
-        return new ResponseEntity<>(imageBytes, headers, HttpStatus.OK);
+        headers.setContentType(MediaType.IMAGE_JPEG);
+        return new ResponseEntity<>(fileData, headers, HttpStatus.OK);
     }
 
     @GetMapping("/audition-detail/{id}")
     public String detail(@PathVariable("id") Long id, Model model) {
         AuditionDTO audition = auditionService.findAuditionById(id);
-
         List<PostFileDTO> postFiles = auditionService.findAllPostFiles(id);
+
+        // 강제로 memberId를 30L로 설정
+        MemberVO member = new MemberVO(30L, "", "", "http://k.kakaocdn.net/dn/XNNxB/btsrDKpsP5F/lrYqF9WFuitw8rTsLsvdf0/img_640x640.jpg", "", "");
+        session.setAttribute("member", member);
+
+        // Debugging: Check if member and profileImgUrl are correctly retrieved
+        log.info("강제로 설정된 Member ID: " + member.getId());
+        log.info("Profile Image URL: " + member.getProfileImgUrl());
 
         model.addAttribute("audition", audition);
         model.addAttribute("postFiles", postFiles);
+        model.addAttribute("member", member);
 
         return "/audition/video/audition-detail";
     }
+
 
 }

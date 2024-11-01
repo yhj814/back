@@ -43,4 +43,6 @@ public class MemberSerivceImpl implements MemberService {
     public void updateProfileImgUrl(String memberEmail, String profileImgUrl) {
         memberDAO.updateProfileImgUrl(memberEmail, profileImgUrl);
     }
+
+
 }
