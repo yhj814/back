@@ -8,10 +8,12 @@ import com.app.ggumteo.pagination.Pagination;
 import com.app.ggumteo.repository.post.PostDAO;
 import com.app.ggumteo.repository.work.WorkDAO;
 import com.app.ggumteo.search.Search;
+import com.app.ggumteo.service.file.PostFileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -23,33 +25,40 @@ public class WorkServiceImpl implements WorkService {
 
     private final WorkDAO workDAO;
     private final PostDAO postDAO;
+    private final PostFileService postFileService;  // 파일 저장 서비스 주입
 
     @Override
-    public void write(WorkDTO workDTO) {
-        // Step 1: tbl_post에 데이터 삽입
+    public void write(WorkDTO workDTO, MultipartFile[] workFiles, MultipartFile thumbnailFile) {
         PostVO postVO = new PostVO();
         postVO.setPostTitle(workDTO.getPostTitle());
         postVO.setPostContent(workDTO.getPostContent());
         postVO.setPostType(workDTO.getPostType());
         postVO.setMemberProfileId(workDTO.getMemberProfileId());
 
-        // Post를 저장하고 해당 ID를 가져옴
         postDAO.save(postVO);
-        Long postId = postVO.getId();  // 삽입된 post의 ID를 가져옴
+        Long postId = postVO.getId();
 
-        // Step 2: tbl_work에 데이터 삽입 (postId를 id로 사용)
         WorkVO workVO = new WorkVO();
-        workVO.setId(postId);  // tbl_work의 id를 tbl_post의 id와 동일하게 설정
+        workVO.setId(postId);
         workVO.setWorkPrice(workDTO.getWorkPrice());
         workVO.setGenreType(workDTO.getGenreType());
-        workVO.setReadCount(0);  // 기본값 설정
+        workVO.setReadCount(0);
         workVO.setFileContent(workDTO.getFileContent());
 
-        // Work 데이터를 저장
         workDAO.save(workVO);
+        workDTO.setId(postId);
 
-        // workDTO에 저장된 postId를 설정
-        workDTO.setId(postId);  // 파일 저장 시 사용할 수 있도록
+        // 파일 저장 처리 (PostFileService에 위임)
+        if (workFiles != null && workFiles.length > 0) {
+            for (MultipartFile file : workFiles) {
+                if (!file.isEmpty()) {
+                    postFileService.saveFile(file, workDTO.getId());
+                }
+            }
+        }
+        if (!thumbnailFile.isEmpty()) {
+            postFileService.saveFile(thumbnailFile, workDTO.getId());
+        }
     }
 
     @Override
@@ -59,13 +68,9 @@ public class WorkServiceImpl implements WorkService {
 
     @Override
     public List<WorkDTO> findAllWithThumbnailAndSearch(String genreType, String keyword, Pagination pagination) {
-        pagination.progress2();  // 페이지네이션 계산
-
-        // 검색된 작품 목록 조회
+        pagination.progress2();
         return workDAO.findAllWithThumbnailAndSearch(keyword, genreType, pagination);
     }
-
-
 
     @Override
     public void updateWork(WorkDTO workDTO) {
@@ -75,7 +80,7 @@ public class WorkServiceImpl implements WorkService {
     @Override
     public void deleteWorkById(Long id) {
         workDAO.deleteWorkById(id);
-        postDAO.deleteById(id);  // 연관된 post 삭제
+        postDAO.deleteById(id);
     }
 
     @Override
@@ -85,7 +90,7 @@ public class WorkServiceImpl implements WorkService {
 
     @Override
     public int findTotalWorks(String genreType) {
-        return workDAO.findTotalWorks(genreType);  // DAO에서 장르 필터가 적용된 총 작품 수 조회
+        return workDAO.findTotalWorks(genreType);
     }
 
     @Override
@@ -97,6 +102,7 @@ public class WorkServiceImpl implements WorkService {
     public int findTotalWithSearch(String genreType, String keyword) {
         return workDAO.findTotalWithSearch(genreType, keyword);
     }
+
     @Override
     public List<WorkDTO> getThreeWorksByGenre(String genreType, Long workId) {
         return workDAO.findThreeByGenre(genreType, workId);
@@ -106,5 +112,4 @@ public class WorkServiceImpl implements WorkService {
     public List<WorkDTO> getThreeWorksByAuthor(Long memberProfileId, Long workId) {
         return workDAO.findThreeByAuthor(memberProfileId, workId);
     }
-
 }
