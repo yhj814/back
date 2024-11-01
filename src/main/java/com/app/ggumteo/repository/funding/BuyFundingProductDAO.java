@@ -1,6 +1,7 @@
 package com.app.ggumteo.repository.funding;
 
 import com.app.ggumteo.domain.funding.BuyFundingProductDTO;
+import com.app.ggumteo.domain.funding.BuyFundingProductVO;
 import com.app.ggumteo.domain.funding.FundingDTO;
 import com.app.ggumteo.mapper.funding.BuyFundingProductMapper;
 import com.app.ggumteo.mapper.funding.FundingMapper;
@@ -25,5 +26,10 @@ public class BuyFundingProductDAO {
 //    내 펀딩 게시물 하나의 구매자 전체 갯수
     public int getTotal(Long fundingPostId){
         return buyFundingProductMapper.selectCount(fundingPostId);
+    }
+
+//    발송 여부 체크
+    public void updateFundingSendStatus(BuyFundingProductVO buyFundingProductVO) {
+        buyFundingProductMapper.updateFundingSendStatus(buyFundingProductVO);
     }
 }
