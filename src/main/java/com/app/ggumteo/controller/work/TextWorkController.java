@@ -64,14 +64,15 @@ public class TextWorkController {
 
     @PostMapping("upload")
     @ResponseBody
-    public PostFileDTO upload(@RequestParam("file") MultipartFile file) {
+    public List<PostFileDTO> upload(@RequestParam("file") List<MultipartFile> files) {
         try {
-            return postFileService.uploadFile(file);  // 서비스의 uploadFile 메서드 호출
+            return postFileService.uploadFile(files);  // 서비스의 uploadFile 메서드 호출
         } catch (IOException e) {
             log.error("파일 업로드 중 오류 발생: ", e);
-            return null;
+            return Collections.emptyList();  // 오류 발생 시 빈 리스트 반환
         }
     }
+
 
 
     @GetMapping("write")
