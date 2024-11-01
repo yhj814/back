@@ -97,6 +97,14 @@ public class WorkServiceImpl implements WorkService {
     public int findTotalWithSearch(String genreType, String keyword) {
         return workDAO.findTotalWithSearch(genreType, keyword);
     }
+    @Override
+    public List<WorkDTO> getThreeWorksByGenre(String genreType, Long workId) {
+        return workDAO.findThreeByGenre(genreType, workId);
+    }
 
+    @Override
+    public List<WorkDTO> getThreeWorksByAuthor(Long memberProfileId, Long workId) {
+        return workDAO.findThreeByAuthor(memberProfileId, workId);
+    }
 
 }

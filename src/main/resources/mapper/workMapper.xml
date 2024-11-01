@@ -69,7 +69,7 @@
         where id = #{id}
     </delete>
 
-    <!-- 작품 목록 조회에 평균 star 추가 -->
+
     <!-- 작품 목록 조회에 평균 star 추가, 소수점 첫째 자리까지 표시 -->
     <select id="selectAllWithThumbnailAndSearch" resultType="workDTO" parameterType="map">
         select
@@ -145,6 +145,58 @@
         insert into tbl_buy_work (member_profile_id, work_id, work_send_status)
         values (#{memberProfileId}, #{workId}, #{workSendStatus})
     </insert>
+
+    <!-- 같은 장르의 최신순 3개 작품 조회 (상세보기에서)-->
+    <select id="selectThreeByGenre" resultType="workDTO">
+        select
+            w.id,
+            w.work_price,
+            p.post_title,
+            p.created_date,
+            mp.profile_nickname as profileNickName,
+            f.file_path as thumbnailFilePath,
+            ifnull(round(avg(r.star), 1), 0) as star
+        from
+            tbl_work w
+                join tbl_post p on w.id = p.id
+                join tbl_member_profile mp on p.member_profile_id = mp.id
+                left join tbl_reply r on w.id = r.work_id
+                left join (
+                select pf.post_id, f.file_path
+                from tbl_post_file pf
+                         join tbl_file f on pf.id = f.id
+                where pf.id = (select max(id) from tbl_post_file where post_id = pf.post_id)
+            ) f on f.post_id = p.id
+        where w.genre_type = #{genreType} and w.id != #{workId}
+        group by w.id
+            limit 3
+    </select>
+
+
+<!--    같은 작가의 작품 3개불러오기(작품 상세)-->
+    <select id="selectThreeByAuthor" resultType="workDTO">
+        select w.id, w.work_price, w.read_count, w.genre_type,
+               p.post_title, p.post_content, p.member_profile_id, p.created_date, p.updated_date,
+               f.file_name as thumbnail_file_name, f.file_path as thumbnail_file_path,
+               mp.profile_nickname,
+               ifnull(round(avg(r.star), 1), 0) as star
+        from tbl_work w
+                 join tbl_post p on w.id = p.id
+                 join tbl_member_profile mp on p.member_profile_id = mp.id
+                 left join (
+            select pf.post_id, f.file_name, f.file_path
+            from tbl_post_file pf
+                     join tbl_file f on pf.id = f.id
+            where pf.id = (select max(id) from tbl_post_file where post_id = pf.post_id)
+        ) as f on f.post_id = p.id
+                 left join tbl_reply r on r.work_id = w.id
+        where p.member_profile_id = #{memberProfileId}
+          and w.id != #{workId}
+        group by w.id
+        order by p.created_date desc
+            limit 3
+    </select>
+
 
 
 </mapper>

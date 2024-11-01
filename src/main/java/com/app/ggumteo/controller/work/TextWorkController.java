@@ -166,9 +166,13 @@ public class TextWorkController {
         log.info("Detail view의 WorkDTO: {}", work);
 
         List<PostFileDTO> postFiles = workService.findFilesByPostId(id);
+        List<WorkDTO> threeWorks = workService.getThreeWorksByGenre(work.getGenreType(), work.getId());
+        List<WorkDTO> threeAuthorWorks = workService.getThreeWorksByAuthor(work.getMemberProfileId(), work.getId());
 
         model.addAttribute("work", work);
         model.addAttribute("postFiles", postFiles);
+        model.addAttribute("threeWorks", threeWorks);
+        model.addAttribute("threeAuthorWorks", threeAuthorWorks);
 
         // workId 값을 JavaScript로 전달하기 위해 추가
         model.addAttribute("workId", work.getId());

@@ -34,4 +34,9 @@ public interface WorkService {
 
     // 상세보기에서 다중 파일 조회
     List<PostFileDTO> findFilesByPostId(Long postId);
+
+    // 같은 장르의 최신순 3개 작품 조회
+    List<WorkDTO> getThreeWorksByGenre(String genreType, Long workId);
+    // 같은 사람의 작품 3개 조회
+    List<WorkDTO> getThreeWorksByAuthor(Long memberProfileId, Long workId);
 }
