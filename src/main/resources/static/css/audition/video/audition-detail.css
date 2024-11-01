@@ -316,7 +316,7 @@ a {
 }
 
 .detail-content-layer .detail-important-condition.term_based .detail-target-info .detail-target-detail .detail-target-detail-header .detail-header-info.experience {
-    width: calc(100% - 62px);
+    width: calc(100% - 68px);
 }
 
 .detail-content-layer .detail-important-condition.term_based .detail-target-info .detail-target-detail .detail-target-detail-header .detail-header-info.budget {
@@ -825,4 +825,12 @@ textarea {
     padding: 10px 10px;
     border-radius: 10px;
     border: none;
+}
+
+.upload-img{
+    width: 736px;
+}
+
+.upload-img img{
+    width: 100%;
 }

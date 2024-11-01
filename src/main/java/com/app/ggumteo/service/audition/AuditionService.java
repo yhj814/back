@@ -1,14 +1,14 @@
 package com.app.ggumteo.service.audition;
 
 import com.app.ggumteo.domain.audition.AuditionDTO;
-import com.app.ggumteo.domain.audition.AuditionVO;
+import com.app.ggumteo.domain.file.PostFileDTO;
 import com.app.ggumteo.pagination.AuditionPagination;
-import com.app.ggumteo.pagination.Pagination;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
 public interface AuditionService {
-    public void write(AuditionDTO auditionDTO);
+    public void write(AuditionDTO auditionDTO, MultipartFile[] auditionFiles);
 
     AuditionDTO findAuditionById(Long id);
 
@@ -17,4 +17,6 @@ public interface AuditionService {
     int findTotal();
 
     int findTotalAuditionsSearch(String keyword);
+
+    List<PostFileDTO> findAllPostFiles(Long postId);
 }
