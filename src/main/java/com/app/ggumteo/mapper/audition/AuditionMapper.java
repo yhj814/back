@@ -3,6 +3,8 @@ package com.app.ggumteo.mapper.audition;
 import com.app.ggumteo.domain.audition.AuditionDTO;
 import com.app.ggumteo.domain.audition.AuditionVO;
 import com.app.ggumteo.domain.work.WorkDTO;
+import com.app.ggumteo.pagination.AuditionPagination;
+import com.app.ggumteo.pagination.Pagination;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -31,8 +33,13 @@ public interface AuditionMapper {
     void deletePostById(Long id);
 
     // 전체목록 조회
-    List<AuditionDTO> selectAll();
+    List<AuditionDTO> selectAll(
+            @Param("keyword") String keyword,
+            @Param("pagination") AuditionPagination pagination
+    );
 
+    // 검색 조건이 포함된 총 작품 수 조회
+    int selectTotalWithSearch(@Param("keyword") String keyword);
 
 
 }

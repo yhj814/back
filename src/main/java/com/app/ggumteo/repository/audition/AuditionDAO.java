@@ -4,6 +4,8 @@ import com.app.ggumteo.domain.audition.AuditionDTO;
 import com.app.ggumteo.domain.audition.AuditionVO;
 import com.app.ggumteo.domain.work.WorkDTO;
 import com.app.ggumteo.mapper.audition.AuditionMapper;
+import com.app.ggumteo.pagination.AuditionPagination;
+import com.app.ggumteo.pagination.Pagination;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -32,7 +34,13 @@ public class AuditionDAO {
     public void deleteAudition(Long id) {auditionMapper.deleteById(id);}
 
 //    목록 조회
-    public List<AuditionDTO> findAllAuditions() {return auditionMapper.selectAll();}
+    public List<AuditionDTO> findAllAuditions(String keyword, AuditionPagination pagination) {
+        return auditionMapper.selectAll(keyword, pagination);}
+
+//    검색조건이 포함된 총 모집 수
+    public int findTotalAuditionsSearch(String keyword) {
+        return auditionMapper.selectTotalWithSearch(keyword);
+    }
 
 
 }

@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.awt.print.Pageable;
 import java.util.List;
+import java.util.Map;
 
 
 @Service
@@ -21,32 +22,35 @@ import java.util.List;
 @Slf4j
 public class InquiryServiceImpl implements InquiryService {
 
-    private final InquiryDAO inquiryDAO; // final로 선언하여 주입받도록 설정
-    private final InquiryMapper inquiryMapper;
+    private final InquiryDAO inquiryDAO;
 
     @Override
     public void writeInquiry(PostDTO postDTO) {
-        // tbl_post에 문의사항을 삽입
         inquiryDAO.insertInquiry(postDTO);
 
-        // 마지막으로 삽입된 ID를 가져와서 PostDTO에 세팅
         Long lastInsertId = inquiryDAO.getLastInsertId();
-        postDTO.setId(lastInsertId); // 가져온 ID를 PostDTO에 설정
-
-        // tbl_inquiry에 삽입
+        postDTO.setId(lastInsertId);
         inquiryDAO.insertInquiryToTblInquiry(postDTO);
+
+        log.info("문의사항 작성 완료, ID: {}", lastInsertId);
     }
 
     @Override
-    public List<InquiryDTO> getList(AdminPagination pagination) {
-        log.info("Fetching inquiry list with pagination: {}", pagination);
-        List<InquiryDTO> inquiries = inquiryDAO.findAllInquiry(pagination);
-        log.info("Fetched inquiries: {}", inquiries);
-        return inquiries;
+    public List<InquiryDTO> getInquiries(AdminPagination pagination) {
+        return inquiryDAO.selectAll(pagination);
     }
 
     @Override
-    public int getTotal(){
-        return inquiryDAO.getTotalInquiry();
+    public int getTotalInquiries() {
+        return inquiryDAO.countTotal();
+    }
+
+    @Override
+    public Map<String, Object> registerAnswer(Long inquiryId, String answerContent ,String answerDate) {
+        inquiryDAO.updateInquiryStatus(inquiryId);
+        return inquiryDAO.insertAdminAnswer(inquiryId, answerContent,answerDate);
     }
 }
+
+
+
