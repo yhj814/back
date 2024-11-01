@@ -2,6 +2,7 @@ package com.app.ggumteo.repository.audition;
 
 import com.app.ggumteo.domain.audition.AuditionDTO;
 import com.app.ggumteo.domain.audition.AuditionVO;
+import com.app.ggumteo.domain.file.PostFileDTO;
 import com.app.ggumteo.domain.work.WorkDTO;
 import com.app.ggumteo.mapper.audition.AuditionMapper;
 import com.app.ggumteo.pagination.AuditionPagination;
@@ -42,5 +43,7 @@ public class AuditionDAO {
         return auditionMapper.selectTotalWithSearch(keyword);
     }
 
+//    다중 파일 조회
+    public List<PostFileDTO> findFilesByAuditionId(Long postId) {return auditionMapper.selectFilesByPostId(postId);}
 
 }

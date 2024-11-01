@@ -110,33 +110,84 @@ function truncateText(selector, maxLength = 8) {
 
 //------------------------------------------------------------------------------------------------------------------
 //문의사항
-
 const inquiryService = {
-    // 문의사항 목록 조회 (페이지 기반 페이징 처리)
-    async fetchInquiries(page = 1) {
-        const response = await fetch(`/admin/inquiries?page=${page}`);
-        if (!response.ok) throw new Error("Failed to fetch inquiries");
-        return await response.json();
+    // 정렬 기준을 상수로 정의하여 HTML의 필터 ID와 매칭
+    ORDER_INQUIRY_CREATED_DATE: "inquiry-created-date",
+    ORDER_ANSWER_CREATED_DATE: "inquiry-answer-created-date",
+    ORDER_NO_ANSWER: "no-answer-filter",
+
+    // 정렬 기준(order), 검색어, 페이지가 적용된 문의사항 목록 조회
+    async fetchInquiries(page = 1, order = this.ORDER_INQUIRY_CREATED_DATE, searchQuery = "") {
+        try {
+            const response = await fetch(`/admin/inquiries?page=${page}&order=${order}&search=${encodeURIComponent(searchQuery)}`);
+            if (!response.ok) throw new Error("문의사항 조회 실패");
+
+            const result = await response.json();
+            console.log("정렬 기준 및 검색 결과:", order, searchQuery, result);
+            return result;
+        } catch (error) {
+            console.error("문의사항 조회 중 오류 발생:", error);
+            alert("문의사항 목록을 가져오는 중 오류가 발생했습니다.");
+            throw error;
+        }
     },
 
     // 답변 등록 (특정 inquiryId에 대한 답변 내용 전송)
-    async postAnswer(inquiryId, answerContent ) {
+    async postAnswer(inquiryId, answerContent) {
+        try {
+            const response = await fetch(`/admin/inquiries/${inquiryId}/answer`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ answerContent })
+            });
+            if (!response.ok) throw new Error("답변 등록 실패");
 
-        const response = await fetch(`/admin/inquiries/${inquiryId}/answer`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ answerContent })
-        });
-        console.log("Attempting to post answer for inquiryId:", inquiryId);
+            const result = await response.json();
+            console.log("답변 등록 결과:", result);
+            return { createdDate: result.createdDate, answerContent };
+        } catch (error) {
+            console.error("답변 등록 중 오류 발생:", error);
+            alert("답변 등록 중 오류가 발생했습니다.");
+            throw error;
+        }
+    },
 
-        if (!response.ok) throw new Error("Failed to post answer");
+    // 선택된 문의사항 삭제
+    async deleteSelectedInquiries(selectedIds) {
+        try {
+            const response = await fetch('/admin/inquiry/delete', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(selectedIds)
+            });
 
-        // 응답에서 답변 내용과 답변 생성일을 포함한 객체를 반환
-        const result = await response.json();
-        console.log("Response from server:", result);
-        return { createdDate: result.createdDate, answerContent };
+            if (!response.ok) {
+                const errorText = await response.text();
+                throw new Error(`문의사항 삭제 실패: ${errorText}`);
+            }
+
+            const resultMessage = await response.text();
+            console.log("선택된 문의사항 삭제 성공:", selectedIds);
+            alert(resultMessage);  // 성공 메시지 알림
+            return resultMessage;
+        } catch (error) {
+            console.error("문의사항 삭제 중 오류 발생:", error);
+            alert("문의사항 삭제 중 오류가 발생했습니다. 다시 시도해 주세요.");
+            throw error;
+        }
     }
+
 };
+
+
+
+
+
+
+
+
 

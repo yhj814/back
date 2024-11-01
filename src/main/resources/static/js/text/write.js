@@ -98,6 +98,35 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
     }
+    const fileUploadInputs = document.querySelectorAll('input[type="file"]');
+
+    // 각 파일 업로드 필드에 대해 change 이벤트 리스너 추가
+    fileUploadInputs.forEach((fileInput) => {
+        fileInput.addEventListener("change", function () {
+            const file = fileInput.files[0];
+            if (file) {
+                const formData = new FormData();
+                formData.append("file", file);
+
+                // 파일 서버로 업로드
+                fetch("/text/upload", {
+                    method: "POST",
+                    body: formData,
+                })
+                    .then((response) => response.json())
+                    .then((data) => {
+                        if (data.fileName && data.filePath) {
+                            console.log("파일이 성공적으로 업로드되었습니다.");
+                        } else {
+                            console.error("파일 업로드 중 오류가 발생했습니다.");
+                        }
+                    })
+                    .catch((error) => {
+                        console.error("Error:", error);
+                    });
+            }
+        });
+    });
 
     const form = document.querySelector("#writeForm");
     const submitButton = document.querySelector(".btn-submit");

@@ -5,9 +5,17 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>모집 작성하기</title>
         <link rel="stylesheet" href="/css/audition/video/write.css" />
+        <link rel="stylesheet" th:href="@{/css/header/logout.css}">
+        <link rel="stylesheet" th:href="@{/css/header/login.css}">
+        <link rel="stylesheet" th:href="@{/css/footer/footer.css}">
     </head>
     <body>
-        <header></header>
+    <th:block th:if="${isLoggedIn}">
+        <div th:replace="~{header-login :: header}"></div>
+    </th:block>
+    <th:block th:if="${!isLoggedIn}">
+        <div th:replace="~{header-logout :: header}"></div>
+    </th:block>
         <main>
             <div class="main">
                 <div class="header edit-header">
@@ -424,7 +432,7 @@
                                             class="write-description-box write-detail"
                                         >
                                             <div class="write-content">
-                                                작품설명
+                                                모집 내용 설명
                                                 <span class="star">*</span>
                                             </div>
                                             <input
@@ -456,9 +464,7 @@
                                                     class="title-img"
                                                 />
                                                 <span class="title-text">
-                                                    작품의 사진, 영상을 올려
-                                                    결과물에 더욱 신뢰감을 줄 수
-                                                    있습니다.
+                                                    첨부할 이미지나 영상을 올려주세요.
                                                 </span>
                                             </div>
                                             <div id="img-box-container">
@@ -499,13 +505,13 @@
                                                                 <div
                                                                     class="img-box-title"
                                                                 >
-                                                                    작품 영상,
+                                                                    영상,
                                                                     이미지 등록
                                                                 </div>
                                                                 <div
                                                                     class="img-box-text"
                                                                 >
-                                                                    작품 결과물
+                                                                    모집 내용
                                                                     혹은 설명을
                                                                     돕는
                                                                     이미지를
@@ -582,8 +588,11 @@
                 </div>
             </div>
         </main>
-        <footer></footer>
+    <footer th:replace="~{footer.html :: footer}"></footer>
     </body>
     <script src="/js/audition/write-file.js"></script>
     <script src="/js/audition/write-input.js"></script>
+    <script th:src="@{/js/header/header-logout.js}"></script>
+    <script th:src="@{/js/header/header-login.js}"></script>
+    <script th:src="@{/js/header/logout-click.js}"></script>
 </html>

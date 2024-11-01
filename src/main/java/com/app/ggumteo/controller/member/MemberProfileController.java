@@ -47,33 +47,33 @@ public class MemberProfileController {
             }
 
             // 'memberId' 설정
-            memberProfileDTO.setMemberId(member.getId()); // member 객체의 id를 memberProfileDTO의 memberId로 설정
+            memberProfileDTO.setMemberId(member.getId());
             log.info("설정된 memberId: {}", member.getId());
 
             // 프로필 정보 DB 저장 및 생성된 memberProfileId 가져오기
             MemberProfileDTO savedProfile = memberProfileService.write(memberProfileDTO);
-            Long memberProfileId = savedProfile.getId();  // 저장된 프로필의 ID 가져오기
+            Long memberProfileId = savedProfile.getId();
             log.info("생성된 memberProfileId: {}", memberProfileId);
 
-            // 파일이 있는 경우 파일 저장 로직 호출 및 파일 정보 로그 출력
+            // 세션에 memberProfile 객체 추가
+            session.setAttribute("memberProfile", savedProfile);
+
+            // 파일이 있는 경우 파일 저장 로직 호출
             if (profileFile != null && !profileFile.isEmpty()) {
                 log.info("첨부된 파일 이름: {}", profileFile.getOriginalFilename());
-                log.info("첨부된 파일 크기: {} bytes", profileFile.getSize());
-                log.info("첨부된 파일 타입: {}", profileFile.getContentType());
-
-                // 파일 저장 서비스 호출
                 profileFileServiceImpl.saveProFile(profileFile, memberProfileId);
                 log.info("첨부 파일 저장 완료.");
             } else {
                 log.info("첨부 파일 없음. 파일 저장 과정 생략.");
             }
 
-            log.info("작성 완료: 회원 프로필이 성공적으로 제출되었습니다.");
+            log.info("회원 프로필이 성공적으로 제출되었습니다.");
             return "redirect:/main";
         } catch (Exception e) {
             log.error("작성 실패: 글 저장 중 오류 발생. 요청 URI: {}", request.getRequestURI(), e);
             return "redirect:/sign-up";
         }
     }
+
 
 }

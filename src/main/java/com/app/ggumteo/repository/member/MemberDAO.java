@@ -1,5 +1,6 @@
 package com.app.ggumteo.repository.member;
 
+import com.app.ggumteo.domain.member.MemberProfileDTO;
 import com.app.ggumteo.domain.member.MemberVO;
 import com.app.ggumteo.mapper.audition.AuditionMapper;
 import com.app.ggumteo.mapper.member.MemberMapper;
@@ -25,8 +26,9 @@ public class MemberDAO {
         memberMapper.updateProfileImgUrl(memberEmail, profileImgUrl);
     }
 
-
-
+    public Optional<MemberProfileDTO> findByMemberId(Long memberId) {
+        return memberMapper.getMemberProfileByMemberId(memberId);
+    }
 
 
 

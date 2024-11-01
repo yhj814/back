@@ -1,6 +1,7 @@
 package com.app.ggumteo.controller.member;
 
 import com.app.ggumteo.domain.member.MemberDTO;
+import com.app.ggumteo.domain.member.MemberProfileDTO;
 import com.app.ggumteo.domain.member.MemberVO;
 import com.app.ggumteo.service.member.KakaoService;
 import com.app.ggumteo.service.member.MemberService;
@@ -31,20 +32,28 @@ public class KakaoController {
             Optional<MemberVO> existingMember = memberService.getKakaoMember(kakaoInfo.get().getMemberEmail());
 
             if (existingMember.isEmpty()) {
-                kakaoInfo.get().setMemberStatus("모집중");
                 MemberVO newMember = kakaoInfo.get().toVO();
-                newMember = memberService.join(newMember);  // join 후 id가 포함된 newMember를 반환받음
+                newMember = memberService.join(newMember);
                 session.setAttribute("member", newMember);
                 session.setAttribute("kakaoToken", token);
                 log.info("최초 로그인: {}", newMember);
-                log.info("세션 ID (로그인 후): {}", session.getId()); // 세션 ID 로그 추가
                 return new RedirectView("/sign-up");
             } else {
                 memberService.updateProfileImgUrl(kakaoInfo.get().getMemberEmail(), kakaoInfo.get().getProfileImgUrl());
                 session.setAttribute("member", existingMember.get());
                 session.setAttribute("kakaoToken", token);
+
+                // memberId로 memberProfile 조회 및 세션에 저장
+                Long memberId = existingMember.get().getId();
+                Optional<MemberProfileDTO> memberProfile = memberService.getMemberProfileByMemberId(memberId);
+                if (memberProfile.isPresent()) {
+                    session.setAttribute("memberProfile", memberProfile.get());
+                    log.info("memberProfile 세션에 저장: {}", memberProfile.get());
+                } else {
+                    log.warn("해당 memberId에 대한 memberProfile 정보가 존재하지 않습니다.");
+                }
+
                 log.info("로그인 성공 및 프로필 이미지 업데이트: {}", existingMember.get());
-                log.info("세션 ID (로그인 후): {}", session.getId()); // 세션 ID 로그 추가
                 return new RedirectView(redirectUrl != null ? redirectUrl : "/main");
             }
         } else {
@@ -52,6 +61,7 @@ public class KakaoController {
             return new RedirectView("/error");
         }
     }
+
 
     @PostMapping("/kakao/logout")
     public RedirectView kakaoLogout(HttpSession session) {
