@@ -24,6 +24,7 @@ public class WorkDTO {
     private String postContent;
     private String postType;
     private String fileContent;
+    private double star;
     private String createdDate; // 생성 날짜
     private String updatedDate; // 수정 날짜
     private String thumbnailFilePath; // 썸네일 파일 경로
