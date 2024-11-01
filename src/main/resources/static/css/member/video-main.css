@@ -2165,3 +2165,8 @@ p {
     
     
 }
+
+/*서버 작업 - 스타일 추가 내용*/
+.setting-table.active {
+    display: block;
+}

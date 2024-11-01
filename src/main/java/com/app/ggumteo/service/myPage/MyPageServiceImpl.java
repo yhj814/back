@@ -7,6 +7,7 @@ import com.app.ggumteo.domain.member.MemberDTO;
 import com.app.ggumteo.domain.member.MemberVO;
 import com.app.ggumteo.pagination.MyPagePagination;
 import com.app.ggumteo.pagination.Pagination;
+import com.app.ggumteo.pagination.WorkAndFundingPagination;
 import com.app.ggumteo.repository.funding.FundingDAO;
 import com.app.ggumteo.repository.member.MemberDAO;
 import lombok.RequiredArgsConstructor;
@@ -34,13 +35,13 @@ public class MyPageServiceImpl implements MyPageService {
     }
 
     @Override
-    public MyFundingListDTO getMyFundingList(int page ,MyPagePagination myPagePagination, Long memberId) {
+    public MyFundingListDTO getMyFundingList(int page , WorkAndFundingPagination workAndFundingPagination, Long memberId) {
         MyFundingListDTO myFundingListDTO = new MyFundingListDTO();
-        myPagePagination.setPage(page);
-        myPagePagination.setTotal(fundingDAO.getTotal(memberId));
-        myPagePagination.progress();
-        myFundingListDTO.setMyPagePagination(myPagePagination);
-        myFundingListDTO.setMyFundingPosts(fundingDAO.findByMemberId(myPagePagination, memberId));
+        workAndFundingPagination.setPage(page);
+        workAndFundingPagination.setTotal(fundingDAO.getTotal(memberId));
+        workAndFundingPagination.progress();
+        myFundingListDTO.setWorkAndFundingPagination(workAndFundingPagination);
+        myFundingListDTO.setMyFundingPosts(fundingDAO.findByMemberId(workAndFundingPagination, memberId));
 
         return myFundingListDTO;
     }

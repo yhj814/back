@@ -7,6 +7,7 @@ import com.app.ggumteo.domain.member.MemberDTO;
 import com.app.ggumteo.domain.member.MemberVO;
 import com.app.ggumteo.mapper.FundingMapperTests;
 import com.app.ggumteo.pagination.MyPagePagination;
+import com.app.ggumteo.pagination.WorkAndFundingPagination;
 import com.app.ggumteo.service.myPage.MyPageService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -37,11 +38,11 @@ public class MyPageServiceTests {
     @Test
     public void testGetMyFundingPosts() {
         MemberVO memberVO = null;
-        MyPagePagination myPagePagination = new MyPagePagination();
+        WorkAndFundingPagination workAndFundingPagination = new WorkAndFundingPagination();
         memberVO = myPageService.getMember(1L).get();
-        myPagePagination.setTotal(myPageService.getTotal(memberVO.getId()));
-        myPagePagination.progress();
-        MyFundingListDTO fundingList = myPageService.getMyFundingList(1, myPagePagination, memberVO.getId());
+        workAndFundingPagination.setTotal(myPageService.getTotal(memberVO.getId()));
+        workAndFundingPagination.progress();
+        MyFundingListDTO fundingList = myPageService.getMyFundingList(1, workAndFundingPagination, memberVO.getId());
 
         log.info("service-test={}", fundingList.toString());
 
