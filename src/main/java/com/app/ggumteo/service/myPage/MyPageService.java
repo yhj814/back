@@ -7,6 +7,7 @@ import com.app.ggumteo.domain.member.MemberDTO;
 import com.app.ggumteo.domain.member.MemberVO;
 import com.app.ggumteo.pagination.MyPagePagination;
 import com.app.ggumteo.pagination.Pagination;
+import com.app.ggumteo.pagination.SettingTablePagination;
 import com.app.ggumteo.pagination.WorkAndFundingPagination;
 
 import java.util.List;
@@ -14,7 +15,7 @@ import java.util.Optional;
 
 public interface MyPageService {
     //    회원 정보 조회
-    public Optional<MemberVO> getMember(Long Id);
+    public Optional<MemberVO> getMember(Long id);
 
     //    내 펀딩 게시물 조회
     public MyFundingListDTO getMyFundingList(int page , WorkAndFundingPagination workAndFundingPagination, Long memberId);
@@ -22,6 +23,9 @@ public interface MyPageService {
     //    내 펀딩 게시물 전체 개수
     public int getTotal(Long memberId);
 
+    //    펀딩 정보 조회
+    public Optional<FundingDTO> getFunding(Long id);
+
     //    구매자 목록 조회
-    public List<BuyFundingProductDTO> getFundingBuyerList(Long fundingPostId);
+    public List<BuyFundingProductDTO> getFundingBuyerList(SettingTablePagination settingTablePagination, Long fundingPostId);
 }

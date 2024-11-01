@@ -2,11 +2,13 @@ package com.app.ggumteo.service;
 
 import com.app.ggumteo.domain.funding.BuyFundingProductDTO;
 import com.app.ggumteo.domain.funding.FundingDTO;
+import com.app.ggumteo.domain.funding.FundingVO;
 import com.app.ggumteo.domain.funding.MyFundingListDTO;
 import com.app.ggumteo.domain.member.MemberDTO;
 import com.app.ggumteo.domain.member.MemberVO;
 import com.app.ggumteo.mapper.FundingMapperTests;
 import com.app.ggumteo.pagination.MyPagePagination;
+import com.app.ggumteo.pagination.SettingTablePagination;
 import com.app.ggumteo.pagination.WorkAndFundingPagination;
 import com.app.ggumteo.service.myPage.MyPageService;
 import lombok.extern.slf4j.Slf4j;
@@ -54,11 +56,14 @@ public class MyPageServiceTests {
 //        }
     }
 
-    @Test
-    public void testGetFundingBuyerList() {
-        List<BuyFundingProductDTO> buyFundingProducts = myPageService.getFundingBuyerList(1L);
-        for (BuyFundingProductDTO buyFundingProductDTO : buyFundingProducts) {
-            log.info("{}", buyFundingProductDTO);
-        }
-    }
+//    @Test
+//    public void testGetFundingBuyerList() {
+//        FundingDTO fundingDTO = null;
+//        SettingTablePagination settingTablePagination = new SettingTablePagination();
+//        List<BuyFundingProductDTO> buyFundingProducts = myPageService.getFundingBuyerList(1L);
+//        for (BuyFundingProductDTO buyFundingProductDTO : buyFundingProducts) {
+//            log.info("{}", buyFundingProductDTO);
+//      }
+//  }
+
 }

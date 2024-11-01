@@ -7,6 +7,7 @@ import com.app.ggumteo.domain.member.MemberDTO;
 import com.app.ggumteo.domain.member.MemberVO;
 import com.app.ggumteo.pagination.MyPagePagination;
 import com.app.ggumteo.pagination.Pagination;
+import com.app.ggumteo.pagination.SettingTablePagination;
 import com.app.ggumteo.pagination.WorkAndFundingPagination;
 import com.app.ggumteo.repository.funding.FundingDAO;
 import com.app.ggumteo.repository.member.MemberDAO;
@@ -30,8 +31,8 @@ public class MyPageServiceImpl implements MyPageService {
 
 
     @Override
-    public Optional<MemberVO> getMember(Long Id) {
-        return memberDAO.findById(Id);
+    public Optional<MemberVO> getMember(Long id) {
+        return memberDAO.findById(id);
     }
 
     @Override
@@ -52,7 +53,12 @@ public class MyPageServiceImpl implements MyPageService {
     }
 
     @Override
-    public List<BuyFundingProductDTO> getFundingBuyerList(Long fundingPostId) {
-        return fundingDAO.findBuyerByFundingPostId(fundingPostId);
+    public Optional<FundingDTO> getFunding(Long id) {
+        return fundingDAO.findById(id);
+    }
+
+    @Override
+    public List<BuyFundingProductDTO> getFundingBuyerList(SettingTablePagination settingTablePagination, Long fundingPostId) {
+        return fundingDAO.findBuyerByFundingPostId(settingTablePagination, fundingPostId);
     }
 }

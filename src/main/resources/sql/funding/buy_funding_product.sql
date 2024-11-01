@@ -30,13 +30,13 @@ select id, product_name, product_price, product_amount, funding_id
 from tbl_funding_product;
 insert into tbl_funding_product
 (product_name, product_price, product_amount, funding_id)
-values ('펀딩 상품3 이름 test4', '40000', '60', 1);
+values ('펀딩9 상품5', '10000', '60', 9);
 
 select id, member_profile_id, funding_product_id, funding_send_status
 from tbl_buy_funding_product;
 insert into tbl_buy_funding_product
-(member_profile_id, funding_product_id, funding_send_status)
-values (9, 9, 0);
+(member_profile_id, funding_product_id)
+values (2, 13);
 
 
 SELECT f.id, f.genre_type, p.post_title, p.post_content, p.post_type, p.member_profile_id, p.created_date, p.updated_date, mp.profile_nickname, mp.member_id, m.profile_img_url
@@ -48,16 +48,26 @@ FROM
 WHERE
     m.id = 1;
 
-SELECT f.id ,bfp.id AS '펀딩상품 구매 ID', bfp.funding_send_status AS '발송 여부'
-     , fp.product_name, fp.product_price
-     , bfp_mp .profile_name AS '구매자 이름', bfp_mp .profile_email AS '구매자 이메일'
+SELECT f.id AS 'funding ID',bfp.id AS 'buy_funding_product ID', bfp.funding_send_status AS '발송 여부'
+     , fp.id AS 'funding_product ID' ,fp.product_name, fp.product_price
+     , bfp_mp.id AS '구매자 profile ID' ,bfp_mp .profile_name AS '구매자 이름', bfp_mp .profile_email AS '구매자 이메일'
 FROM
     tbl_buy_funding_product bfp
         JOIN tbl_funding_product fp ON bfp.funding_product_id = fp.id
         JOIN tbl_funding f ON fp.funding_id = f.id
-        JOIN tbl_post p ON f.id = p.id AND f.id = 1
+        JOIN tbl_post p ON f.id = p.id AND f.id = 9
+        JOIN tbl_member_profile mp ON p.member_profile_id = mp.id
+        JOIN tbl_member m ON mp.member_id = m.id
+        JOIN tbl_member_profile bfp_mp ON bfp.member_profile_id = bfp_mp.id
+order by f.id desc
+    limit 0, 4;
+-- 그 회원의 펀딩 포스트 Id
+
+select count(*) FROM
+    tbl_buy_funding_product bfp
+        JOIN tbl_funding_product fp ON bfp.funding_product_id = fp.id
+        JOIN tbl_funding f ON fp.funding_id = f.id
+        JOIN tbl_post p ON f.id = p.id AND f.id = 9
         JOIN tbl_member_profile mp ON p.member_profile_id = mp.id
         JOIN tbl_member m ON mp.member_id = m.id
         JOIN tbl_member_profile bfp_mp ON bfp.member_profile_id = bfp_mp.id;
-
--- 그 회원의 펀딩 포스트 Id

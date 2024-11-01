@@ -6,6 +6,7 @@ import com.app.ggumteo.domain.funding.MyFundingListDTO;
 import com.app.ggumteo.domain.member.MemberDTO;
 import com.app.ggumteo.domain.member.MemberVO;
 import com.app.ggumteo.pagination.MyPagePagination;
+import com.app.ggumteo.pagination.SettingTablePagination;
 import com.app.ggumteo.pagination.WorkAndFundingPagination;
 import com.app.ggumteo.service.member.MemberService;
 import com.app.ggumteo.service.myPage.MyPageService;
@@ -45,7 +46,8 @@ public class MemberRestController {
     // SELECT
     @ResponseBody
     @GetMapping("/members/video/myFunding/getBuyerList/{fundingPostId}")
-    public List<BuyFundingProductDTO> getFundingBuyerList(@PathVariable("fundingPostId") Long fundingPostId) {
-        return myPageService.getFundingBuyerList(fundingPostId);
+    public List<BuyFundingProductDTO> getFundingBuyerList(@PathVariable("fundingPostId") Long fundingPostId
+            , SettingTablePagination settingTablePagination) {
+        return myPageService.getFundingBuyerList(settingTablePagination, fundingPostId);
     }
 }
