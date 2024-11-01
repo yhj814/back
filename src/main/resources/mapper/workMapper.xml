@@ -135,4 +135,11 @@
             pf.post_id = #{postId}
         order by pf.id
     </select>
+
+    <insert id="insertPurchase">
+        insert into tbl_buy_work (member_profile_id, work_id, work_send_status)
+        values (#{memberProfileId}, #{workId}, #{workSendStatus})
+    </insert>
+
+
 </mapper>
