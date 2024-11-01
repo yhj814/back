@@ -5,13 +5,23 @@ import com.app.ggumteo.domain.post.PostDTO;
 import com.app.ggumteo.pagination.AdminPagination;
 
 import java.util.List;
+import java.util.Map;
 
 
 public interface InquiryService {
-
+    // 문의사항 작성
     void writeInquiry(PostDTO postDTO);
 
-    List<InquiryDTO> getList(AdminPagination pagination);
+    // 페이징 처리된 전체 문의사항 조회
+    List<InquiryDTO> getInquiries(AdminPagination pagination);
 
-    int getTotal();
+    // 총 문의사항 개수 조회
+    int getTotalInquiries();
+
+    // 문의 상태 업데이트 및 답변 등록 후 답변 내용과 생성일 반환
+    Map<String, Object> registerAnswer(Long inquiryId, String answerContent ,String answerDate);
+
+
 }
+
+

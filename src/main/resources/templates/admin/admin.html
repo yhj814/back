@@ -4701,20 +4701,6 @@
                                 </div>
                                 <nav class="pagination">
                                     <ul class="pagination-list">
-                                        <!-- 처음 페이지로 이동하는 버튼 -->
-                                        <li class="pagination-first">
-                                            <a
-                                                    href="#"
-                                                    class="pagination-first-link"
-                                                    rel="nofollow"
-                                            >
-                                                        <span
-                                                                class="pagination-first-icon"
-                                                                aria-hidden="true"
-                                                        >«</span
-                                                        >
-                                            </a>
-                                        </li>
                                         <!-- 이전 페이지로 이동하는 버튼 -->
                                         <li class="pagination-prev">
                                             <a
@@ -4747,20 +4733,6 @@
                                                                 class="pagination-next-icon"
                                                                 aria-hidden="true"
                                                         >›</span
-                                                        >
-                                            </a>
-                                        </li>
-                                        <!-- 마지막 페이지로 이동하는 버튼 -->
-                                        <li class="pagination-last">
-                                            <a
-                                                    href="#"
-                                                    class="pagination-last-link"
-                                                    rel="nofollow"
-                                            >
-                                                        <span
-                                                                class="pagination-last-icon"
-                                                                aria-hidden="true"
-                                                        >»</span
                                                         >
                                             </a>
                                         </li>
@@ -4908,7 +4880,7 @@
                         <div>
                             <div>
                                 <!-- body_layout -->
-                                <div class="common-layout-container">
+                                <div class="common-layout-container" id="inquiry-id">
                                     <div class="filter-wrap">
                                         <div class="sort-filter-options">
                                                     <span
@@ -4945,6 +4917,7 @@
                                                 <input
                                                         type="checkbox"
                                                         class="select-all"
+                                                        id="inquiry-list-select-all"
                                                 />
                                             </div>
                                             <div
@@ -4989,161 +4962,44 @@
                                                 답변일자
                                             </div>
                                         </div>
-
-                                        <!-- Example row (Initial data) -->
-                                        <div class="apply-table-row">
-                                            <div class="apply-table-cell">
-                                                <input
-                                                        type="checkbox"
-                                                        class="apply-checkbox"
-                                                />
-                                            </div>
-                                            <div class="apply-table-cell">1</div>
-                                            <div class="apply-table-cell">
-                                                2024-01-01
-                                            </div>
-                                            <div class="apply-table-cell">
-                                                문의 제목 테스트
-                                            </div>
-
-                                            <div class="apply-table-cell">
-                                                문의 내용 테스트입니다.
-                                            </div>
-                                            <div class="apply-table-cell">
-                                                홍길동
-                                            </div>
-                                            <div class="apply-table-cell">test-service@gmail.com</div>
-                                            <div class="apply-table-cell">
-                                                <button
-                                                        class="answered-btn status unanswered"
-                                                >
-                                                    미답변
-                                                </button>
-                                            </div>
-                                            <div class="apply-table-cell">
-                                                2024-02-02
-                                            </div>
-                                        </div>
-
-                                        <div class="apply-table-row">
-                                            <div class="apply-table-cell">
-                                                <input
-                                                        type="checkbox"
-                                                        class="apply-checkbox"
-                                                />
-                                            </div>
-                                            <div class="apply-table-cell">4</div>
-                                            <div class="apply-table-cell">
-                                                2024-01-01
-                                            </div>
-                                            <div class="apply-table-cell">
-                                                문의 제목 테스트
-                                            </div>
-
-                                            <div class="apply-table-cell">
-                                                문의 내용 테스트입니다.
-                                            </div>
-                                            <div class="apply-table-cell">
-                                                홍길동
-                                            </div>
-                                            <div class="apply-table-cell">test-service@gmail.com</div>
-                                            <div class="apply-table-cell">
-                                                <button
-                                                        class="answered-btn status completed"
-                                                >
-                                                    답변 완료
-                                                </button>
-                                            </div>
-                                            <div class="apply-table-cell">
-                                                2024-02-02
-                                            </div>
+                                        <div id="inquiry-list">
+                                            <!--js로 삽입-->
                                         </div>
                                     </div>
                                 </div>
-                                <nav class="pagination">
+                                <nav class="pagination" id="pagination-inquiry">
                                     <ul class="pagination-list">
-                                        <!-- 이전 페이지로 이동하는 버튼 -->
-                                        <li class="pagination-prev">
-                                            <a
-                                                    href="#"
-                                                    class="pagination-prev-link"
-                                                    rel="prev nofollow"
-                                            >
-                                                        <span
-                                                                class="pagination-prev-icon"
-                                                                aria-hidden="true"
-                                                        >‹</span
-                                                        >
-                                            </a>
-                                        </li>
-                                        <!-- 페이지 번호 버튼 -->
-                                        <li class="pagination-page active">
-                                            <a href="#" class="pagination-page-link"
-                                            >1</a
-                                            >
-                                        </li>
-
-                                        <!-- 다음 페이지로 이동하는 버튼 -->
-                                        <li class="pagination-next">
-                                            <a
-                                                    href="#"
-                                                    class="pagination-next-link"
-                                                    rel="next nofollow"
-                                            >
-                                                        <span
-                                                                class="pagination-next-icon"
-                                                                aria-hidden="true"
-                                                        >›</span
-                                                        >
-                                            </a>
-                                        </li>
+                                        <!-- js로 삽입-->
                                     </ul>
                                 </nav>
                             </div>
                             <!-- 문의사항 답변하기 모달창 -->
-                            <div class="answered-modal unanswered">
+                            <div class="answered-modal unanswered" id="inquiry-modal">
                                 <div class="edit-modal">
                                     <div class="modal-content">
-                                        <span class="close-button">&times;</span>
+                                        <span class="close-button" id="close-modal">&times;</span>
                                         <h2>문의사항 답변하기</h2>
-                                        <form class="edit-form">
+                                        <form class="edit-form" id="answer-form">
                                             <div>
                                                 <label for="edit-post-title">문의 제목:</label>
-                                                <input
-                                                        type="text"
-                                                        class="edit-post-title"
-                                                        value="문의 제목 테스트"
-                                                        readonly
-                                                />
+                                                <input type="text" class="edit-post-title" id="modal-post-title" readonly />
 
                                                 <label for="edit-post-content">문의 내용:</label>
-                                                <textarea
-                                                        class="edit-post-content"
-                                                        name="edit-post-content"
-                                                        readonly
-                                                        placeholder="문의 내용 테스트입니다~~~~~~~~~~문의 내용 테스트입니다~~~~~~~~~~문의 내용 테스트입니다~~~~~~~~~~문의 내용 테스트입니다~~~~~~~~~~문의 내용 테스트입니다~~~~~~~~~~문의 내용 테스트입니다~~~~~~~~~~문의 내용 테스트입니다~~~~~~~~~~문의 내용 테스트입니다~~~~~~~~~~문의 내용 테스트입니다~~~~~~~~~~문의 내용 테스트입니다~~~~~~~~~~"
-                                                ></textarea>
+                                                <textarea class="edit-post-content" id="modal-post-content" readonly></textarea>
 
                                                 <h3>답변하기</h3>
-                                                <textarea
-                                                        class="comment-textarea"
-                                                        name="comment"
-                                                        placeholder="답변 내용을 적어주세요."
-                                                ></textarea>
+                                                <textarea class="comment-textarea" id="modal-comment" placeholder="답변 내용을 적어주세요."></textarea>
                                             </div>
-
                                             <!-- 저장 버튼 -->
                                             <div class="save">
-                                                <button type="button" class="save-button">
-                                                    답변 등록
-                                                </button>
+                                                <button type="submit" class="save-button" id="save-answer">답변 등록</button>
                                             </div>
                                         </form>
                                     </div>
                                 </div>
-                                <div class="background-overlay"></div>
+                                <div class="background-overlay" id="modal-overlay"></div>
                             </div>
-                            <!-- 문의사항 답변완료 모달창 -->
+<!--                             문의사항 답변완료 모달창-->
                             <div class="answered-modal completed">
                                 <div class="edit-modal">
                                     <div class="modal-content">
@@ -5726,6 +5582,9 @@
     </symbol>
 </svg>
 </body>
-<script src="/js/admin/announcement.js"></script>
+
+<script src="/js/admin/admin-layout.js"></script>
+<script src="/js/admin/admin-service.js"></script>
+<script src="/js/admin/admin-event.js"></script>
 <script src="/js/admin/admin.js"></script>
 </html>
