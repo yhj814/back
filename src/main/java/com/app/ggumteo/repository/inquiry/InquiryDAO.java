@@ -35,14 +35,14 @@ public class InquiryDAO {
         inquiryMapper.insertInquiryToTblInquiry(postDTO);
     }
 
-    // 페이징 처리된 전체 문의사항 조회
-    public List<InquiryDTO> selectAll(AdminPagination pagination) {
-        return inquiryMapper.selectAll(pagination);
+    // 페이징 처리된 전체 문의사항 조회 (정렬 및 검색 조건 포함)
+    public List<InquiryDTO> selectAll(AdminPagination pagination, String order, String searchKeyword) {
+        return inquiryMapper.selectAll(pagination, order, searchKeyword);
     }
 
-    // 총 문의사항 개수 조회
-    public int countTotal() {
-        return inquiryMapper.countTotal();
+    // 총 문의사항 개수 조회 (정렬 및 검색 조건 포함)
+    public int countTotal(String order, String searchKeyword) {
+        return inquiryMapper.countTotal(order, searchKeyword);
     }
 
     // 문의 상태 업데이트
@@ -51,16 +51,27 @@ public class InquiryDAO {
     }
 
     // 답변 등록 후 답변 내용과 생성일 반환
-    public Map<String, Object> insertAdminAnswer(Long inquiryId, String answerContent,String answerDate) {
-        inquiryMapper.insertAdminAnswer(inquiryId, answerContent,answerDate);
+    public Map<String, Object> insertAdminAnswer(Long inquiryId, String answerContent) {
+        inquiryMapper.insertAdminAnswer(inquiryId, answerContent); // answerDate는 제거됨
         return inquiryMapper.getAnswerContentAndDate(inquiryId);
     }
 
-    // 답변 내용과 생성일 조회
-    public Map<String, Object> getAnswerContentAndDate(Long inquiryId) {
-        return inquiryMapper.getAnswerContentAndDate(inquiryId);
+    // 문의사항과 관련된 답변, 문의, 게시물 순차적으로 삭제
+    public void deleteSelectedInquiries(List<Long> ids) {
+        // 각 테이블의 데이터를 순차적으로 삭제
+        // 1단계: 답변 삭제
+        inquiryMapper.deleteFromAdminAnswer(ids);
+
+        // 2단계: 문의 삭제
+        inquiryMapper.deleteFromInquiry(ids);
+
+        // 3단계: 게시물 삭제
+        inquiryMapper.deleteFromPost(ids);
     }
 }
+
+
+
 
 
 

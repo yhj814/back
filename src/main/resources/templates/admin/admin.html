@@ -4881,16 +4881,21 @@
                             <div>
                                 <!-- body_layout -->
                                 <div class="common-layout-container" id="inquiry-id">
-                                    <div class="filter-wrap">
-                                        <div class="sort-filter-options">
+                                    <div class="filter-wrap"
+                                    id="inquiry-filter">
+                                        <div class="sort-filter-options"
+                                        >
                                                     <span
                                                             class="sort-filter-option selected"
+                                                            id="inquiry-created-date"
                                                     >문의일 순</span
                                                     >
                                             <span class="sort-filter-option"
+                                                  id="inquiry-answer-created-date"
                                             >답변일 순</span
                                             >
                                             <span class="sort-filter-option"
+                                                  id="no-answer-filter"
                                             >미답변</span
                                             >
                                         </div>
@@ -4899,9 +4904,10 @@
                                             <input
                                                     type="text"
                                                     class="filter-search-input"
+                                                    id="inquiry-search"
                                                     placeholder="통합검색"
                                             />
-                                            <button class="selected-btn">
+                                            <button class="selected-btn" id="inquiry-delete-btn">
                                                 문의사항 삭제
                                             </button>
                                         </div>

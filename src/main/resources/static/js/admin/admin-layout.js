@@ -80,19 +80,29 @@ function updatePagination(pagination, currentPage, search, order) {
 
 //------------------------------------------------------------------------------------------------------------------
 // 문의사항
-
 const inquiryLayout = {
-    renderInquiries(inquiries) {
+    // HTML ID 상수로 지정
+    ORDER_INQUIRY_CREATED_DATE: "inquiry-created-date",
+    ORDER_ANSWER_CREATED_DATE: "inquiry-answer-created-date",
+    ORDER_NO_ANSWER: "no-answer-filter",
+
+    renderInquiries(inquiries, order = this.ORDER_INQUIRY_CREATED_DATE) {
         const inquiryList = document.getElementById("inquiry-list");
+        this.currentOrder = order; // 현재 필터 상태 저장
         inquiryList.innerHTML = ""; // 기존 목록 초기화
 
         inquiries.forEach((inquiry) => {
+            // 필터에 따른 데이터 표시 조건
+            if (this.currentOrder === this.ORDER_NO_ANSWER && inquiry.inquiryStatus !== "NO") return;
+            if (this.currentOrder === this.ORDER_ANSWER_CREATED_DATE && inquiry.inquiryStatus === "NO") return;
+
+            // HTML 구조 생성
             const inquiryItem = document.createElement("div");
             inquiryItem.classList.add("apply-table-row");
 
             inquiryItem.innerHTML = `
             <div class="apply-table-cell">
-                <input type="checkbox" class="apply-checkbox" />
+                <input type="checkbox" class="apply-checkbox " data-id="${inquiry.postId}"/>
             </div>
             <div class="apply-table-cell">${inquiry.postId}</div>
             <div class="apply-table-cell">${inquiry.postCreatedDate}</div>
@@ -126,11 +136,11 @@ const inquiryLayout = {
         // 체크박스 이벤트
         inquiryCheckboxListeners();
 
-        // 미답변 버튼 이벤트 추가
+        // 미답변일 때 답변 가능한 모달창 열기
         noAnswerModalEvents();
     },
 
-    // 답변 등록 후 화면 업데이트 메서드
+    // 답변 등록 후 화면 업데이트
     updateInquiryStatus(inquiryId, answerInfo) {
         const inquiryRow = document.querySelector(`.answered-btn[data-inquiry-id="${inquiryId}"]`).closest('.apply-table-row');
 
@@ -139,14 +149,11 @@ const inquiryLayout = {
         statusButton.classList.remove("unanswered");
         statusButton.classList.add("completed");
 
-        // 답변 내용 셀 업데이트
         const answerContentCell = inquiryRow.querySelector('.answer-content');
         answerContentCell.textContent = answerInfo.answerContent;
 
-        // 답변 날짜 셀 업데이트
         const answerDateCell = inquiryRow.querySelector('.answer-date');
         answerDateCell.textContent  = answerInfo.createdDate;
-        console.log(answerInfo);
     },
 
     // 텍스트 길이에 따라 잘라내는 함수
@@ -154,29 +161,37 @@ const inquiryLayout = {
         return text.length > maxLength ? text.slice(0, maxLength) + '...' : text;
     },
 
-    // 페이지 네이션
-    renderPagination(pagination, currentPage = 1) {
-        const paginationContainer = document.querySelector("#pagination-inquiry .pagination-list");
-        paginationContainer.innerHTML = ""; // 기존 페이지 버튼 초기화
+    // 페이지 네이션 (order 값 전달)
+   renderPagination(pagination, currentPage = 1, currentOrder = inquiryEvent.ORDER_INQUIRY_CREATED_DATE, searchQuery = "") {
+    const paginationContainer = document.querySelector("#pagination-inquiry .pagination-list");
+    paginationContainer.innerHTML = ""; // 기존 페이지 버튼 초기화
 
-        // 이전 페이지 버튼
+    // 이전 페이지 버튼 (첫 페이지일 때 비활성화)
+    paginationContainer.innerHTML += `
+        <li class="pagination-prev ${currentPage === 1 ? 'disabled' : ''}">
+            <a href="#" onclick="if(${currentPage} > 1) inquiryEvent.loadInquiries(${currentPage - 1}, '${currentOrder}', '${searchQuery}'); return false;">&lt;</a>
+        </li>`;
+
+    // 페이지 번호 버튼 생성 (startPage부터 endPage까지 표시)
+    for (let i = pagination.startPage; i <= pagination.endPage; i++) {
         paginationContainer.innerHTML += `
-            <li class="pagination-prev ${currentPage === 1 ? "disabled" : ""}">
-                <a href="#" onclick="inquiryEvent.loadInquiries(${Math.max(currentPage - 1, 1)})">&lt;</a>
-            </li>`;
-
-        // 페이지 번호 버튼 생성
-        for (let i = pagination.startPage; i <= pagination.endPage; i++) {
-            paginationContainer.innerHTML += `
-                <li class="pagination-page ${i === currentPage ? "active" : ""}">
-                    <a href="#" onclick="inquiryEvent.loadInquiries(${i})">${i}</a>
-                </li>`;
-        }
-
-        // 다음 페이지 버튼
-        paginationContainer.innerHTML += `
-            <li class="pagination-next ${currentPage === pagination.realEnd ? "disabled" : ""}">
-                <a href="#" onclick="inquiryEvent.loadInquiries(${Math.min(currentPage + 1, pagination.realEnd)})">&gt;</a>
+            <li class="pagination-page ${i === currentPage ? 'active' : ''}">
+                <a href="#" onclick="inquiryEvent.loadInquiries(${i}, '${currentOrder}', '${searchQuery}'); return false;">${i}</a>
             </li>`;
     }
+
+    // 다음 페이지 버튼 (마지막 페이지일 때 비활성화)
+    paginationContainer.innerHTML += `
+        <li class="pagination-next ${currentPage === pagination.realEnd ? 'disabled' : ''}">
+            <a href="#" onclick="if(${currentPage} < ${pagination.realEnd}) inquiryEvent.loadInquiries(${currentPage + 1}, '${currentOrder}', '${searchQuery}'); return false;">&gt;</a>
+        </li>`;
+    }
+
 };
+
+
+
+
+
+
+
