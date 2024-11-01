@@ -70,7 +70,7 @@ const replyService = (() => {
             const response = await fetch(`/replies/average-star/${workId}`);
             if (!response.ok) throw new Error("평균 별점 조회 실패");
 
-            const { averageStar } = await response.json();
+            const averageStar = parseFloat(await response.text()); // 숫자로 변환하여 사용. 문자열로 읽고, parseFloat로 숫자로 변환.
             console.log("평균 별점:", averageStar);
             return averageStar;
         } catch (error) {
@@ -78,6 +78,7 @@ const replyService = (() => {
             return 0; // 오류 발생 시 평균 별점을 0으로 반환
         }
     };
+
 
     return { write, getList, remove, getReplyCount, getAverageStar };
 })();

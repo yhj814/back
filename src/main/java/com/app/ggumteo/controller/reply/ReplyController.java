@@ -88,8 +88,9 @@ public class ReplyController {
 
     // 작품의 평균 별점 조회
     @GetMapping("/average-star/{workId}")
-    public void getAverageStar(@PathVariable Long workId) {
+    public double getAverageStar(@PathVariable Long workId) {
         double averageStar = replyService.selectAverageStarByWorkId(workId);
         log.info("평균 별점 for workId {}: {}", workId, averageStar);
+        return averageStar;
     }
 }
