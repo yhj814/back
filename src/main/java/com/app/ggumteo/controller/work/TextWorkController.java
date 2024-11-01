@@ -17,7 +17,7 @@ import com.app.ggumteo.mapper.post.PostMapper;
 import com.app.ggumteo.mapper.work.WorkMapper;
 import com.app.ggumteo.pagination.Pagination;
 import com.app.ggumteo.search.Search;
-import com.app.ggumteo.service.buy.BuyWorkServiceImpl;
+import com.app.ggumteo.service.buy.BuyWorkService;
 import com.app.ggumteo.service.file.PostFileService;
 import com.app.ggumteo.service.reply.ReplyService;
 import com.app.ggumteo.service.work.WorkService;
@@ -50,9 +50,9 @@ public class TextWorkController {
     private final WorkService workService;
     private final HttpSession session;
     private final PostFileService postFileService;
-    private final BuyWorkServiceImpl buyWorkService;
+    private final BuyWorkService buyWorkService;
 
-    @ModelAttribute
+   @ModelAttribute
     public void setTestMember(HttpSession session) {
         if (session.getAttribute("member") == null) {
             session.setAttribute("member", new MemberVO(2L, "", "", "", "", ""));
@@ -61,6 +61,19 @@ public class TextWorkController {
             session.setAttribute("memberProfile", new MemberProfileVO(2L, "", "", "", 99, "", "", "", 2L, "", ""));
         }
     }
+
+    @PostMapping("upload")
+    @ResponseBody
+    public List<PostFileDTO> upload(@RequestParam("file") List<MultipartFile> files) {
+        try {
+            return postFileService.uploadFile(files);  // 서비스의 uploadFile 메서드 호출
+        } catch (IOException e) {
+            log.error("파일 업로드 중 오류 발생: ", e);
+            return Collections.emptyList();  // 오류 발생 시 빈 리스트 반환
+        }
+    }
+
+
 
     @GetMapping("write")
     public String goToWriteForm() {
