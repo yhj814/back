@@ -14,7 +14,7 @@ public class LogAspect {
     @AfterReturning(value = "@annotation(com.app.ggumteo.aspect.annotation.MyPageLogStatus)", returning = "returnValue")
     public void afterReturning(JoinPoint joinPoint, MyFundingListDTO returnValue) {
         log.info("method: {}", joinPoint.getSignature().getName());
-        log.info("arguments: {}", joinPoint.getArgs());
+        log.info("arguments: {}", joinPoint.getArgs().toString()); //단일객체일 때는...?
         log.info("returnValue: {}", returnValue);
     }
 }

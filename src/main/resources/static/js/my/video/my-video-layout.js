@@ -123,18 +123,7 @@ const showMyFundingList = ({myFundingPosts, workAndFundingPagination}) => {
                     </div>
                 </div>
                 <div class="setting-table funding-buyer-${myFundingPost.id}" style="border-top: 1px solid rgb(224, 224, 224); display: none;">
-                    <div class="setting-th">
-                        <div class="setting-td size-l">
-                            이름/이메일
-                        </div>
-                        <div class="center-text setting-td size-s">
-                            금액
-                        </div>
-                        <div class="center-text setting-td trueorfalse">
-                            발송 여부
-                        </div>
-                    </div>
-                </div>
+                 </div>    
             </div>
         </div>
             `;
@@ -148,6 +137,8 @@ const showMyFundingList = ({myFundingPosts, workAndFundingPagination}) => {
                 <a href="${workAndFundingPagination.startPage - 1}" class="page-link back"></a>
             </li>
         `
+        console.log("펀딩 게시물 목록/이전 : ", workAndFundingPagination.prev);
+        console.log("펀딩 게시물 목록/이전 : ", pagingText);
     }
     for(let i=workAndFundingPagination.startPage; i<=workAndFundingPagination.endPage; i++){
         if(workAndFundingPagination.page === i){
@@ -163,6 +154,8 @@ const showMyFundingList = ({myFundingPosts, workAndFundingPagination}) => {
                 <a href="${workAndFundingPagination.endPage + 1}" class="page-link next"></a>
             </li>
         `
+        console.log("펀딩 게시물 목록/다음 : ", workAndFundingPagination.next);
+        console.log("펀딩 게시물 목록/다음 : ", pagingText);
     }
 
     myFundingListPaging.innerHTML = pagingText;
@@ -207,7 +200,20 @@ function timeForToday(datetime) {
 
 
 const showFundingBuyerList = ({myFundingBuyers, settingTablePagination}) => {
-    let text = `<div>
+
+    let text = `<div class="setting-th">
+                                <div class="setting-td size-l">
+                                    이름/이메일
+                                </div>
+                                <div class="center-text setting-td size-s">
+                                    금액
+                                </div>
+                                <div class="center-text setting-td trueorfalse">
+                                    발송 여부
+                                </div>
+                        </div>
+                       `
+    text += `<div>
                             <div
                                 class="setting-tr-group"
                                 style="
@@ -239,7 +245,7 @@ const showFundingBuyerList = ({myFundingBuyers, settingTablePagination}) => {
                                 margin-bottom: 35px;
                             "
                         >
-                             ${myFundingBuyer.productPrice} 원
+                             ${myFundingBuyer.productPrice}원
                         </div>
                         <div
                                 class="center-text setting-td with-btn trueorfalse"
@@ -294,7 +300,8 @@ const showFundingBuyerList = ({myFundingBuyers, settingTablePagination}) => {
             `;
 
     });
-    text += `</div>`;
+    text += `    </div>
+            </div>`;
 
     text += `<ul class="pagination theme-yozm mypage-page back-or-next">`;
 
@@ -304,6 +311,8 @@ const showFundingBuyerList = ({myFundingBuyers, settingTablePagination}) => {
                 <a href="${settingTablePagination.startPage - 1}" class="page-link back"></a>
             </li>
         `
+        console.log("구매자 목록/이전 : ", settingTablePagination.prev);
+        console.log("구매자 목록/이전 : ", text);
     }
 
     if(settingTablePagination.next) {
@@ -312,9 +321,10 @@ const showFundingBuyerList = ({myFundingBuyers, settingTablePagination}) => {
                 <a href="${settingTablePagination.endPage + 1}" class="page-link next"></a>
             </li>
         `
+        console.log("구매자 목록/다음 : ",settingTablePagination.next);
+        console.log("구매자 목록/다음 : ",text);
     }
-    text += `     </ul>
-            </div>`;
+    text += `    </ul>`;
 
     return text;
 }

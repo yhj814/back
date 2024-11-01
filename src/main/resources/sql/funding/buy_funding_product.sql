@@ -30,13 +30,13 @@ select id, product_name, product_price, product_amount, funding_id
 from tbl_funding_product;
 insert into tbl_funding_product
 (product_name, product_price, product_amount, funding_id)
-values ('펀딩9 상품5', '10000', '60', 9);
+values ('펀딩1 상품1', '10000', '60', 1);
 
 select id, member_profile_id, funding_product_id, funding_send_status
 from tbl_buy_funding_product;
 insert into tbl_buy_funding_product
 (member_profile_id, funding_product_id)
-values (2, 13);
+values (3, 2);
 
 
 SELECT f.id, f.genre_type, p.post_title, p.post_content, p.post_type, p.member_profile_id, p.created_date, p.updated_date, mp.profile_nickname, mp.member_id, m.profile_img_url
@@ -59,8 +59,7 @@ FROM
         JOIN tbl_member_profile mp ON p.member_profile_id = mp.id
         JOIN tbl_member m ON mp.member_id = m.id
         JOIN tbl_member_profile bfp_mp ON bfp.member_profile_id = bfp_mp.id
-order by f.id desc
-    limit 0, 4;
+order by f.id desc;
 -- 그 회원의 펀딩 포스트 Id
 
 select count(*) FROM

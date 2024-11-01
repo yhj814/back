@@ -10,7 +10,7 @@ public class SettingTablePagination extends MyPagePagination {
     public void progress() {
         this.page = page == null ? 1 : page;
         this.rowCount = 4; // 행 갯수 4개
-        this.pageCount = 0; // 페이지 갯수 0개
+        this.pageCount = 1; // 페이지 갯수 1개
         this.endRow = page * rowCount; // 끝 행 = 페이지 * 행 갯수
         this.startRow = endRow - rowCount + 1; // 시작 행 = 끝 행 - 행 갯수 + 1
         this.endPage = (int)(Math.ceil(page / (double)pageCount) * pageCount);
