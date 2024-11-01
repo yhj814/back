@@ -18,6 +18,7 @@ public class AuditionDTO {
     private String profileName;
     private String profileNickName;
     private String profileEmail;
+    private String profileImageUrl;
     private Long memberProfileId;
     private int auditionField;
     private String auditionCareer;
@@ -30,6 +31,11 @@ public class AuditionDTO {
     private String auditionCategory;
     private String fileContent;
     private String auditionStatus;
+    private String fileId;
+    private String fileName;
+    private String fileType;
+    private String fileSize;
+    private String filePath;
     private String createdDate;
     private String updatedDate;
 

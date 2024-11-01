@@ -17,20 +17,6 @@
         select count(*) from tbl_audition
     </select>
 
-    <!-- 작품 id로 작품 조회 -->
-    <select id="selectById" resultType="auditionDTO">
-        select a.id, a.audition_field, a.audition_career, a.expected_amount,
-               a.service_start_date, a.audition_deadline, a.audition_personnel,
-               a.audition_location, a.audition_background, a.audition_category,
-               a.file_content, a.audition_status,
-                p.post_title,  p.post_content, p.member_id, p.created_date, p.updated_date
-        from
-            tbl_audition a
-        join tbl_post p on a.id = p.id
-        where
-            a.id = #{id}
-    </select>
-
     <!-- 조회수 증가 -->
     <update id="increaseReadCount" parameterType="Long">
         update tbl_work
