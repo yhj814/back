@@ -2,6 +2,7 @@ package com.app.ggumteo.service.audition;
 
 import com.app.ggumteo.domain.audition.AuditionDTO;
 import com.app.ggumteo.domain.audition.AuditionVO;
+import com.app.ggumteo.domain.file.PostFileDTO;
 import com.app.ggumteo.domain.post.PostVO;
 import com.app.ggumteo.pagination.AuditionPagination;
 import com.app.ggumteo.pagination.Pagination;
@@ -74,6 +75,9 @@ public class AuditionServiceImpl implements AuditionService {
     public int findTotalAuditionsSearch(String keyword) {
         return auditionDAO.findTotalAuditionsSearch(keyword);
     }
+
+    @Override
+    public List<PostFileDTO> findAllPostFiles(Long postId) {return auditionDAO.findFilesByAuditionId(postId);}
 
 
 

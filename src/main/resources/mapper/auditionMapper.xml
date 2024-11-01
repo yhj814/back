@@ -118,5 +118,36 @@
         </if>
     </select>
 
+    <!-- 게시글 id로 게시글 조회 -->
+    <!-- 게시글 id로 게시글 조회 -->
+    <select id="selectById" resultType="auditionDTO">
+        SELECT
+            a.id AS audition_id,a.audition_field,a.audition_career,a.expected_amount,a.service_start_date,a.audition_deadline,a.audition_personnel,
+            a.audition_location,a.audition_background,a.audition_category,a.file_content,a.audition_status,
+            p.post_title, p.post_content, p.member_profile_id, p.created_date, p.updated_date,
+            mp.profile_nickname, mp.profile_email, m.profile_img_url
+        FROM
+            tbl_audition a
+                JOIN
+            tbl_post p ON a.id = p.id
+                JOIN
+            tbl_member_profile mp ON mp.id = p.member_profile_id
+                JOIN
+            tbl_member m ON m.id = mp.member_id
+        WHERE
+            a.id = #{id}
+    </select>
+
+    <select id="selectFilesByPostId" resultType="postFileDTO">
+        select
+            f.id as fileId, f.file_name, f.file_path, f.file_size, f.file_type
+        from
+            tbl_post_file pf
+                join tbl_file f on pf.id = f.id
+        where
+            pf.post_id = #{postId}
+        order by pf.id
+    </select>
+
 
 </mapper>
