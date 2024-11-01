@@ -15,8 +15,10 @@ insert into tbl_member (member_email, profile_img_url)
 values ( 'john.doe@example.com', 'profile.jpg');
 
 insert into tbl_member (member_email, profile_img_url)
-values ( 'test3@gamail.com', 'profile.jpg');
+values ( 'test8@gamail.com', 'profile8.jpg');
 
 use gb;
 
 create database gb;
+
+delete from tbl_member;

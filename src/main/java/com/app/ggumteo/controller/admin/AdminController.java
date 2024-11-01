@@ -3,6 +3,7 @@ package com.app.ggumteo.controller.admin;
 import com.app.ggumteo.domain.admin.AdminDTO;
 import com.app.ggumteo.domain.admin.AnnouncementVO;
 import com.app.ggumteo.domain.inquiry.InquiryDTO;
+import com.app.ggumteo.domain.member.MemberProfileDTO;
 import com.app.ggumteo.pagination.AdminPagination;
 import com.app.ggumteo.service.admin.AdminService;
 import com.app.ggumteo.service.admin.AnnouncementService;
@@ -169,6 +170,15 @@ public class AdminController {
             log.error("문의사항 삭제 중 오류 발생: ", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("문의사항 삭제 중 오류가 발생했습니다.");
         }
+    }
+
+    // 회원 정보 조회
+    @GetMapping("/members")
+    @ResponseBody
+    public List<MemberProfileDTO> getMembers() {
+        List<MemberProfileDTO> members = adminService.getMembers();
+        log.info("회원 정보 조회 완료: {}", members);
+        return members;
     }
 }
 

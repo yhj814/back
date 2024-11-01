@@ -110,8 +110,8 @@
 
     <!--문의 답변 삭제 -->
     <delete id="deleteFromAdminAnswer" parameterType="list">
-        DELETE FROM tbl_admin_answer
-        WHERE inquiry_id IN
+        delete from tbl_admin_answer
+        where inquiry_id in
         <foreach item="id" collection="list" open="(" separator="," close=")">
             #{id}
         </foreach>
@@ -119,8 +119,8 @@
 
     <!--문의테이블 내역 삭제-->
     <delete id="deleteFromInquiry" parameterType="list">
-        DELETE FROM tbl_inquiry
-        WHERE id IN
+        delete from tbl_inquiry
+        where id in
         <foreach item="id" collection="list" open="(" separator="," close=")">
             #{id}
         </foreach>
@@ -128,12 +128,12 @@
 
     <!--게시글중에 문의작성 내역 삭제-->
     <delete id="deleteFromPost" parameterType="list">
-        DELETE FROM tbl_post
-        WHERE id IN
+        delete from tbl_post
+        where id in
         <foreach item="id" collection="list" open="(" separator="," close=")">
             #{id}
         </foreach>
-        AND post_type = 'INQUIRY';
+        and post_type = 'INQUIRY';
     </delete>
 </mapper>
 

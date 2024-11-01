@@ -3,6 +3,7 @@ package com.app.ggumteo.mapper;
 import com.app.ggumteo.domain.admin.AdminDTO;
 import com.app.ggumteo.domain.admin.AdminVO;
 import com.app.ggumteo.domain.inquiry.InquiryDTO;
+import com.app.ggumteo.domain.member.MemberProfileDTO;
 import com.app.ggumteo.mapper.admin.AdminMapper;
 import com.app.ggumteo.mapper.inquiry.InquiryMapper;
 import com.app.ggumteo.pagination.AdminPagination;
