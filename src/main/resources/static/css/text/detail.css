@@ -599,7 +599,12 @@ li:first-child {
     font-size: 14px;
     font-weight: 500;
     color: #212121;
+    width: 130px;
+    white-space: nowrap; /* 텍스트가 한 줄로 표시되도록 */
+    overflow: hidden; /* 초과되는 부분을 숨김 */
+    text-overflow: ellipsis; /* 초과되는 부분을 ...으로 표시 */
 }
+
 .body-3-medium {
     font-weight: 500;
     font-size: 13px;

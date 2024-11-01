@@ -3,9 +3,11 @@ package com.app.ggumteo.controller.work;
 
 
 import com.app.ggumteo.constant.PostType;
+import com.app.ggumteo.domain.buy.BuyWorkDTO;
 import com.app.ggumteo.domain.file.FileVO;
 import com.app.ggumteo.domain.file.PostFileDTO;
 import com.app.ggumteo.domain.file.PostFileVO;
+import com.app.ggumteo.domain.member.MemberProfileVO;
 import com.app.ggumteo.domain.member.MemberVO;
 import com.app.ggumteo.domain.post.PostVO;
 import com.app.ggumteo.domain.reply.ReplyDTO;
@@ -15,6 +17,7 @@ import com.app.ggumteo.mapper.post.PostMapper;
 import com.app.ggumteo.mapper.work.WorkMapper;
 import com.app.ggumteo.pagination.Pagination;
 import com.app.ggumteo.search.Search;
+import com.app.ggumteo.service.buy.BuyWorkService;
 import com.app.ggumteo.service.file.PostFileService;
 import com.app.ggumteo.service.reply.ReplyService;
 import com.app.ggumteo.service.work.WorkService;
@@ -47,26 +50,35 @@ public class TextWorkController {
     private final WorkService workService;
     private final HttpSession session;
     private final PostFileService postFileService;
-    private final ReplyService replyService;
+    private final BuyWorkService buyWorkService;
 
-    // 모든 요청 전 세션에 테스트용 사용자 정보 설정
-    @ModelAttribute
+   @ModelAttribute
     public void setTestMember(HttpSession session) {
         if (session.getAttribute("member") == null) {
-            session.setAttribute("member", new MemberVO(
-                    2L,
-
-                    "",         // memberEmail
-                    "",
-                    "",              // profileUrl
-                    "",          // createdDate
-                    ""          // updatedDate
-            ));
+            session.setAttribute("member", new MemberVO(2L, "", "", "", "", ""));
+        }
+        if (session.getAttribute("memberProfile") == null) {
+            session.setAttribute("memberProfile", new MemberProfileVO(2L, "", "", "", 99, "", "", "", 2L, "", ""));
         }
     }
 
+    @PostMapping("upload")
+    @ResponseBody
+    public List<PostFileDTO> upload(@RequestParam("file") List<MultipartFile> files) {
+        try {
+            return postFileService.uploadFile(files);  // 서비스의 uploadFile 메서드 호출
+        } catch (IOException e) {
+            log.error("파일 업로드 중 오류 발생: ", e);
+            return Collections.emptyList();  // 오류 발생 시 빈 리스트 반환
+        }
+    }
+
+
+
     @GetMapping("write")
-    public void goToWriteForm() {;}
+    public String goToWriteForm() {
+        return "text/write";  // 컨트롤러에서 경로 리턴 대신 뷰 이름만
+    }
 
     @PostMapping("write")
     public ResponseEntity<?> write(WorkDTO workDTO, @RequestParam("workFile") MultipartFile[] workFiles,
@@ -77,25 +89,11 @@ public class TextWorkController {
                 log.error("세션에 멤버 정보가 없습니다.");
                 return ResponseEntity.status(400).body(Collections.singletonMap("error", "세션에 멤버 정보가 없습니다."));
             }
-
-            // PostType을 TEXT로 고정
             workDTO.setPostType(PostType.TEXT.name());
             workDTO.setMemberProfileId(member.getId());
 
-            // Work와 Post 저장
-            workService.write(workDTO);
-
-            // 파일 저장 로직 호출 (workFile 및 thumbnailFile 저장)
-            if (workFiles != null && workFiles.length > 0) {
-                for (MultipartFile file : workFiles) {
-                    if (!file.isEmpty()) {
-                        postFileService.saveFile(file, workDTO.getId()); // 각각의 파일 저장
-                    }
-                }
-            }
-            if (!thumbnailFile.isEmpty()) {
-                postFileService.saveFile(thumbnailFile, workDTO.getId());
-            }
+            // Work 저장, 파일은 서비스에서 처리
+            workService.write(workDTO, workFiles, thumbnailFile);
 
             return ResponseEntity.ok(Collections.singletonMap("success", true));
         } catch (Exception e) {
@@ -111,22 +109,13 @@ public class TextWorkController {
             @RequestParam(value = "page", defaultValue = "1") int page,
             Model model) {
 
-        if (genreType == null) genreType = "";
-        if (keyword == null) keyword = "";
-
-
-        // 페이지네이션 설정
         Pagination pagination = new Pagination();
         pagination.setPage(page);
 
-        // 검색어와 장르에 맞는 총 결과 수 계산
-        int totalWorks = workService.findTotalWithSearch(genreType, keyword); // 검색 조건을 고려한 총 작품 수
-        pagination.setTotal(totalWorks); // 검색 결과에 따른 총 페이지 수 반영
+        int totalWorks = workService.findTotalWithSearch(genreType, keyword);
+        pagination.setTotal(totalWorks);
         pagination.progress2();
 
-
-
-        // 검색어와 페이지네이션 데이터 기반으로 작품 목록 조회
         List<WorkDTO> works = workService.findAllWithThumbnailAndSearch(genreType, keyword, pagination);
 
         model.addAttribute("works", works);
@@ -137,55 +126,61 @@ public class TextWorkController {
         return "text/list";
     }
 
-
     @GetMapping("/display")
     @ResponseBody
     public ResponseEntity<byte[]> display(@RequestParam("fileName") String fileName) throws IOException {
-        String rootPath = "C:/ggumteofile/"; // 실제 파일이 저장된 루트 경로
-        File file = new File(rootPath + fileName); // rootPath와 요청된 상대 경로 결합
-
-        // 파일 경로를 로그로 출력하여 확인
-        log.info("Attempting to load file from path: {}", file.getAbsolutePath());
-
-        // 파일이 존재하지 않으면 404 반환
-        if (!file.exists()) {
-            log.error("File not found at path: {}", file.getAbsolutePath());
+        byte[] fileData = postFileService.getFileData(fileName);
+        if (fileData == null) {
             return ResponseEntity.notFound().build();
         }
 
-        byte[] imageBytes = FileCopyUtils.copyToByteArray(file);
         HttpHeaders headers = new HttpHeaders();
-
-        // MIME 타입 설정
-        String contentType = Files.probeContentType(file.toPath());
-        if (contentType != null) {
-            headers.setContentType(MediaType.parseMediaType(contentType));
-        }
-
-        return new ResponseEntity<>(imageBytes, headers, HttpStatus.OK);
+        headers.setContentType(MediaType.IMAGE_JPEG);
+        return new ResponseEntity<>(fileData, headers, HttpStatus.OK);
     }
-
-
-
-
 
     @GetMapping("/detail/{id}")
     public String detail(@PathVariable("id") Long id, Model model) {
         WorkDTO work = workService.findWorkById(id);
         workService.incrementReadCount(id);
-        log.info("Detail view의 WorkDTO: {}", work);
 
         List<PostFileDTO> postFiles = workService.findFilesByPostId(id);
+        List<WorkDTO> threeWorks = workService.getThreeWorksByGenre(work.getGenreType(), work.getId());
+        List<WorkDTO> threeAuthorWorks = workService.getThreeWorksByAuthor(work.getMemberProfileId(), work.getId());
 
         model.addAttribute("work", work);
         model.addAttribute("postFiles", postFiles);
-
-        // workId 값을 JavaScript로 전달하기 위해 추가
-        model.addAttribute("workId", work.getId());
+        model.addAttribute("threeWorks", threeWorks);
+        model.addAttribute("threeAuthorWorks", threeAuthorWorks);
 
         return "text/detail";
     }
+  @PostMapping("/order")
+    public ResponseEntity<String> completePayment(@RequestBody Map<String, Object> paymentData) {
+        try {
+            Long workId = Long.parseLong(paymentData.get("workId").toString());
+            Long memberProfileId = Long.parseLong(paymentData.get("memberProfileId").toString());
 
+            MemberProfileVO memberProfile = (MemberProfileVO) session.getAttribute("memberProfile");
+            if (memberProfile == null) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("세션에 멤버 프로필 정보가 없습니다.");
+            }
 
+            BuyWorkDTO buyWorkDTO = new BuyWorkDTO();
+            buyWorkDTO.setWorkId(workId);
+            buyWorkDTO.setMemberProfileId(memberProfileId);
+            buyWorkDTO.setProfileName(memberProfile.getProfileName());
+            buyWorkDTO.setProfilePhone(memberProfile.getProfilePhone());
+            buyWorkDTO.setProfileEmail(memberProfile.getProfileEmail());
+            buyWorkDTO.setWorkSendStatus("0");
 
+            buyWorkService.savePurchase(buyWorkDTO.toVO());
+
+            return ResponseEntity.ok("결제 정보가 성공적으로 저장되었습니다.");
+        } catch (Exception e) {
+            log.error("결제 저장 중 오류 발생: ", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("저장 중 오류가 발생했습니다.");
+        }
+    }
 }
+

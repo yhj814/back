@@ -2,21 +2,25 @@ package com.app.ggumteo.controller.audition;
 
 import com.app.ggumteo.constant.PostType;
 import com.app.ggumteo.domain.audition.AuditionDTO;
+import com.app.ggumteo.domain.file.PostFileDTO;
+import com.app.ggumteo.domain.member.MemberProfileDTO;
 import com.app.ggumteo.domain.member.MemberVO;
 import com.app.ggumteo.pagination.AuditionPagination;
-import com.app.ggumteo.pagination.Pagination;
 import com.app.ggumteo.service.audition.AuditionService;
 import com.app.ggumteo.service.file.PostFileService;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 
@@ -30,94 +34,123 @@ public class VideoAuditionController {
     private final PostFileService postFileService;
 
     @ModelAttribute
-    public void setTestMember(HttpSession session) {
-        if (session.getAttribute("member") == null) {
-            session.setAttribute("member", new MemberVO(
-                    1L,
+    public void setMemberInfo(HttpSession session, Model model) {
+        MemberVO member = (MemberVO) session.getAttribute("member");
+        MemberProfileDTO memberProfile = (MemberProfileDTO) session.getAttribute("memberProfile");
 
-                    "",         // memberEmail
-                    "",
-                    "",              // profileUrl
-                    "",          // createdDate
-                    ""          // updatedDate
-            ));
+        boolean isLoggedIn = member != null;
+        model.addAttribute("isLoggedIn", isLoggedIn);
+
+        if (isLoggedIn) {
+            model.addAttribute("member", member);
+            model.addAttribute("memberProfile", memberProfile);
+            log.info("로그인 상태 - 사용자 ID: {}, 프로필 ID: {}", member.getId(), memberProfile != null ? memberProfile.getId() : "null");
+        } else {
+            log.info("비로그인 상태입니다.");
         }
     }
 
-//    write 화면으로 이동
+    @PostMapping("upload")
+    @ResponseBody
+    public List<PostFileDTO> upload(@RequestParam("file") List<MultipartFile> files) {
+        try {
+            return postFileService.uploadFile(files);
+        } catch (IOException e) {
+            log.error("파일 업로드 중 오류 발생: ", e);
+            return Collections.emptyList();
+        }
+    }
+
     @GetMapping("audition-write")
     public void goToWritePage() {
-
-        log.info("세션에 설정된 memberId:" + ((MemberVO) session.getAttribute("member")).getId());
+        log.info("작성 페이지로 이동");
     }
 
     @PostMapping("audition-write")
     public ResponseEntity<?> write(AuditionDTO auditionDTO, @RequestParam("auditionFile") MultipartFile[] auditionFiles) {
-
         try {
-            // 세션에서 멤버 정보 가져오기
             MemberVO member = (MemberVO) session.getAttribute("member");
+            MemberProfileDTO memberProfile = (MemberProfileDTO) session.getAttribute("memberProfile");
             if (member == null) {
                 log.error("멤버 정보가 세션에 없습니다.");
-                return ResponseEntity.status(400).body(Collections.singletonMap("error","세션에 정보가 없습니다."));
+                return ResponseEntity.status(400).body(Collections.singletonMap("error", "세션에 정보가 없습니다."));
             }
 
-//          PostType을 VIDEO로 고정
             auditionDTO.setPostType(PostType.VIDEO.name());
             auditionDTO.setAuditionStatus("모집중");
-            auditionDTO.setMemberProfileId(member.getId());
 
-//          audition과 Post저장
-            auditionService.write(auditionDTO);
+            auditionDTO.setMemberProfileId(memberProfile.getId());
+            auditionDTO.setMemberId(member.getId());
 
-//          파일 저장 로직 호출 (auditionFile 저장)
-            if(auditionFiles != null && auditionFiles.length > 0) {
-                for (MultipartFile file : auditionFiles) {
-                    if (!file.isEmpty()) {
-                        postFileService.saveFile(file,auditionDTO.getId());
-                    }
-                }
-            }
+            log.info("write 메서드 - 사용자 ID: {}, 프로필 ID: {}", member.getId(), auditionDTO.getMemberProfileId());
 
-//          파일 저장 처리
+            auditionService.write(auditionDTO, auditionFiles);
 
             return ResponseEntity.ok(Collections.singletonMap("success", true));
         } catch (Exception e) {
-            log.error("오류 발생",e);
+            log.error("오류 발생", e);
             return ResponseEntity.status(500).body(Collections.singletonMap("error", "저장 중 오류가 발생했습니다."));
         }
     }
 
     @GetMapping("/audition-list")
-    public String list(
-            @RequestParam(value = "keyword", required = false) String keyword,
-            @RequestParam(value = "page", defaultValue = "1") int page,
-            Model model) {
-
+    public String list(@RequestParam(value = "keyword", required = false) String keyword,
+                       @RequestParam(value = "page", defaultValue = "1") int page,
+                       Model model) {
         if (keyword == null) keyword = "";
 
-        // 페이지네이션 설정
+        MemberVO member = (MemberVO) session.getAttribute("member");
+        MemberProfileDTO memberProfile = (MemberProfileDTO) session.getAttribute("memberProfile");
+
+        log.info("list 메서드 - 사용자 ID: {}, 프로필 ID: {}", member != null ? member.getId() : "null", memberProfile != null ? memberProfile.getId() : "null");
+
         AuditionPagination pagination = new AuditionPagination();
         pagination.setPage(page);
 
         int totalAudition = auditionService.findTotal();
         int totalSearchAudition = auditionService.findTotalAuditionsSearch(keyword);
 
-        // 검색어가 없을 때는 totalAudition, 있을 때는 totalSearchAudition을 사용
         int totalCount = keyword.isEmpty() ? totalAudition : totalSearchAudition;
         pagination.setTotal(totalCount);
         pagination.progress();
 
-        // 검색어와 페이지네이션 데이터 기반으로 작품 목록 조회
         List<AuditionDTO> auditions = auditionService.findAllAuditions(keyword, pagination);
 
         model.addAttribute("auditions", auditions);
         model.addAttribute("keyword", keyword);
         model.addAttribute("pagination", pagination);
-        model.addAttribute("totalCount", totalCount); // 총 게시글 수 전달
+        model.addAttribute("totalCount", totalCount);
 
         return "/audition/video/audition-list";
     }
 
+    @GetMapping("/display")
+    @ResponseBody
+    public ResponseEntity<byte[]> display(@RequestParam("fileName") String fileName) throws IOException {
+        byte[] fileData = postFileService.getFileData(fileName);
+        if (fileData == null) {
+            return ResponseEntity.notFound().build();
+        }
 
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.IMAGE_JPEG);
+        return new ResponseEntity<>(fileData, headers, HttpStatus.OK);
+    }
+
+
+    @GetMapping("/audition-detail/{id}")
+    public String detail(@PathVariable("id") Long id, Model model) {
+        MemberVO member = (MemberVO) session.getAttribute("member");
+        MemberProfileDTO memberProfile = (MemberProfileDTO) session.getAttribute("memberProfile");
+
+        log.info("detail 메서드 - 사용자 ID: {}, 프로필 ID: {}", member != null ? member.getId() : "null", memberProfile != null ? memberProfile.getId() : "null");
+
+        AuditionDTO audition = auditionService.findAuditionById(id);
+        List<PostFileDTO> postFiles = auditionService.findAllPostFiles(id);
+
+        model.addAttribute("audition", audition);
+        model.addAttribute("postFiles", postFiles);
+
+        return "/audition/video/audition-detail";
+    }
 }

@@ -20,10 +20,13 @@
         <typeAlias type="com.app.ggumteo.domain.reply.ReplyDTO" alias="replyDTO"/>
         <typeAlias type="com.app.ggumteo.domain.work.WorkDTO" alias="workDTO"/>
         <typeAlias type="com.app.ggumteo.domain.file.FileVO" alias="fileVO"/>
+        <typeAlias type="com.app.ggumteo.domain.buy.BuyWorkVO" alias="buyWorkVO"/>
+        <typeAlias type="com.app.ggumteo.domain.buy.BuyWorkDTO" alias="buyWorkDTO"/>
         <typeAlias type="com.app.ggumteo.domain.file.PostFileVO" alias="postFileVO"/>
         <typeAlias type="com.app.ggumteo.domain.file.PostFileDTO" alias="postFileDTO"/>
         <typeAlias type="com.app.ggumteo.domain.audition.AuditionDTO" alias="auditionDTO"/>
         <typeAlias type="com.app.ggumteo.domain.member.MemberProfileVO" alias="memberProfileVO"/>
+        <typeAlias type="com.app.ggumteo.domain.member.MemberProfileDTO" alias="memberProfileDTO"/>
         <typeAlias type="com.app.ggumteo.domain.admin.AnnouncementVO" alias="announcementVO"/>
         <typeAlias type="com.app.ggumteo.domain.admin.AnnouncementDTO" alias="announcementDTO"/>
     </typeAliases>

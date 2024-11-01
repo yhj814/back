@@ -25,33 +25,17 @@ import java.util.Map;
 public class ReplyController {
 
     private final ReplyService replyService;
-    private final ReplyDTO replyDTO;
     private final HttpSession session;
 
-    // 모든 요청 전 세션에 테스트용 사용자 정보 설정
     @ModelAttribute
     public void setTestMemberProfile(HttpSession session) {
         if (session.getAttribute("memberProfile") == null) {
-            session.setAttribute("memberProfile", new MemberProfileVO(
-                    2L,
-                    "",
-                    "",
-                    "",
-                    30,
-                    "",
-                    "",
-                    "",
-                    2L,
-                    "",    // createdDate (example)
-                    ""     // updatedDate (example)
-            ));
+            session.setAttribute("memberProfile", new MemberProfileVO(2L, "", "", "", 30, "", "", "", 2L, "", ""));
         }
     }
 
-
-    // 댓글 작성
     @PostMapping("write")
-    public void write(@RequestBody ReplyDTO replyDTO, HttpSession session) {
+    public void write(@RequestBody ReplyDTO replyDTO) {
         MemberProfileVO memberProfile = (MemberProfileVO) session.getAttribute("memberProfile");
 
         if (memberProfile == null) {
@@ -60,36 +44,29 @@ public class ReplyController {
         }
 
         replyDTO.setProfileNickname(memberProfile.getProfileNickName());
-        replyDTO.setMemberProfileId(memberProfile.getId());  // member_profile_id 설정
+        replyDTO.setMemberProfileId(memberProfile.getId());
         replyService.insertReply(replyDTO);
     }
 
-    // 댓글 삭제
     @DeleteMapping("/{id}")
     public void deleteReply(@PathVariable Long id) {
-       replyService.deleteReplyById(id);
+        replyService.deleteReplyById(id);
     }
 
-    // 댓글 조회
     @GetMapping("{workId}/{page}")
     public ReplyListDTO getRepliesByWorkId(@PathVariable("workId") Long workId,
                                            @PathVariable("page") int page,
-                                           Pagination pagination,
-                                           Model model) {
+                                           Pagination pagination) {
         return replyService.selectRepliesByWorkId(page, pagination, workId);
     }
-    // 댓글 숫자 세기
+
     @GetMapping("/count/{workId}")
     public int getReplyCount(@PathVariable Long workId) {
-        int replyCount = replyService.countRepliesByWorkId(workId);
-        log.info("댓글 수 for workId {}: {}", workId, replyCount);
-        return replyCount;
+        return replyService.countRepliesByWorkId(workId);
     }
 
-    // 작품의 평균 별점 조회
     @GetMapping("/average-star/{workId}")
-    public void getAverageStar(@PathVariable Long workId) {
-        double averageStar = replyService.selectAverageStarByWorkId(workId);
-        log.info("평균 별점 for workId {}: {}", workId, averageStar);
+    public double getAverageStar(@PathVariable Long workId) {
+        return replyService.selectAverageStarByWorkId(workId);
     }
 }

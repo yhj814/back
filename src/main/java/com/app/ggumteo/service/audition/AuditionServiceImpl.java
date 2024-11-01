@@ -2,15 +2,18 @@ package com.app.ggumteo.service.audition;
 
 import com.app.ggumteo.domain.audition.AuditionDTO;
 import com.app.ggumteo.domain.audition.AuditionVO;
+import com.app.ggumteo.domain.file.PostFileDTO;
 import com.app.ggumteo.domain.post.PostVO;
 import com.app.ggumteo.pagination.AuditionPagination;
 import com.app.ggumteo.pagination.Pagination;
 import com.app.ggumteo.repository.audition.AuditionDAO;
 import com.app.ggumteo.repository.post.PostDAO;
+import com.app.ggumteo.service.file.PostFileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -23,9 +26,10 @@ public class AuditionServiceImpl implements AuditionService {
     private final AuditionDAO auditionDAO;
     private final PostDAO postDAO;
     private final AuditionVO auditionVO;
+    private final PostFileService postFileService;  // 파일 저장 서비스 주입
 
     @Override
-    public void write(AuditionDTO auditionDTO) {
+    public void write(AuditionDTO auditionDTO, MultipartFile[] auditionFiles) {
         PostVO postVO = new PostVO();
         postVO.setPostTitle(auditionDTO.getPostTitle());
         postVO.setPostContent(auditionDTO.getPostContent());
@@ -51,8 +55,16 @@ public class AuditionServiceImpl implements AuditionService {
 
         // 완전히 설정된 auditionVO를 저장
         auditionDAO.save(auditionVO);
-
         auditionDTO.setId(postId);
+
+        // 파일 저장 로직 호출 (auditionFile 저장)
+        if (auditionFiles != null && auditionFiles.length > 0) {
+            for (MultipartFile file : auditionFiles) {
+                if (!file.isEmpty()) {
+                    postFileService.saveFile(file, auditionDTO.getId());
+                }
+            }
+        }
     }
 
     @Override
@@ -74,6 +86,9 @@ public class AuditionServiceImpl implements AuditionService {
     public int findTotalAuditionsSearch(String keyword) {
         return auditionDAO.findTotalAuditionsSearch(keyword);
     }
+
+    @Override
+    public List<PostFileDTO> findAllPostFiles(Long postId) {return auditionDAO.findFilesByAuditionId(postId);}
 
 
 

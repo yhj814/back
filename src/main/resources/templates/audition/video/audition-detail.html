@@ -8,10 +8,18 @@
     <link
         id="default-css"
         rel="stylesheet"
-        href="/static/css/audition/video/audition-detail.css"
+        href="/css/audition/video/audition-detail.css"
     />
+    <link rel="stylesheet" th:href="@{/css/header/logout.css}">
+    <link rel="stylesheet" th:href="@{/css/header/login.css}">
+    <link rel="stylesheet" th:href="@{/css/footer/footer.css}">
     <body>
-        <header></header>
+    <th:block th:if="${isLoggedIn}">
+        <div th:replace="~{header-login :: header}"></div>
+    </th:block>
+    <th:block th:if="${!isLoggedIn}">
+        <div th:replace="~{header-logout :: header}"></div>
+    </th:block>
         <main>
             <div class="gaia">
                 <div class="detail-detail-view">
@@ -25,28 +33,37 @@
                                             <div
                                                 class="detail-status-label recruiting-status"
                                             >
-                                                <div style="display: flex">
+                                                <div style="display: flex"
+                                                     th:if="${audition.auditionStatus == '모집중'}"
+                                                >
                                                     <div
                                                         class="status-mark recruiting-mark"
+                                                        th:text="${audition.auditionStatus}"
                                                     >
                                                         모집 중
                                                     </div>
                                                 </div>
-                                                <div style="display: flex">
+                                                <div style="display: flex"
+                                                     th:if="${audition.auditionStatus == '모집완료'}"
+                                                >
                                                     <div
                                                         class="status-mark recruiting-mark-end"
+                                                        th:text="${audition.auditionStatus}"
                                                     >
                                                         모집 완료
                                                     </div>
                                                 </div>
                                                 <p
                                                     class="detail-recruit-guide font-size"
+                                                    th:text="'등록 일자' + ${audition.createdDate}"
                                                 >
                                                     등록 일자 2024.10.08.
                                                 </p>
                                             </div>
                                         </div>
-                                        <h1 class="subtitle-1">
+                                        <h1 class="subtitle-1"
+                                            th:text="${audition.postTitle}"
+                                        >
                                             [역삼역] 단편영화 배우 모집합니다.
                                         </h1>
                                     </div>
@@ -59,7 +76,12 @@
                                                 <div
                                                     class="detail-target-role font-size-2"
                                                 >
-                                                    배우
+                                                    <span  th:switch="${audition.auditionField}">
+                                            <span class="badge" th:case="'1'">배우</span>
+                                            <span class="badge" th:case="'2'">스텝</span>
+                                            <span class="badge" th:case="'3'">감독</span>
+                                            <span class="badge" th:case="'4'">기타</span>
+
                                                 </div>
                                                 <div
                                                     class="detail-target-detail"
@@ -86,11 +108,13 @@
                                                         >
                                                             <div
                                                                 class="detail-target-detail-row-info font-size-3 experience"
+                                                                th:text="${audition.auditionCareer}"
                                                             >
                                                                 경력 무관
                                                             </div>
                                                             <div
                                                                 class="detail-target-detail-row-info font-size-3 budget"
+                                                                th:text="${audition.expectedAmount}"
                                                             >
                                                                 100,000원/일
                                                             </div>
@@ -110,6 +134,7 @@
                                                         </div>
                                                         <p
                                                             class="condition-row-data font-size-3"
+                                                            th:text="${audition.serviceStartDate}"
                                                         >
                                                             2024년 11월 06일
                                                         </p>
@@ -124,6 +149,7 @@
                                                         </div>
                                                         <p
                                                             class="condition-row-data font-size-3"
+                                                            th:text="${audition.auditionPersonnel}"
                                                         >
                                                             5명
                                                         </p>
@@ -138,6 +164,7 @@
                                                         </div>
                                                         <p
                                                             class="condition-row-data font-size-3"
+                                                            th:text="${audition.auditionLocation}"
                                                         >
                                                             서울특별시 강남구
                                                             역삼동 제일비전타워
@@ -162,10 +189,12 @@
                                                         모집 마감일
                                                     </p>
                                                 </div>
-                                                <p class="condition-data">
+                                                <p class="condition-data"
+                                                   th:text="${audition.auditionDeadLine}"
+                                                >
                                                     2024년 10월 22일<img
                                                         class="class-splitter"
-                                                        src="/static/images/audition/icon_project_category_dot_14.png"
+                                                        src="/images/audition/icon_project_category_dot_14.png"
                                                     /><span
                                                         class="condition-accent font-size"
                                                         >마감 1주 4일 전</span
@@ -183,7 +212,8 @@
                                                         지원자 수
                                                     </p>
                                                 </div>
-                                                <p class="condition-data">
+                                                <p class="condition-data"
+                                                >
                                                     12명
                                                 </p>
                                             </div>
@@ -206,6 +236,7 @@
                                                         </div>
                                                         <p
                                                             class="condition-data"
+                                                            th:text="${audition.auditionBackground}"
                                                         >
                                                             신규 단편영화에
                                                             필요한 배우를
@@ -229,6 +260,7 @@
                                                         </div>
                                                         <p
                                                             class="condition-data"
+                                                            th:text="${audition.auditionBackground}"
                                                         >
                                                             경력에 상관없이
                                                             모집합니다.
@@ -242,7 +274,9 @@
                                     <div class="layer-divider mt40mb32"></div>
                                     <div class="detail-description">
                                         <h2 class="subcontent">모집 내용</h2>
-                                        <div class="detail-description-box">
+                                        <div class="detail-description-box"
+                                             th:text="${audition.postContent}"
+                                        >
                                             &lt;프로젝트 개요&gt;<br /><br />
                                             모집 소개: <br />
                                             단편영화에 출연해주실 배우를 경력
@@ -267,6 +301,9 @@
                                             <br />
                                             <br />스크롤 내리기용
                                         </div>
+                                        <div class="upload-img" th:each="file : ${postFiles}">
+                                            <img th:src="@{'/audition/video/display?fileName=' + ${file.filePath}}" alt="첨부 이미지" />
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -290,7 +327,7 @@
                                             >
                                                 <img
                                                     class="declaration"
-                                                    src="/static/images/audition/다운로드.jfif"
+                                                    src="/images/audition/다운로드.jfif"
                                                     alt=""
                                                     style="height: 12px"
                                                 />
@@ -301,7 +338,7 @@
                                             <div class="client-account-info">
                                                 <img
                                                     class="client-account-info-img"
-                                                    src="/static/images/audition/profile.png"
+                                                    th:src="@{${member.profileImgUrl}}"
                                                 />
                                                 <div>
                                                     <div
@@ -309,6 +346,7 @@
                                                     >
                                                         <p
                                                             class="client-account-info-base-username font-size-3-bold"
+                                                            th:text="${audition.profileNickName}"
                                                         >
                                                             홍길동
                                                         </p>
@@ -325,6 +363,7 @@
                                                         >
                                                             <p
                                                                 class="client-badge-name font-size"
+                                                                th:text="${audition.profileEmail}"
                                                             >
                                                                 홍길동@gamil.com
                                                             </p>
@@ -351,7 +390,7 @@
                                 <div class="client-account-info">
                                     <img
                                         class="client-account-info-img"
-                                        src="/static/images/audition/profile.png"
+                                        th:src="@{'/audition/video/display?fileName=' + ${audition.profileImageUrl}}"
                                     />
                                     <div>
                                         <div class="client-account-info-base">
@@ -392,7 +431,7 @@
                             <button class="btn btn-interest btn-white">
                                 <img
                                     class="declaration"
-                                    src="/static/images/audition/다운로드.jfif"
+                                    src="/images/audition/다운로드.jfif"
                                     alt=""
                                     style="height: 12px"
                                 />
@@ -430,7 +469,10 @@
                 </div>
             </div>
         </main>
-        <footer></footer>
+    <footer th:replace="~{footer.html :: footer}"></footer>
     </body>
-    <script src="/static/js/audition/detail.js"></script>
+    <script src="/js/audition/detail.js"></script>
+    <script th:src="@{/js/header/header-logout.js}"></script>
+    <script th:src="@{/js/header/header-login.js}"></script>
+    <script th:src="@{/js/header/logout-click.js}"></script>
 </html>

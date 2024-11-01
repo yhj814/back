@@ -4,6 +4,7 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>글 상세</title>
+        <script src="https://js.bootpay.co.kr/bootpay-5.0.1.min.js" type="application/javascript"></script>
         <link rel="stylesheet" href="/css/text/detail.css" />
     </head>
     <body>
@@ -20,7 +21,10 @@
                 </a>
             </div>
         </div>
-        <div class="layout" th:attr="data-work-id=${work.id}">
+        <div class="layout" th:attr="data-work-id=${work.id},data-member-id=${session.memberProfile.id},
+               data-profile-name=${session.memberProfile.profileName},
+               data-profile-phone=${session.memberProfile.profilePhone},
+               data-profile-email=${session.memberProfile.profileEmail}">
         <!-- 중간메인내용 -->
             <div class="container-wrapper">
                 <!-- 메인내용 -->
@@ -278,7 +282,7 @@
                                 </div>
                             </a>
                             <div class="side-card-list-box">
-                                <button class="buy-btn cursor" type="button">
+                                <button class="buy-btn cursor" type="button" id="paymentButton">
                                     구매하기
                                 </button>
                             </div>
@@ -290,24 +294,24 @@
                                 </div>
                             </a>
                             <div class="side-card-list-box-2">
-                                <div class="side-card-list-2">
-                                    <a href="">
+                                <div th:each="work : ${threeAuthorWorks}" class="side-card-list-2">
+                                    <a th:href="@{'/text/detail/' + ${work.id}}">
                                         <img
-                                            src="https://yozm.wishket.com/media/news/2782/02_02.jpeg"
+                                                th:src="@{'/text/display?fileName=' + ${work.thumbnailFilePath}}"
                                             class="thumbnail-other-image"
                                         />
                                     </a>
-                                    <a href="" class="card-text"
-                                        ><span class="other-title"
+                                    <a th:href="@{'/text/detail/' + ${work.id}}" class="card-text"
+                                        ><span class="other-title" th:text="${work.postTitle}"
                                             >작품제목</span
                                         >
                                         <div class="other-review-box">
-                                            <div class="other-star-box">
+                                            <div class="other-star-box" >
                                                 <img
                                                     src="https://www.wishket.com/static/renewal/img/project/wishket-project-portfolio/icon-review-star-full.png"
                                                 />
                                             </div>
-                                            <span class="other-review-score"
+                                            <span class="other-review-score" th:text="${work.star}"
                                                 >5.0</span
                                             >
                                         </div>
@@ -316,82 +320,13 @@
                                                 src="https://yozm.wishket.com/static/renewal/img/news/icon-clock.png"
                                                 class="content-meta-elem meta-icon other-img"
                                             />
-                                            <span class="other-time"
+                                            <span class="other-time" th:text="${work.createdDate.substring(0, 10)}"
                                                 >2024.10.25</span
                                             >
                                         </div>
                                     </a>
                                 </div>
                                 <div class="line"></div>
-                            </div>
-                            <div class="side-card-list-box-2">
-                                <div class="side-card-list-2">
-                                    <a href="">
-                                        <img
-                                            src="https://yozm.wishket.com/media/news/2782/02_02.jpeg"
-                                            class="thumbnail-other-image"
-                                        />
-                                    </a>
-                                    <a href="" class="card-text"
-                                        ><span class="other-title"
-                                            >작품제목</span
-                                        >
-                                        <div class="other-review-box">
-                                            <div class="other-star-box">
-                                                <img
-                                                    src="https://www.wishket.com/static/renewal/img/project/wishket-project-portfolio/icon-review-star-full.png"
-                                                />
-                                            </div>
-                                            <span class="other-review-score"
-                                                >5.0</span
-                                            >
-                                        </div>
-                                        <div class="content-meta-elem">
-                                            <img
-                                                src="https://yozm.wishket.com/static/renewal/img/news/icon-clock.png"
-                                                class="content-meta-elem meta-icon other-img"
-                                            />
-                                            <span class="other-time"
-                                                >2024.10.25</span
-                                            >
-                                        </div>
-                                    </a>
-                                </div>
-                                <div class="line"></div>
-                            </div>
-                            <div class="side-card-list-box-2">
-                                <div class="side-card-list-2">
-                                    <a href="">
-                                        <img
-                                            src="https://yozm.wishket.com/media/news/2782/02_02.jpeg"
-                                            class="thumbnail-other-image"
-                                        />
-                                    </a>
-                                    <a href="" class="card-text"
-                                        ><span class="other-title"
-                                            >작품제목</span
-                                        >
-                                        <div class="other-review-box">
-                                            <div class="other-star-box">
-                                                <img
-                                                    src="https://www.wishket.com/static/renewal/img/project/wishket-project-portfolio/icon-review-star-full.png"
-                                                />
-                                            </div>
-                                            <span class="other-review-score"
-                                                >5.0</span
-                                            >
-                                        </div>
-                                        <div class="content-meta-elem">
-                                            <img
-                                                src="https://yozm.wishket.com/static/renewal/img/news/icon-clock.png"
-                                                class="content-meta-elem meta-icon other-img"
-                                            />
-                                            <span class="other-time"
-                                                >2024.10.25</span
-                                            >
-                                        </div>
-                                    </a>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -413,12 +348,13 @@
                         <div class="main-list other-list other-scraped-content">
                             <div class="main-list-row list-item-horizontal">
                                 <!-- 처음 다른 작품들 -->
-                                <div
+                                <div  th:each="work : ${threeWorks}"
                                     class="list-item-link other-list list-item-show"
                                 >
                                     <div class="list-item card-grid">
                                         <div class="list-item-thumbnail">
                                             <img
+                                                    th:src="@{'/text/display?fileName=' + ${work.thumbnailFilePath}}"
                                                 src="https://yozm.wishket.com/media/news/2767/image__3_.png"
                                                 class="thumbnail-image"
                                             />
@@ -428,6 +364,7 @@
                                             <div>
                                                 <a
                                                     class="list-item-category content-meta-elem link-text link-underline"
+                                                    th:text="${work.genreType}"
                                                 >
                                                     장르
                                                 </a>
@@ -435,8 +372,9 @@
                                             <!-- 작품제목 -->
                                             <h3>
                                                 <a
-                                                    href=""
+                                                        th:href="@{'/text/detail/' + ${work.id}}"
                                                     class="item-title link-text link-underline"
+                                                        th:text="${work.postTitle}"
                                                 >
                                                     작품타이틀
                                                 </a>
@@ -449,6 +387,7 @@
                                                 />
                                                 <div
                                                     class="content-meta-elem time"
+                                                    th:text="${work.createdDate.substring(0, 10)}"
                                                 >
                                                     2024.10.26
                                                 </div>
@@ -464,6 +403,7 @@
                                                         />
                                                     </div>
                                                     <span class="review-score"
+                                                          th:text="${work.star}"
                                                         >5.0</span
                                                     >
                                                 </div>
@@ -474,143 +414,8 @@
                                                     src="https://cdn.wishket.com/news_profiles/278363_20240116_5c2efa336003f792.png"
                                                     class="author-image"
                                                 />
-                                                <p class="author-name">
-                                                    작성자이름
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div
-                                    class="list-item-link other-list list-item-show"
-                                >
-                                    <div class="list-item card-grid">
-                                        <div class="list-item-thumbnail">
-                                            <img
-                                                src="https://yozm.wishket.com/media/news/2767/image__3_.png"
-                                                class="thumbnail-image"
-                                            />
-                                        </div>
-                                        <div class="item-main">
-                                            <!-- 작품장르 -->
-                                            <div>
-                                                <a
-                                                    class="list-item-category content-meta-elem link-text link-underline"
-                                                >
-                                                    장르
-                                                </a>
-                                            </div>
-                                            <!-- 작품제목 -->
-                                            <h3>
-                                                <a
-                                                    href=""
-                                                    class="item-title link-text link-underline"
-                                                >
-                                                    작품타이틀
-                                                </a>
-                                            </h3>
-                                            <!-- 올린시간 -->
-                                            <div class="content-meta flex-box">
-                                                <img
-                                                    src="https://yozm.wishket.com/static/renewal/img/news/icon-clock.png"
-                                                    class="content-meta-elem meta-icon"
-                                                />
-                                                <div
-                                                    class="content-meta-elem time"
-                                                >
-                                                    2024.10.26
-                                                </div>
-                                                <div
-                                                    class="content-meta-elem content-meta-sep"
-                                                >
-                                                    |
-                                                </div>
-                                                <div class="review-box">
-                                                    <div class="star-box">
-                                                        <img
-                                                            src="https://www.wishket.com/static/renewal/img/project/wishket-project-portfolio/icon-review-star-full.png"
-                                                        />
-                                                    </div>
-                                                    <span class="review-score"
-                                                        >5.0</span
-                                                    >
-                                                </div>
-                                            </div>
-                                            <!-- 작성자 -->
-                                            <div class="author-info flex-box">
-                                                <img
-                                                    src="https://cdn.wishket.com/news_profiles/278363_20240116_5c2efa336003f792.png"
-                                                    class="author-image"
-                                                />
-                                                <p class="author-name">
-                                                    작성자이름
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div
-                                    class="list-item-link other-list list-item-show"
-                                >
-                                    <div class="list-item card-grid">
-                                        <div class="list-item-thumbnail">
-                                            <img
-                                                src="https://yozm.wishket.com/media/news/2767/image__3_.png"
-                                                class="thumbnail-image"
-                                            />
-                                        </div>
-                                        <div class="item-main">
-                                            <!-- 작품장르 -->
-                                            <div>
-                                                <a
-                                                    class="list-item-category content-meta-elem link-text link-underline"
-                                                >
-                                                    장르
-                                                </a>
-                                            </div>
-                                            <!-- 작품제목 -->
-                                            <h3>
-                                                <a
-                                                    href=""
-                                                    class="item-title link-text link-underline"
-                                                >
-                                                    작품타이틀
-                                                </a>
-                                            </h3>
-                                            <!-- 올린시간 -->
-                                            <div class="content-meta flex-box">
-                                                <img
-                                                    src="https://yozm.wishket.com/static/renewal/img/news/icon-clock.png"
-                                                    class="content-meta-elem meta-icon"
-                                                />
-                                                <div
-                                                    class="content-meta-elem time"
-                                                >
-                                                    2024.10.26
-                                                </div>
-                                                <div
-                                                    class="content-meta-elem content-meta-sep"
-                                                >
-                                                    |
-                                                </div>
-                                                <div class="review-box">
-                                                    <div class="star-box">
-                                                        <img
-                                                            src="https://www.wishket.com/static/renewal/img/project/wishket-project-portfolio/icon-review-star-full.png"
-                                                        />
-                                                    </div>
-                                                    <span class="review-score"
-                                                        >5.0</span
-                                                    >
-                                                </div>
-                                            </div>
-                                            <!-- 작성자 -->
-                                            <div class="author-info flex-box">
-                                                <img
-                                                    src="https://cdn.wishket.com/news_profiles/278363_20240116_5c2efa336003f792.png"
-                                                    class="author-image"
-                                                />
-                                                <p class="author-name">
+                                                <p class="author-name"
+                                                   th:text="${work.profileNickName}">
                                                     작성자이름
                                                 </p>
                                             </div>
@@ -626,9 +431,7 @@
             </div>
         </div>
     </body>
-    <script th:inline="javascript">
-        const memberProfileExists = [[${session.memberProfile != null}]];
-    </script>
+    <script src="/js/text/detail-work-pay.js"></script>
     <script src="/js/text/detail-work-service.js"></script>
     <script src="/js/text/detail-work-layout.js"></script>
     <script src="/js/text/detail-work-event.js"></script>
