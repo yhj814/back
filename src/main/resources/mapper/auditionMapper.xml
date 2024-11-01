@@ -119,7 +119,6 @@
     </select>
 
     <!-- 게시글 id로 게시글 조회 -->
-    <!-- 게시글 id로 게시글 조회 -->
     <select id="selectById" resultType="auditionDTO">
         SELECT
             a.id AS audition_id,a.audition_field,a.audition_career,a.expected_amount,a.service_start_date,a.audition_deadline,a.audition_personnel,
