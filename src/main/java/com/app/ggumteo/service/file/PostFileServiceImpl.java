@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -74,37 +76,47 @@ public class PostFileServiceImpl implements PostFileService {
         return null;  // 파일이 없으면 null 반환
     }
 
-    // 파일 올리자마자 갖고오기
-    public PostFileDTO uploadFile(MultipartFile file) throws IOException {
+    @Override
+    public List<PostFileDTO> uploadFile(List<MultipartFile> files) throws IOException {
+        List<PostFileDTO> fileDTOs = new ArrayList<>();
+
+
         // 파일 저장 경로 설정
         String rootPath = "C:/upload/" + getPath();
-        UUID uuid = UUID.randomUUID();
-        String uniqueFileName = uuid.toString() + "_" + file.getOriginalFilename();
-        String relativePath = getPath() + "/" + uniqueFileName;
-
-        // 파일 정보 설정
-        PostFileDTO postFileDTO = new PostFileDTO();
-        postFileDTO.setFileName(uniqueFileName);
-        postFileDTO.setFilePath(relativePath);
-        postFileDTO.setFileType(file.getContentType());
-        postFileDTO.setFileSize(String.valueOf(file.getSize()));
-
-        File saveLocation = new File(rootPath, uniqueFileName);
-        if (!saveLocation.getParentFile().exists()) {
-            saveLocation.getParentFile().mkdirs();
+        File directory = new File(rootPath);
+        if (!directory.exists()) {
+            directory.mkdirs();
         }
-        file.transferTo(saveLocation);
 
-        // 이미지 파일일 경우 썸네일 생성
-        if (file.getContentType() != null && file.getContentType().startsWith("image")) {
-            try (FileOutputStream thumbnail = new FileOutputStream(new File(rootPath, "t_" + uniqueFileName))) {
-                Thumbnailator.createThumbnail(file.getInputStream(), thumbnail, 100, 100);
+        for (MultipartFile file : files) {
+            UUID uuid = UUID.randomUUID();
+            String uniqueFileName = uuid.toString() + "_" + file.getOriginalFilename();
+            String relativePath = getPath() + "/" + uniqueFileName;
+
+            // 파일 정보 설정
+            PostFileDTO postFileDTO = new PostFileDTO();
+            postFileDTO.setFileName(uniqueFileName);
+            postFileDTO.setFilePath(relativePath);
+            postFileDTO.setFileType(file.getContentType());
+            postFileDTO.setFileSize(String.valueOf(file.getSize()));
+
+            File saveLocation = new File(rootPath, uniqueFileName);
+            file.transferTo(saveLocation);
+
+            // 이미지 파일일 경우 썸네일 생성
+            if (file.getContentType() != null && file.getContentType().startsWith("image")) {
+                try (FileOutputStream thumbnail = new FileOutputStream(new File(rootPath, "t_" + uniqueFileName))) {
+                    Thumbnailator.createThumbnail(file.getInputStream(), thumbnail, 100, 100);
+                }
             }
+            fileDTOs.add(postFileDTO);
         }
-        return postFileDTO;
-    }
 
+        return fileDTOs;
+    }
     private String getPath() {
         return LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd"));
     }
+
+
 }
