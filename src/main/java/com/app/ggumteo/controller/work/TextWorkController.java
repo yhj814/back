@@ -2,7 +2,7 @@ package com.app.ggumteo.controller.work;
 
 
 
-import com.app.ggumteo.enums.PostType;
+import com.app.ggumteo.constant.PostType;
 import com.app.ggumteo.domain.file.PostFileDTO;
 import com.app.ggumteo.domain.member.MemberVO;
 import com.app.ggumteo.domain.work.WorkDTO;

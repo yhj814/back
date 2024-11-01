@@ -30,7 +30,7 @@ select id, product_name, product_price, product_amount, funding_id
 from tbl_funding_product;
 insert into tbl_funding_product
 (product_name, product_price, product_amount, funding_id)
-values ('펀딩 상품3 이름 test4', '40000', '60', 3);
+values ('펀딩 상품3 이름 test4', '40000', '60', 1);
 
 select id, member_profile_id, funding_product_id, funding_send_status
 from tbl_buy_funding_product;
@@ -55,9 +55,9 @@ FROM
     tbl_buy_funding_product bfp
         JOIN tbl_funding_product fp ON bfp.funding_product_id = fp.id
         JOIN tbl_funding f ON fp.funding_id = f.id
-        JOIN tbl_post p ON f.id = p.id
+        JOIN tbl_post p ON f.id = p.id AND f.id = 1
         JOIN tbl_member_profile mp ON p.member_profile_id = mp.id
-        JOIN tbl_member m ON mp.member_id = m.id AND m.id = 1
+        JOIN tbl_member m ON mp.member_id = m.id
         JOIN tbl_member_profile bfp_mp ON bfp.member_profile_id = bfp_mp.id;
 
 -- 그 회원의 펀딩 포스트 Id

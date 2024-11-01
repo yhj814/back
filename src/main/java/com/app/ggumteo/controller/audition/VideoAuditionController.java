@@ -1,10 +1,9 @@
 package com.app.ggumteo.controller.audition;
 
-import com.app.ggumteo.enums.PostType;
+import com.app.ggumteo.constant.PostType;
 import com.app.ggumteo.domain.audition.AuditionDTO;
 import com.app.ggumteo.domain.member.MemberVO;
 import com.app.ggumteo.pagination.AuditionPagination;
-import com.app.ggumteo.pagination.Pagination;
 import com.app.ggumteo.service.audition.AuditionService;
 import com.app.ggumteo.service.file.PostFileService;
 import jakarta.servlet.http.HttpSession;
