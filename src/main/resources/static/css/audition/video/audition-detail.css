@@ -826,3 +826,11 @@ textarea {
     border-radius: 10px;
     border: none;
 }
+
+.upload-img{
+    width: 736px;
+}
+
+.upload-img img{
+    width: 100%;
+}

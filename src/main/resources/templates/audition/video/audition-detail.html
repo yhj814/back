@@ -141,7 +141,7 @@
                                                         </div>
                                                         <p
                                                             class="condition-row-data font-size-3"
-                                                            th:text="${audition.auditionPersonnel} + '명'"
+                                                            th:text="${audition.auditionPersonnel}"
                                                         >
                                                             5명
                                                         </p>
@@ -293,7 +293,9 @@
                                             <br />
                                             <br />스크롤 내리기용
                                         </div>
-                                        <img th:src="@{'audition/video/display?fileName=' + ${}}" />
+                                        <div class="upload-img" th:each="file : ${postFiles}">
+                                            <img th:src="@{'/audition/video/display?fileName=' + ${file.filePath}}" alt="첨부 이미지" />
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -328,7 +330,7 @@
                                             <div class="client-account-info">
                                                 <img
                                                     class="client-account-info-img"
-                                                    th:src="@{'/audition/video/display?fileName=' + ${audition.profileImageUrl}}"
+                                                    th:src="@{${member.profileImgUrl}}"
                                                 />
                                                 <div>
                                                     <div

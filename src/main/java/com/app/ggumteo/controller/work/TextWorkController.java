@@ -3,9 +3,11 @@ package com.app.ggumteo.controller.work;
 
 
 import com.app.ggumteo.constant.PostType;
+import com.app.ggumteo.domain.buy.BuyWorkDTO;
 import com.app.ggumteo.domain.file.FileVO;
 import com.app.ggumteo.domain.file.PostFileDTO;
 import com.app.ggumteo.domain.file.PostFileVO;
+import com.app.ggumteo.domain.member.MemberProfileVO;
 import com.app.ggumteo.domain.member.MemberVO;
 import com.app.ggumteo.domain.post.PostVO;
 import com.app.ggumteo.domain.reply.ReplyDTO;
@@ -15,6 +17,7 @@ import com.app.ggumteo.mapper.post.PostMapper;
 import com.app.ggumteo.mapper.work.WorkMapper;
 import com.app.ggumteo.pagination.Pagination;
 import com.app.ggumteo.search.Search;
+import com.app.ggumteo.service.buy.BuyWorkServiceImpl;
 import com.app.ggumteo.service.file.PostFileService;
 import com.app.ggumteo.service.reply.ReplyService;
 import com.app.ggumteo.service.work.WorkService;
@@ -47,9 +50,9 @@ public class TextWorkController {
     private final WorkService workService;
     private final HttpSession session;
     private final PostFileService postFileService;
-    private final ReplyService replyService;
+    private final BuyWorkServiceImpl buyWorkService;
 
-   @ModelAttribute
+    @ModelAttribute
     public void setTestMember(HttpSession session) {
         if (session.getAttribute("member") == null) {
             session.setAttribute("member", new MemberVO(2L, "", "", "", "", ""));
