@@ -6,6 +6,9 @@
         insert into tbl_post_file(id, post_id)
         values(#{id}, #{postId})
     </insert>
-
+    <!-- 게시글-파일 관계 삭제 -->
+    <delete id="deletePostFileById" parameterType="Long">
+        delete from tbl_post_file where post_id = #{postId}
+    </delete>
 
 </mapper>

@@ -101,6 +101,42 @@ public class TextWorkController {
             return ResponseEntity.status(500).body(Collections.singletonMap("error", "저장 중 오류가 발생했습니다."));
         }
     }
+    // 작품 수정 폼으로 이동
+    @GetMapping("modify/{id}")
+    public String updateForm(@PathVariable("id") Long id, Model model) {
+        WorkDTO work = workService.findWorkById(id);  // 작품 데이터 가져오기
+        List<PostFileDTO> existingFiles = postFileService.findFilesByPostId(id); // 기존 파일 불러오기
+        model.addAttribute("work", work);
+        model.addAttribute("existingFiles", existingFiles);
+        return "text/modify"; // 수정 폼 페이지로 이동
+    }
+
+    // 작품 업데이트 요청 처리
+    @PostMapping("modify")
+    public String updateWork(@ModelAttribute WorkDTO workDTO,
+                             @RequestParam(value = "newFiles", required = false) List<MultipartFile> newFiles,
+                             @RequestParam(value = "deletedFileIds", required = false) List<Long> deletedFileIds,
+                             Model model) {
+        try {
+            // 삭제할 파일 ID들이 전달되었을 경우 파일 삭제 처리
+            if (deletedFileIds != null && !deletedFileIds.isEmpty()) {
+                postFileService.deleteFilesByIds(deletedFileIds);
+            }
+            // 새 파일이 존재하면 파일 업로드 처리
+            if (newFiles != null && !newFiles.isEmpty()) {
+                postFileService.uploadFile(newFiles);
+            }
+            // 작품 정보 업데이트 처리
+            workService.updateWork(workDTO);
+
+            model.addAttribute("message", "업데이트가 성공적으로 완료되었습니다.");
+            return "text/list";
+        } catch (Exception e) {
+            log.error("업데이트 중 오류 발생: ", e);
+            model.addAttribute("error", "업데이트 중 오류가 발생했습니다.");
+            return "text/list";
+        }
+    }
 
     @GetMapping("/list")
     public String list(

@@ -3,10 +3,12 @@ package com.app.ggumteo.repository.file;
 import com.app.ggumteo.domain.file.FileVO;
 import com.app.ggumteo.domain.file.PostFileVO;
 import com.app.ggumteo.mapper.file.PostFileMapper;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 @Repository
+@RequiredArgsConstructor
 public class PostFileDAO {
 
     @Autowired
@@ -16,11 +18,11 @@ public class PostFileDAO {
     public void insertPostFile(PostFileVO postFileVO) {
         postFileMapper.insertPostFile(postFileVO);
     }
-
-    // 파일 정보 저장 (추가)
-    public void insertFile(FileVO fileVO) {
-        postFileMapper.insertFile(fileVO);
+    // 게시물-파일 관계 삭제
+    public void deletePostFilesByPostId(Long postId) {
+        postFileMapper.deletePostFileById(postId);
     }
+
 }
 
 

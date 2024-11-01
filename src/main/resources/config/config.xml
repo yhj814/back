@@ -17,6 +17,7 @@
         <typeAlias type="com.app.ggumteo.domain.funding.FundingDTO" alias="fundingDTO"/>
         <typeAlias type="com.app.ggumteo.domain.work.WorkVO" alias="workVO"/>
         <typeAlias type="com.app.ggumteo.domain.reply.ReplyVO" alias="replyVO"/>
+        <typeAlias type="com.app.ggumteo.domain.reply.ReplyListDTO" alias="replyListDTO"/>
         <typeAlias type="com.app.ggumteo.domain.reply.ReplyDTO" alias="replyDTO"/>
         <typeAlias type="com.app.ggumteo.domain.work.WorkDTO" alias="workDTO"/>
         <typeAlias type="com.app.ggumteo.domain.file.FileVO" alias="fileVO"/>

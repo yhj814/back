@@ -114,6 +114,33 @@ public class PostFileServiceImpl implements PostFileService {
 
         return fileDTOs;
     }
+
+    // 파일 삭제
+    @Override
+    public void deleteFilesByIds(List<Long> fileIds) {
+        fileIds.forEach(fileDAO::deleteFile); // 파일 삭제 처리
+    }
+
+    // 특정 게시물의 파일 조회
+    @Override
+    public List<PostFileDTO> findFilesByPostId(Long postId) {
+        List<FileVO> fileVOList = fileDAO.findFileByPostId(postId);
+        List<PostFileDTO> postFileDTOList = new ArrayList<>();
+
+        // FileVO 객체를 PostFileDTO로 변환하여 리스트에 추가
+        for (FileVO fileVO : fileVOList) {
+            PostFileDTO postFileDTO = new PostFileDTO();
+            postFileDTO.setId(fileVO.getId());
+            postFileDTO.setFileName(fileVO.getFileName());
+            postFileDTO.setFilePath(fileVO.getFilePath());
+            postFileDTO.setFileType(fileVO.getFileType());
+            postFileDTO.setFileSize(fileVO.getFileSize());
+            postFileDTOList.add(postFileDTO);
+        }
+
+        return postFileDTOList;
+    }
+
     private String getPath() {
         return LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd"));
     }

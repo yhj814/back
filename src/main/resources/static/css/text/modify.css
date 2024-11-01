@@ -79,11 +79,11 @@
     background-size: cover;
     background-position: center center;
     background-repeat: no-repeat;
-    background-image: url(/static/images/inquiry/inqury-background-img.png;);
+    background-image: url(/images/inquiry/inqury-background-img.png;);
     background-image: -webkit-image-set(
-        url(/static/images/inquiry/inqury-background-img.png) 1x,
-        url(/static/images/inquiry/inqury-background-img.png) 2x,
-        url(/static/images/inquiry/inqury-background-img.png) 3x
+        url(/images/inquiry/inqury-background-img.png) 1x,
+        url(/images/inquiry/inqury-background-img.png) 2x,
+        url(/images/inquiry/inqury-background-img.png) 3x
     );
 }
 

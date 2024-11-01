@@ -6,4 +6,17 @@
         values (#{fileName}, #{fileSize}, #{fileType}, #{filePath})
     </insert>
 
+    <select id="selectFileByPostId" resultType="com.app.ggumteo.domain.file.FileVO">
+        select f.*
+        from tbl_file f
+        join tbl_post_file pf on f.id = pf.id  <!-- tbl_post_file을 통해 조인 -->
+        where pf.post_id = #{postId}
+    </select>
+
+
+    <!-- 파일 삭제 -->
+    <delete id="deleteFileById" parameterType="Long">
+        delete from tbl_file where id = #{id}
+    </delete>
+
 </mapper>
