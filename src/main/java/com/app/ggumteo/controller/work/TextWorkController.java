@@ -21,6 +21,7 @@ import com.app.ggumteo.service.buy.BuyWorkService;
 import com.app.ggumteo.service.file.PostFileService;
 import com.app.ggumteo.service.reply.ReplyService;
 import com.app.ggumteo.service.work.WorkService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -118,25 +119,33 @@ public class TextWorkController {
                              @RequestParam(value = "deletedFileIds", required = false) List<Long> deletedFileIds,
                              Model model) {
         try {
-            // 삭제할 파일 ID들이 전달되었을 경우 파일 삭제 처리
             if (deletedFileIds != null && !deletedFileIds.isEmpty()) {
                 postFileService.deleteFilesByIds(deletedFileIds);
             }
-            // 새 파일이 존재하면 파일 업로드 처리
             if (newFiles != null && !newFiles.isEmpty()) {
                 postFileService.uploadFile(newFiles);
             }
-            // 작품 정보 업데이트 처리
             workService.updateWork(workDTO);
 
-            model.addAttribute("message", "업데이트가 성공적으로 완료되었습니다.");
-            return "text/list";
+            // 업데이트 후, 목록 페이지 데이터 준비
+            Pagination pagination = new Pagination();
+            pagination.setPage(1); // 목록 페이지 첫 페이지 표시 (필요시 변경 가능)
+            int totalWorks = workService.findTotalWithSearch(null, null); // 검색 키워드나 장르 필터 없을 때 총 작품 수
+            pagination.setTotal(totalWorks);
+            pagination.progress2();
+
+            List<WorkDTO> works = workService.findAllWithThumbnailAndSearch(null, null, pagination);
+            model.addAttribute("works", works);
+            model.addAttribute("pagination", pagination);
+
+            return "text/list"; // 목록 페이지로 이동하는 것이 아닌, 바로 렌더링하여 응답 반환
         } catch (Exception e) {
-            log.error("업데이트 중 오류 발생: ", e);
             model.addAttribute("error", "업데이트 중 오류가 발생했습니다.");
-            return "text/list";
+            return "text/modify";  // 에러 발생 시 수정 페이지로 유지
         }
     }
+
+
 
     @GetMapping("/list")
     public String list(

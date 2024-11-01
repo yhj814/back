@@ -112,4 +112,8 @@ public class WorkServiceImpl implements WorkService {
     public List<WorkDTO> getThreeWorksByAuthor(Long memberProfileId, Long workId) {
         return workDAO.findThreeByAuthor(memberProfileId, workId);
     }
+
+
+
+
 }

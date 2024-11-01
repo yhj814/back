@@ -29,4 +29,6 @@ public interface WorkService {
     List<WorkDTO> getThreeWorksByGenre(String genreType, Long workId);
 
     List<WorkDTO> getThreeWorksByAuthor(Long memberProfileId, Long workId);
+
+
 }

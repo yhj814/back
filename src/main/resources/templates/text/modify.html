@@ -14,7 +14,7 @@
                     <div class="background"></div>
                     <div class="container">
                         <div class="profile-box write">
-                            <form action="/text/modify" id="write-form">
+                            <form action="/text/modify" id="write-form" method="POST">
                                 <input type="hidden" name="id" th:value="${work.id}" />
                                 <div class="write-add-view">
                                     <div class="subtitle-1 write-add-title">
@@ -201,9 +201,10 @@
                                                 <span class="title-text">현재 업로드된 작품 이미지 및 파일</span>
                                             </div>
                                             <div id="existing-files-container">
-                                                <div th:each="file : ${existingFiles}" class="img-box-list existing-file">
-                                                        <div class="img-edit-box" style="display: block;">
-                                                            <div class="btn-edit-item" id="btn-delete-image-1730446634855" data-file-id="${file.id}">
+<!--                                                썸네일 파일은 안가져옴 아래에 가져옴-->
+                                                <div th:each="file : ${existingFiles}" th:if="${file.filePath != work.thumbnailFilePath}" class="img-box-list existing-file">
+                                                        <div class="img-edit-box" style="margin-top: 10px;width: 88px;margin-left: 635px;display: block;">
+                                                            <div type="button" class="btn-edit-item" id="btn-delete-image-1730446634855" data-file-id="${file.id}">
                                                                 이미지 삭제
                                                             </div>
                                                         </div>
@@ -346,6 +347,7 @@
                                                         type="file"
                                                         id="thumbnail-upload"
                                                         accept="image/*"
+                                                        name="newThumbnailFile"
                                                         style="display: none"
                                                         onchange="previewImage(event)"
                                                     />
@@ -378,11 +380,9 @@
                                                             <div
                                                                 class="preview-img sample"
                                                             >
-                                                                <img
-                                                                    id="preview-image"
-                                                                    src="https://www.wishket.com/static/renewal/img/partner/profile/icon_btn_add_portfolio_image.png"
-                                                                    alt="Preview"
-                                                                />
+                                                                <img style="height: 240px"
+
+                                                                    th:src="@{/text/display?fileName={thumbnailFilePath}(thumbnailFilePath=${work.thumbnailFilePath})}" alt="Thumbnail Image" />
                                                             </div>
                                                             <div
                                                                 class="preview"

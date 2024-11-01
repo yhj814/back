@@ -280,50 +280,84 @@ document.addEventListener("click", () => {
 });
 
 // 제출 버튼 활성화 확인
+// document.addEventListener("DOMContentLoaded", function () {
+//     const inputElement = document.querySelector(".label-input-partner input");
+//     const textareaElement = document.querySelector(".textarea__border textarea");
+//     const radioButtons = document.querySelectorAll('input[type="radio"]');
+//     const fileInputs = document.querySelectorAll('input[type="file"]');
+//     const submitButton = document.querySelector(".btn-submit");
+//
+//     function checkFormCompletion() {
+//         const allFilesUploaded = Array.from(fileInputs).every(
+//             (fileInput) => fileInput.files.length > 0
+//         );
+//         const isInputValid = inputElement && inputElement.value.trim() !== "";
+//         const isTextareaValid =
+//             textareaElement && textareaElement.value.trim() !== "";
+//         const isRadioSelected = Array.from(radioButtons).some(
+//             (radio) => radio.checked
+//         );
+//
+//         if (
+//             allFilesUploaded &&
+//             isInputValid &&
+//             isTextareaValid &&
+//             isRadioSelected
+//         ) {
+//             submitButton.disabled = false;
+//             submitButton.classList.add("active");
+//         } else {
+//             submitButton.disabled = true;
+//             submitButton.classList.remove("active");
+//         }
+//     }
+//
+//     if (inputElement) {
+//         inputElement.addEventListener("input", checkFormCompletion);
+//     }
+//     if (textareaElement) {
+//         textareaElement.addEventListener("input", checkFormCompletion);
+//     }
+//     radioButtons.forEach((radio) => {
+//         radio.addEventListener("change", checkFormCompletion);
+//     });
+//     fileInputs.forEach((fileInput) => {
+//         fileInput.addEventListener("change", checkFormCompletion);
+//     });
+//
+//     checkFormCompletion();
+// }
+//
+//
+// );
 document.addEventListener("DOMContentLoaded", function () {
-    const inputElement = document.querySelector(".label-input-partner input");
-    const textareaElement = document.querySelector(".textarea__border textarea");
-    const radioButtons = document.querySelectorAll('input[type="radio"]');
-    const fileInputs = document.querySelectorAll('input[type="file"]');
-    const submitButton = document.querySelector(".btn-submit");
+    const deletedFileIds = []; // 삭제할 파일 ID들을 저장할 배열
 
-    function checkFormCompletion() {
-        const allFilesUploaded = Array.from(fileInputs).every(
-            (fileInput) => fileInput.files.length > 0
-        );
-        const isInputValid = inputElement && inputElement.value.trim() !== "";
-        const isTextareaValid =
-            textareaElement && textareaElement.value.trim() !== "";
-        const isRadioSelected = Array.from(radioButtons).some(
-            (radio) => radio.checked
-        );
+    // 이미지 삭제 버튼에 클릭 이벤트 리스너 추가
+    document.querySelectorAll(".btn-edit-item[data-file-id]").forEach(button => {
+        button.addEventListener("click", function () {
+            const fileId = this.getAttribute("data-file-id");
+            deletedFileIds.push(fileId); // 삭제할 파일 ID를 배열에 추가
 
-        if (
-            allFilesUploaded &&
-            isInputValid &&
-            isTextareaValid &&
-            isRadioSelected
-        ) {
-            submitButton.disabled = false;
-            submitButton.classList.add("active");
-        } else {
-            submitButton.disabled = true;
-            submitButton.classList.remove("active");
-        }
-    }
-
-    if (inputElement) {
-        inputElement.addEventListener("input", checkFormCompletion);
-    }
-    if (textareaElement) {
-        textareaElement.addEventListener("input", checkFormCompletion);
-    }
-    radioButtons.forEach((radio) => {
-        radio.addEventListener("change", checkFormCompletion);
-    });
-    fileInputs.forEach((fileInput) => {
-        fileInput.addEventListener("change", checkFormCompletion);
+            // 해당 이미지 요소 숨기기
+            const imgBox = this.closest(".img-box-list");
+            if (imgBox) {
+                imgBox.style.display = "none";
+            }
+        });
     });
 
-    checkFormCompletion();
+    // 폼 제출 시 삭제할 파일 ID를 hidden input으로 추가하고 제출
+    const writeForm = document.getElementById("write-form");
+    writeForm.addEventListener("submit", function (event) {
+        const hiddenInput = document.createElement("input");
+        hiddenInput.setAttribute("type", "hidden");
+        hiddenInput.setAttribute("name", "deletedFileIds");
+        hiddenInput.setAttribute("value", deletedFileIds.join(",")); // ID들을 콤마로 구분하여 문자열로 전송
+        writeForm.appendChild(hiddenInput);
+
+        // 기본 form 제출 동작 수행
+        writeForm.submit();
+    });
 });
+
