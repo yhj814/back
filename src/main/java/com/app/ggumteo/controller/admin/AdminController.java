@@ -11,6 +11,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,7 +20,6 @@ import java.util.HashMap;
 
 import java.util.List;
 import java.util.Map;
-
 
 @Controller
 @RequiredArgsConstructor
@@ -110,17 +110,25 @@ public class AdminController {
         return ResponseEntity.ok("선택한 공지사항이 성공적으로 삭제되었습니다.");
     }
 
-    // 문의사항 목록 조회 (페이징 처리 포함)
+    // 정렬 및 검색어가 적용된 문의사항 목록 조회 (페이징 처리 포함)
     @GetMapping("/inquiries")
     @ResponseBody
-    public Map<String, Object> listInquiries(@RequestParam(value = "page", defaultValue = "1") Integer page) {
+    public Map<String, Object> listInquiries(
+            @RequestParam(value = "page", defaultValue = "1") Integer page,
+            @RequestParam(value = "order", required = false, defaultValue = "inquiry-created-date") String order,
+            @RequestParam(value = "search", required = false) String search) {
+
         AdminPagination pagination = new AdminPagination();
         pagination.setPage(page);
-        pagination.setTotal(inquiryService.getTotalInquiries());
+
+        // 정렬 및 검색을 적용하여 총 문의사항 개수를 가져옴
+        int totalInquiries = inquiryService.getTotalInquiries(order, search);
+        pagination.setTotal(totalInquiries);
         pagination.progress();
 
-        List<InquiryDTO> inquiries = inquiryService.getInquiries(pagination);
-        log.info("문의사항 조회 - 페이지: {}, 문의사항 개수: {}", page, inquiries.size());
+        // 정렬과 검색어가 적용된 문의사항 목록을 가져옴
+        List<InquiryDTO> inquiries = inquiryService.getInquiries(pagination, order, search);
+        log.info("문의사항 조회 - 페이지: {}, 정렬 기준: {}, 검색어: {}, 문의사항 개수: {}", page, order, search, inquiries.size());
 
         Map<String, Object> response = new HashMap<>();
         response.put("inquiries", inquiries);
@@ -137,10 +145,32 @@ public class AdminController {
             @RequestBody Map<String, String> requestData) {
 
         String answerContent = requestData.get("answerContent");
-        String answerDate = requestData.get("answerDate");
-        Map<String, Object> answerInfo = inquiryService.registerAnswer(inquiryId, answerContent, answerDate);
+        Map<String, Object> answerInfo = inquiryService.registerAnswer(inquiryId, answerContent);
 
         log.info("문의 ID {} 답변 등록 완료. 답변 내용: {}", inquiryId, answerContent);
         return ResponseEntity.ok(answerInfo);
     }
+
+    // 문의사항 삭제
+    @PostMapping("/inquiry/delete")
+    @ResponseBody
+    public ResponseEntity<String> deleteInquiries(@RequestBody List<Long> ids) {
+        if (ids == null || ids.isEmpty()) {
+            return ResponseEntity.badRequest().body("삭제할 게시물을 선택하세요.");
+        }
+
+        log.info("삭제 요청 ID: {}", ids);  // 요청받은 ID
+
+        try {
+            inquiryService.deleteSelectedInquiries(ids);
+            log.info("선택된 문의사항이 삭제되었습니다.");
+            return ResponseEntity.ok("선택된 문의사항이 성공적으로 삭제되었습니다.");
+        } catch (Exception e) {
+            log.error("문의사항 삭제 중 오류 발생: ", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("문의사항 삭제 중 오류가 발생했습니다.");
+        }
+    }
 }
+
+
+
