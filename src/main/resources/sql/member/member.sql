@@ -1,7 +1,7 @@
 create table tbl_member(
     id bigint unsigned auto_increment primary key,
     member_email varchar(255) not null,
-    member_status varchar(255) default 0,
+    member_status varchar(255) default 'YES',
     profile_img_url varchar(255),
     created_date datetime default current_timestamp,
     updated_date datetime default current_timestamp

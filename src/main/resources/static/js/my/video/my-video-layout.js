@@ -1,7 +1,7 @@
 const myFundingListLayout = document.getElementById("my-funding-list");
 const myFundingListPaging = document.getElementById("my-funding-list-paging");
 
-const showMyFundingList = ({myFundingPosts, myPagePagination}) => {
+const showMyFundingList = ({myFundingPosts, workAndFundingPagination}) => {
     let text = ``;
     let pagingText = ``;
 
@@ -142,25 +142,25 @@ const showMyFundingList = ({myFundingPosts, myPagePagination}) => {
     myFundingListLayout.innerHTML = text;
 
 
-    if(myPagePagination.prev){
+    if(workAndFundingPagination.prev){
         pagingText += `
             <li class="page-item">
-                <a href="${myPagePagination.startPage - 1}" class="page-link back"></a>
+                <a href="${workAndFundingPagination.startPage - 1}" class="page-link back"></a>
             </li>
         `
     }
-    for(let i=myPagePagination.startPage; i<=myPagePagination.endPage; i++){
-        if(myPagePagination.page === i){
+    for(let i=workAndFundingPagination.startPage; i<=workAndFundingPagination.endPage; i++){
+        if(workAndFundingPagination.page === i){
             pagingText += `<li class="page-item"><div class="page-link active">${i}</div></li>`
         }else{
             pagingText += `<li class="page-item"><a href="${i}" class="page-link">${i}</a></li>`
         }
     }
 
-    if(myPagePagination.next) {
+    if(workAndFundingPagination.next) {
         pagingText += `
             <li class="page-item">
-                <a href="${myPagePagination.endPage + 1}" class="page-link next"></a>
+                <a href="${workAndFundingPagination.endPage + 1}" class="page-link next"></a>
             </li>
         `
     }
@@ -207,10 +207,6 @@ function timeForToday(datetime) {
 
 
 const showFundingBuyerList = (buyersByFundingPostId) => {
-
-    console.log("layout-1 :",showFundingBuyerList)
-    console.log("layout-2 :",buyersByFundingPostId)
-
     let text = `<div>
                             <div
                                 class="setting-tr-group"
@@ -222,7 +218,7 @@ const showFundingBuyerList = (buyersByFundingPostId) => {
                     >`;
 
     buyersByFundingPostId.forEach((buyerByFundingPostId) => {
-        text += `<div class="price-member setting-tr" style="padding-top: 7px">
+        text += `<div class="price-member setting-tr funding-${buyerByFundingPostId.id}" style="padding-top: 7px">
                         <div
                                 class="setting-td with-sub size-l"
                         >
@@ -297,14 +293,9 @@ const showFundingBuyerList = (buyersByFundingPostId) => {
                    </div>
             `;
 
-        console.log("layout-3 :", buyersByFundingPostId);
-        console.log("layout-4 :", buyerByFundingPostId);
-        console.log("layout-5 :", text)
     });
     text += `    </div>
             </div>`;
-
-    console.log("layout-6 :",text);
 
     return text;
 }

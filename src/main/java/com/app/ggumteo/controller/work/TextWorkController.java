@@ -3,14 +3,18 @@ package com.app.ggumteo.controller.work;
 
 
 import com.app.ggumteo.constant.PostType;
-import com.app.ggumteo.domain.buy.BuyWorkDTO;
+import com.app.ggumteo.domain.file.FileVO;
 import com.app.ggumteo.domain.file.PostFileDTO;
-import com.app.ggumteo.domain.member.MemberProfileVO;
+import com.app.ggumteo.domain.file.PostFileVO;
 import com.app.ggumteo.domain.member.MemberVO;
-import com.app.ggumteo.domain.buy.BuyWorkVO;
+import com.app.ggumteo.domain.post.PostVO;
+import com.app.ggumteo.domain.reply.ReplyDTO;
 import com.app.ggumteo.domain.work.WorkDTO;
+import com.app.ggumteo.domain.work.WorkVO;
+import com.app.ggumteo.mapper.post.PostMapper;
+import com.app.ggumteo.mapper.work.WorkMapper;
 import com.app.ggumteo.pagination.Pagination;
-import com.app.ggumteo.service.buy.BuyWorkService;
+import com.app.ggumteo.search.Search;
 import com.app.ggumteo.service.file.PostFileService;
 import com.app.ggumteo.service.reply.ReplyService;
 import com.app.ggumteo.service.work.WorkService;
@@ -28,8 +32,11 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Controller
@@ -40,9 +47,9 @@ public class TextWorkController {
     private final WorkService workService;
     private final HttpSession session;
     private final PostFileService postFileService;
-    private final BuyWorkService buyWorkService;
+    private final ReplyService replyService;
 
-    @ModelAttribute
+   @ModelAttribute
     public void setTestMember(HttpSession session) {
         if (session.getAttribute("member") == null) {
             session.setAttribute("member", new MemberVO(2L, "", "", "", "", ""));
@@ -132,8 +139,7 @@ public class TextWorkController {
 
         return "text/detail";
     }
-
-    @PostMapping("/order")
+  @PostMapping("/order")
     public ResponseEntity<String> completePayment(@RequestBody Map<String, Object> paymentData) {
         try {
             Long workId = Long.parseLong(paymentData.get("workId").toString());
@@ -161,3 +167,4 @@ public class TextWorkController {
         }
     }
 }
+
