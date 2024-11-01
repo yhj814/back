@@ -39,33 +39,29 @@ public class VideoAuditionController {
     private final PostFileService postFileService;
 
     @ModelAttribute
-    public void setTestMember(HttpSession session) {
-        if (session.getAttribute("member") == null) {
-            session.setAttribute("member", new MemberVO(30L, "", "", "http://k.kakaocdn.net/dn/XNNxB/btsrDKpsP5F/lrYqF9WFuitw8rTsLsvdf0/img_640x640.jpg", "", ""));
-        }
-        if (session.getAttribute("memberProfile") == null) {
-            session.setAttribute("memberProfile", new MemberProfileVO(19L, "", "", "", 99, "", "", "", 30L, "", ""));
-        }
+    public void setMemberInfo(HttpSession session, Model model) {
+        // 세션에서 member 정보 가져오기
+        MemberVO member = (MemberVO) session.getAttribute("member");
+        MemberProfileVO memberProfile = (MemberProfileVO) session.getAttribute("memberProfile");
 
+        // 로그인 여부를 확인
+        boolean isLoggedIn = member != null;
+        model.addAttribute("isLoggedIn", isLoggedIn);
+
+        // 로그인된 상태면 member와 memberProfile 정보도 뷰에 추가
+        if (isLoggedIn) {
+            model.addAttribute("member", member);
+            model.addAttribute("memberProfile", memberProfile);
+            log.info("로그인 상태 - 사용자 ID: {}, 프로필 ID: {}", member.getId(), memberProfile != null ? memberProfile.getId() : "null");
+        } else {
+            log.info("비로그인 상태입니다.");
+        }
     }
 
-
-    // write 화면으로 이동
+    // 이후 메서드들에 추가적인 세션 체크 코드가 필요하지 않습니다.
     @GetMapping("audition-write")
     public void goToWritePage() {
-        if (session.getAttribute("member") == null) {
-            // 테스트용 MemberVO 설정
-            session.setAttribute("member", new MemberVO(
-                    30L,
-                    "",         // memberEmail
-                    "",
-                    "",              // profileUrl
-                    "",          // createdDate
-                    ""           // updatedDate
-            ));
-        }
-
-        log.info("세션에 설정된 memberId: " + ((MemberVO) session.getAttribute("member")).getId());
+        log.info("작성 페이지로 이동");
     }
 
     @PostMapping("audition-write")
@@ -92,12 +88,11 @@ public class VideoAuditionController {
         }
     }
 
+    // 다른 메서드들에서도 세션 정보는 @ModelAttribute로 설정된 값들을 사용합니다.
     @GetMapping("/audition-list")
-    public String list(
-            @RequestParam(value = "keyword", required = false) String keyword,
-            @RequestParam(value = "page", defaultValue = "1") int page,
-            Model model) {
-
+    public String list(@RequestParam(value = "keyword", required = false) String keyword,
+                       @RequestParam(value = "page", defaultValue = "1") int page,
+                       Model model) {
         if (keyword == null) keyword = "";
 
         AuditionPagination pagination = new AuditionPagination();
@@ -120,38 +115,14 @@ public class VideoAuditionController {
         return "/audition/video/audition-list";
     }
 
-    @GetMapping("/display")
-    @ResponseBody
-    public ResponseEntity<byte[]> display(@RequestParam("fileName") String fileName) throws IOException {
-        byte[] fileData = postFileService.getFileData(fileName);
-        if (fileData == null) {
-            return ResponseEntity.notFound().build();
-        }
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.IMAGE_JPEG);
-        return new ResponseEntity<>(fileData, headers, HttpStatus.OK);
-    }
-
     @GetMapping("/audition-detail/{id}")
     public String detail(@PathVariable("id") Long id, Model model) {
         AuditionDTO audition = auditionService.findAuditionById(id);
         List<PostFileDTO> postFiles = auditionService.findAllPostFiles(id);
 
-        // 강제로 memberId를 30L로 설정
-        MemberVO member = new MemberVO(30L, "", "", "http://k.kakaocdn.net/dn/XNNxB/btsrDKpsP5F/lrYqF9WFuitw8rTsLsvdf0/img_640x640.jpg", "", "");
-        session.setAttribute("member", member);
-
-        // Debugging: Check if member and profileImgUrl are correctly retrieved
-        log.info("강제로 설정된 Member ID: " + member.getId());
-        log.info("Profile Image URL: " + member.getProfileImgUrl());
-
         model.addAttribute("audition", audition);
         model.addAttribute("postFiles", postFiles);
-        model.addAttribute("member", member);
 
         return "/audition/video/audition-detail";
     }
-
-
 }
