@@ -2,7 +2,7 @@ const myPageService = (() => {
 
     const getMyFundingList = async (page, memberId, callback) => {
         page = page || 1;
-        const response = await fetch(`/members/video/myFunding/${memberId}/${page}`);
+        const response = await fetch(`/members/video/my/funding/${memberId}/${page}`);
         const myFundingPosts = await response.json();
 
         if(callback){
@@ -12,7 +12,7 @@ const myPageService = (() => {
 
     const getFundingBuyerList = async (page, fundingPostId, callback) => {
         page = page || 1;
-        const response = await fetch(`/members/video/fundingPost/${fundingPostId}/buyers/${page}`);
+        const response = await fetch(`/members/video/my/funding/${fundingPostId}/buyers/${page}`);
         const myFundingBuyers = await response.json();
 
         if(callback){
@@ -21,7 +21,7 @@ const myPageService = (() => {
     }
 
     const updateFundingSendStatus = async (buyFundingProduct) => {
-        await fetch(`/members/video/fundingPost/buyers/sendStatus/update`, {
+        await fetch(`/members/video/my/funding/buyers/sendStatus/update`, {
             method: "put",
             body: JSON.stringify(buyFundingProduct),
             headers: {
