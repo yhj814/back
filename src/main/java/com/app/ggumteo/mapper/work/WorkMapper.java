@@ -28,6 +28,7 @@ public interface WorkMapper {
 
     // 작품 정보 수정 (tbl_work 및 tbl_post 업데이트)
     void updateWork(WorkDTO workDTO);
+    void updatePost(WorkDTO workDTO);
 
     // 작품 삭제
     void deleteById(Long id);
@@ -52,4 +53,6 @@ public interface WorkMapper {
 
     // 작가의 다른 최신 작품 3개 조회
     List<WorkDTO> selectThreeByAuthor(@Param("memberProfileId") Long memberProfileId, @Param("workId") Long workId);
+
+    void updateThumbnailFileId(Long workId, Long thumbnailFileId);
 }
