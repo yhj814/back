@@ -15,7 +15,8 @@ public interface WorkService {
 
     List<WorkDTO> findAllWithThumbnailAndSearch(String genreType, String keyword, Pagination pagination);
 
-    void updateWork(WorkDTO workDTO);
+    void updateWork(WorkDTO workDTO, List<MultipartFile> newFiles, List<Long> deletedFileIds, MultipartFile newThumbnailFile);
+
 
 
     void deleteWorkById(Long id);

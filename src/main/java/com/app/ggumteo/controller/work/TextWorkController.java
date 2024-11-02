@@ -128,44 +128,16 @@ public class TextWorkController {
             @RequestParam(value = "deletedFileIds", required = false) List<Long> deletedFileIds,
             @RequestParam(value = "newThumbnailFile", required = false) MultipartFile newThumbnailFile,
             Model model) {
-
         try {
-            // 삭제할 파일 처리
-            if (deletedFileIds != null && !deletedFileIds.isEmpty()) {
-                log.info("Deleting files with IDs: {}", deletedFileIds);
-                postFileService.deleteFilesByIds(deletedFileIds);
-            }
-
-            // 새로운 파일 추가 처리
-            if (newFiles != null && !newFiles.isEmpty()) {
-                for (MultipartFile file : newFiles) {
-                    if (!file.isEmpty()) {
-                        log.info("Saving new file: {}", file.getOriginalFilename());
-                        postFileService.saveFile(file, workDTO.getId());
-                    }
-                }
-            }
-
-            // 썸네일 파일 교체 처리
-            if (newThumbnailFile != null && !newThumbnailFile.isEmpty()) {
-                log.info("Saving new thumbnail file: {}", newThumbnailFile.getOriginalFilename());
-                FileVO thumbnailFile = postFileService.saveFile(newThumbnailFile, workDTO.getId());
-                workDTO.setThumbnailFilePath(thumbnailFile.getFilePath());
-            }
-
-            // 작품 정보 업데이트
-            log.info("Updating work with ID: {}", workDTO.getId());
-            workService.updateWork(workDTO);
-
-            // 업데이트 성공 시 리스트 페이지로 리다이렉트
+            workService.updateWork(workDTO, newFiles, deletedFileIds, newThumbnailFile); // 서비스로 전달
             return "redirect:/text/list";
-
         } catch (Exception e) {
-            log.error("Error updating work: ", e); // 예외 메시지와 스택 트레이스를 로그에 기록합니다.
-            model.addAttribute("error", "업데이트 중 오류가 발생했습니다: " + e.getMessage()); // 상세 오류 메시지를 사용자에게 전달
-            return "text/modify"; // 에러 발생 시 수정 페이지 유지
+            log.error("Error updating work: ", e);
+            model.addAttribute("error", "업데이트 중 오류가 발생했습니다: " + e.getMessage());
+            return "text/modify";
         }
     }
+
 
 
 

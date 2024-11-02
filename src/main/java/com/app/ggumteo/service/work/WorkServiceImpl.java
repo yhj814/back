@@ -1,5 +1,6 @@
 package com.app.ggumteo.service.work;
 
+import com.app.ggumteo.domain.file.FileVO;
 import com.app.ggumteo.domain.file.PostFileDTO;
 import com.app.ggumteo.domain.post.PostVO;
 import com.app.ggumteo.domain.work.WorkDTO;
@@ -48,7 +49,7 @@ public class WorkServiceImpl implements WorkService {
         workDAO.save(workVO);
         workDTO.setId(postId);
 
-        // 파일 저장 처리 (PostFileService에 위임)
+        // 파일 저장 처리
         if (workFiles != null && workFiles.length > 0) {
             for (MultipartFile file : workFiles) {
                 if (!file.isEmpty()) {
@@ -56,10 +57,14 @@ public class WorkServiceImpl implements WorkService {
                 }
             }
         }
-        if (!thumbnailFile.isEmpty()) {
-            postFileService.saveFile(thumbnailFile, workDTO.getId());
+        // 썸네일 파일 처리
+        if (thumbnailFile != null && !thumbnailFile.isEmpty()) {
+            FileVO thumbnailFileVO = postFileService.saveFile(thumbnailFile, workDTO.getId());
+            workDTO.setThumbnailFileId(thumbnailFileVO.getId()); // FileVO의 ID를 사용하여 설정
+            workDAO.updateWork(workDTO); // 썸네일 ID 업데이트
         }
     }
+
 
     @Override
     public WorkDTO findWorkById(Long id) {
@@ -73,11 +78,27 @@ public class WorkServiceImpl implements WorkService {
     }
 
     @Override
-    public void updateWork(WorkDTO workDTO) {
-        workDTO.setPostId(workDTO.getId());
-        workDAO.updateWork(workDTO);
-        workDAO.updatePost(workDTO);
+    public void updateWork(WorkDTO workDTO, List<MultipartFile> newFiles, List<Long> deletedFileIds, MultipartFile newThumbnailFile) {
+        if (deletedFileIds != null && !deletedFileIds.isEmpty()) {
+            postFileService.deleteFilesByIds(deletedFileIds);
+        }
+
+        if (newFiles != null && !newFiles.isEmpty()) {
+            for (MultipartFile file : newFiles) {
+                if (!file.isEmpty()) {
+                    postFileService.saveFile(file, workDTO.getId());
+                }
+            }
+        }
+
+        if (newThumbnailFile != null && !newThumbnailFile.isEmpty()) {
+            FileVO thumbnailFile = postFileService.saveFile(newThumbnailFile, workDTO.getId());
+            workDTO.setThumbnailFileId(thumbnailFile.getId());
+        }
+
+        workDAO.updateWork(workDTO); // 작품 정보 업데이트
     }
+
 
     @Override
     public void deleteWorkById(Long id) {

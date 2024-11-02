@@ -17,4 +17,5 @@ public class WorkVO {
     private int readCount; // 조회수
     private String createdDate; // 생성 날짜
     private String updatedDate; // 수정 날짜
+    private Long thumbnailFileId;
 }
