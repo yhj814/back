@@ -30,5 +30,19 @@ const myPageService = (() => {
         });
     }
 
-    return {getMyFundingList: getMyFundingList, getFundingBuyerList: getFundingBuyerList, updateFundingSendStatus: updateFundingSendStatus}
+    const getMyBuyFundingList = async (page, memberId, callback) => {
+        page = page || 1;
+        const response = await fetch(`/members/video/my/buy/funding/${memberId}/${page}`);
+        const myBuyFundingPosts = await response.json();
+
+        if(callback){
+            callback(myBuyFundingPosts);
+        }
+    }
+
+    return {
+        getMyFundingList: getMyFundingList,
+        getFundingBuyerList: getFundingBuyerList,
+        updateFundingSendStatus: updateFundingSendStatus,
+        getMyBuyFundingList: getMyBuyFundingList}
 })()

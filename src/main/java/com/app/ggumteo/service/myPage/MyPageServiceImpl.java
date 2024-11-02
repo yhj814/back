@@ -2,10 +2,7 @@ package com.app.ggumteo.service.myPage;
 
 import com.app.ggumteo.aspect.annotation.MyPageLogStatus;
 import com.app.ggumteo.domain.funding.*;
-import com.app.ggumteo.domain.member.MemberDTO;
 import com.app.ggumteo.domain.member.MemberVO;
-import com.app.ggumteo.pagination.MyPagePagination;
-import com.app.ggumteo.pagination.Pagination;
 import com.app.ggumteo.pagination.SettingTablePagination;
 import com.app.ggumteo.pagination.WorkAndFundingPagination;
 import com.app.ggumteo.repository.funding.BuyFundingProductDAO;
@@ -13,13 +10,8 @@ import com.app.ggumteo.repository.funding.FundingDAO;
 import com.app.ggumteo.repository.member.MemberDAO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 @Repository
@@ -80,8 +72,27 @@ public class MyPageServiceImpl implements MyPageService {
         return buyFundingProductDAO.getTotal(fundingPostId);
     }
 
+    //    펀딩상품 발송여부 체크
     @Override
     public void updateFundingSendStatus(BuyFundingProductVO buyFundingProductVO) {
         buyFundingProductDAO.updateFundingSendStatus(buyFundingProductVO);
+    }
+
+    //   내가 결제한 펀딩 목록 조회
+    @Override
+    public MyBuyFundingListDTO getMyBuyFundingList(int page, WorkAndFundingPagination workAndFundingPagination, Long memberId) {
+        MyBuyFundingListDTO fundingPostsPaidByMember = new MyBuyFundingListDTO();
+        workAndFundingPagination.setPage(page);
+        workAndFundingPagination.setTotal(buyFundingProductDAO.getMyBuyFundingListTotal(memberId));
+        workAndFundingPagination.progress();
+        fundingPostsPaidByMember.setWorkAndFundingPagination(workAndFundingPagination);
+        fundingPostsPaidByMember.setMyBuyFundingPosts(buyFundingProductDAO.findMyBuyFundingList(workAndFundingPagination, memberId));
+
+        return fundingPostsPaidByMember;
+    }
+    //  내가 결제한 펀딩 목록 전체 갯수
+    @Override
+    public int getMyBuyFundingListTotal(Long memberId) {
+        return buyFundingProductDAO.getMyBuyFundingListTotal(memberId);
     }
 }

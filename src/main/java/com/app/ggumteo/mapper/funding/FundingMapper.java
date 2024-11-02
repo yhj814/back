@@ -15,7 +15,8 @@ import java.util.Optional;
 @Mapper
 public interface FundingMapper {
 //    내 펀딩 게시물 전체 조회
-    public List<FundingDTO> selectByMemberId(@Param("workAndFundingPagination") WorkAndFundingPagination workAndFundingPagination, @Param("memberId") Long memberId);
+    public List<FundingDTO> selectByMemberId(@Param("workAndFundingPagination") WorkAndFundingPagination workAndFundingPagination
+            , @Param("memberId") Long memberId);
 
 //    내 펀딩 게시물 전체 갯수
     public int selectCount(Long memberId);

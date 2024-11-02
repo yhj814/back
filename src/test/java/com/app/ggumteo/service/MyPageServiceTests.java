@@ -3,9 +3,7 @@ package com.app.ggumteo.service;
 import com.app.ggumteo.domain.funding.*;
 import com.app.ggumteo.domain.member.MemberDTO;
 import com.app.ggumteo.domain.member.MemberVO;
-import com.app.ggumteo.mapper.FundingMapperTests;
 import com.app.ggumteo.mapper.funding.BuyFundingProductMapper;
-import com.app.ggumteo.pagination.MyPagePagination;
 import com.app.ggumteo.pagination.SettingTablePagination;
 import com.app.ggumteo.pagination.WorkAndFundingPagination;
 import com.app.ggumteo.service.myPage.MyPageService;
@@ -14,7 +12,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.List;
 import java.util.Optional;
 
 @SpringBootTest
@@ -59,13 +56,25 @@ public class MyPageServiceTests {
         log.info("GetMyFundingBuyerList-test={}", myFundingBuyers.toString());
   }
 
-  @Test
+    @Test
     public void testCheckFundingSendStatus() {
-      BuyFundingProductDTO buyFundingProductDTO = new BuyFundingProductDTO();
-      buyFundingProductDTO.setId(7L);
-      buyFundingProductDTO.setFundingSendStatus("YES");
+    BuyFundingProductDTO buyFundingProductDTO = new BuyFundingProductDTO();
+    buyFundingProductDTO.setId(7L);
+    buyFundingProductDTO.setFundingSendStatus("YES");
 
-      myPageService.updateFundingSendStatus(buyFundingProductDTO.toVO());
-  }
+    myPageService.updateFundingSendStatus(buyFundingProductDTO.toVO());
+    }
+
+    @Test
+    public void testGetFundingListPaidByMemberTotal() {
+        MemberVO memberVO = null;
+        WorkAndFundingPagination workAndFundingPagination = new WorkAndFundingPagination();
+        memberVO = myPageService.getMember(1L).get();
+        workAndFundingPagination.setTotal(myPageService.getMyBuyFundingListTotal(memberVO.getId()));
+        workAndFundingPagination.progress();
+        MyBuyFundingListDTO FundingPostsPaidByMember = myPageService.getMyBuyFundingList(1, workAndFundingPagination, memberVO.getId());
+
+        log.info(FundingPostsPaidByMember.toString());
+    }
 
 }

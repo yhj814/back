@@ -343,3 +343,160 @@ const showFundingBuyerList = ({myFundingBuyers, settingTablePagination}) => {
 
     return text;
 }
+
+
+const myBuyFundingListLayout = document.getElementById("my-buy-funding-list");
+const myBuyFundingListPaging = document.getElementById("my-buy-funding-list-paging");
+
+
+const showMyBuyFundingList = ({myBuyFundingPosts, workAndFundingPagination}) => {
+    let text = ``;
+    let pagingText = ``;
+
+    myBuyFundingPosts.forEach((myBuyFundingPost) => {
+        text += ` <div class="list-item">
+                      <div class="products-list">
+                            <div class="flex-box">
+                                <div class="products-text">
+                                    <a
+                                        ><p
+                                            class="my-products-title"
+                                        >
+                                            ${myBuyFundingPost.postTitle}
+                                        </p></a
+                                    >
+                                    <div
+                                        class="my-products-info"
+                                    >
+                                        <a
+                                            ><p
+                                                class="btn smooth my-products-category"
+                                            >
+                                                ${myBuyFundingPost.genreType}
+                                            </p></a
+                                        >
+                                        <div
+                                            class="divider"
+                                        ></div>
+                                        <div class="flex-box">
+                                            <img
+                                                class="time"
+                                                src="/images/member/clock.png"
+                                            />
+                                            <div
+                                                class="timeandcontent smooth"
+                                            >
+                                                ${timeForToday(myBuyFundingPost.createdDate)}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <a
+                                        ><p
+                                            class="timeandcontent content products-description"
+                                        >
+                                             ${myBuyFundingPost.postContent}
+                                        </p></a
+                                    >
+                                </div>
+                                <div class="btn products-image">
+                                    <a
+                                        ><img
+                                            src="/images/member/thumnail.png"
+                                    /></a>
+                                </div>
+                            </div>
+                            <div
+                                class="flex-box products-author-box"
+                            >
+                                <div
+                                    class="author-info flex-box"
+                                >
+                                    <img
+                                        class="author-image"
+                                        src="/images/member/member-image.jpg"
+                                    />
+                                    <p class="author-name">
+                                        ${myBuyFundingPost.postContent}
+                                    </p>
+                                    <div
+                                        class="divider"
+                                        style="
+                                            margin-left: 10px;
+                                            margin-right: 10px;
+                                        "
+                                    ></div>
+                                    <div
+                                        class="timeandcontent smooth"
+                                    >
+                                        ${myBuyFundingPost.productName}
+                                    </div>
+                                    <div
+                                        class="divider"
+                                        style="
+                                            margin-left: 10px;
+                                            margin-right: 10px;
+                                        "
+                                    ></div>
+                                    <div
+                                        class="timeandcontent smooth"
+                                    >
+                                        ${myBuyFundingPost.productPrice}
+                                    </div>
+                                </div>
+    
+                                <div class="flex-box">
+                                    <div
+                                        class="btn-wrapper"
+                                    ></div>
+                                    <div class="btn-wrapper">
+                                        <button
+                                            class="btn btn-action icon-delete-read-products"
+                                            type="button"
+                                        >
+                                            <div
+                                                class="icon-my-delete"
+                                            ></div>
+                                            <p
+                                                class="action-tooltip bottom-action"
+                                            >
+                                                결제내역 삭제
+                                            </p>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                  </div>`
+    });
+
+    myBuyFundingListLayout.innerHTML = text;
+
+    if(workAndFundingPagination.prev){
+        pagingText += `
+            <li class="page-item">
+                <a href="${workAndFundingPagination.startPage - 1}" class="page-link back"></a>
+            </li>
+        `
+        console.log("결제한 펀딩 게시물 목록/이전 : ", workAndFundingPagination.prev);
+        console.log("결제한 펀딩 게시물 목록/이전 : ", pagingText);
+    }
+    for(let i=workAndFundingPagination.startPage; i<=workAndFundingPagination.endPage; i++){
+        if(workAndFundingPagination.page === i){
+            pagingText += `<li class="page-item"><div class="page-link active">${i}</div></li>`
+        }else{
+            pagingText += `<li class="page-item"><a href="${i}" class="page-link">${i}</a></li>`
+        }
+    }
+
+    if(workAndFundingPagination.next) {
+        pagingText += `
+            <li class="page-item">
+                <a href="${workAndFundingPagination.endPage + 1}" class="page-link next"></a>
+            </li>
+        `
+        console.log("결제한 펀딩 게시물 목록/다음 : ", workAndFundingPagination.next);
+        console.log("결제한 펀딩 게시물 목록/다음 : ", pagingText);
+    }
+
+    myBuyFundingListPaging.innerHTML = pagingText;
+}

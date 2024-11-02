@@ -1,14 +1,10 @@
 package com.app.ggumteo.service.myPage;
 
 import com.app.ggumteo.domain.funding.*;
-import com.app.ggumteo.domain.member.MemberDTO;
 import com.app.ggumteo.domain.member.MemberVO;
-import com.app.ggumteo.pagination.MyPagePagination;
-import com.app.ggumteo.pagination.Pagination;
 import com.app.ggumteo.pagination.SettingTablePagination;
 import com.app.ggumteo.pagination.WorkAndFundingPagination;
 
-import java.util.List;
 import java.util.Optional;
 
 public interface MyPageService {
@@ -33,4 +29,11 @@ public interface MyPageService {
 
     //    펀딩상품 발송여부 체크
     public void updateFundingSendStatus(BuyFundingProductVO buyFundingProductVO);
+
+    //   내가 결제한 펀딩 목록 조회
+    public MyBuyFundingListDTO getMyBuyFundingList(
+            int page, WorkAndFundingPagination workAndFundingPagination, Long memberId);
+
+    //  내가 결제한 펀딩 목록 전체 갯수
+    public int getMyBuyFundingListTotal(Long memberId);
 }

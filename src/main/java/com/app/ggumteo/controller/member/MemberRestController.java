@@ -1,6 +1,7 @@
 package com.app.ggumteo.controller.member;
 
 import com.app.ggumteo.domain.funding.BuyFundingProductDTO;
+import com.app.ggumteo.domain.funding.MyBuyFundingListDTO;
 import com.app.ggumteo.domain.funding.MyFundingBuyerListDTO;
 import com.app.ggumteo.domain.funding.MyFundingListDTO;
 import com.app.ggumteo.domain.member.MemberVO;
@@ -12,8 +13,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @Controller
 @Slf4j
@@ -53,5 +52,14 @@ public class MemberRestController {
     @PutMapping("/members/video/my/funding/buyers/sendStatus/update")
     public void updateFundingSendStatus(@RequestBody BuyFundingProductDTO buyFundingProductDTO) {
         myPageService.updateFundingSendStatus(buyFundingProductDTO.toVO());
+    }
+
+    // SELECT
+    @ResponseBody
+    @GetMapping("/members/video/my/buy/funding/{memberId}/{page}")
+    public MyBuyFundingListDTO getMyBuyFundingList(@PathVariable("memberId") Long memberId
+            , @PathVariable("page") int page, WorkAndFundingPagination workAndFundingPagination) {
+
+        return myPageService.getMyBuyFundingList(page, workAndFundingPagination, memberId);
     }
 }

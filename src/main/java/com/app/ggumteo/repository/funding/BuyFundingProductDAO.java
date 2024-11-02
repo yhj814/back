@@ -8,6 +8,7 @@ import com.app.ggumteo.mapper.funding.FundingMapper;
 import com.app.ggumteo.pagination.SettingTablePagination;
 import com.app.ggumteo.pagination.WorkAndFundingPagination;
 import lombok.RequiredArgsConstructor;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -31,5 +32,16 @@ public class BuyFundingProductDAO {
 //    발송 여부 체크
     public void updateFundingSendStatus(BuyFundingProductVO buyFundingProductVO) {
         buyFundingProductMapper.updateFundingSendStatus(buyFundingProductVO);
+    }
+
+//   결제한 펀딩 목록 조회
+    public List<BuyFundingProductDTO> findMyBuyFundingList(WorkAndFundingPagination workAndFundingPagination
+            ,Long memberId) {
+        return buyFundingProductMapper.selectMyBuyFundingList(workAndFundingPagination, memberId);
+    }
+
+//  내가 결제한 펀딩 목록 전체 갯수
+    public int getMyBuyFundingListTotal(Long memberId){
+        return buyFundingProductMapper.selectCountMyBuyFundingList(memberId);
     }
 }
