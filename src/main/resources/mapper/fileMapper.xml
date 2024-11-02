@@ -1,20 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.app.ggumteo.mapper.file.FileMapper">
+
+    <!-- 파일 데이터 삽입 -->
     <insert id="insert" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
         insert into tbl_file (file_name, file_size, file_type, file_path)
         values (#{fileName}, #{fileSize}, #{fileType}, #{filePath})
     </insert>
 
+    <!-- 특정 post_id를 통해 파일 조회 -->
     <select id="selectFileByPostId" resultType="com.app.ggumteo.domain.file.FileVO">
         select f.*
         from tbl_file f
-        join tbl_post_file pf on f.id = pf.id  <!-- tbl_post_file을 통해 조인 -->
+                 join tbl_post_file pf on f.id = pf.id
         where pf.post_id = #{postId}
     </select>
 
-
-    <!-- 파일 삭제 -->
+    <!-- 파일 ID를 기준으로 파일 삭제 -->
     <delete id="deleteFileById" parameterType="Long">
         delete from tbl_file where id = #{id}
     </delete>

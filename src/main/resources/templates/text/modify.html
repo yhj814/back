@@ -14,8 +14,10 @@
                     <div class="background"></div>
                     <div class="container">
                         <div class="profile-box write">
-                            <form action="/text/modify" id="write-form" method="POST">
-                                <input type="hidden" name="id" th:value="${work.id}" />
+                            <form action="/text/modify" id="write-form" method="post" enctype="multipart/form-data">
+                                <div th:if="${work != null}">
+                                    <input type="hidden" name="id" th:value="${work.id}" />
+                                </div>
                                 <div class="write-add-view">
                                     <div class="subtitle-1 write-add-title">
                                         내 작품 수정
@@ -212,6 +214,18 @@
                                                         <img th:src="@{'/text/display?fileName=' + ${file.filePath}}" alt="Uploaded Image" />
                                                     </div>
                                                 </div>
+                                                <div class="img-caption-box" style="display: block;">
+                                                    <p style="margin-bottom: 10px">파일 설명</p>
+                                                    <div class="default-input-partner">
+                                                        <input
+                                                                type="text"
+                                                                class="img-caption-box-content"
+                                                                name="fileContent"
+                                                                th:value="${work.fileContent != null ? work.fileContent : ''}"
+                                                                placeholder="올린 파일에 대한 설명을 입력해주세요."
+                                                        />
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="work-img-box">
@@ -221,8 +235,7 @@
                                                     class="title-img"
                                                 />
                                                 <span class="title-text">
-                                                    올린 작품의 사진, 영상
-                                                    수정하기
+                                                    파일 추가하기
                                                 </span>
                                             </div>
                                             <div id="img-box-container">
@@ -299,27 +312,15 @@
                                                                 <input
                                                                     id="file-upload"
                                                                     type="file"
+                                                                    name="newFiles"
                                                                     accept="image/*,video/*"
                                                                     style="
                                                                         display: none;
                                                                     "
-                                                                    onchange="previewFile()"
                                                                 />
                                                             </div>
                                                         </div>
-                                                        <div
-                                                            class="img-caption-box"
-                                                        >
-                                                            <div
-                                                                class="default-input-partner"
-                                                            >
-                                                                <input
-                                                                    type="text"
-                                                                    class="img-caption-box-content"
-                                                                    placeholder="올린 파일에 대한 설명을 입력해주세요."
-                                                                />
-                                                            </div>
-                                                        </div>
+
                                                     </div>
                                                 </div>
                                             </div>
@@ -355,7 +356,7 @@
                                                         class="btn work-thumbnail-add-btn"
                                                         style="width: 100%"
                                                         type="button"
-                                                        onclick="document.getElementById('thumbnail-upload').click()"
+
                                                     >
                                                         작품 표지 수정
                                                     </button>

@@ -105,45 +105,70 @@ public class TextWorkController {
     // 작품 수정 폼으로 이동
     @GetMapping("modify/{id}")
     public String updateForm(@PathVariable("id") Long id, Model model) {
-        WorkDTO work = workService.findWorkById(id);  // 작품 데이터 가져오기
-        List<PostFileDTO> existingFiles = postFileService.findFilesByPostId(id); // 기존 파일 불러오기
-        model.addAttribute("work", work);
-        model.addAttribute("existingFiles", existingFiles);
-        return "text/modify"; // 수정 폼 페이지로 이동
+        WorkDTO work = workService.findWorkById(id);  // work 객체 조회
+        List<PostFileDTO> existingFiles = postFileService.findFilesByPostId(id); // 기존 파일 조회
+        log.info("Fetched work: {}", work);  // work 객체를 로그로 출력해 확인
+
+        if (work != null) {  // work가 null이 아닌지 확인
+            model.addAttribute("work", work);
+            model.addAttribute("existingFiles", existingFiles);
+            return "text/modify";
+        } else {
+            // work가 null인 경우 처리 (예: 에러 페이지로 이동)
+            model.addAttribute("error", "작품을 찾을 수 없습니다.");
+            return "text/error";
+        }
     }
 
     // 작품 업데이트 요청 처리
     @PostMapping("modify")
-    public String updateWork(@ModelAttribute WorkDTO workDTO,
-                             @RequestParam(value = "newFiles", required = false) List<MultipartFile> newFiles,
-                             @RequestParam(value = "deletedFileIds", required = false) List<Long> deletedFileIds,
-                             Model model) {
+    public String updateWork(
+            @ModelAttribute WorkDTO workDTO,
+            @RequestParam(value = "newFiles", required = false) List<MultipartFile> newFiles,
+            @RequestParam(value = "deletedFileIds", required = false) List<Long> deletedFileIds,
+            @RequestParam(value = "newThumbnailFile", required = false) MultipartFile newThumbnailFile,
+            Model model) {
+
         try {
+            // 삭제할 파일 처리
             if (deletedFileIds != null && !deletedFileIds.isEmpty()) {
+                log.info("Deleting files with IDs: {}", deletedFileIds);
                 postFileService.deleteFilesByIds(deletedFileIds);
             }
+
+            // 새로운 파일 추가 처리
             if (newFiles != null && !newFiles.isEmpty()) {
-                postFileService.uploadFile(newFiles);
+                for (MultipartFile file : newFiles) {
+                    if (!file.isEmpty()) {
+                        log.info("Saving new file: {}", file.getOriginalFilename());
+                        postFileService.saveFile(file, workDTO.getId());
+                    }
+                }
             }
+
+            // 썸네일 파일 교체 처리
+            if (newThumbnailFile != null && !newThumbnailFile.isEmpty()) {
+                log.info("Saving new thumbnail file: {}", newThumbnailFile.getOriginalFilename());
+                FileVO thumbnailFile = postFileService.saveFile(newThumbnailFile, workDTO.getId());
+                workDTO.setThumbnailFilePath(thumbnailFile.getFilePath());
+            }
+
+            // 작품 정보 업데이트
+            log.info("Updating work with ID: {}", workDTO.getId());
             workService.updateWork(workDTO);
 
-            // 업데이트 후, 목록 페이지 데이터 준비
-            Pagination pagination = new Pagination();
-            pagination.setPage(1); // 목록 페이지 첫 페이지 표시 (필요시 변경 가능)
-            int totalWorks = workService.findTotalWithSearch(null, null); // 검색 키워드나 장르 필터 없을 때 총 작품 수
-            pagination.setTotal(totalWorks);
-            pagination.progress2();
+            // 업데이트 성공 시 리스트 페이지로 리다이렉트
+            return "redirect:/text/list";
 
-            List<WorkDTO> works = workService.findAllWithThumbnailAndSearch(null, null, pagination);
-            model.addAttribute("works", works);
-            model.addAttribute("pagination", pagination);
-
-            return "text/list"; // 목록 페이지로 이동하는 것이 아닌, 바로 렌더링하여 응답 반환
         } catch (Exception e) {
-            model.addAttribute("error", "업데이트 중 오류가 발생했습니다.");
-            return "text/modify";  // 에러 발생 시 수정 페이지로 유지
+            log.error("Error updating work: ", e); // 예외 메시지와 스택 트레이스를 로그에 기록합니다.
+            model.addAttribute("error", "업데이트 중 오류가 발생했습니다: " + e.getMessage()); // 상세 오류 메시지를 사용자에게 전달
+            return "text/modify"; // 에러 발생 시 수정 페이지 유지
         }
     }
+
+
+
 
 
 

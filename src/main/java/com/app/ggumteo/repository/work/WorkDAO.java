@@ -45,6 +45,10 @@ public class WorkDAO {
         workMapper.updateWork(workDTO);
     }
 
+    public void updatePost(WorkDTO workDTO) {
+        workMapper.updatePost(workDTO);
+    }
+
     // 작품 삭제
     public void deleteWorkById(Long id) {
         workMapper.deleteById(id);

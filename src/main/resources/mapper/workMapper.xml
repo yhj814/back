@@ -38,24 +38,25 @@
     </update>
 
     <!-- 작품 정보 수정 -->
-    <update id="updateWork" parameterType="workDTO">
+    <update id="updateWork">
         update tbl_work
         set
             work_price = #{workPrice},
             file_content = #{fileContent},
-            genre_type = #{genreType},
-            updated_date = current_timestamp
-        where
-            id = #{id};
+            genre_type = #{genreType}
+        where id = #{id}
+    </update>
 
+
+    <update id="updatePost">
         update tbl_post
         set
             post_title = #{postTitle},
             post_content = #{postContent},
             updated_date = current_timestamp
-        where
-            id = #{id};
+        where id = #{postId};
     </update>
+
 
     <!-- 작품 삭제 -->
     <delete id="deleteById" parameterType="Long">

@@ -74,7 +74,9 @@ public class WorkServiceImpl implements WorkService {
 
     @Override
     public void updateWork(WorkDTO workDTO) {
+        workDTO.setPostId(workDTO.getId());
         workDAO.updateWork(workDTO);
+        workDAO.updatePost(workDTO);
     }
 
     @Override

@@ -18,6 +18,7 @@ public class WorkDTO {
     private String workPrice; // 작품 가격
     private String genreType;// 장르 타입
     private int readCount; // 조회수
+    private Long postId;
     private Long memberProfileId;
     private String profileName;
     private String profileNickName;

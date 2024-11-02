@@ -4,102 +4,166 @@ document.addEventListener("DOMContentLoaded", function () {
     const textareaElement = document.querySelector(".textarea__border textarea");
     const textareaBorder = document.querySelector(".textarea__border");
 
-    if (inputElement) {
-        inputElement.style.outline = "none";
-        inputElement.style.border = "none";
+    // 썸네일 관련 요소 설정
+    const thumbnailUploadInput = document.getElementById("thumbnail-upload");
+    const previewContainer = document.getElementById("preview-container");
+    const thumbnailPreview = previewContainer.querySelector("img");
 
-        inputElement.addEventListener("focus", function () {
-            labelInputPartner.classList.add("label-effect");
-            if (!inputElement.classList.contains("error")) {
-                inputElement.style.borderColor = "#00a878";
-                inputElement.style.borderWidth = "1px";
-                inputElement.style.borderStyle = "solid";
+
+    // 썸네일 변경 버튼 클릭 시 파일 선택창 열기
+    document.querySelector(".work-thumbnail-add-btn").addEventListener("click", function () {
+        if (thumbnailUploadInput) {
+            thumbnailUploadInput.click();
+        }
+    });
+
+    // 썸네일 파일 선택 시 미리보기 업데이트
+    thumbnailUploadInput.addEventListener("change", function () {
+        const file = thumbnailUploadInput.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                thumbnailPreview.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+
+    // 폼 제출 시 썸네일과 삭제할 파일 정보 포함
+    const writeForm = document.getElementById("write-form");
+    writeForm.addEventListener("submit", function () {
+        if (isThumbnailChanged) {
+            const hiddenThumbnailInput = document.createElement("input");
+            hiddenThumbnailInput.type = "hidden";
+            hiddenThumbnailInput.name = "thumbnailChanged";
+            hiddenThumbnailInput.value = "true";
+            writeForm.appendChild(hiddenThumbnailInput);
+        }
+
+        // 삭제할 파일 ID 목록을 hidden input에 추가
+        const hiddenInput = document.createElement("input");
+        hiddenInput.setAttribute("type", "hidden");
+        hiddenInput.setAttribute("name", "deletedFileIds");
+        hiddenInput.setAttribute("value", deletedFileIds.join(","));
+        writeForm.appendChild(hiddenInput);
+    });
+
+    // 인풋 포커스 효과 설정
+    setupInputEffects(inputElement, labelInputPartner);
+    setupTextareaEffects(textareaElement, textareaBorder);
+
+    // 기존 이미지 박스에 이벤트 리스너 추가
+    document.querySelectorAll(".img-box-list").forEach(setupEventListeners);
+
+    // 파일 추가 버튼 클릭 시 새로운 이미지 박스 추가
+    document.querySelector(".img-add").addEventListener("click", function () {
+        addNewImageBox();
+    });
+
+    // 함수 정의
+
+    // 인풋 효과 설정 함수
+    function setupInputEffects(input, label) {
+        if (!input) return;
+
+        input.style.outline = "none";
+        input.style.border = "none";
+
+        input.addEventListener("focus", function () {
+            label.classList.add("label-effect");
+            if (!input.classList.contains("error")) {
+                input.style.borderColor = "#00a878";
+                input.style.borderWidth = "1px";
+                input.style.borderStyle = "solid";
             }
         });
 
-        inputElement.addEventListener("blur", function () {
-            if (!inputElement.value) {
-                labelInputPartner.classList.remove("label-effect");
-                inputElement.classList.add("error");
-                inputElement.style.borderColor = "#e52929";
-                inputElement.style.borderWidth = "1px";
-                inputElement.style.borderStyle = "solid";
+        input.addEventListener("blur", function () {
+            if (!input.value) {
+                label.classList.remove("label-effect");
+                input.classList.add("error");
+                input.style.borderColor = "#e52929";
+                input.style.borderWidth = "1px";
+                input.style.borderStyle = "solid";
             } else {
-                inputElement.classList.remove("error");
-                inputElement.style.border = "1px solid #e0e0e0";
+                input.classList.remove("error");
+                input.style.border = "1px solid #e0e0e0";
             }
         });
 
-        inputElement.addEventListener("input", function () {
-            if (inputElement.classList.contains("error")) {
-                inputElement.classList.remove("error");
-                inputElement.style.borderColor = "#00a878";
-                inputElement.style.borderWidth = "1px";
-                inputElement.style.borderStyle = "solid";
+        input.addEventListener("input", function () {
+            if (input.classList.contains("error")) {
+                input.classList.remove("error");
+                input.style.borderColor = "#00a878";
+                input.style.borderWidth = "1px";
+                input.style.borderStyle = "solid";
             }
-            labelInputPartner.classList.add("label-effect");
+            label.classList.add("label-effect");
         });
 
-        inputElement.addEventListener("mouseover", function () {
-            if (!inputElement.classList.contains("error")) {
-                inputElement.style.borderColor = "#00a878";
-                inputElement.style.borderWidth = "1px";
-                inputElement.style.borderStyle = "solid";
-            }
-        });
-
-        inputElement.addEventListener("mouseout", function () {
-            if (!inputElement.value && !inputElement.classList.contains("error")) {
-                inputElement.style.border = "1px solid #e0e0e0";
+        input.addEventListener("mouseover", function () {
+            if (!input.classList.contains("error")) {
+                input.style.borderColor = "#00a878";
+                input.style.borderWidth = "1px";
+                input.style.borderStyle = "solid";
             }
         });
 
-        inputElement.addEventListener("keydown", function (event) {
+        input.addEventListener("mouseout", function () {
+            if (!input.value && !input.classList.contains("error")) {
+                input.style.border = "1px solid #e0e0e0";
+            }
+        });
+
+        input.addEventListener("keydown", function (event) {
             if (event.key === "Enter") {
                 event.preventDefault();
             }
         });
     }
 
-    if (textareaElement) {
-        textareaElement.style.outline = "none";
-        textareaElement.style.border = "none";
+    // 텍스트 에어리어 효과 설정 함수
+    function setupTextareaEffects(textarea, border) {
+        if (!textarea) return;
 
-        textareaElement.addEventListener("focus", function () {
-            textareaBorder.classList.add("active");
-            if (textareaBorder.classList.contains("error")) {
-                textareaBorder.style.borderColor = "#e52929";
+        textarea.style.outline = "none";
+        textarea.style.border = "none";
+
+        textarea.addEventListener("focus", function () {
+            border.classList.add("active");
+            if (border.classList.contains("error")) {
+                border.style.borderColor = "#e52929";
             } else {
-                textareaBorder.style.borderColor = "#00a878";
+                border.style.borderColor = "#00a878";
             }
         });
 
-        textareaElement.addEventListener("blur", function () {
-            if (!textareaElement.value) {
-                textareaBorder.classList.add("error");
-                textareaBorder.style.borderColor = "#e52929";
+        textarea.addEventListener("blur", function () {
+            if (!textarea.value) {
+                border.classList.add("error");
+                border.style.borderColor = "#e52929";
             } else {
-                textareaBorder.classList.remove("error");
-                textareaBorder.style.border = "1px solid #e0e0e0";
+                border.classList.remove("error");
+                border.style.border = "1px solid #e0e0e0";
             }
-            textareaBorder.classList.remove("active");
+            border.classList.remove("active");
         });
 
-        textareaElement.addEventListener("input", function () {
-            if (textareaBorder.classList.contains("error")) {
-                textareaBorder.classList.remove("error");
-                textareaBorder.style.borderColor = "#00a878";
+        textarea.addEventListener("input", function () {
+            if (border.classList.contains("error")) {
+                border.classList.remove("error");
+                border.style.borderColor = "#00a878";
             }
         });
 
-        textareaElement.addEventListener("mouseover", function () {
-            if (textareaBorder.classList.contains("error")) {
-                textareaBorder.style.borderColor = "#e52929";
+        textarea.addEventListener("mouseover", function () {
+            if (border.classList.contains("error")) {
+                border.style.borderColor = "#e52929";
             }
         });
     }
 
-    // 모든 img-box-list에 대해 이벤트 리스너를 설정하는 함수
+    // 이미지 박스 이벤트 리스너 설정 함수
     function setupEventListeners(imgBox) {
         const defaultImg = imgBox.querySelector(".default-img");
         const fileUpload = imgBox.querySelector('input[type="file"]');
@@ -148,11 +212,8 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    // 기존 img-box-list에 대한 이벤트 리스너 설정
-    document.querySelectorAll(".img-box-list").forEach(setupEventListeners);
-
-    // 파일 추가 버튼 클릭 시 새로운 img-box-list 추가
-    document.querySelector(".img-add").addEventListener("click", function () {
+    // 새로운 이미지 박스 추가 함수
+    function addNewImageBox() {
         const imgBoxContainer = document.getElementById("img-box-container");
         const timestamp = Date.now();
 
@@ -175,12 +236,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         <div class="img-box-title">작품 영상, 이미지 등록</div>
                         <div class="img-box-text">작품 결과물 혹은 설명을 돕는 이미지를 선택해 주세요.</div>
                         <div class="img-box-help"><span>· 이미지 최적 사이즈: 가로 720px</span></div>
-                        <input id="file-upload-${timestamp}" type="file" accept="image/*,video/*" style="display: none;" />
-                    </div>
-                </div>
-                <div class="img-caption-box" style="display: none;">
-                    <div class="default-input-partner">
-                        <input type="text" class="img-caption-box-content" placeholder="올린 파일에 대한 설명을 입력해주세요." />
+                        <input id="file-upload-${timestamp}" type="file" name="newFiles" accept="image/*,video/*" style="display: none;" />
                     </div>
                 </div>
             </div>
@@ -188,7 +244,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         imgBoxContainer.append(newImgBox);
         setupEventListeners(newImgBox);
-    });
+    }
 
     // 파일 미리보기 함수 (파일 선택 시 이미지 및 비디오 미리보기)
     function previewFile(fileInput, previewSelector, videoPreviewSelector) {
@@ -213,8 +269,8 @@ document.addEventListener("DOMContentLoaded", function () {
                     title.style.display = "none";
                     text.style.display = "none";
                     help.style.display = "none";
-                    imgCaptionBox.style.display = "block";
-                    imgEditBox.style.display = "block";
+                    imgCaptionBox && (imgCaptionBox.style.display = "block");
+                    imgEditBox && (imgEditBox.style.display = "block");
                 } else if (file.type.startsWith("video/")) {
                     videoPreview.src = reader.result;
                     videoPreview.style.display = "block";
@@ -223,8 +279,8 @@ document.addEventListener("DOMContentLoaded", function () {
                     title.style.display = "none";
                     text.style.display = "none";
                     help.style.display = "none";
-                    imgCaptionBox.style.display = "block";
-                    imgEditBox.style.display = "block";
+                    imgCaptionBox && (imgCaptionBox.style.display = "block");
+                    imgEditBox && (imgEditBox.style.display = "block");
                 }
             }
         });
@@ -237,23 +293,12 @@ document.addEventListener("DOMContentLoaded", function () {
     // 파일 ID 삭제 기능
     const deletedFileIds = [];
 
+    // 기존 파일 삭제 버튼 클릭 시
     document.querySelectorAll(".btn-edit-item[data-file-id]").forEach(button => {
         button.addEventListener("click", function () {
             const fileId = this.getAttribute("data-file-id");
-            deletedFileIds.push(fileId);
-            const imgBox = this.closest(".img-box-list");
-            if (imgBox) {
-                imgBox.style.display = "none";
-            }
+            deletedFileIds.push(fileId); // 삭제할 파일 ID 저장
+            this.closest(".img-box-list").style.display = "none"; // UI에서 삭제 표시
         });
-    });
-
-    const writeForm = document.getElementById("write-form");
-    writeForm.addEventListener("submit", function (event) {
-        const hiddenInput = document.createElement("input");
-        hiddenInput.setAttribute("type", "hidden");
-        hiddenInput.setAttribute("name", "deletedFileIds");
-        hiddenInput.setAttribute("value", deletedFileIds.join(","));
-        writeForm.appendChild(hiddenInput);
     });
 });
