@@ -32,5 +32,5 @@ public interface MyPageService {
     public int getMyFundingPostBuyerTotal(Long fundingPostId);
 
     //    펀딩상품 발송여부 체크
-    public void setFundingSendStatus(BuyFundingProductVO buyFundingProductVO);
+    public void updateFundingSendStatus(BuyFundingProductVO buyFundingProductVO);
 }

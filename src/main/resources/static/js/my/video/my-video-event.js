@@ -24,18 +24,28 @@ myFundingListLayout.addEventListener('click', async (e) => {
                 // 1. 펀딩 구매자 테이블 html 에 목록을 추가해라.
                 globalThis.pageB = 1;
                 fundingBuyerTable.innerHTML += await myPageService.getFundingBuyerList(globalThis.pageB, myFundingPostId, showFundingBuyerList);
-                const sendButton = document.querySelector(".btn-choice.btn-public");
 
                 fundingBuyerTable.addEventListener('click', async (e) => {
                     e.preventDefault();
                     if(e.target.tagName === 'A') {
                         globalThis.pageB = e.target.getAttribute("href");
-                        const fundingBuyerListWrapper = fundingBuyerTable.children[1]
-                        const fundingBuyerList = fundingBuyerListWrapper.children[0]
                         fundingBuyerTable.innerHTML = await myPageService.getFundingBuyerList(globalThis.pageB, myFundingPostId, showFundingBuyerList);
                     }
-                });
 
+                    if(e.target.classList[1] === "btn-public") {
+                        const buyFundingProductId = e.target.classList[2];
+                        const sendYes = "YES";
+
+                        if(e.target.nextElementSibling.classList[2] === "active") {
+                            e.target.classList.add("active");
+                            e.target.nextElementSibling.classList.remove("active")
+                            await myPageService.updateFundingSendStatus({
+                                id: buyFundingProductId,
+                                fundingSendStatus: sendYes
+                            })
+                        }
+                    }
+                });
             }
             // 2. 펀딩 구매자 테이블에 목록을 추가하지 말고 펀딩 구매자 테이블을 화면에 보여줘라.
             // 펀딩 구매자 테이블을 화면에서 보여줘라.

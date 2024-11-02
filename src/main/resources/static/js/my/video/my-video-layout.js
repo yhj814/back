@@ -224,7 +224,7 @@ const showFundingBuyerList = ({myFundingBuyers, settingTablePagination}) => {
                     >`;
 
     myFundingBuyers.forEach((myFundingBuyer) => {
-        text += `<div class="price-member setting-tr buy-funding-product-${myFundingBuyer.id}" style="padding-top: 7px">
+        text += `<div class="price-member setting-tr" style="padding-top: 7px">
                         <div
                                 class="setting-td with-sub size-l"
                         >
@@ -258,46 +258,42 @@ const showFundingBuyerList = ({myFundingBuyers, settingTablePagination}) => {
             if(myFundingBuyer.fundingSendStatus === "YES") {
                         text += `
                                 <div
-                                        class="btn-choice btn-public active"
+                                        class="btn-choice btn-public active" style="cursor: unset"
                                 >`
-                              }else{
+            }else{
                         text += `
                                 <div
-                                        class="btn-choice btn-public"
+                                        class="btn-choice btn-public ${myFundingBuyer.id}"
                                 >
                                 `
-                            }
+            }
                         text +=  `<input
                                             checked=""
                                             class="radio-value"
                                             name="is_secret_employment"
                                             type="radio"
                                             value="YES"
-                                    /><span
-                                        class="name"
-                                >보냄</span
-                                >
+                                    />
+                                    보냄
                                 </div>`
-        if(myFundingBuyer.fundingSendStatus === "NO") {
-            text += `
+
+            if(myFundingBuyer.fundingSendStatus === "NO") {
+                        text += `
                                 <div
                                         class="btn-choice btn-secret active"
                                 >`
-        } else {
-            text += `
+            } else {
+                        text += `
                                 <div
-                                        class="btn-choice btn-secret"
+                                        class="btn-choice btn-secret" style="cursor: unset"
                                 >`
-        }
-            text +=        `<input
+            }
+                        text += `<input
                                             class="radio-value"
                                             name="is_secret_employment"
                                             type="radio"
                                             value="NO"
-                                    /><span
-                                        class="name"
-                                >안보냄</span
-                                >
+                                    />안보냄
                                 </div>
                             </div>
                         </div>

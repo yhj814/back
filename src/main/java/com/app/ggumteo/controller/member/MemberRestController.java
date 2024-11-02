@@ -57,8 +57,8 @@ public class MemberRestController {
 
     // UPDATE
     @ResponseBody
-    @PatchMapping("/members/video/fundingPost/buyers/sendStatus/update")
-    public void update(@RequestBody BuyFundingProductDTO buyFundingProductDTO) {
-        myPageService.setFundingSendStatus(buyFundingProductDTO.toVO());
+    @PutMapping("/members/video/fundingPost/buyers/sendStatus/update")
+    public void updateFundingSendStatus(@RequestBody BuyFundingProductDTO buyFundingProductDTO) {
+        myPageService.updateFundingSendStatus(buyFundingProductDTO.toVO());
     }
 }

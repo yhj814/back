@@ -65,7 +65,7 @@ public class MyPageServiceTests {
       buyFundingProductDTO.setId(7L);
       buyFundingProductDTO.setFundingSendStatus("YES");
 
-      myPageService.setFundingSendStatus(buyFundingProductDTO.toVO());
+      myPageService.updateFundingSendStatus(buyFundingProductDTO.toVO());
   }
 
 }

@@ -81,7 +81,7 @@ public class MyPageServiceImpl implements MyPageService {
     }
 
     @Override
-    public void setFundingSendStatus(BuyFundingProductVO buyFundingProductVO) {
+    public void updateFundingSendStatus(BuyFundingProductVO buyFundingProductVO) {
         buyFundingProductDAO.updateFundingSendStatus(buyFundingProductVO);
     }
 }
