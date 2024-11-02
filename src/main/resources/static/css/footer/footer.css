@@ -53,12 +53,9 @@ footer.footer {
 }
 
 footer.footer .container {
+    border-top: 1px solid #e0e0e0;
     width: 1080px;
     padding: 0 0 40px;
-}
-
-.container {
-    width: 1080px;
     margin: 0 auto;
 }
 
