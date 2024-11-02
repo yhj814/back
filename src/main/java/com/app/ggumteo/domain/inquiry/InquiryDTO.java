@@ -20,6 +20,8 @@ public class InquiryDTO {
     private String inquiryStatus;  // 문의 상태 기본은 NO
     private String answerDate;  // 답변 작성 날짜
     private String answerContent;
+    private String profileImgUrl;
+    private String profileNickname;
 }
 
 

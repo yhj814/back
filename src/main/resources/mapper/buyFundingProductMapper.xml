@@ -33,7 +33,7 @@
         where id = #{id}
     </update>
 
-    <select id="selectMyBuyFundingList">
+    <select id="selectBuyFundingListByMember">
         select bfp_mp.member_id, fp.funding_id, p.post_title, f.genre_type, p.created_date, p.post_content,
                m.profile_img_url, mp.profile_nickname,fp.product_name, fp.product_price,
                fl.file_name, fl.file_size, fl.file_type, fl.file_path from
@@ -51,7 +51,7 @@
             limit #{workAndFundingPagination.startRow}, #{workAndFundingPagination.rowCount};
     </select>
 
-    <select id="selectCountMyBuyFundingList">
+    <select id="selectCountBuyFundingListByMember">
         select count(*) from
             tbl_buy_funding_product bfp
                 join tbl_funding_product fp on bfp.funding_product_id = fp.id

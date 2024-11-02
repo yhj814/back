@@ -24,10 +24,10 @@ public interface BuyFundingProductMapper {
     public void updateFundingSendStatus(BuyFundingProductVO buyFundingProductVO);
 
 //   내가 결제한 펀딩 목록 조회
-    public List<BuyFundingProductDTO> selectMyBuyFundingList
+    public List<BuyFundingProductDTO> selectBuyFundingListByMember
     (@Param("workAndFundingPagination") WorkAndFundingPagination workAndFundingPagination
             , @Param("memberId") Long memberId);
 
 //  내가 결제한 펀딩 목록 전체 갯수
-    public int selectCountMyBuyFundingList(Long memberId);
+    public int selectCountBuyFundingListByMember(Long memberId);
 }

@@ -37,11 +37,11 @@ public class BuyFundingProductDAO {
 //   결제한 펀딩 목록 조회
     public List<BuyFundingProductDTO> findMyBuyFundingList(WorkAndFundingPagination workAndFundingPagination
             ,Long memberId) {
-        return buyFundingProductMapper.selectMyBuyFundingList(workAndFundingPagination, memberId);
+        return buyFundingProductMapper.selectBuyFundingListByMember(workAndFundingPagination, memberId);
     }
 
 //  내가 결제한 펀딩 목록 전체 갯수
     public int getMyBuyFundingListTotal(Long memberId){
-        return buyFundingProductMapper.selectCountMyBuyFundingList(memberId);
+        return buyFundingProductMapper.selectCountBuyFundingListByMember(memberId);
     }
 }
