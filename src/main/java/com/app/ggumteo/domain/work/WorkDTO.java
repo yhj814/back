@@ -5,6 +5,8 @@ import com.app.ggumteo.domain.post.PostVO;
 import lombok.*;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 @Getter
 @Setter
@@ -28,6 +30,7 @@ public class WorkDTO {
     private String createdDate; // 생성 날짜
     private String updatedDate; // 수정 날짜
     private String thumbnailFilePath; // 썸네일 파일 경로
+    private List<Long> ids; // 삭제할 파일 id 목록
 
 
     public WorkVO toVO() {

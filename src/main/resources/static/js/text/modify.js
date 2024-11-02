@@ -98,248 +98,149 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
     }
-});
 
-// 모든 img-box-list에 대해 이벤트 리스너를 설정하는 함수
-function setupEventListeners(imgBox) {
-    const defaultImg = imgBox.querySelector(".default-img");
-    const fileUpload = imgBox.querySelector('input[type="file"]');
-    const preview = imgBox.querySelector("img");
-    const videoPreview = imgBox.querySelector("video");
+    // 모든 img-box-list에 대해 이벤트 리스너를 설정하는 함수
+    function setupEventListeners(imgBox) {
+        const defaultImg = imgBox.querySelector(".default-img");
+        const fileUpload = imgBox.querySelector('input[type="file"]');
+        const preview = imgBox.querySelector("img");
+        const videoPreview = imgBox.querySelector("video");
 
-    if (defaultImg) {
-        defaultImg.addEventListener("click", function () {
-            fileUpload && fileUpload.click();
-        });
-    }
-
-    if (fileUpload) {
-        fileUpload.addEventListener("change", function () {
-            previewFile(fileUpload, `#${preview.id}`, `#${videoPreview.id}`);
-        });
-    }
-
-    const btnChangeImage = imgBox.querySelector(".btn-edit-item:nth-child(1)");
-    if (btnChangeImage) {
-        btnChangeImage.addEventListener("click", function () {
-            fileUpload && fileUpload.click();
-        });
-    }
-
-    const btnDeleteImage = imgBox.querySelector(".btn-edit-item:nth-child(2)");
-    if (btnDeleteImage) {
-        btnDeleteImage.addEventListener("click", function () {
-            preview.src =
-                "https://www.wishket.com/static/renewal/img/partner/profile/icon_btn_add_portfolio_image.png";
-            videoPreview.src = "";
-            videoPreview.style.display = "none";
-
-            const imgCaptionBox = imgBox.querySelector(".img-caption-box");
-            const title = imgBox.querySelector(".img-box-title");
-            const text = imgBox.querySelector(".img-box-text");
-            const help = imgBox.querySelector(".img-box-help");
-
-            imgCaptionBox && (imgCaptionBox.style.display = "none");
-            title && (title.style.display = "block");
-            text && (text.style.display = "block");
-            help && (help.style.display = "block");
-
-            imgBox.style.display = "none";
-            fileUpload.value = "";
-        });
-    }
-}
-
-// 기존 img-box-list에 대한 이벤트 리스너 설정
-document.querySelectorAll(".img-box-list").forEach(setupEventListeners);
-
-// 파일 추가 버튼 클릭 시 새로운 img-box-list 추가
-document.querySelector(".img-add").addEventListener("click", function () {
-    const imgBoxContainer = document.getElementById("img-box-container");
-    const timestamp = Date.now();
-
-    const newImgBox = document.createElement("div");
-    newImgBox.classList.add("img-box-list");
-    newImgBox.innerHTML = `
-        <div class="img-content-box">
-            <div class="img-edit-box">
-                <div class="btn-edit-item" id="btn-change-image-${timestamp}">
-                    이미지 변경
-                </div>
-                <div class="btn-edit-item" id="btn-delete-image-${timestamp}">
-                    이미지 삭제
-                </div>
-            </div>
-            <div class="center-text img-box">
-                <div class="default-img" id="default-img-${timestamp}">
-                    <img id="preview-${timestamp}" src="https://www.wishket.com/static/renewal/img/partner/profile/icon_btn_add_portfolio_image.png" class="img-tag" />
-                    <video id="video-preview-${timestamp}" class="video-tag" style="display: none;" controls></video>
-                    <div class="img-box-title">작품 영상, 이미지 등록</div>
-                    <div class="img-box-text">작품 결과물 혹은 설명을 돕는 이미지를 선택해 주세요.</div>
-                    <div class="img-box-help"><span>· 이미지 최적 사이즈: 가로 720px</span></div>
-                    <input id="file-upload-${timestamp}" type="file" accept="image/*,video/*" style="display: none;" />
-                </div>
-            </div>
-            <div class="img-caption-box" style="display: none;">
-                <div class="default-input-partner">
-                    <input type="text" class="img-caption-box-content" placeholder="올린 파일에 대한 설명을 입력해주세요." />
-                </div>
-            </div>
-        </div>
-    `;
-
-    imgBoxContainer.append(newImgBox);
-    setupEventListeners(newImgBox);
-});
-
-// 파일 미리보기 함수 (파일 선택 시 이미지 및 비디오 미리보기)
-function previewFile(fileInput, previewSelector, videoPreviewSelector) {
-    const file = fileInput.files[0];
-    const preview = document.querySelector(previewSelector);
-    const videoPreview = document.querySelector(videoPreviewSelector);
-    const imgBox = preview.closest(".img-box-list");
-    const title = imgBox.querySelector(".img-box-title");
-    const text = imgBox.querySelector(".img-box-text");
-    const help = imgBox.querySelector(".img-box-help");
-    const imgCaptionBox = imgBox.querySelector(".img-caption-box");
-    const imgEditBox = imgBox.querySelector(".img-edit-box");
-
-    const reader = new FileReader();
-
-    reader.addEventListener("load", function () {
-        if (file) {
-            if (file.type.startsWith("image/")) {
-                preview.src = reader.result;
-                preview.style.display = "block";
-                videoPreview.style.display = "none";
-                title.style.display = "none";
-                text.style.display = "none";
-                help.style.display = "none";
-                imgCaptionBox.style.display = "block";
-                imgEditBox.style.display = "block";
-            } else if (file.type.startsWith("video/")) {
-                videoPreview.src = reader.result;
-                videoPreview.style.display = "block";
-                videoPreview.style.width = "100%";
-                preview.style.display = "none";
-                title.style.display = "none";
-                text.style.display = "none";
-                help.style.display = "none";
-                imgCaptionBox.style.display = "block";
-                imgEditBox.style.display = "block";
-            }
+        if (defaultImg) {
+            defaultImg.addEventListener("click", function () {
+                fileUpload && fileUpload.click();
+            });
         }
+
+        if (fileUpload) {
+            fileUpload.addEventListener("change", function () {
+                previewFile(fileUpload, `#${preview.id}`, `#${videoPreview.id}`);
+            });
+        }
+
+        const btnChangeImage = imgBox.querySelector(".btn-edit-item:nth-child(1)");
+        if (btnChangeImage) {
+            btnChangeImage.addEventListener("click", function () {
+                fileUpload && fileUpload.click();
+            });
+        }
+
+        const btnDeleteImage = imgBox.querySelector(".btn-edit-item:nth-child(2)");
+        if (btnDeleteImage) {
+            btnDeleteImage.addEventListener("click", function () {
+                preview.src = "https://www.wishket.com/static/renewal/img/partner/profile/icon_btn_add_portfolio_image.png";
+                videoPreview.src = "";
+                videoPreview.style.display = "none";
+
+                const imgCaptionBox = imgBox.querySelector(".img-caption-box");
+                const title = imgBox.querySelector(".img-box-title");
+                const text = imgBox.querySelector(".img-box-text");
+                const help = imgBox.querySelector(".img-box-help");
+
+                imgCaptionBox && (imgCaptionBox.style.display = "none");
+                title && (title.style.display = "block");
+                text && (text.style.display = "block");
+                help && (help.style.display = "block");
+
+                imgBox.style.display = "none";
+                fileUpload.value = "";
+            });
+        }
+    }
+
+    // 기존 img-box-list에 대한 이벤트 리스너 설정
+    document.querySelectorAll(".img-box-list").forEach(setupEventListeners);
+
+    // 파일 추가 버튼 클릭 시 새로운 img-box-list 추가
+    document.querySelector(".img-add").addEventListener("click", function () {
+        const imgBoxContainer = document.getElementById("img-box-container");
+        const timestamp = Date.now();
+
+        const newImgBox = document.createElement("div");
+        newImgBox.classList.add("img-box-list");
+        newImgBox.innerHTML = `
+            <div class="img-content-box">
+                <div class="img-edit-box">
+                    <div class="btn-edit-item" id="btn-change-image-${timestamp}">
+                        이미지 변경
+                    </div>
+                    <div class="btn-edit-item" id="btn-delete-image-${timestamp}">
+                        이미지 삭제
+                    </div>
+                </div>
+                <div class="center-text img-box">
+                    <div class="default-img" id="default-img-${timestamp}">
+                        <img id="preview-${timestamp}" src="https://www.wishket.com/static/renewal/img/partner/profile/icon_btn_add_portfolio_image.png" class="img-tag" />
+                        <video id="video-preview-${timestamp}" class="video-tag" style="display: none;" controls></video>
+                        <div class="img-box-title">작품 영상, 이미지 등록</div>
+                        <div class="img-box-text">작품 결과물 혹은 설명을 돕는 이미지를 선택해 주세요.</div>
+                        <div class="img-box-help"><span>· 이미지 최적 사이즈: 가로 720px</span></div>
+                        <input id="file-upload-${timestamp}" type="file" accept="image/*,video/*" style="display: none;" />
+                    </div>
+                </div>
+                <div class="img-caption-box" style="display: none;">
+                    <div class="default-input-partner">
+                        <input type="text" class="img-caption-box-content" placeholder="올린 파일에 대한 설명을 입력해주세요." />
+                    </div>
+                </div>
+            </div>
+        `;
+
+        imgBoxContainer.append(newImgBox);
+        setupEventListeners(newImgBox);
     });
 
-    if (file) {
-        reader.readAsDataURL(file);
-    }
-}
+    // 파일 미리보기 함수 (파일 선택 시 이미지 및 비디오 미리보기)
+    function previewFile(fileInput, previewSelector, videoPreviewSelector) {
+        const file = fileInput.files[0];
+        const preview = document.querySelector(previewSelector);
+        const videoPreview = document.querySelector(videoPreviewSelector);
+        const imgBox = preview.closest(".img-box-list");
+        const title = imgBox.querySelector(".img-box-title");
+        const text = imgBox.querySelector(".img-box-text");
+        const help = imgBox.querySelector(".img-box-help");
+        const imgCaptionBox = imgBox.querySelector(".img-caption-box");
+        const imgEditBox = imgBox.querySelector(".img-edit-box");
 
-function previewImage(event) {
-    const previewContainer = document.getElementById("preview-container");
-    const file = event.target.files[0];
-
-    previewContainer.innerHTML = "";
-
-    if (file) {
         const reader = new FileReader();
-        reader.onload = function (e) {
-            const img = document.createElement("img");
-            img.src = e.target.result;
-            img.alt = "Uploaded Preview";
-            img.style.width = "100%";
-            img.style.borderRadius = "10px";
 
-            previewContainer.appendChild(img);
-        };
-        reader.readAsDataURL(file);
-    }
-}
-
-// radio-div 클릭 이벤트 설정
-document.addEventListener("click", () => {
-    const categoryBoxes = document.querySelectorAll(".project-category-box");
-
-    categoryBoxes.forEach((box) => {
-        box.addEventListener("click", () => {
-            const radioInput = box.querySelector('input[type="radio"]');
-            if (radioInput) {
-                radioInput.checked = true;
+        reader.addEventListener("load", function () {
+            if (file) {
+                if (file.type.startsWith("image/")) {
+                    preview.src = reader.result;
+                    preview.style.display = "block";
+                    videoPreview.style.display = "none";
+                    title.style.display = "none";
+                    text.style.display = "none";
+                    help.style.display = "none";
+                    imgCaptionBox.style.display = "block";
+                    imgEditBox.style.display = "block";
+                } else if (file.type.startsWith("video/")) {
+                    videoPreview.src = reader.result;
+                    videoPreview.style.display = "block";
+                    videoPreview.style.width = "100%";
+                    preview.style.display = "none";
+                    title.style.display = "none";
+                    text.style.display = "none";
+                    help.style.display = "none";
+                    imgCaptionBox.style.display = "block";
+                    imgEditBox.style.display = "block";
+                }
             }
         });
 
-        box.addEventListener("mouseenter", () => {
-            box.style.backgroundColor = "#f7fafc";
-        });
+        if (file) {
+            reader.readAsDataURL(file);
+        }
+    }
 
-        box.addEventListener("mouseleave", () => {
-            box.style.backgroundColor = "";
-        });
-    });
-});
+    // 파일 ID 삭제 기능
+    const deletedFileIds = [];
 
-// 제출 버튼 활성화 확인
-// document.addEventListener("DOMContentLoaded", function () {
-//     const inputElement = document.querySelector(".label-input-partner input");
-//     const textareaElement = document.querySelector(".textarea__border textarea");
-//     const radioButtons = document.querySelectorAll('input[type="radio"]');
-//     const fileInputs = document.querySelectorAll('input[type="file"]');
-//     const submitButton = document.querySelector(".btn-submit");
-//
-//     function checkFormCompletion() {
-//         const allFilesUploaded = Array.from(fileInputs).every(
-//             (fileInput) => fileInput.files.length > 0
-//         );
-//         const isInputValid = inputElement && inputElement.value.trim() !== "";
-//         const isTextareaValid =
-//             textareaElement && textareaElement.value.trim() !== "";
-//         const isRadioSelected = Array.from(radioButtons).some(
-//             (radio) => radio.checked
-//         );
-//
-//         if (
-//             allFilesUploaded &&
-//             isInputValid &&
-//             isTextareaValid &&
-//             isRadioSelected
-//         ) {
-//             submitButton.disabled = false;
-//             submitButton.classList.add("active");
-//         } else {
-//             submitButton.disabled = true;
-//             submitButton.classList.remove("active");
-//         }
-//     }
-//
-//     if (inputElement) {
-//         inputElement.addEventListener("input", checkFormCompletion);
-//     }
-//     if (textareaElement) {
-//         textareaElement.addEventListener("input", checkFormCompletion);
-//     }
-//     radioButtons.forEach((radio) => {
-//         radio.addEventListener("change", checkFormCompletion);
-//     });
-//     fileInputs.forEach((fileInput) => {
-//         fileInput.addEventListener("change", checkFormCompletion);
-//     });
-//
-//     checkFormCompletion();
-// }
-//
-//
-// );
-document.addEventListener("DOMContentLoaded", function () {
-    const deletedFileIds = []; // 삭제할 파일 ID들을 저장할 배열
-
-    // 이미지 삭제 버튼에 클릭 이벤트 리스너 추가
     document.querySelectorAll(".btn-edit-item[data-file-id]").forEach(button => {
         button.addEventListener("click", function () {
             const fileId = this.getAttribute("data-file-id");
-            deletedFileIds.push(fileId); // 삭제할 파일 ID를 배열에 추가
-
-            // 해당 이미지 요소 숨기기
+            deletedFileIds.push(fileId);
             const imgBox = this.closest(".img-box-list");
             if (imgBox) {
                 imgBox.style.display = "none";
@@ -347,17 +248,12 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-    // 폼 제출 시 삭제할 파일 ID를 hidden input으로 추가하고 제출
     const writeForm = document.getElementById("write-form");
     writeForm.addEventListener("submit", function (event) {
         const hiddenInput = document.createElement("input");
         hiddenInput.setAttribute("type", "hidden");
         hiddenInput.setAttribute("name", "deletedFileIds");
-        hiddenInput.setAttribute("value", deletedFileIds.join(",")); // ID들을 콤마로 구분하여 문자열로 전송
+        hiddenInput.setAttribute("value", deletedFileIds.join(","));
         writeForm.appendChild(hiddenInput);
-
-        // 기본 form 제출 동작 수행
-        writeForm.submit();
     });
 });
-

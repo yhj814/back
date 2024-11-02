@@ -204,7 +204,7 @@
 <!--                                                썸네일 파일은 안가져옴 아래에 가져옴-->
                                                 <div th:each="file : ${existingFiles}" th:if="${file.filePath != work.thumbnailFilePath}" class="img-box-list existing-file">
                                                         <div class="img-edit-box" style="margin-top: 10px;width: 88px;margin-left: 635px;display: block;">
-                                                            <div type="button" class="btn-edit-item" id="btn-delete-image-1730446634855" data-file-id="${file.id}">
+                                                            <div type="button" class="btn-edit-item" id="btn-delete-image-1730446634855" th:attr="data-file-id=${file.id}">
                                                                 이미지 삭제
                                                             </div>
                                                         </div>
