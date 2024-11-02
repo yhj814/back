@@ -11,17 +11,20 @@ import com.app.ggumteo.repository.work.WorkDAO;
 import com.app.ggumteo.search.Search;
 import com.app.ggumteo.service.file.PostFileService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Collections;
 import java.util.List;
 
 @Service
 @Primary
 @RequiredArgsConstructor
 @Transactional(rollbackFor = Exception.class)
+@Slf4j
 public class WorkServiceImpl implements WorkService {
 
     private final WorkDAO workDAO;
@@ -79,10 +82,39 @@ public class WorkServiceImpl implements WorkService {
 
     @Override
     public void updateWork(WorkDTO workDTO, List<MultipartFile> newFiles, List<Long> deletedFileIds, MultipartFile newThumbnailFile) {
+        log.info("업데이트 요청 - 작품 ID: {}", workDTO.getId());
+        log.info("삭제할 파일 IDs: {}", deletedFileIds);
+        log.info("새로 추가할 파일 수: {}", (newFiles != null ? newFiles.size() : 0));
+
+        // 기존 데이터를 다시 조회하여 최신 정보를 가져옴 (특히 썸네일 파일 ID)
+        WorkDTO currentWork = workDAO.findWorkById(workDTO.getId());
+        Long currentThumbnailFileId = currentWork.getThumbnailFileId();
+
+        // 썸네일 파일 교체 처리
+        if (newThumbnailFile != null && !newThumbnailFile.isEmpty()) {
+            // 기존 썸네일 파일의 외래 키 참조 해제
+            if (currentThumbnailFileId != null) {
+                workDAO.updateThumbnailFileId(workDTO.getId(), null);  // 썸네일 파일 ID를 먼저 null로 설정
+                postFileService.deleteFilesByIds(Collections.singletonList(currentThumbnailFileId));
+                log.info("기존 썸네일 파일 삭제 완료: 썸네일 파일 ID: {}", currentThumbnailFileId);
+            }
+
+            // 새로운 썸네일 파일 저장
+            FileVO thumbnailFile = postFileService.saveFile(newThumbnailFile, workDTO.getId());
+            workDTO.setThumbnailFileId(thumbnailFile.getId());
+            log.info("새로운 썸네일 파일 저장 완료: 썸네일 파일 ID: {}", thumbnailFile.getId());
+        } else {
+            // 새로운 썸네일 파일이 없을 경우, 기존 썸네일 파일 ID 유지
+            workDTO.setThumbnailFileId(currentThumbnailFileId);
+            log.info("새로운 썸네일 파일이 없습니다. 기존 썸네일 유지.");
+        }
+
+        // 기존 파일 삭제
         if (deletedFileIds != null && !deletedFileIds.isEmpty()) {
             postFileService.deleteFilesByIds(deletedFileIds);
         }
 
+        // 새 파일 추가 (썸네일 파일이 아닌 일반 파일들)
         if (newFiles != null && !newFiles.isEmpty()) {
             for (MultipartFile file : newFiles) {
                 if (!file.isEmpty()) {
@@ -91,13 +123,12 @@ public class WorkServiceImpl implements WorkService {
             }
         }
 
-        if (newThumbnailFile != null && !newThumbnailFile.isEmpty()) {
-            FileVO thumbnailFile = postFileService.saveFile(newThumbnailFile, workDTO.getId());
-            workDTO.setThumbnailFileId(thumbnailFile.getId());
-        }
-
-        workDAO.updateWork(workDTO); // 작품 정보 업데이트
+        // 작품 정보 업데이트
+        workDAO.updateWork(workDTO);
+        log.info("작품 정보 업데이트 완료: 작품 ID {}", workDTO.getId());
     }
+
+
 
 
     @Override

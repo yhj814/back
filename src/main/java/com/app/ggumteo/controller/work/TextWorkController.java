@@ -129,6 +129,14 @@ public class TextWorkController {
             @RequestParam(value = "newThumbnailFile", required = false) MultipartFile newThumbnailFile,
             Model model) {
         try {
+            log.info("수정 요청 - 작품 정보: {}", workDTO);
+
+            // 기존 데이터를 가져와서 필요한 필드를 설정
+            WorkDTO currentWork = workService.findWorkById(workDTO.getId());
+            if (currentWork != null) {
+                workDTO.setThumbnailFileId(currentWork.getThumbnailFileId());
+            }
+
             workService.updateWork(workDTO, newFiles, deletedFileIds, newThumbnailFile); // 서비스로 전달
             return "redirect:/text/list";
         } catch (Exception e) {
@@ -137,13 +145,6 @@ public class TextWorkController {
             return "text/modify";
         }
     }
-
-
-
-
-
-
-
     @GetMapping("/list")
     public String list(
             @RequestParam(value = "genreType", required = false) String genreType,
@@ -175,6 +176,7 @@ public class TextWorkController {
         if (fileData == null) {
             return ResponseEntity.notFound().build();
         }
+
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.IMAGE_JPEG);

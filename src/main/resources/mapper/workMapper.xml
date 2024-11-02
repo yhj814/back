@@ -11,17 +11,18 @@
     <!-- 작품 id로 작품 조회 (썸네일 파일 ID 포함) -->
     <select id="selectById" resultType="workDTO">
         select
-            w.id, w.work_price, w.file_content, w.read_count, w.genre_type,
-            p.post_title, p.post_content, p.member_profile_id, p.created_date, p.updated_date,
-            f.file_name as thumbnail_file_name, f.file_path as thumbnail_file_path,
-            mp.profile_nickname
+        w.id, w.work_price, w.file_content, w.read_count, w.genre_type,
+        p.post_title, p.post_content, p.member_profile_id, p.created_date, p.updated_date,
+        f.file_name as thumbnail_file_name, f.file_path as thumbnail_file_path,
+        w.thumbnail_file_id as thumbnailFileId,  <!-- 썸네일 파일 ID 추가 -->
+        mp.profile_nickname
         from
-            tbl_work w
-                join tbl_post p on w.id = p.id
-                join tbl_member_profile mp on p.member_profile_id = mp.id
-                left join tbl_file f on w.thumbnail_file_id = f.id
+        tbl_work w
+        join tbl_post p on w.id = p.id
+        join tbl_member_profile mp on p.member_profile_id = mp.id
+        left join tbl_file f on w.thumbnail_file_id = f.id
         where
-            w.id = #{id}
+        w.id = #{id}
     </select>
 
     <!-- 조회수 증가 -->
@@ -159,5 +160,13 @@
         order by p.created_date desc
             limit 3
     </select>
+
+    <!-- 썸네일 파일 ID 초기화 -->
+    <update id="updateThumbnailFileId">
+        update tbl_work
+        set thumbnail_file_id = #{thumbnailFileId}
+        where id = #{workId}
+    </update>
+
 
 </mapper>

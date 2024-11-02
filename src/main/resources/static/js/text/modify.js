@@ -9,6 +9,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const previewContainer = document.getElementById("preview-container");
     const thumbnailPreview = previewContainer.querySelector("img");
 
+    let isThumbnailChanged = false; // 썸네일 변경 여부를 추적하는 변수
 
     // 썸네일 변경 버튼 클릭 시 파일 선택창 열기
     document.querySelector(".work-thumbnail-add-btn").addEventListener("click", function () {
@@ -21,6 +22,7 @@ document.addEventListener("DOMContentLoaded", function () {
     thumbnailUploadInput.addEventListener("change", function () {
         const file = thumbnailUploadInput.files[0];
         if (file) {
+            isThumbnailChanged = true; // 썸네일 변경 여부 설정
             const reader = new FileReader();
             reader.onload = function (e) {
                 thumbnailPreview.src = e.target.result;
@@ -32,6 +34,16 @@ document.addEventListener("DOMContentLoaded", function () {
     // 폼 제출 시 썸네일과 삭제할 파일 정보 포함
     const writeForm = document.getElementById("write-form");
     writeForm.addEventListener("submit", function () {
+        console.log("폼 제출 시 삭제할 파일 IDs:", deletedFileIds); // 삭제할 파일 ID 로그 출력
+
+        if (deletedFileIds.length > 0) {
+            const hiddenInput = document.createElement("input");
+            hiddenInput.setAttribute("type", "hidden");
+            hiddenInput.setAttribute("name", "deletedFileIds");
+            hiddenInput.setAttribute("value", deletedFileIds.join(","));
+            writeForm.appendChild(hiddenInput);
+        }
+
         if (isThumbnailChanged) {
             const hiddenThumbnailInput = document.createElement("input");
             hiddenThumbnailInput.type = "hidden";
@@ -39,13 +51,6 @@ document.addEventListener("DOMContentLoaded", function () {
             hiddenThumbnailInput.value = "true";
             writeForm.appendChild(hiddenThumbnailInput);
         }
-
-        // 삭제할 파일 ID 목록을 hidden input에 추가
-        const hiddenInput = document.createElement("input");
-        hiddenInput.setAttribute("type", "hidden");
-        hiddenInput.setAttribute("name", "deletedFileIds");
-        hiddenInput.setAttribute("value", deletedFileIds.join(","));
-        writeForm.appendChild(hiddenInput);
     });
 
     // 인풋 포커스 효과 설정
@@ -298,6 +303,7 @@ document.addEventListener("DOMContentLoaded", function () {
         button.addEventListener("click", function () {
             const fileId = this.getAttribute("data-file-id");
             deletedFileIds.push(fileId); // 삭제할 파일 ID 저장
+            console.log("삭제할 파일 ID 추가:", fileId); // 삭제할 파일 ID 로그 출력
             this.closest(".img-box-list").style.display = "none"; // UI에서 삭제 표시
         });
     });

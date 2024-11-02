@@ -54,5 +54,5 @@ public interface WorkMapper {
     // 작가의 다른 최신 작품 3개 조회
     List<WorkDTO> selectThreeByAuthor(@Param("memberProfileId") Long memberProfileId, @Param("workId") Long workId);
 
-
+    void updateThumbnailFileId(Long workId, Long thumbnailFileId);
 }
