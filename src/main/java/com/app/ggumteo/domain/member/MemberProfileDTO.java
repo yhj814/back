@@ -14,6 +14,7 @@ public class MemberProfileDTO implements Serializable {
     @EqualsAndHashCode.Include
     private Long id;
     private String profileName;
+    private String memberEmail;
     private String profileNickName;
     private String profileGender;
     private int profileAge;
