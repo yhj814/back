@@ -255,15 +255,15 @@ const showFundingBuyerList = ({myFundingBuyers, settingTablePagination}) => {
                             >
                             `
         console.log(myFundingBuyer.fundingSendStatus);
-            if(myFundingBuyer.fundingSendStatus === "NO") {
+            if(myFundingBuyer.fundingSendStatus === "YES") {
                         text += `
                                 <div
-                                        class="btn-choice btn-public"
+                                        class="btn-choice btn-public active"
                                 >`
                               }else{
                         text += `
                                 <div
-                                        class="btn-choice btn-public active"
+                                        class="btn-choice btn-public"
                                 >
                                 `
                             }
@@ -289,7 +289,7 @@ const showFundingBuyerList = ({myFundingBuyers, settingTablePagination}) => {
                                         class="btn-choice btn-secret"
                                 >`
         }
-         text +=        `<input
+            text +=        `<input
                                             class="radio-value"
                                             name="is_secret_employment"
                                             type="radio"

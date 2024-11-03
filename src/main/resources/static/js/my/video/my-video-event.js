@@ -1,13 +1,11 @@
 globalThis.pageA = 1;
 myPageService.getMyFundingList(globalThis.pageA, memberId, showMyFundingList);
-console.log("내 펀딩 게시물 처음 페이지: ", globalThis.pageA);
 
 myFundingListPaging.addEventListener("click", (e)=>{
     e.preventDefault();
     if(e.target.tagName === "A") {
     globalThis.pageA = e.target.getAttribute("href");
     myPageService.getMyFundingList(globalThis.pageA, memberId, showMyFundingList);
-        console.log("내 펀딩 게시물 페이지 : ",globalThis.pageA);
     }
 });
 
@@ -26,7 +24,6 @@ myFundingListLayout.addEventListener('click', async (e) => {
                 // 1. 펀딩 구매자 테이블 html 에 목록을 추가해라.
                 globalThis.pageB = 1;
                 fundingBuyerTable.innerHTML += await myPageService.getFundingBuyerList(globalThis.pageB, myFundingPostId, showFundingBuyerList);
-                console.log("들어옴 : ", fundingBuyerTable.innerHTML);
                 const sendButton = document.querySelector(".btn-choice.btn-public");
 
                 fundingBuyerTable.addEventListener('click', async (e) => {
@@ -36,7 +33,6 @@ myFundingListLayout.addEventListener('click', async (e) => {
                         const fundingBuyerListWrapper = fundingBuyerTable.children[1]
                         const fundingBuyerList = fundingBuyerListWrapper.children[0]
                         fundingBuyerTable.innerHTML = await myPageService.getFundingBuyerList(globalThis.pageB, myFundingPostId, showFundingBuyerList);
-                        console.log("내 펀딩 구매자 목록 페이지: ", globalThis.pageB);
                     }
                 });
 
