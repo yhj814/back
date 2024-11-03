@@ -40,7 +40,7 @@
             tbl_buy_funding_product bfp
                 join tbl_funding_product fp on bfp.funding_product_id = fp.id
                 join tbl_funding f on fp.funding_id = f.id
-                join tbl_post p on f.id = p.id
+                join tbl_post p on f.id = p.id and p.post_type = 'VIDEO'
                 join tbl_member_profile mp on p.member_profile_id = mp.id
                 join tbl_member m on mp.member_id = m.id
                 join tbl_member_profile bfp_mp on bfp.member_profile_id = bfp_mp.id
@@ -56,7 +56,7 @@
             tbl_buy_funding_product bfp
                 join tbl_funding_product fp on bfp.funding_product_id = fp.id
                 join tbl_funding f on fp.funding_id = f.id
-                join tbl_post p on f.id = p.id
+                join tbl_post p on f.id = p.id and p.post_type = 'VIDEO'
                 join tbl_member_profile mp on p.member_profile_id = mp.id
                 join tbl_member m on mp.member_id = m.id
                 join tbl_member_profile bfp_mp on bfp.member_profile_id = bfp_mp.id
