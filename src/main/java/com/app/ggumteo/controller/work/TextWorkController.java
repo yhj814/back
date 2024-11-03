@@ -21,6 +21,7 @@ import com.app.ggumteo.service.buy.BuyWorkService;
 import com.app.ggumteo.service.file.PostFileService;
 import com.app.ggumteo.service.reply.ReplyService;
 import com.app.ggumteo.service.work.WorkService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -101,7 +102,49 @@ public class TextWorkController {
             return ResponseEntity.status(500).body(Collections.singletonMap("error", "저장 중 오류가 발생했습니다."));
         }
     }
+    // 작품 수정 폼으로 이동
+    @GetMapping("modify/{id}")
+    public String updateForm(@PathVariable("id") Long id, Model model) {
+        WorkDTO work = workService.findWorkById(id);  // work 객체 조회
+        List<PostFileDTO> existingFiles = postFileService.findFilesByPostId(id); // 기존 파일 조회
+        log.info("Fetched work: {}", work);  // work 객체를 로그로 출력해 확인
 
+        if (work != null) {  // work가 null이 아닌지 확인
+            model.addAttribute("work", work);
+            model.addAttribute("existingFiles", existingFiles);
+            return "text/modify";
+        } else {
+            // work가 null인 경우 처리 (예: 에러 페이지로 이동)
+            model.addAttribute("error", "작품을 찾을 수 없습니다.");
+            return "text/error";
+        }
+    }
+
+    // 작품 업데이트 요청 처리
+    @PostMapping("modify")
+    public String updateWork(
+            @ModelAttribute WorkDTO workDTO,
+            @RequestParam(value = "newFiles", required = false) List<MultipartFile> newFiles,
+            @RequestParam(value = "deletedFileIds", required = false) List<Long> deletedFileIds,
+            @RequestParam(value = "newThumbnailFile", required = false) MultipartFile newThumbnailFile,
+            Model model) {
+        try {
+            log.info("수정 요청 - 작품 정보: {}", workDTO);
+
+            // 기존 데이터를 가져와서 필요한 필드를 설정
+            WorkDTO currentWork = workService.findWorkById(workDTO.getId());
+            if (currentWork != null) {
+                workDTO.setThumbnailFileId(currentWork.getThumbnailFileId());
+            }
+
+            workService.updateWork(workDTO, newFiles, deletedFileIds, newThumbnailFile); // 서비스로 전달
+            return "redirect:/text/list";
+        } catch (Exception e) {
+            log.error("Error updating work: ", e);
+            model.addAttribute("error", "업데이트 중 오류가 발생했습니다: " + e.getMessage());
+            return "text/modify";
+        }
+    }
     @GetMapping("/list")
     public String list(
             @RequestParam(value = "genreType", required = false) String genreType,
@@ -133,6 +176,7 @@ public class TextWorkController {
         if (fileData == null) {
             return ResponseEntity.notFound().build();
         }
+
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.IMAGE_JPEG);
