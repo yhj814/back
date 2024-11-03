@@ -3,6 +3,7 @@ package com.app.ggumteo.mapper.inquiry;
 import com.app.ggumteo.domain.inquiry.InquiryDTO;
 import com.app.ggumteo.domain.post.PostDTO;
 import com.app.ggumteo.pagination.AdminPagination;
+import com.app.ggumteo.pagination.WorkAndFundingPagination;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -56,6 +57,14 @@ public interface InquiryMapper {
 
     // post테이블에 postType이 INQUIRY 인거 삭제
     void deleteFromPost(@Param("list") List<Long> ids);
+
+    // 마이페이지 - 문의 내역 조회
+    public List<InquiryDTO> selectInquiryHistoryByMember(
+            @Param("workAndFundingPagination") WorkAndFundingPagination workAndFundingPagination
+            , @Param("memberId") Long memberId);
+
+    // 마이페이지 - 문의 내역 전체 갯수
+    public int selectCountInquiryHistoryByMember(Long memberId);
 }
 
 

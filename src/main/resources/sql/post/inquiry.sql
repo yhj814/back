@@ -18,16 +18,19 @@ select id, inquiry_status from tbl_inquiry;
 insert into tbl_inquiry(id, inquiry_status)
 values (25,'NO');
 
-select i.id, i.inquiry_status, p.post_title, p.created_date as answerDate, p.post_content,
-       m.profile_img_url ,mp.profile_nickname, aa.admin_answer_content as answerContent
+select i.id, i.inquiry_status, p.post_title, p.created_date as postCreatedDate, p.post_content,
+       m.profile_img_url ,mp.profile_nickname
 from
     tbl_inquiry i
         join tbl_post p on i.id = p.id
         join tbl_member_profile mp on p.member_profile_id = mp.id
         join tbl_member m on mp.member_id = m.id and m.id = 1
-        join tbl_admin_answer aa on i.id = aa.inquiry_id and p.post_type = 'INQUIRY'
+        and p.post_type = 'INQUIRY'
 order by i.id desc;
 
-select id, admin_answer_content, inquiry_id, created_date from tbl_admin_answer;
-insert into tbl_admin_answer(admin_answer_content, inquiry_id)
-values ('관리자 답변1', 25);
+select count(*) from
+    tbl_inquiry i
+        join tbl_post p on i.id = p.id
+        join tbl_member_profile mp on p.member_profile_id = mp.id
+        join tbl_member m on mp.member_id = m.id and m.id = 1
+        and p.post_type = 'INQUIRY';

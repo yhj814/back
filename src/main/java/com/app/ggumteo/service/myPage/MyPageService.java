@@ -1,6 +1,7 @@
 package com.app.ggumteo.service.myPage;
 
 import com.app.ggumteo.domain.funding.*;
+import com.app.ggumteo.domain.inquiry.MyInquiryHistoryListDTO;
 import com.app.ggumteo.domain.member.MemberVO;
 import com.app.ggumteo.pagination.SettingTablePagination;
 import com.app.ggumteo.pagination.WorkAndFundingPagination;
@@ -25,7 +26,7 @@ public interface MyPageService {
            int page, SettingTablePagination settingTablePagination, Long fundingPostId);
 
     //    내 펀딩 게시물 하나의 구매자 전체 갯수
-    public int getMyFundingPostBuyerTotal(Long fundingPostId);
+    public int getMyFundingPostBuyersTotal(Long fundingPostId);
 
     //    펀딩상품 발송여부 체크
     public void updateFundingSendStatus(BuyFundingProductVO buyFundingProductVO);
@@ -36,4 +37,11 @@ public interface MyPageService {
 
     //  내가 결제한 펀딩 목록 전체 갯수
     public int getMyBuyFundingListTotal(Long memberId);
+
+    // 마이페이지 - 문의 내역 조회
+    public MyInquiryHistoryListDTO getMyInquiryHistoryList(
+            int page, WorkAndFundingPagination workAndFundingPagination, Long memberId);
+
+    // 마이페이지 - 문의 내역 전체 갯수
+    public int getMyInquiryHistoriesTotal(Long memberId);
 }

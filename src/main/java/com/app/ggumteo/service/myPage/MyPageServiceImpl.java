@@ -3,12 +3,15 @@ package com.app.ggumteo.service.myPage;
 import com.app.ggumteo.aspect.annotation.MyBuyFundingListLogStatus;
 import com.app.ggumteo.aspect.annotation.MyFundingBuyerListLogStatus;
 import com.app.ggumteo.aspect.annotation.MyFundingListLogStatus;
+import com.app.ggumteo.aspect.annotation.MyInquiryHistoryListLogStatus;
 import com.app.ggumteo.domain.funding.*;
+import com.app.ggumteo.domain.inquiry.MyInquiryHistoryListDTO;
 import com.app.ggumteo.domain.member.MemberVO;
 import com.app.ggumteo.pagination.SettingTablePagination;
 import com.app.ggumteo.pagination.WorkAndFundingPagination;
 import com.app.ggumteo.repository.funding.BuyFundingProductDAO;
 import com.app.ggumteo.repository.funding.FundingDAO;
+import com.app.ggumteo.repository.inquiry.InquiryDAO;
 import com.app.ggumteo.repository.member.MemberDAO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +26,7 @@ public class MyPageServiceImpl implements MyPageService {
     private final MemberDAO memberDAO;
     private final FundingDAO fundingDAO;
     private final BuyFundingProductDAO buyFundingProductDAO;
+    private final InquiryDAO inquiryDAO;
 
     @Override
     public Optional<MemberVO> getMember(Long id) {
@@ -71,7 +75,7 @@ public class MyPageServiceImpl implements MyPageService {
 
     //    내 펀딩 게시물 하나의 구매자 전체 갯수
     @Override
-    public int getMyFundingPostBuyerTotal(Long fundingPostId) {
+    public int getMyFundingPostBuyersTotal(Long fundingPostId) {
         return buyFundingProductDAO.getTotal(fundingPostId);
     }
 
@@ -98,5 +102,26 @@ public class MyPageServiceImpl implements MyPageService {
     @Override
     public int getMyBuyFundingListTotal(Long memberId) {
         return buyFundingProductDAO.getMyBuyFundingListTotal(memberId);
+    }
+
+    // 마이페이지 - 문의 내역 조회
+    @Override
+    @MyInquiryHistoryListLogStatus
+    public MyInquiryHistoryListDTO getMyInquiryHistoryList(int page, WorkAndFundingPagination workAndFundingPagination, Long memberId) {
+        MyInquiryHistoryListDTO myInquiryHistories = new MyInquiryHistoryListDTO();
+        workAndFundingPagination.setPage(page);
+        workAndFundingPagination.setPage(inquiryDAO.getTotalInquiryHistoryByMember(memberId));
+        workAndFundingPagination.progress();
+        myInquiryHistories.setWorkAndFundingPagination(workAndFundingPagination);
+        myInquiryHistories.setMyInquiryHistories(inquiryDAO.findInquiryHistoryByMember(workAndFundingPagination, memberId));
+
+        return myInquiryHistories;
+    }
+
+    // 마이페이지 - 문의 내역 전체 갯수
+    @Override
+    public int getMyInquiryHistoriesTotal(Long memberId) {
+
+        return inquiryDAO.getTotalInquiryHistoryByMember(memberId);
     }
 }

@@ -1,6 +1,7 @@
 package com.app.ggumteo.service;
 
 import com.app.ggumteo.domain.funding.*;
+import com.app.ggumteo.domain.inquiry.MyInquiryHistoryListDTO;
 import com.app.ggumteo.domain.member.MemberDTO;
 import com.app.ggumteo.domain.member.MemberVO;
 import com.app.ggumteo.mapper.funding.BuyFundingProductMapper;
@@ -20,8 +21,6 @@ import java.util.Optional;
 public class MyPageServiceTests {
     @Autowired
     private MyPageService myPageService;
-    @Autowired
-    private BuyFundingProductMapper buyFundingProductMapper;
 
     @Test
     public void testGetMember() {
@@ -49,7 +48,7 @@ public class MyPageServiceTests {
         FundingDTO fundingDTO = null;
         SettingTablePagination settingTablePagination = new SettingTablePagination();
         fundingDTO = myPageService.getFunding(9L).get();
-        settingTablePagination.setTotal(myPageService.getMyFundingPostBuyerTotal(fundingDTO.getId()));
+        settingTablePagination.setTotal(myPageService.getMyFundingPostBuyersTotal(fundingDTO.getId()));
         settingTablePagination.progress();
         MyFundingBuyerListDTO myFundingBuyers = myPageService.getMyFundingBuyerList(1, settingTablePagination, fundingDTO.getId());
 
@@ -72,9 +71,21 @@ public class MyPageServiceTests {
         memberVO = myPageService.getMember(1L).get();
         workAndFundingPagination.setTotal(myPageService.getMyBuyFundingListTotal(memberVO.getId()));
         workAndFundingPagination.progress();
-        MyBuyFundingListDTO FundingPostsPaidByMember = myPageService.getMyBuyFundingList(1, workAndFundingPagination, memberVO.getId());
+        MyBuyFundingListDTO fundingPostsPaidByMember = myPageService.getMyBuyFundingList(1, workAndFundingPagination, memberVO.getId());
 
-        log.info(FundingPostsPaidByMember.toString());
+        log.info(fundingPostsPaidByMember.toString());
+    }
+
+    @Test
+    public void testGetMyInquiryHistoryList() {
+        MemberVO memberVO = null;
+        WorkAndFundingPagination workAndFundingPagination = new WorkAndFundingPagination();
+        memberVO = myPageService.getMember(1L).get();
+        workAndFundingPagination.setTotal(myPageService.getMyInquiryHistoriesTotal(memberVO.getId()));
+        workAndFundingPagination.progress();
+        MyInquiryHistoryListDTO myInquiryHistories = myPageService.getMyInquiryHistoryList(1, workAndFundingPagination, memberVO.getId());
+
+        log.info(myInquiryHistories.toString());
     }
 
 }
