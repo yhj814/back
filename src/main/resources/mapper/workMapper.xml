@@ -68,7 +68,7 @@
     </delete>
 
     <!-- 작품 목록 조회 및 썸네일 불러오기 -->
-    <select id="selectAllWithThumbnailAndSearch" resultType="workDTO" parameterType="map">
+    <select id="selectAllWithThumbnailAndSearchAndType" resultType="workDTO">
         select
         w.id, w.work_price, w.read_count, w.genre_type,
         p.post_title, p.post_content, p.member_profile_id, p.created_date, p.updated_date,
@@ -82,6 +82,7 @@
         left join tbl_reply r on w.id = r.work_id
         left join tbl_file f on w.thumbnail_file_id = f.id
         where w.id is not null
+        and upper(p.post_type) = upper(#{postType})
         <if test="keyword != null and keyword != ''">
             and (p.post_title like concat('%', #{keyword}, '%')
             or p.post_content like concat('%', #{keyword}, '%')
@@ -95,13 +96,16 @@
         limit #{pagination.startRow}, #{pagination.rowCount}
     </select>
 
+
+
     <!-- 검색 조건이 포함된 총 작품 수 조회 -->
-    <select id="selectTotalWithSearch" parameterType="map">
+    <select id="selectTotalWithSearchAndType" parameterType="map" resultType="int">
         select count(*)
         from tbl_work w
         join tbl_post p on w.id = p.id
         join tbl_member_profile mp on p.member_profile_id = mp.id
         where w.id is not null
+        and p.post_type = #{postType}
         <if test="keyword != null and keyword != ''">
             and (p.post_title like concat('%', #{keyword}, '%')
             or p.post_content like concat('%', #{keyword}, '%')
@@ -124,7 +128,7 @@
     </select>
 
     <!-- 같은 장르의 최신순 3개 작품 조회 -->
-    <select id="selectThreeByGenre" resultType="workDTO">
+    <select id="selectThreeByGenre" resultType="workDTO" parameterType="map">
         select
             w.id, w.work_price, p.post_title, p.created_date,
             mp.profile_nickname as profileNickName,
@@ -137,12 +141,14 @@
                 left join tbl_reply r on w.id = r.work_id
                 left join tbl_file f on w.thumbnail_file_id = f.id
         where w.genre_type = #{genreType} and w.id != #{workId}
+          and p.post_type = #{postType}
         group by w.id
+        order by p.created_date desc
             limit 3
     </select>
 
     <!-- 같은 작가의 작품 3개 불러오기 -->
-    <select id="selectThreeByAuthor" resultType="workDTO">
+    <select id="selectThreeByAuthor" resultType="workDTO" parameterType="map">
         select
             w.id, w.work_price, w.read_count, w.genre_type,
             p.post_title, p.post_content, p.member_profile_id, p.created_date, p.updated_date,
@@ -156,6 +162,7 @@
                 left join tbl_file f on w.thumbnail_file_id = f.id
                 left join tbl_reply r on r.work_id = w.id
         where p.member_profile_id = #{memberProfileId} and w.id != #{workId}
+          and p.post_type = #{postType}
         group by w.id
         order by p.created_date desc
             limit 3
@@ -167,6 +174,5 @@
         set thumbnail_file_id = #{thumbnailFileId}
         where id = #{workId}
     </update>
-
 
 </mapper>

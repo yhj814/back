@@ -127,6 +127,7 @@ public class TextWorkController {
             @RequestParam(value = "newFiles", required = false) List<MultipartFile> newFiles,
             @RequestParam(value = "deletedFileIds", required = false) List<Long> deletedFileIds,
             @RequestParam(value = "newThumbnailFile", required = false) MultipartFile newThumbnailFile,
+            @RequestParam(value = "page", defaultValue = "1") int page,  // 페이지 파라미터 추가
             Model model) {
         try {
             log.info("수정 요청 - 작품 정보: {}", workDTO);
@@ -137,29 +138,55 @@ public class TextWorkController {
                 workDTO.setThumbnailFileId(currentWork.getThumbnailFileId());
             }
 
+            // 서비스에서 작품 업데이트 로직 실행
             workService.updateWork(workDTO, newFiles, deletedFileIds, newThumbnailFile); // 서비스로 전달
-            return "redirect:/text/list";
+
+            // 수정 후 바로 리스트 페이지로 이동하여 데이터 전달
+            String genreType = null; // 필요 시 적절히 설정
+            String keyword = null; // 필요 시 적절히 설정
+
+            Pagination pagination = new Pagination();
+            pagination.setPage(page);
+
+            int totalWorks = workService.findTotalWithSearchAndType(genreType, keyword, PostType.TEXT.name());
+            pagination.setTotal(totalWorks);
+            pagination.progress2();
+
+            List<WorkDTO> works = workService.findAllWithThumbnailAndSearchAndType(genreType, keyword, pagination, PostType.TEXT.name());
+
+            model.addAttribute("works", works);
+            model.addAttribute("pagination", pagination);
+            model.addAttribute("keyword", keyword);
+            model.addAttribute("genreType", genreType);
+
+            return "text/list"; // 수정 후 바로 list 페이지로 이동
         } catch (Exception e) {
             log.error("Error updating work: ", e);
             model.addAttribute("error", "업데이트 중 오류가 발생했습니다: " + e.getMessage());
             return "text/modify";
         }
     }
+
+
     @GetMapping("/list")
     public String list(
             @RequestParam(value = "genreType", required = false) String genreType,
             @RequestParam(value = "keyword", required = false) String keyword,
             @RequestParam(value = "page", defaultValue = "1") int page,
             Model model) {
+        log.info("Received genreType: {}", genreType);
+        log.info("Received keyword: {}", keyword);
+        log.info("Received page: {}", page);
 
         Pagination pagination = new Pagination();
         pagination.setPage(page);
 
-        int totalWorks = workService.findTotalWithSearch(genreType, keyword);
+        // 텍스트 타입만 조회하기 위해서 필터링 추가
+        int totalWorks = workService.findTotalWithSearchAndType(genreType, keyword, PostType.TEXT.name());
         pagination.setTotal(totalWorks);
         pagination.progress2();
 
-        List<WorkDTO> works = workService.findAllWithThumbnailAndSearch(genreType, keyword, pagination);
+        List<WorkDTO> works = workService.findAllWithThumbnailAndSearchAndType(genreType, keyword, pagination, PostType.TEXT.name());
 
         model.addAttribute("works", works);
         model.addAttribute("pagination", pagination);
@@ -168,6 +195,8 @@ public class TextWorkController {
 
         return "text/list";
     }
+
+
 
     @GetMapping("/display")
     @ResponseBody
@@ -189,8 +218,8 @@ public class TextWorkController {
         workService.incrementReadCount(id);
 
         List<PostFileDTO> postFiles = workService.findFilesByPostId(id);
-        List<WorkDTO> threeWorks = workService.getThreeWorksByGenre(work.getGenreType(), work.getId());
-        List<WorkDTO> threeAuthorWorks = workService.getThreeWorksByAuthor(work.getMemberProfileId(), work.getId());
+        List<WorkDTO> threeWorks = workService.getThreeWorksByGenre(work.getGenreType(), work.getId(), PostType.TEXT.name());
+        List<WorkDTO> threeAuthorWorks = workService.getThreeWorksByAuthor(work.getMemberProfileId(), work.getId(), PostType.TEXT.name());
 
         model.addAttribute("work", work);
         model.addAttribute("postFiles", postFiles);

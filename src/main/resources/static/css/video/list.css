@@ -1,27 +1,27 @@
 @font-face {
     font-family: "NotoSansKR";
     font-weight: 700;
-    src: url("/static/fonts/NotoSansKR-Bold.woff2") format("woff2");
+    src: url("/fonts/NotoSansKR-Bold.woff2") format("woff2");
 }
 @font-face {
     font-family: "NotoSansKR";
     font-weight: 500;
-    src: url("/static/fonts/NotoSansKR-Medium.woff2") format("woff2");
+    src: url("/fonts/NotoSansKR-Medium.woff2") format("woff2");
 }
 @font-face {
     font-family: "NotoSansKR";
     font-weight: 400;
-    src: url("/static/fonts/NotoSansKR-Regular.woff2") format("woff2");
+    src: url("/fonts/NotoSansKR-Regular.woff2") format("woff2");
 }
 @font-face {
     font-family: "NotoSansKR";
     font-weight: 300;
-    src: url("/static/fonts/NotoSansKR-Light.woff2") format("woff2");
+    src: url("/fonts/NotoSansKR-Light.woff2") format("woff2");
 }
 @font-face {
     font-family: "NotoSansKR";
     font-weight: 100;
-    src: url("/static/fonts/NotoSansKR-Thin.woff2") format("woff2");
+    src: url("/fonts/NotoSansKR-Thin.woff2") format("woff2");
 }
 
 html {
@@ -36,6 +36,10 @@ html {
     font-family: "NotoSansKR", Sans-serif;
     line-height: 1rem;
 }
+li {
+    all: unset;
+}
+
 
 body {
     height: 100%;
@@ -95,6 +99,7 @@ a {
     text-overflow: ellipsis;
     white-space: nowrap;
     word-break: keep-all;
+    margin-right: 36px;
 }
 .sub-navigation div::after {
     content: "";
@@ -122,7 +127,7 @@ a {
     margin-bottom: 40px;
 }
 .text-ggumteo {
-    color: #3ba3c7;
+    color: #00a878;
     margin-bottom: 8px;
     font-weight: 700;
     font-size: 16px;
@@ -166,7 +171,7 @@ a {
     width: 100%;
     height: inherit;
     padding: 8px 38px 8px 12px;
-    outline-color: #87ceed;
+    outline-color: #00a878;
 }
 .search-btn {
     cursor: pointer;
@@ -213,17 +218,19 @@ a {
 .list-box-wrapper {
     display: flex;
     flex-wrap: wrap;
-    gap: 30px;
 }
 .box {
-    width: 246px;
+    width: 213px;
     margin-bottom: 16px;
     cursor: pointer;
 }
+.box:first-child {
+    margin-left: 15px;
+}
 .thumbnail {
     border: none;
-    width: 250px;
-    height: 160px;
+    width: 180px;
+    height: 246px;
     background-size: cover;
     background-position: center center;
 }
@@ -270,13 +277,13 @@ a {
 .portfolio-detail-seperator {
     width: 1px;
     height: 12px;
-    margin: 0 58px;
     background-color: #eee;
+    margin-left: 5px;
 }
 .partner-profile {
     width: 30px;
     height: 30px;
-    margin-right: 8px;
+    margin-left: 9px;
     border: solid 1px #e0e0e0;
     border-radius: 10px;
 }
@@ -285,9 +292,10 @@ a {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    margin-right: 25px;
 }
 .filter-box:hover {
-    border-color: #87ceed;
+    border-color: #00a878;
 }
 .pagination-box {
     display: flex;
@@ -324,8 +332,22 @@ li:first-child > .page-link {
     font-weight: 500;
     color: #616161;
     text-decoration: none;
-    border: 1px solid transparent;
+    border: 1px solid #00a878;
 }
+.page-item.active .page-link {
+    font-weight: bold;
+    color: #ffffff;
+    background-color: #00a878;
+    border-color: black;
+    cursor: default;
+}
+
+.page-item.disabled .page-link {
+    color: #6c757d;
+    pointer-events: none;
+    cursor: not-allowed;
+}
+
 .theme-ggumteo li {
     height: 100%;
     margin-left: 4px;
@@ -337,7 +359,7 @@ li:last-child > .page-link {
 }
 /* 페이지 이동시 페이지 번호에 생기는 스타일 */
 .active {
-    color: #3ba3c7;
+    color: #00a878;
     border-color: #bdbdbd;
     border-radius: 2px;
 }
@@ -348,12 +370,12 @@ li:last-child > .page-link {
 .content-meta-elem {
     display: inline-block;
     line-height: 20px;
-    margin-right: -100px !important;
+    margin-left: 23px;
     margin-top: 2px;
 }
 .box-group {
     display: inline-block;
-    margin-left: 605px;
+    margin-left: 930px;
 }
 .write-box {
     display: inline-flex;
@@ -361,7 +383,7 @@ li:last-child > .page-link {
     cursor: pointer;
     height: 36px;
     padding: 5px 12px;
-    border: solid 1px #3ba3c7;
+    border: solid 1px #00a878;
     background-color: #fff;
     color: #616161;
     font-size: 15px;
@@ -369,145 +391,6 @@ li:last-child > .page-link {
     border-radius: 13px;
     font-weight: 500;
 }
-
-@media (max-width: 430px) {
-    .main-header {
-        padding: 15px;
-        min-width: 420px;
-    }
-    .main {
-        min-width: 420px;
-    }
-    .container {
-        width: 100%;
-        margin: 0 auto;
-    }
-
-    .content-wrapper {
-        width: 100%;
-    }
-    .list {
-        width: 420px;
-    }
-    .box-group {
-        display: inline-block;
-        margin-top: 25px;
-        margin-left: 286px;
-    }
-    .text-ggumteo {
-        color: #3ba3c7;
-        margin-bottom: 8px;
-        font-weight: 700;
-        font-size: 15px;
-        line-height: 26px;
-        margin-left: 15px;
-    }
-
-    .title-2 {
-        font-size: 30px;
-        line-height: 48px;
-        font-weight: 400;
-        color: #212121;
-        margin-left: 13px;
-    }
-    .title-header {
-        display: flex;
-        flex-direction: column;
-        align-items: baseline;
-    }
-    .search-input {
-        margin-top: 20px;
-    }
-    .filter-box-group:first-child {
-        margin-left: 13px;
-    }
-    .thumbnail {
-        border: none;
-        width: 170px;
-        height: 130px;
-        background-size: cover;
-        background-position: center center;
-        margin-left: 220px;
-    }
-    .list-box-wrapper {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 40px;
-    }
-    .title {
-        color: #212121;
-        margin: -140px 0 6px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        font-weight: 500;
-        font-size: 15px;
-        line-height: 24px;
-    }
-    .box {
-        margin-left: 17px;
-        width: 200px;
-        margin-bottom: 16px;
-        cursor: pointer;
-    }
-    .detail {
-        display: flex;
-        align-items: center;
-        font-size: 11px;
-        line-height: 18px;
-        font-weight: 400;
-        margin-bottom: 10px;
-        justify-content: space-between;
-        color: #9e9e9e;
-        position: relative;
-    }
-    .content-meta-elem.meta-icon {
-        width: 16px;
-        height: 16px;
-        position: absolute;
-        transform: translate(102px, -1px);
-    }
-    .list-time {
-        margin-right: 25px;
-    }
-    .star-box {
-        margin-right: 3px;
-    }
-    .portfolio-detail-seperator {
-        width: 1px;
-        height: 12px;
-        margin: 0 10px;
-        background-color: #eee;
-    }
-    .content {
-        font-size: 12px;
-        line-height: 18px;
-        font-weight: 400;
-        margin-bottom: 10px;
-        color: #9e9e9e;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        word-break: keep-all;
-    }
-    .partner-profile {
-        width: 30px;
-        height: 30px;
-        margin-left: 50px;
-        border: solid 1px #e0e0e0;
-        border-radius: 10px;
-    }
-    .name-box {
-        max-width: 180px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        margin-right: 24px;
-    }
-    .list-box-wrapper {
-        margin-bottom: 50px;
-    }
-    .pagination-box {
-        display: none;
-    }
+.list-time {
+    margin-right: 39px;
 }
