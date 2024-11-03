@@ -67,13 +67,14 @@ public class VideoAuditionController {
     }
 
     @PostMapping("audition-write")
-    public ResponseEntity<?> write(AuditionDTO auditionDTO, @RequestParam("auditionFile") MultipartFile[] auditionFiles) {
+    public String write(AuditionDTO auditionDTO, @RequestParam("auditionFile") MultipartFile[] auditionFiles, Model model) {
         try {
             MemberVO member = (MemberVO) session.getAttribute("member");
             MemberProfileDTO memberProfile = (MemberProfileDTO) session.getAttribute("memberProfile");
             if (member == null) {
                 log.error("멤버 정보가 세션에 없습니다.");
-                return ResponseEntity.status(400).body(Collections.singletonMap("error", "세션에 정보가 없습니다."));
+                model.addAttribute("error", "세션에 정보가 없습니다.");
+                return "/error";
             }
 
             auditionDTO.setPostType(PostType.VIDEO.name());
@@ -86,12 +87,15 @@ public class VideoAuditionController {
 
             auditionService.write(auditionDTO, auditionFiles);
 
-            return ResponseEntity.ok(Collections.singletonMap("success", true));
+            // 리디렉션으로 이동
+            return "redirect:/audition/video/audition-list";
         } catch (Exception e) {
             log.error("오류 발생", e);
-            return ResponseEntity.status(500).body(Collections.singletonMap("error", "저장 중 오류가 발생했습니다."));
+            model.addAttribute("error", "저장 중 오류가 발생했습니다.");
+            return "/error";
         }
     }
+
 
     @GetMapping("/audition-list")
     public String list(@RequestParam(value = "keyword", required = false) String keyword,
