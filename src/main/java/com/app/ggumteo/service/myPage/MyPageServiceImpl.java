@@ -1,6 +1,8 @@
 package com.app.ggumteo.service.myPage;
 
-import com.app.ggumteo.aspect.annotation.MyPageLogStatus;
+import com.app.ggumteo.aspect.annotation.MyBuyFundingListLogStatus;
+import com.app.ggumteo.aspect.annotation.MyFundingBuyerListLogStatus;
+import com.app.ggumteo.aspect.annotation.MyFundingListLogStatus;
 import com.app.ggumteo.domain.funding.*;
 import com.app.ggumteo.domain.member.MemberVO;
 import com.app.ggumteo.pagination.SettingTablePagination;
@@ -29,7 +31,7 @@ public class MyPageServiceImpl implements MyPageService {
 
     //    내 펀딩 게시물 전체 조회
     @Override
-    @MyPageLogStatus
+    @MyFundingListLogStatus
     public MyFundingListDTO getMyFundingList(int page , WorkAndFundingPagination workAndFundingPagination, Long memberId) {
         MyFundingListDTO myFundingPosts = new MyFundingListDTO();
         workAndFundingPagination.setPage(page);
@@ -55,6 +57,7 @@ public class MyPageServiceImpl implements MyPageService {
 
     //    펀딩 구매자 목록 조회
     @Override
+    @MyFundingBuyerListLogStatus
     public MyFundingBuyerListDTO getMyFundingBuyerList(int page, SettingTablePagination settingTablePagination, Long fundingPostId) {
         MyFundingBuyerListDTO myFundingBuyers = new MyFundingBuyerListDTO();
         settingTablePagination.setPage(page);
@@ -80,6 +83,7 @@ public class MyPageServiceImpl implements MyPageService {
 
     //   내가 결제한 펀딩 목록 조회
     @Override
+    @MyBuyFundingListLogStatus
     public MyBuyFundingListDTO getMyBuyFundingList(int page, WorkAndFundingPagination workAndFundingPagination, Long memberId) {
         MyBuyFundingListDTO fundingPostsPaidByMember = new MyBuyFundingListDTO();
         workAndFundingPagination.setPage(page);

@@ -7,7 +7,7 @@
              , fl.file_name, fl.file_size, fl.file_type, fl.file_path
         from
             tbl_funding f
-                join tbl_post p on f.id = p.id
+                join tbl_post p on f.id = p.id and p.post_type = 'VIDEO'
                 join tbl_member_profile mp on p.member_profile_id = mp.id
                 join tbl_member m on mp.member_id = m.id and m.id = #{memberId}
                 join tbl_post_file pfl on p.id = pfl.post_id
@@ -18,14 +18,14 @@
 
     <select id="selectCount">
         select count(*) from tbl_funding f
-        join tbl_post p on f.id = p.id
+        join tbl_post p on f.id = p.id and p.post_type = 'VIDEO'
         join tbl_member_profile mp on p.member_profile_id = mp.id
         join tbl_member m on mp.member_id = m.id and m.id = #{memberId};
     </select>
 
     <select id="selectById" resultType="fundingDTO">
         select id, genre_type, investor_number, target_price, converge_price, funding_status, file_content
-        from tbl_funding
-        where id = #{id}
+        from tbl_funding f join tbl_post p
+        on f.id = p.id and p.post_type = 'VIDEO' and f.id = #{id}
     </select>
 </mapper>
