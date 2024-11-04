@@ -14,6 +14,7 @@ import com.app.ggumteo.service.file.PostFileService;
 import com.app.ggumteo.service.myPage.MyPageService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import net.coobird.thumbnailator.Thumbnailator;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -26,7 +27,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -99,15 +103,28 @@ public class MemberRestController {
 
     //    파일 업로드
     @PostMapping("upload")
-    @ResponseBody
-    public List<PostFileDTO> upload(@RequestParam("file") List<MultipartFile> files) {
-        try {
-            return postFileService.uploadFile(files);  // 서비스의 uploadFile 메서드 호출
-        } catch (IOException e) {
-            log.error("파일 업로드 중 오류 발생: ", e);
-            return Collections.emptyList();  // 오류 발생 시 빈 리스트 반환
+    public void upload(@RequestParam("file") List<MultipartFile> files) throws IOException {
+        String rootPath = "C:/upload" + getPath();
+
+        File directory = new File(rootPath);
+        if (!directory.exists()) {
+            directory.mkdirs();
+        }
+
+        for(int i=0; i<files.size(); i++) {
+            files.get(i).transferTo(new File(rootPath, files.get(i).getOriginalFilename()));
+            if(files.get(i).getContentType().startsWith("image")) {
+                FileOutputStream fileOutputStream = new FileOutputStream(new File(rootPath, files.get(i).getOriginalFilename()));
+                Thumbnailator.createThumbnail(files.get(i).getInputStream(), fileOutputStream, 100, 100);
+                fileOutputStream.close();
+            }
         }
     }
+
+    private String getPath() {
+        return LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd"));
+    }
+
     //    가져오기
     @GetMapping("display")
     @ResponseBody
