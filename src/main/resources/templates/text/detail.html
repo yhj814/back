@@ -81,7 +81,7 @@
                             <p>&nbsp;</p>
                         </div>
 <!--  마지막 파일은 안가져오도록 함. 구글링함 postFiles 중 마지막.-->
-                        <div class="upload-img" th:each="file, iterStat : ${postFiles}" th:if="${!iterStat.last}">
+                        <div class="upload-img" th:each="file : ${postFiles}" th:if="${file.filePath != work.thumbnailFilePath}">
                             <img th:src="@{'/text/display?fileName=' + ${file.filePath}}" alt="Uploaded Image" />
                         </div>
                         <div class="upload-content">

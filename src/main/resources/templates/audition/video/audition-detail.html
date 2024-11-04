@@ -275,8 +275,8 @@
                                     <div class="detail-description">
                                         <h2 class="subcontent">모집 내용</h2>
                                         <div class="detail-description-box"
-                                             th:text="${audition.postContent}"
-                                        >
+                                             th:utext="${#strings.replace(audition.postContent, '\n', '<br>')}"
+                                             style="white-space: pre-line;">
                                             &lt;프로젝트 개요&gt;<br /><br />
                                             모집 소개: <br />
                                             단편영화에 출연해주실 배우를 경력
@@ -301,9 +301,24 @@
                                             <br />
                                             <br />스크롤 내리기용
                                         </div>
-                                        <div class="upload-img" th:each="file : ${postFiles}">
-                                            <img th:src="@{'/audition/video/display?fileName=' + ${file.filePath}}" alt="첨부 이미지" />
+                                        <div class="layer-divider mt40mb32"></div>
+                                        <div class="file-content" th:text="${audition.fileContent}"></div>
+                                        <div class="upload-media" th:each="file : ${postFiles}">
+                                            <!-- 이미지 파일일 경우 -->
+                                            <div class="media-wrapper" th:if="${#strings.endsWith(file.filePath, '.jpg') or #strings.endsWith(file.filePath, '.jpeg') or #strings.endsWith(file.filePath, '.png') or #strings.endsWith(file.filePath, '.gif')}">
+                                                <img th:src="@{'/audition/video/display?fileName=' + ${file.filePath}}" alt="첨부 이미지" class="center-media" />
+                                            </div>
+
+                                            <!-- 동영상 파일일 경우 -->
+                                            <div class="media-wrapper" th:if="${#strings.endsWith(file.filePath, '.mp4') or #strings.endsWith(file.filePath, '.avi') or #strings.endsWith(file.filePath, '.mov') or #strings.endsWith(file.filePath, '.wmv')}">
+                                                <video controls class="center-media">
+                                                    <source th:src="@{'/audition/video/display?fileName=' + ${file.filePath}}" type="video/mp4">
+                                                    동영상 형식을 지원하지 않는 브라우저입니다.
+                                                </video>
+                                            </div>
                                         </div>
+
+
                                     </div>
                                 </div>
                             </div>
@@ -416,11 +431,6 @@
                                         </div>
                                     </div>
                                 </div>
-                                <!-- <p class="caption-1">
-                                    자기소개란<br />
-                                    안녕하세요.안녕하세요.안녕하세요.안녕하세요.
-                                    안녕하세요.안녕하세요.안녕하세요.안녕하세요.
-                                </p> -->
                             </div>
                         </div>
                     </div>

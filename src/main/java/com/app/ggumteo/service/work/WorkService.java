@@ -1,6 +1,7 @@
 package com.app.ggumteo.service.work;
 
 import com.app.ggumteo.domain.file.PostFileDTO;
+import com.app.ggumteo.domain.post.PostDTO;
 import com.app.ggumteo.domain.work.WorkDTO;
 import com.app.ggumteo.pagination.Pagination;
 import org.springframework.web.multipart.MultipartFile;
@@ -14,7 +15,9 @@ public interface WorkService {
 
     List<WorkDTO> findAllWithThumbnailAndSearch(String genreType, String keyword, Pagination pagination);
 
-    void updateWork(WorkDTO workDTO);
+    void updateWork(WorkDTO workDTO, List<MultipartFile> newFiles, List<Long> deletedFileIds, MultipartFile newThumbnailFile);
+
+
 
     void deleteWorkById(Long id);
 
@@ -29,4 +32,6 @@ public interface WorkService {
     List<WorkDTO> getThreeWorksByGenre(String genreType, Long workId);
 
     List<WorkDTO> getThreeWorksByAuthor(Long memberProfileId, Long workId);
+
+
 }

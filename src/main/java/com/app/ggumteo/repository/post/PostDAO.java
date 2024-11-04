@@ -28,4 +28,6 @@ public class PostDAO {
     public void deleteById(Long id) {
         postMapper.deleteById(id);
     }
+
+
 }

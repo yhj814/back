@@ -14,4 +14,10 @@ public interface PostFileService {
     byte[] getFileData(String fileName);  // 파일 데이터를 가져오는 메서드
 
     List<PostFileDTO> uploadFile(List<MultipartFile> file) throws IOException;
+
+    // 파일 삭제
+    void deleteFilesByIds(List<Long> fileIds);
+
+    // 특정 게시물의 파일 조회 (반환 타입을 List<PostFileDTO>로 변경)
+    List<PostFileDTO> findFilesByPostId(Long postId);
 }
