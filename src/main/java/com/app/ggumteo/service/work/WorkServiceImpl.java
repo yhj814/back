@@ -75,9 +75,10 @@ public class WorkServiceImpl implements WorkService {
     }
 
     @Override
-    public List<WorkDTO> findAllWithThumbnailAndSearch(String genreType, String keyword, Pagination pagination) {
+    public List<WorkDTO> findAllWithThumbnailAndSearchAndType(Search search, Pagination pagination) {
+        log.info("Service Layer - Search Parameters: {}", search);
         pagination.progress2();
-        return workDAO.findAllWithThumbnailAndSearch(keyword, genreType, pagination);
+        return workDAO.findAllWithThumbnailAndSearchAndType(search, pagination);
     }
 
     @Override
@@ -142,10 +143,7 @@ public class WorkServiceImpl implements WorkService {
         workDAO.incrementReadCount(id);
     }
 
-    @Override
-    public int findTotalWorks(String genreType) {
-        return workDAO.findTotalWorks(genreType);
-    }
+
 
     @Override
     public List<PostFileDTO> findFilesByPostId(Long postId) {
@@ -153,18 +151,19 @@ public class WorkServiceImpl implements WorkService {
     }
 
     @Override
-    public int findTotalWithSearch(String genreType, String keyword) {
-        return workDAO.findTotalWithSearch(genreType, keyword);
+    public int findTotalWithSearchAndType(Search search) {
+        return workDAO.findTotalWithSearchAndType(search);
+    }
+
+
+    @Override
+    public List<WorkDTO> getThreeWorksByGenre(String genreType, Long workId, String postType) {
+        return workDAO.findThreeByGenre(genreType, workId, postType);
     }
 
     @Override
-    public List<WorkDTO> getThreeWorksByGenre(String genreType, Long workId) {
-        return workDAO.findThreeByGenre(genreType, workId);
-    }
-
-    @Override
-    public List<WorkDTO> getThreeWorksByAuthor(Long memberProfileId, Long workId) {
-        return workDAO.findThreeByAuthor(memberProfileId, workId);
+    public List<WorkDTO> getThreeWorksByAuthor(Long memberProfileId, Long workId, String postType) {
+        return workDAO.findThreeByAuthor(memberProfileId, workId, postType);
     }
 
 

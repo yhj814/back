@@ -1,302 +1,178 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>영상 작품 목록</title>
-        <link rel="stylesheet" href="/static/css/video/list.css" />
-    </head>
-    <body>
-        <div class="main-header">
-            <div class="container">
-                <a class="sub-navigation" href="">
-                    <div>작품</div>
-                </a>
-                <a class="sub-navigation" href="">
-                    <div>펀딩</div>
-                </a>
-                <a class="sub-navigation" href="">
-                    <div>모집</div>
-                </a>
-            </div>
-        </div>
-        <div class="main">
-            <div class="container">
-                <div class="content-wrapper">
-                    <div class="list">
-                        <div class="list-header">
-                            <div class="text-ggumteo">꿈터 영상 작품</div>
-                            <div class="title-header">
-                                <div class="title-2">
-                                    꿈터에서 진행한 영상 작품 목록
-                                </div>
-                                <div class="text-input-ggumteo icon-right">
-                                    <div>
-                                        <input
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>글 작품 목록</title>
+    <link rel="stylesheet" href="/css/video/list.css" />
+</head>
+<body>
+<div class="main-header">
+    <div class="container">
+        <a class="sub-navigation" href="">
+            <div>작품</div>
+        </a>
+        <a class="sub-navigation" href="">
+            <div>펀딩</div>
+        </a>
+        <a class="sub-navigation" href="">
+            <div>모집</div>
+        </a>
+    </div>
+</div>
+<div class="main">
+    <div class="container">
+        <div class="content-wrapper">
+            <div class="list">
+                <div class="list-header">
+                    <div class="text-ggumteo">꿈터 영상 작품</div>
+                    <div class="title-header">
+                        <div class="title-2">
+                            꿈터에서 진행한 영상 작품 목록
+                        </div>
+                        <div>
+                            <div class="text-input-ggumteo icon-right">
+                                <div>
+                                    <input type="hidden" id="genreType" th:value="${genreType}"/>
+                                    <input type="hidden" id="postType" th:value="${postType}" />
+                                    <input
                                             type="text"
                                             class="theme-ggumteo search-input"
+                                            id="searchKeyword"
+                                            th:value="${keyword}"
                                             placeholder="원하는 작품을 찾아보세요"
-                                        />
-                                        <i class="search-btn">
-                                            <img
+                                    />
+                                    <i class="search-btn" onclick="searchWorks()">
+                                        <img
                                                 src="https://www.wishket.com/static/renewal/img/stack/icon-search.png"
-                                            />
-                                        </i>
-                                    </div>
+                                        />
+                                    </i>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="filter-box-wrapper">
-                            <div class="filter-group-wrapper">
-                                <div class="filter-group">
-                                    <div class="filter-box-group">
-                                        <div class="filter-box">로맨스</div>
-                                    </div>
-                                    <div class="filter-box-group">
-                                        <div class="filter-box">코미디</div>
-                                    </div>
-                                    <div class="filter-box-group">
-                                        <div class="filter-box">공포</div>
-                                    </div>
-                                    <div class="filter-box-group">
-                                        <div class="filter-box">액션</div>
-                                    </div>
-                                    <div class="filter-box-group">
-                                        <div class="filter-box">드라마</div>
-                                    </div>
-                                    <div class="box-group">
-                                        <div class="write-box">
-                                            내 작품올리기
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div id="ggumteo-list-box">
-                            <div class="list-box-wrapper">
-                                <a href="" class="box">
-                                    <video class="thumbnail" controls>
-                                        <source
-                                            src="첨부된_비디오_파일_URL"
-                                            type="video/mp4"
-                                        />
-                                    </video>
-                                    <div class="title">영상의 타이틀</div>
-                                    <div class="detail">
-                                        영상장르
-                                        <img
-                                            src="https://yozm.wishket.com/static/renewal/img/news/icon-clock.png"
-                                            class="content-meta-elem meta-icon"
-                                        />
-                                        <span class="list-time"
-                                            >2024.10.26</span
-                                        >
-                                    </div>
-                                    <div class="content">
-                                        영상의 간단한 요약 ,,,,
-                                    </div>
-                                    <!-- 펀딩은 review 없음-->
-                                    <div class="detail review">
-                                        <div class="review-box">
-                                            <div class="star-box">
-                                                <img
-                                                    src="https://www.wishket.com/static/renewal/img/project/wishket-project-portfolio/icon-review-star-full.png"
-                                                />
-                                            </div>
-                                            <span class="review-score"
-                                                >5.0</span
-                                            >
-                                        </div>
-                                        <div
-                                            class="portfolio-detail-seperator"
-                                        ></div>
-                                        <div class="partner-profile-box">
-                                            <img
-                                                src="https://cdn.wishket.com/news_profiles/248055_20230718_02e200cef51139ed.jpg"
-                                                class="partner-profile"
-                                            />
-                                        </div>
-                                        <div class="name-box">홍길동</div>
-                                        <div></div>
-                                    </div>
-                                </a>
-                                <a href="" class="box">
-                                    <video class="thumbnail" controls>
-                                        <source
-                                            src="첨부된_비디오_파일_URL"
-                                            type="video/mp4"
-                                        />
-                                    </video>
-                                    <div class="title">영상의 타이틀</div>
-                                    <div class="detail">
-                                        영상장르
-                                        <img
-                                            src="https://yozm.wishket.com/static/renewal/img/news/icon-clock.png"
-                                            class="content-meta-elem meta-icon"
-                                        />
-                                        <span class="list-time"
-                                            >2024.10.26</span
-                                        >
-                                    </div>
-                                    <div class="content">
-                                        영상의 간단한 요약 ,,,,
-                                    </div>
-                                    <!-- 펀딩은 review 퍼센테지로 바꾸기 -->
-                                    <div class="detail review">
-                                        <div class="review-box">
-                                            <div class="star-box">
-                                                <img
-                                                    src="https://www.wishket.com/static/renewal/img/project/wishket-project-portfolio/icon-review-star-full.png"
-                                                />
-                                            </div>
-                                            <span class="review-score"
-                                                >5.0</span
-                                            >
-                                        </div>
-                                        <div
-                                            class="portfolio-detail-seperator"
-                                        ></div>
-                                        <div class="partner-profile-box">
-                                            <img
-                                                src="https://cdn.wishket.com/news_profiles/248055_20230718_02e200cef51139ed.jpg"
-                                                class="partner-profile"
-                                            />
-                                        </div>
-                                        <div class="name-box">홍길동</div>
-                                        <div></div>
-                                    </div>
-                                </a>
-                                <a href="" class="box">
-                                    <video class="thumbnail" controls>
-                                        <source
-                                            src="첨부된_비디오_파일_URL"
-                                            type="video/mp4"
-                                        />
-                                    </video>
-                                    <div class="title">영상의 타이틀</div>
-                                    <div class="detail">
-                                        영상장르
-                                        <img
-                                            src="https://yozm.wishket.com/static/renewal/img/news/icon-clock.png"
-                                            class="content-meta-elem meta-icon"
-                                        />
-                                        <span class="list-time"
-                                            >2024.10.26</span
-                                        >
-                                    </div>
-                                    <div class="content">
-                                        영상의 간단한 요약 ,,,,
-                                    </div>
-                                    <!-- 펀딩은 review 퍼센테지로 바꾸기 -->
-                                    <div class="detail review">
-                                        <div class="review-box">
-                                            <div class="star-box">
-                                                <img
-                                                    src="https://www.wishket.com/static/renewal/img/project/wishket-project-portfolio/icon-review-star-full.png"
-                                                />
-                                            </div>
-                                            <span class="review-score"
-                                                >5.0</span
-                                            >
-                                        </div>
-                                        <div
-                                            class="portfolio-detail-seperator"
-                                        ></div>
-                                        <div class="partner-profile-box">
-                                            <img
-                                                src="https://cdn.wishket.com/news_profiles/248055_20230718_02e200cef51139ed.jpg"
-                                                class="partner-profile"
-                                            />
-                                        </div>
-                                        <div class="name-box">홍길동</div>
-                                        <div></div>
-                                    </div>
-                                </a>
-                                <a href="" class="box">
-                                    <video class="thumbnail" controls>
-                                        <source
-                                            src="첨부된_비디오_파일_URL"
-                                            type="video/mp4"
-                                        />
-                                    </video>
-                                    <div class="title">영상의 타이틀</div>
-                                    <div class="detail">
-                                        영상장르
-                                        <img
-                                            src="https://yozm.wishket.com/static/renewal/img/news/icon-clock.png"
-                                            class="content-meta-elem meta-icon"
-                                        />
-                                        2024.10.26
-                                    </div>
-                                    <div class="content">
-                                        영상의 간단한 요약 ,,,,
-                                    </div>
-                                    <!-- 펀딩은 review 퍼센테지로 바꾸기 -->
-                                    <div class="detail review">
-                                        <div class="review-box">
-                                            <div class="star-box">
-                                                <img
-                                                    src="https://www.wishket.com/static/renewal/img/project/wishket-project-portfolio/icon-review-star-full.png"
-                                                />
-                                            </div>
-                                            <span class="review-score"
-                                                >5.0</span
-                                            >
-                                        </div>
-                                        <div
-                                            class="portfolio-detail-seperator"
-                                        ></div>
-                                        <div class="partner-profile-box">
-                                            <img
-                                                src="https://cdn.wishket.com/news_profiles/248055_20230718_02e200cef51139ed.jpg"
-                                                class="partner-profile"
-                                            />
-                                        </div>
-                                        <div class="name-box">홍길동</div>
-                                        <div></div>
-                                    </div>
-                                </a>
-                            </div>
-                            <!-- 페이지네이션박스 -->
-                            <div class="center-text pagination-box">
-                                <ul class="pagination theme-ggumteo">
-                                    <li class="page-item before-btn">
-                                        <a id="page-btn" class="page-link"
-                                            >이전</a
-                                        >
-                                    </li>
-                                    <li class="page-item">
-                                        <a
-                                            id="page-btn"
-                                            class="page-link active"
-                                            >1</a
-                                        >
-                                    </li>
-                                    <li class="page-item">
-                                        <a id="page-btn" class="page-link">2</a>
-                                    </li>
-                                    <li class="page-item">
-                                        <a id="page-btn" class="page-link">3</a>
-                                    </li>
-                                    <li class="page-item">
-                                        <a id="page-btn" class="page-link">4</a>
-                                    </li>
-                                    <li class="page-item">
-                                        <a id="page-btn" class="page-link">5</a>
-                                    </li>
-                                    <!-- li채로 복사 -->
-                                    <li class="page-item right=btn">
-                                        <a id="page-btn" class="page-link"
-                                            >다음</a
-                                        >
-                                    </li>
-                                </ul>
                             </div>
                         </div>
                     </div>
                 </div>
+<!--                <div class="filter-box-wrapper">-->
+<!--                    <div class="filter-group-wrapper">-->
+<!--                        <div class="filter-group">-->
+<!--                            <div class="filter-box-group">-->
+<!--                                <button class="filter-box" data-genre="romance" onclick="filterByGenre('romance')">로맨스</button>-->
+<!--                            </div>-->
+<!--                            <div class="filter-box-group">-->
+<!--                                <button class="filter-box" data-genre="comedy" onclick="filterByGenre('comedy')">코미디</button>-->
+<!--                            </div>-->
+<!--                            <div class="filter-box-group">-->
+<!--                                <button class="filter-box" data-genre="horror" onclick="filterByGenre('horror')">공포</button>-->
+<!--                            </div>-->
+<!--                            <div class="filter-box-group">-->
+<!--                                <button class="filter-box" data-genre="action" onclick="filterByGenre('action')">액션</button>-->
+<!--                            </div>-->
+<!--                            <div class="filter-box-group">-->
+<!--                                <button class="filter-box" data-genre="drama" onclick="filterByGenre('drama')">드라마</button>-->
+<!--                            </div>-->
+<!--                            <div class="box-group">-->
+<!--                                <div class="write-box">-->
+<!--                                    <a href="/video/write" style="color: inherit; text-decoration: none;">내 작품올리기</a>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+                <div class="filter-box-wrapper">
+                    <div class="filter-group-wrapper">
+                        <div class="filter-group">
+                            <div class="filter-box-group">
+                                <a href="/video/list?genreType=romance&postType=VIDEO" class="filter-box">로맨스</a>
+                            </div>
+                            <div class="filter-box-group">
+                                <a href="/video/list?genreType=comedy&postType=VIDEO" class="filter-box">코미디</a>
+                            </div>
+                            <div class="filter-box-group">
+                                <a href="/video/list?genreType=horror&postType=VIDEO" class="filter-box">공포</a>
+                            </div>
+                            <div class="filter-box-group">
+                                <a href="/video/list?genreType=action&postType=VIDEO" class="filter-box">액션</a>
+                            </div>
+                            <div class="filter-box-group">
+                                <a href="/video/list?genreType=drama&postType=VIDEO" class="filter-box">드라마</a>
+                            </div>
+                            <div class="box-group">
+                                <div class="write-box">
+                                    <a href="/video/write" style="color: inherit; text-decoration: none;">내 작품올리기</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="ggumteo-list-box">
+                    <div class="list-box-wrapper">
+                        <li th:each="work : ${works}" style="width: 213px">
+                            <a th:href="@{/video/detail/{id}(id=${work.id})}"  class="box">
+                                <img th:src="@{/video/display(fileName=${work.thumbnailFilePath})}" class="thumbnail" alt="썸네일 이미지" />
+                                <div class="title" style="width: 180px" th:text="${work.postTitle}"></div>
+                                <div class="detail">
+                                    <span th:text="${work.genreType}"></span>
+                                    <img
+                                            src="https://yozm.wishket.com/static/renewal/img/news/icon-clock.png"
+                                            class="content-meta-elem meta-icon"
+                                    />
+                                    <span style="margin-right: 40px" th:text="${work.createdDate.substring(0, 10)}"></span>
+                                </div>
+                                <div class="content" th:text="${work.postContent}">글의 간단한 요약</div>
+                                <div class="detail review">
+                                    <div class="review-box">
+                                        <div class="star-box">
+                                            <img
+                                                    src="https://www.wishket.com/static/renewal/img/project/wishket-project-portfolio/icon-review-star-full.png"
+                                            />
+                                        </div>
+                                        <span class="review-score" th:text="${work.star}">5.0</span>
+                                    </div>
+                                    <div class="portfolio-detail-seperator"></div>
+                                    <div class="partner-profile-box">
+                                        <img
+                                                src="https://cdn.wishket.com/news_profiles/248055_20230718_02e200cef51139ed.jpg"
+                                                class="partner-profile"
+                                        />
+                                    </div>
+                                    <div class="name-box" th:text="${work.profileNickName}"></div>
+                                    <div></div>
+                                </div>
+                            </a>
+                        </li>
+                    </div>
+
+
+                    <div class="center-text pagination-box">
+                        <ul class="pagination theme-ggumteo">
+                            <!-- 이전 버튼 -->
+                            <li th:classappend="${!pagination.prev} ? 'disabled'">
+                                <a class="page-link" th:if="${pagination.prev}"
+                                   th:href="@{/video/list(page=${pagination.startPage - 5}, genreType=${genreType}, keyword=${keyword}, postType=${postType})}">이전</a>
+                                <span th:unless="${pagination.prev}"></span>
+                            </li>
+
+                            <!-- 페이지 번호 -->
+                            <li th:each="i : ${#numbers.sequence(pagination.startPage, pagination.endPage)}"
+                                th:class="${pagination.page == i} ? 'page-item active' : 'page-item'">
+                                <a class="page-link" th:href="@{/video/list(page=${i}, genreType=${genreType}, keyword=${keyword}, postType=${postType})}" th:text="${i}"></a>
+                            </li>
+
+                            <!-- 다음 버튼 -->
+                            <li th:classappend="${!pagination.next} ? 'disabled'">
+                                <a class="page-link" th:if="${pagination.next}"
+                                   th:href="@{/video/list(page=${pagination.endPage + 5}, genreType=${genreType}, keyword=${keyword}, postType=${postType})}">다음</a>
+                                <span th:unless="${pagination.next}"></span>
+                            </li>
+                        </ul>
+                    </div>
+
+                </div>
             </div>
         </div>
-    </body>
-    <script src="/static/js/video/list.js"></script>
+    </div>
+</div>
+</body>
+
+<script src="/js/video/list.js"></script>
 </html>
