@@ -7,6 +7,8 @@ import lombok.Setter;
 import lombok.ToString;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 @Getter
 @Setter
@@ -22,6 +24,7 @@ public class PostFileDTO {
     private String createdDate;
     private String updatedDate;
     private Long postId;
+
 
 
     public PostFileVO toVO(){

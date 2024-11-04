@@ -79,11 +79,11 @@
     background-size: cover;
     background-position: center center;
     background-repeat: no-repeat;
-    background-image: url(/static/images/inquiry/inqury-background-img.png;);
+    background-image: url(/images/inquiry/inqury-background-img.png;);
     background-image: -webkit-image-set(
-        url(/static/images/inquiry/inqury-background-img.png) 1x,
-        url(/static/images/inquiry/inqury-background-img.png) 2x,
-        url(/static/images/inquiry/inqury-background-img.png) 3x
+        url(/images/inquiry/inqury-background-img.png) 1x,
+        url(/images/inquiry/inqury-background-img.png) 2x,
+        url(/images/inquiry/inqury-background-img.png) 3x
     );
 }
 
@@ -411,7 +411,7 @@ button {
     width: 96px;
 }
 .btn-submit {
-    background-color: #a1a6ad;
+    background-color: #00a878;
     color: #fff;
     border: #00a878;
     font-size: 16px;
@@ -726,12 +726,9 @@ img {
     height: 240px;
     border-radius: 8px 8px 0 0;
 }
-.sample {
-    padding: 86px;
-    border: dashed 2px #e0e0e0;
-}
+
 .preview-img {
-    width: 240px;
+    width: 243px;
     height: 240px;
     position: absolute;
     z-index: 10;

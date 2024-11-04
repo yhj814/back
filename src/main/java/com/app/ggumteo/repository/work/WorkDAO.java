@@ -7,6 +7,7 @@ import com.app.ggumteo.mapper.work.WorkMapper;
 import com.app.ggumteo.pagination.Pagination;
 import com.app.ggumteo.search.Search;
 import lombok.RequiredArgsConstructor;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -43,6 +44,10 @@ public class WorkDAO {
     // 작품 정보 수정
     public void updateWork(WorkDTO workDTO) {
         workMapper.updateWork(workDTO);
+    }
+
+    public void updatePost(WorkDTO workDTO) {
+        workMapper.updatePost(workDTO);
     }
 
     // 작품 삭제
@@ -84,5 +89,8 @@ public class WorkDAO {
         return workMapper.selectThreeByAuthor(memberProfileId, workId);
     }
 
-
+    // 썸네일 파일 ID 업데이트 메소드 추가
+    public void updateThumbnailFileId(Long workId, Long thumbnailFileId) {
+        workMapper.updateThumbnailFileId(workId, thumbnailFileId);
+    }
 }

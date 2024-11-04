@@ -26,9 +26,9 @@ import java.util.List;
 
 @Controller
 @Slf4j
-@RequestMapping("/audition/video/*")
+@RequestMapping("/audition/text/*")
 @RequiredArgsConstructor
-public class VideoAuditionController {
+public class TextAudtiionController {
     private final AuditionService auditionService;
     private final HttpSession session;
     private final PostFileService postFileService;
@@ -77,7 +77,7 @@ public class VideoAuditionController {
                 return "/error";
             }
 
-            auditionDTO.setPostType(PostType.VIDEO.name());
+            auditionDTO.setPostType(PostType.TEXT.name());
             auditionDTO.setAuditionStatus("모집중");
 
             auditionDTO.setMemberProfileId(memberProfile.getId());
@@ -88,7 +88,7 @@ public class VideoAuditionController {
             auditionService.write(auditionDTO, auditionFiles);
 
             // 리디렉션으로 이동
-            return "redirect:/audition/video/audition-list";
+            return "redirect:/audition/text/audition-list";
         } catch (Exception e) {
             log.error("오류 발생", e);
             model.addAttribute("error", "저장 중 오류가 발생했습니다.");

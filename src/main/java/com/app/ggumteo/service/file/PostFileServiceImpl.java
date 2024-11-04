@@ -73,15 +73,13 @@ public class PostFileServiceImpl implements PostFileService {
         } catch (IOException e) {
             throw new RuntimeException("파일 읽기 실패", e);
         }
-        return null;  // 파일이 없으면 null 반환
+        return null;
     }
 
     @Override
     public List<PostFileDTO> uploadFile(List<MultipartFile> files) throws IOException {
         List<PostFileDTO> fileDTOs = new ArrayList<>();
 
-
-        // 파일 저장 경로 설정
         String rootPath = "C:/upload/" + getPath();
         File directory = new File(rootPath);
         if (!directory.exists()) {
@@ -93,7 +91,6 @@ public class PostFileServiceImpl implements PostFileService {
             String uniqueFileName = uuid.toString() + "_" + file.getOriginalFilename();
             String relativePath = getPath() + "/" + uniqueFileName;
 
-            // 파일 정보 설정
             PostFileDTO postFileDTO = new PostFileDTO();
             postFileDTO.setFileName(uniqueFileName);
             postFileDTO.setFilePath(relativePath);
@@ -103,7 +100,6 @@ public class PostFileServiceImpl implements PostFileService {
             File saveLocation = new File(rootPath, uniqueFileName);
             file.transferTo(saveLocation);
 
-            // 이미지 파일일 경우 썸네일 생성
             if (file.getContentType() != null && file.getContentType().startsWith("image")) {
                 try (FileOutputStream thumbnail = new FileOutputStream(new File(rootPath, "t_" + uniqueFileName))) {
                     Thumbnailator.createThumbnail(file.getInputStream(), thumbnail, 100, 100);
@@ -114,9 +110,34 @@ public class PostFileServiceImpl implements PostFileService {
 
         return fileDTOs;
     }
+
+    @Override
+    public void deleteFilesByIds(List<Long> fileIds) {
+        fileIds.forEach(fileId -> {
+            postFileDAO.deletePostFileByFileId(fileId); // 관계 삭제
+            fileDAO.deleteFile(fileId); // 파일 삭제
+        });
+    }
+
+    @Override
+    public List<PostFileDTO> findFilesByPostId(Long postId) {
+        List<FileVO> fileVOList = fileDAO.findFileByPostId(postId);
+        List<PostFileDTO> postFileDTOList = new ArrayList<>();
+
+        for (FileVO fileVO : fileVOList) {
+            PostFileDTO postFileDTO = new PostFileDTO();
+            postFileDTO.setId(fileVO.getId());
+            postFileDTO.setFileName(fileVO.getFileName());
+            postFileDTO.setFilePath(fileVO.getFilePath());
+            postFileDTO.setFileType(fileVO.getFileType());
+            postFileDTO.setFileSize(fileVO.getFileSize());
+            postFileDTOList.add(postFileDTO);
+        }
+
+        return postFileDTOList;
+    }
+
     private String getPath() {
         return LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd"));
     }
-
-
 }

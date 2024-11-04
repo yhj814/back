@@ -123,11 +123,11 @@ const inquiryLayout = {
                     ${inquiry.inquiryStatus === "NO" ? "미답변" : "답변 완료"}
                 </button>
             </div>
-            <div class="apply-table-cell answer-content" style="display: none">
-                ${inquiry.inquiryStatus === "NO" ? "" : inquiry.answerContent || ""}
-            </div>
             <div class="apply-table-cell answer-date">
                 ${inquiry.inquiryStatus === "NO" ? "" : inquiry.answerDate || ""}
+            </div>
+            <div class="apply-table-cell answer-content" style="display: none">
+                ${inquiry.inquiryStatus === "NO" ? "" : inquiry.answerContent || ""}
             </div>
         `;
             inquiryList.appendChild(inquiryItem);

@@ -14,7 +14,11 @@
                     <div class="background"></div>
                     <div class="container">
                         <div class="profile-box write">
-                            <form action="" id="write-form">
+                            <form action="/text/modify" id="write-form" method="post" enctype="multipart/form-data">
+                                <input type="hidden" name="thumbnailFileId" th:value="${work.thumbnailFileId}" />
+                                <div th:if="${work != null}">
+                                    <input type="hidden" name="id" th:value="${work.id}" />
+                                </div>
                                 <div class="write-add-view">
                                     <div class="subtitle-1 write-add-title">
                                         내 작품 수정
@@ -28,9 +32,10 @@
                                             <div class="label-input-partner">
                                                 <input
                                                     class="required label-input"
-                                                    name="title"
+                                                    name="postTitle"
                                                     type="text"
-                                                    value=""
+                                                    th:value="${work.postTitle}"
+                                                    required
                                                 />
                                                 <label for="title"
                                                     >제목을 입력해주세요
@@ -61,10 +66,7 @@
                                                         class="checkbox-partner"
                                                     >
                                                         <span>
-                                                            <input
-                                                                type="radio"
-                                                                name="category"
-                                                            />
+                                                            <input type="radio" name="genreType" value="romance" th:checked="${work.genreType == 'romance'}" />
                                                             <span
                                                                 class="arrow"
                                                             ></span>
@@ -83,10 +85,7 @@
                                                         class="checkbox-partner"
                                                     >
                                                         <span>
-                                                            <input
-                                                                type="radio"
-                                                                name="category"
-                                                            />
+                                                            <input type="radio" name="genreType" value="comedy" th:checked="${work.genreType == 'comedy'}" />
                                                             <span
                                                                 class="arrow"
                                                             ></span>
@@ -105,10 +104,7 @@
                                                         class="checkbox-partner"
                                                     >
                                                         <span>
-                                                            <input
-                                                                type="radio"
-                                                                name="category"
-                                                            />
+                                                             <input type="radio" name="genreType" value="horror" th:checked="${work.genreType == 'horror'}" />
                                                             <span
                                                                 class="arrow"
                                                             ></span>
@@ -127,10 +123,7 @@
                                                         class="checkbox-partner"
                                                     >
                                                         <span>
-                                                            <input
-                                                                type="radio"
-                                                                name="category"
-                                                            />
+                                                           <input type="radio" name="genreType" value="action" th:checked="${work.genreType == 'action'}" />
                                                             <span
                                                                 class="arrow"
                                                             ></span>
@@ -149,10 +142,7 @@
                                                         class="checkbox-partner"
                                                     >
                                                         <span>
-                                                            <input
-                                                                type="radio"
-                                                                name="category"
-                                                            />
+                                                             <input type="radio" name="genreType" value="drama" th:checked="${work.genreType == 'drama'}" />
                                                             <span
                                                                 class="arrow"
                                                             ></span>
@@ -170,9 +160,10 @@
                                                 <input
                                                         type="number"
                                                         class="required label-input"
-                                                        name="price"
-                                                        style="outline: none"
+                                                        name="workPrice"
+                                                        th:value="${work.workPrice}"
                                                         placeholder="무료일 경우 0원이라고 입력해주세요."
+                                                        required
                                                 />
                                             </div>
                                         </div>
@@ -193,7 +184,9 @@
                                                     <textarea
                                                         class="required textarea expand"
                                                         maxlength="5000"
-                                                        name="description"
+                                                        name="postContent"
+                                                        th:text="${work.postContent}"
+                                                        required
                                                     ></textarea>
                                                 </div>
                                                 <span
@@ -207,13 +200,43 @@
                                         </div>
                                         <div class="work-img-box">
                                             <div class="title-img-box">
+                                                <img src="https://www.wishket.com/static/renewal/img/partner/profile/icon_portfolio_image_upload.png" class="title-img"/>
+                                                <span class="title-text">현재 업로드된 작품 이미지 및 파일</span>
+                                            </div>
+                                            <div id="existing-files-container">
+<!--                                                썸네일 파일은 안가져옴 아래에 가져옴-->
+                                                <div th:each="file : ${existingFiles}" th:if="${file.filePath != work.thumbnailFilePath}" class="img-box-list existing-file">
+                                                        <div class="img-edit-box" style="margin-top: 10px;width: 88px;margin-left: 635px;display: block;">
+                                                            <div type="button" class="btn-edit-item" id="btn-delete-image-1730446634855" th:attr="data-file-id=${file.id}">
+                                                                이미지 삭제
+                                                            </div>
+                                                        </div>
+                                                    <div class="img-content-box">
+                                                        <img th:src="@{'/text/display?fileName=' + ${file.filePath}}" alt="Uploaded Image" />
+                                                    </div>
+                                                </div>
+                                                <div class="img-caption-box" style="display: block;">
+                                                    <p style="margin-bottom: 10px">파일 설명</p>
+                                                    <div class="default-input-partner">
+                                                        <input
+                                                                type="text"
+                                                                class="img-caption-box-content"
+                                                                name="fileContent"
+                                                                th:value="${work.fileContent != null ? work.fileContent : ''}"
+                                                                placeholder="올린 파일에 대한 설명을 입력해주세요."
+                                                        />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="work-img-box">
+                                            <div class="title-img-box">
                                                 <img
                                                     src="https://www.wishket.com/static/renewal/img/partner/profile/icon_portfolio_image_upload.png"
                                                     class="title-img"
                                                 />
                                                 <span class="title-text">
-                                                    올린 작품의 사진, 영상
-                                                    수정하기
+                                                    파일 추가하기
                                                 </span>
                                             </div>
                                             <div id="img-box-container">
@@ -290,27 +313,15 @@
                                                                 <input
                                                                     id="file-upload"
                                                                     type="file"
+                                                                    name="newFiles"
                                                                     accept="image/*,video/*"
                                                                     style="
                                                                         display: none;
                                                                     "
-                                                                    onchange="previewFile()"
                                                                 />
                                                             </div>
                                                         </div>
-                                                        <div
-                                                            class="img-caption-box"
-                                                        >
-                                                            <div
-                                                                class="default-input-partner"
-                                                            >
-                                                                <input
-                                                                    type="text"
-                                                                    class="img-caption-box-content"
-                                                                    placeholder="올린 파일에 대한 설명을 입력해주세요."
-                                                                />
-                                                            </div>
-                                                        </div>
+
                                                     </div>
                                                 </div>
                                             </div>
@@ -338,6 +349,7 @@
                                                         type="file"
                                                         id="thumbnail-upload"
                                                         accept="image/*"
+                                                        name="newThumbnailFile"
                                                         style="display: none"
                                                         onchange="previewImage(event)"
                                                     />
@@ -345,7 +357,7 @@
                                                         class="btn work-thumbnail-add-btn"
                                                         style="width: 100%"
                                                         type="button"
-                                                        onclick="document.getElementById('thumbnail-upload').click()"
+
                                                     >
                                                         작품 표지 수정
                                                     </button>
@@ -362,6 +374,7 @@
                                                 </div>
                                                 <!-- 오른쪽부분 -->
                                                 <div class="right-box">
+
                                                     <div class="sample-box">
                                                         <div
                                                             class="thumbnail-sample-part"
@@ -370,11 +383,9 @@
                                                             <div
                                                                 class="preview-img sample"
                                                             >
-                                                                <img
-                                                                    id="preview-image"
-                                                                    src="https://www.wishket.com/static/renewal/img/partner/profile/icon_btn_add_portfolio_image.png"
-                                                                    alt="Preview"
-                                                                />
+                                                                <img style="height: 240px"
+
+                                                                    th:src="@{/text/display?fileName={thumbnailFilePath}(thumbnailFilePath=${work.thumbnailFilePath})}" alt="Thumbnail Image" />
                                                             </div>
                                                             <div
                                                                 class="preview"
