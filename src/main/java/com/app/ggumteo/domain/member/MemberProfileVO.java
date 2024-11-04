@@ -24,4 +24,6 @@ public class MemberProfileVO implements Serializable {
     private Long memberId;
     private String createdDate;
     private String updatedDate;
+
+    
 }
