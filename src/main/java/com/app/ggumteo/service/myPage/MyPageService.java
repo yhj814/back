@@ -1,5 +1,6 @@
 package com.app.ggumteo.service.myPage;
 
+import com.app.ggumteo.domain.admin.AdminAnswerDTO;
 import com.app.ggumteo.domain.funding.*;
 import com.app.ggumteo.domain.inquiry.MyInquiryHistoryListDTO;
 import com.app.ggumteo.domain.member.MemberVO;
@@ -45,4 +46,7 @@ public interface MyPageService {
 
     // 마이페이지 - 문의 내역 전체 갯수
     public int getMyInquiryHistoriesTotal(Long memberId);
+
+    // 마이페이지 - 문의 내역 관리자 답변
+    public Optional<AdminAnswerDTO> getAdminAnswer(Long id);
 }

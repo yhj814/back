@@ -42,18 +42,13 @@ const myPageService = (() => {
 
     const getMyInquiryHistoryList = async (page, memberId, callback) => {
         page = page || 1;
-        const response = await fetch(`/members/${memberId}/inquiry-histories/${page}`);
+        const response = await fetch(`/members/${memberId}/inquiry/${page}`);
         const myInquiryHistories = await response.json();
-
-        console.log("response", response)
-        console.log("service: myInquiryHistories", myInquiryHistories)
-
 
         if(callback) {
             callback(myInquiryHistories);
         }
     }
-    console.log("getMyInquiryHistoryList",getMyInquiryHistoryList)
 
     return {
         getMyFundingList: getMyFundingList,

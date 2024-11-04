@@ -41,3 +41,7 @@ select count(*) from
         join tbl_member_profile mp on p.member_profile_id = mp.id
         join tbl_member m on mp.member_id = m.id and m.id = 1
         and p.post_type = 'INQUIRY';
+
+select aa.id, admin_answer_content, aa.inquiry_id, created_date, i.inquiry_status
+from tbl_admin_answer aa join tbl_inquiry i
+on aa.inquiry_id = i.id and aa.inquiry_id = 19;

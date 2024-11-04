@@ -68,5 +68,13 @@ myBuyFundingListPaging.addEventListener("click", (e)=>{
     }
 });
 
+globalThis.myInquiryHistoryPage = 1;
+myPageService.getMyInquiryHistoryList(globalThis.myInquiryHistoryPage, memberId, showMyInquiryHistoryList);
 
-myPageService.getMyInquiryHistoryList(1, memberId, showMyInquiryHistoryList);
+myInquiryHistoryListPaging.addEventListener("click", (e)=>{
+    e.preventDefault();
+    if(e.target.tagName === "A") {
+        globalThis.myInquiryHistoryPage = e.target.getAttribute("href");
+        myPageService.getMyInquiryHistoryList(globalThis.myInquiryHistoryPage, memberId, showMyInquiryHistoryList)
+    }
+});

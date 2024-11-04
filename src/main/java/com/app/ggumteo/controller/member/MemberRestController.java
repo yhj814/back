@@ -1,5 +1,6 @@
 package com.app.ggumteo.controller.member;
 
+import com.app.ggumteo.domain.admin.AdminAnswerDTO;
 import com.app.ggumteo.domain.file.PostFileDTO;
 import com.app.ggumteo.domain.funding.BuyFundingProductDTO;
 import com.app.ggumteo.domain.funding.MyBuyFundingListDTO;
@@ -25,6 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @Slf4j
@@ -78,11 +80,17 @@ public class MemberRestController {
 
     // SELECT
     @ResponseBody
-    @GetMapping("/members/{memberId}/inquiry-histories/{page}")
+    @GetMapping("/members/{memberId}/inquiry/{page}")
     public MyInquiryHistoryListDTO getMyInquiryHistoryList(@PathVariable("memberId") Long memberId
             , @PathVariable("page") int page, WorkAndFundingPagination workAndFundingPagination) {
 
-        log.info("workAndFundingPagination={}", workAndFundingPagination);
         return myPageService.getMyInquiryHistoryList(page, workAndFundingPagination, memberId);
+    }
+
+    // SELECT
+    @ResponseBody
+    @GetMapping("/members/inquiry/{id}/admin-answer")
+    public Optional<AdminAnswerDTO> getAdminAnswerByMember(@PathVariable("id") Long id) {
+        return myPageService.getAdminAnswer(id);
     }
 }
