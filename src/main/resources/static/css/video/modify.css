@@ -1,27 +1,27 @@
 @font-face {
     font-family: "NotoSansKR";
     font-weight: 700;
-    src: url("/static/fonts/NotoSansKR-Bold.woff2") format("woff2");
+    src: url("/fonts/NotoSansKR-Bold.woff2") format("woff2");
 }
 @font-face {
     font-family: "NotoSansKR";
     font-weight: 500;
-    src: url("/static/fonts/NotoSansKR-Medium.woff2") format("woff2");
+    src: url("/fonts/NotoSansKR-Medium.woff2") format("woff2");
 }
 @font-face {
     font-family: "NotoSansKR";
     font-weight: 400;
-    src: url("/static/fonts/NotoSansKR-Regular.woff2") format("woff2");
+    src: url("/fonts/NotoSansKR-Regular.woff2") format("woff2");
 }
 @font-face {
     font-family: "NotoSansKR";
     font-weight: 300;
-    src: url("/static/fonts/NotoSansKR-Light.woff2") format("woff2");
+    src: url("/fonts/NotoSansKR-Light.woff2") format("woff2");
 }
 @font-face {
     font-family: "NotoSansKR";
     font-weight: 100;
-    src: url("/static/fonts/NotoSansKR-Thin.woff2") format("woff2");
+    src: url("/fonts/NotoSansKR-Thin.woff2") format("woff2");
 }
 
 * {
@@ -79,11 +79,11 @@
     background-size: cover;
     background-position: center center;
     background-repeat: no-repeat;
-    background-image: url(/static/images/inquiry/inqury-background-img.png;);
+    background-image: url(/images/inquiry/inqury-background-img.png;);
     background-image: -webkit-image-set(
-        url(/static/images/inquiry/inqury-background-img.png) 1x,
-        url(/static/images/inquiry/inqury-background-img.png) 2x,
-        url(/static/images/inquiry/inqury-background-img.png) 3x
+            url(/images/inquiry/inqury-background-img.png) 1x,
+            url(/images/inquiry/inqury-background-img.png) 2x,
+            url(/images/inquiry/inqury-background-img.png) 3x
     );
 }
 
@@ -94,9 +94,9 @@
     background-position: center center;
     background-image: url(/static/images/inquiry/inqury-background-img.png);
     background-image: -webkit-image-set(
-        url(/static/images/inquiry/inqury-background-img.png) 1x,
-        url(/static/images/inquiry/inqury-background-img.png) 2x,
-        url(/static/images/inquiry/inqury-background-img.png) 3x
+            url(/static/images/inquiry/inqury-background-img.png) 1x,
+            url(/static/images/inquiry/inqury-background-img.png) 2x,
+            url(/static/images/inquiry/inqury-background-img.png) 3x
     );
 }
 
@@ -191,13 +191,13 @@ footer.footer .footer-contact .footer-cs-tel,
 .label-input-partner > input:hover {
     position: inherit;
     z-index: 15;
-    border-color: #2099bb;
+    border-color: #00a878;
 }
 
 .label-input-partner > input:focus {
     position: inherit;
     z-index: 15;
-    border-color: #2099bb;
+    border-color: #00a878;
 }
 
 .label-input-partner > label {
@@ -224,7 +224,7 @@ footer.footer .footer-contact .footer-cs-tel,
 }
 
 .label-input-partner.label-effect > input:focus ~ label {
-    color: #2099bb !important;
+    color: #00a878 !important;
 }
 
 .label-input.error,
@@ -285,11 +285,11 @@ body.partners_profile .ui-autocomplete.error {
 }
 
 .ui-textarea-partner > .textarea__border:hover {
-    border-color: #2099bb;
+    border-color: #00a878;
 }
 
 .ui-textarea-partner > .textarea__border.active {
-    border-color: #2099bb;
+    border-color: #00a878;
 }
 
 .textarea__border.error {
@@ -368,13 +368,13 @@ button {
 .btn-lg,
 .body-1-medium,
 .meeting-apply-modal
-    .modal-inner
-    .modal-body
-    .modal-main-content
-    .modal-main-content-pick
-    .modal-main-content-pick-date
-    .pick-date-set
-    .pick-date-set-day,
+.modal-inner
+.modal-body
+.modal-main-content
+.modal-main-content-pick
+.modal-main-content-pick-date
+.pick-date-set
+.pick-date-set-day,
 .body-1-light {
     font-size: 16px;
     line-height: 26px;
@@ -411,9 +411,9 @@ button {
     width: 96px;
 }
 .btn-submit {
-    background-color: #a1a6ad;
+    background-color: #00a878;
     color: #fff;
-    border: #2099bb;
+    border: #00a878;
     font-size: 16px;
     line-height: 26px;
     font-weight: 400;
@@ -421,9 +421,9 @@ button {
 }
 .btn-partner,
 .btn-partner-not-active {
-    background-color: #2099bb;
+    background-color: #00a878;
     color: #fff;
-    border: #2099bb;
+    border: #00a878;
 }
 
 .button-box .btn + .btn {
@@ -659,9 +659,9 @@ img {
     position: relative;
 }
 .work-thumbnail-add-btn {
-    background-color: #2099bb;
+    background-color: #00a878;
     color: #fff;
-    border: #2099bb;
+    border: #00a878;
     padding: 8px 20px;
     font-size: 14px;
     line-height: 24px;
@@ -726,12 +726,9 @@ img {
     height: 240px;
     border-radius: 8px 8px 0 0;
 }
-.sample {
-    padding: 86px;
-    border: dashed 2px #e0e0e0;
-}
+
 .preview-img {
-    width: 240px;
+    width: 243px;
     height: 240px;
     position: absolute;
     z-index: 10;
@@ -796,8 +793,8 @@ input {
     margin-bottom: 15px;
 }
 input:hover {
-    border-color: #2099bb;
+    border-color: #00a878;
 }
 .active {
-    background-color: #2099bb;
+    background-color: #00a878;
 }

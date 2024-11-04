@@ -122,7 +122,6 @@ public class TextWorkController {
     }
 
     // 작품 업데이트 요청 처리
-    // 작품 업데이트 요청 처리
     @PostMapping("modify")
     public String updateWork(
             @ModelAttribute WorkDTO workDTO,
