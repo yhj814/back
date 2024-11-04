@@ -61,12 +61,12 @@ public class VideoAuditionController {
         }
     }
 
-    @GetMapping("audition-write")
+    @GetMapping("write")
     public void goToWritePage() {
         log.info("작성 페이지로 이동");
     }
 
-    @PostMapping("audition-write")
+    @PostMapping("write")
     public String write(AuditionDTO auditionDTO, @RequestParam("auditionFile") MultipartFile[] auditionFiles, Model model) {
         try {
             MemberVO member = (MemberVO) session.getAttribute("member");
@@ -88,7 +88,7 @@ public class VideoAuditionController {
             auditionService.write(auditionDTO, auditionFiles);
 
             // 리디렉션으로 이동
-            return "redirect:/audition/video/audition-list";
+            return "redirect:/audition/video/detail/" + auditionDTO.getId();
         } catch (Exception e) {
             log.error("오류 발생", e);
             model.addAttribute("error", "저장 중 오류가 발생했습니다.");
@@ -96,8 +96,41 @@ public class VideoAuditionController {
         }
     }
 
+    @GetMapping("/modify/{id}")
+    public String updateForm(@PathVariable("id") Long id, Model model) {
+        AuditionDTO audition = auditionService.findAuditionById(id);
+        List<PostFileDTO> existingFiles = postFileService.findFilesByPostId(id);
 
-    @GetMapping("/audition-list")
+        if (audition != null) {
+            model.addAttribute("audition", audition);
+            model.addAttribute("existingFiles", existingFiles);
+            return "/audition/video/modify";
+        } else {
+            model.addAttribute("error","해당 게시글을 찾을 수 없습니다.");
+            return "/audition/video/error";
+        }
+    }
+
+    @PostMapping("/modify")
+    public String updateAudition(
+            @ModelAttribute AuditionDTO auditionDTO,
+            @RequestParam(value = "newFiles", required = false) List<MultipartFile> newFiles,
+            @RequestParam(value = "deletedFileIds", required = false) List<Long> deletedFileIds,
+            Model model) {
+        try{
+            log.info("수정 요청 - 모집 정보: {}", auditionDTO);
+
+            // 기존 데이터를 가져와서 필요한 필드를 설정
+            auditionService.updateAudition(auditionDTO, newFiles, deletedFileIds);
+            return "redirect:/audition/video/detail/" + auditionDTO.getId();
+        } catch (Exception e) {
+            log.error("Error updating work: ", e);
+            model.addAttribute("error", "업데이트 중 오류가 발생했습니다: " + e.getMessage());
+            return "/audition/video/modify";
+        }
+    }
+
+    @GetMapping("/list")
     public String list(@RequestParam(value = "keyword", required = false) String keyword,
                        @RequestParam(value = "page", defaultValue = "1") int page,
                        Model model) {
@@ -111,21 +144,21 @@ public class VideoAuditionController {
         AuditionPagination pagination = new AuditionPagination();
         pagination.setPage(page);
 
-        int totalAudition = auditionService.findTotal();
-        int totalSearchAudition = auditionService.findTotalAuditionsSearch(keyword);
+        int totalAudition = auditionService.findTotal(PostType.VIDEO);
+        int totalSearchAudition = auditionService.findTotalAuditionsSearch(PostType.VIDEO, keyword);
 
         int totalCount = keyword.isEmpty() ? totalAudition : totalSearchAudition;
         pagination.setTotal(totalCount);
         pagination.progress();
 
-        List<AuditionDTO> auditions = auditionService.findAllAuditions(keyword, pagination);
+        List<AuditionDTO> auditions = auditionService.findAllAuditions(PostType.VIDEO, keyword, pagination);
 
         model.addAttribute("auditions", auditions);
         model.addAttribute("keyword", keyword);
         model.addAttribute("pagination", pagination);
         model.addAttribute("totalCount", totalCount);
 
-        return "/audition/video/audition-list";
+        return "/audition/video/list";
     }
 
     @GetMapping("/display")
@@ -142,7 +175,7 @@ public class VideoAuditionController {
     }
 
 
-    @GetMapping("/audition-detail/{id}")
+    @GetMapping("/detail/{id}")
     public String detail(@PathVariable("id") Long id, Model model) {
         MemberVO member = (MemberVO) session.getAttribute("member");
         MemberProfileDTO memberProfile = (MemberProfileDTO) session.getAttribute("memberProfile");
@@ -155,6 +188,6 @@ public class VideoAuditionController {
         model.addAttribute("audition", audition);
         model.addAttribute("postFiles", postFiles);
 
-        return "/audition/video/audition-detail";
+        return "/audition/video/detail";
     }
 }

@@ -60,17 +60,14 @@ public class WorkDAO {
         workMapper.deletePostById(id);
     }
 
-    // 작품 목록 조회 (썸네일 포함, 장르 필터, 검색 추가)
-    public List<WorkDTO> findAllWithThumbnailAndSearch(String keyword, String genreType, Pagination pagination) {
-        return workMapper.selectAllWithThumbnailAndSearch(keyword, genreType, pagination);
+    // 작품 목록 조회 (썸네일 포함, 검색 및 필터링 추가)
+    public List<WorkDTO> findAllWithThumbnailAndSearchAndType(Search search, Pagination pagination) {
+        return workMapper.selectAllWithThumbnailAndSearchAndType(search, pagination);
     }
 
-
-
-
     // 검색 조건이 포함된 총 작품 수 조회
-    public int findTotalWithSearch(String genreType, String keyword) {
-        return workMapper.selectTotalWithSearch(genreType, keyword);
+    public int findTotalWithSearchAndType(Search search) {
+        return workMapper.selectTotalWithSearchAndType(search);
     }
 
 
@@ -82,11 +79,13 @@ public class WorkDAO {
     }
 
     // 같은 장르의 최신순 3개 작품 조회
-    public List<WorkDTO> findThreeByGenre(String genreType, Long workId) {
-        return workMapper.selectThreeByGenre(genreType, workId);
+    public List<WorkDTO> findThreeByGenre(String genreType, Long workId, String postType) {
+        return workMapper.selectThreeByGenre(genreType, workId, postType);
     }
-    public List<WorkDTO> findThreeByAuthor(Long memberProfileId, Long workId) {
-        return workMapper.selectThreeByAuthor(memberProfileId, workId);
+
+    // 작가의 다른 최신 작품 3개 조회
+    public List<WorkDTO> findThreeByAuthor(Long memberProfileId, Long workId, String postType) {
+        return workMapper.selectThreeByAuthor(memberProfileId, workId, postType);
     }
 
     // 썸네일 파일 ID 업데이트 메소드 추가

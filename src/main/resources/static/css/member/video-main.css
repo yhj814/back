@@ -1001,32 +1001,7 @@ body.partners_profile .edit-menu-box .profile-menu-setting .setting-table .setti
     background-color: #eee;
     border-radius: 4px;
 }
-.btn-choice.active {
-    border: solid 1px #2099bb;
-    background-color: #fff;
-    color: #2099bb;
-    border-radius: 4px;
-}
-.btn-choice {
-    display: inline-block;
-    cursor: pointer;
-    width: 80px;
-    padding: 8px 0;
-    color: #bdbdbd;
-}
-.radio-value {
-    display: none;
-}
-.btn-choice.active .name {
-    font-weight: 500 !important;
-}
-.btn-choice .name {
-    position: relative;
-   left: -1px;
-}
-.btn-secret {
-    border-left: none;
-}
+
 .setting-th{
     padding: 12px 0;
 

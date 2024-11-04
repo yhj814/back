@@ -1,5 +1,6 @@
 package com.app.ggumteo.repository.audition;
 
+import com.app.ggumteo.constant.PostType;
 import com.app.ggumteo.domain.audition.AuditionDTO;
 import com.app.ggumteo.domain.audition.AuditionVO;
 import com.app.ggumteo.domain.file.PostFileDTO;
@@ -21,7 +22,9 @@ public class AuditionDAO {
     public void save(AuditionVO auditionVO) {auditionMapper.insert(auditionVO);}
 
 //    총 모집 수 조회
-    public int findTotalAuditions() {return auditionMapper.selectTotal();}
+    public int findTotalAuditions(PostType postType) {
+        return auditionMapper.selectTotal(postType);
+    }
 
 //    작품 ID로 조회
     public AuditionDTO findAuditionById(Long id) {
@@ -30,17 +33,18 @@ public class AuditionDAO {
 
 //    모집 수정
     public void updateAudition(AuditionDTO auditionDTO) {auditionMapper.updateAudition(auditionDTO);}
+    public void updatePost(AuditionDTO auditionDTO) {auditionMapper.updatePost(auditionDTO);}
 
 //    모집 삭제
     public void deleteAudition(Long id) {auditionMapper.deleteById(id);}
 
 //    목록 조회
-    public List<AuditionDTO> findAllAuditions(String keyword, AuditionPagination pagination) {
-        return auditionMapper.selectAll(keyword, pagination);}
+    public List<AuditionDTO> findAllAuditions(PostType postType, String keyword, AuditionPagination pagination) {
+        return auditionMapper.selectAll(postType, keyword, pagination);}
 
 //    검색조건이 포함된 총 모집 수
-    public int findTotalAuditionsSearch(String keyword) {
-        return auditionMapper.selectTotalWithSearch(keyword);
+    public int findTotalAuditionsSearch(PostType postType, String keyword) {
+        return auditionMapper.selectTotalWithSearch(postType, keyword);
     }
 
 //    다중 파일 조회

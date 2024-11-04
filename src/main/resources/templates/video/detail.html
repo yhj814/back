@@ -1,800 +1,444 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>영상상세</title>
-        <link rel="stylesheet" href="/static/css/video/detail.css" />
-    </head>
-    <body>
-        <div class="main-header">
-            <div class="container">
-                <a class="sub-navigation" href="">
-                    <div>작품</div>
-                </a>
-                <a class="sub-navigation" href="">
-                    <div>펀딩</div>
-                </a>
-                <a class="sub-navigation" href="">
-                    <div>모집</div>
-                </a>
-            </div>
-        </div>
-        <div class="layout">
-            <!-- 중간메인내용 -->
-            <div class="container-wrapper">
-                <!-- 메인내용 -->
-                <div class="content-container-wrapper">
-                    <!-- 메인 왼쪽내용 -->
-                    <div class="content-container" name="content-container">
-                        <!-- 작품 썸네일, 제목 -->
-                        <div class="detail-header">
-                            <a href="" class="category">장르</a>
-                            <h1 class="title">작품 제목</h1>
-                            <div class="detail-info">
-                                <div class="flex-box author-info content-meta">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>영상 상세</title>
+    <script src="https://js.bootpay.co.kr/bootpay-5.0.1.min.js" type="application/javascript"></script>
+    <link rel="stylesheet" href="/css/video/detail.css" />
+</head>
+<body>
+<div class="main-header">
+    <div class="container">
+        <a class="sub-navigation" href="">
+            <div>작품</div>
+        </a>
+        <a class="sub-navigation" href="">
+            <div>펀딩</div>
+        </a>
+        <a class="sub-navigation" href="">
+            <div>모집</div>
+        </a>
+    </div>
+</div>
+<div class="layout" th:attr="data-work-id=${work.id},data-member-id=${session.memberProfile.id},
+               data-profile-name=${session.memberProfile.profileName},
+               data-profile-phone=${session.memberProfile.profilePhone},
+               data-profile-email=${session.memberProfile.profileEmail}">
+    <!-- 중간메인내용 -->
+    <div class="container-wrapper">
+        <!-- 메인내용 -->
+        <div class="content-container-wrapper">
+            <!-- 메인 왼쪽내용 -->
+            <div class="content-container" name="content-container">
+                <!-- 작품 썸네일, 제목 -->
+                <div class="detail-header">
+                    <div class="category" th:text="${work.genreType}">장르</div>
+                    <h1 class="title" th:text="${work.postTitle}">작품 제목</h1>
+                    <div class="detail-info">
+                        <div class="flex-box author-info content-meta">
+                            <img
+                                    src="/images/text/318743_20240926_4c9cbec414bb32ee.png"
+                                    class="content-meta-elem author-image pc-only"
+                            />
+                            <div class="content-meta-elem pc-only">
+                                <p class="link-underline-text writer" th:text="${work.profileNickName}">작성자</p>
+                            </div>
+                            <img
+                                    src="/images/text/icon-clock.png"
+                                    class="content-meta-elem meta-icon"
+                            />
+                            <div class="content-meta-elem time" th:text="${work.createdDate.substring(0, 10)}">
+                                2024.10.25
+                            </div>
+                            <div class="review-box">
+                                <div class="star-box">
                                     <img
-                                        src="https://cdn.wishket.com/news_profiles/318743_20240926_4c9cbec414bb32ee.png"
-                                        class="content-meta-elem author-image pc-only"
+                                            src="https://www.wishket.com/static/renewal/img/project/wishket-project-portfolio/icon-review-star-full.png"
                                     />
-                                    <div class="content-meta-elem pc-only">
-                                        <p class="link-underline-text writer">
-                                            작성자
-                                        </p>
-                                    </div>
-                                    <img
-                                        src="/static/images/video/icon-clock.png"
-                                        class="content-meta-elem meta-icon"
-                                    />
-                                    <div class="content-meta-elem time">
-                                        2024.10.25
-                                    </div>
-
-                                    <div class="review-box">
-                                        <div class="star-box">
-                                            <img
-                                                src="https://www.wishket.com/static/renewal/img/project/wishket-project-portfolio/icon-review-star-full.png"
-                                            />
-                                        </div>
-                                        <span class="review-score">5.0</span>
-                                    </div>
-
-                                    <div class="content-meta-view flex-box">
-                                        <img
-                                            src="https://yozm.wishket.com/static/renewal/img/news/icon-view.png"
-                                        />
-                                        <span class="views">10</span>
-                                    </div>
                                 </div>
-                                <div class="thumbnail">
-                                    <video
-                                        class="thumbnail-video"
-                                        width="100%"
-                                        height="315"
-                                        controls=""
+                                <span id="total" class="review-score">5.0</span>
+                            </div>
+                            <div class="content-meta-view flex-box">
+                                <img
+                                        src="https://yozm.wishket.com/static/renewal/img/news/icon-view.png"
+                                />
+                                <span class="views" th:text="${work.readCount}">10</span>
+                            </div>
+                        </div>
+                        <div class="thumbnail">
+                            <img
+                                    th:src="@{'/video/display?fileName=' + ${work.thumbnailFilePath}}" alt="Thumbnail"
+                            />
+                        </div>
+                    </div>
+                </div>
+                <!-- 작품 내용 -->
+                <div class="content">
+                    <p th:text="${work.postContent}">글의 내용</p>
+                    <hr />
+                    <!-- 띄어쓰기용 -->
+                    <p>&nbsp;</p>
+                </div>
+                <div class="upload-img" th:each="file : ${postFiles}" th:if="${file.filePath != work.thumbnailFilePath}">
+                    <!-- 비디오 파일일 경우 -->
+                    <div th:if="${file.filePath.endsWith('.mp4') or file.filePath.endsWith('.avi') or file.filePath.endsWith('.mkv')}">
+                        <video th:src="@{'/video/display?fileName=' + ${file.filePath}}" controls class="thumbnail" alt="Uploaded Video"></video>
+                    </div>
+                    <!-- 이미지 파일일 경우 -->
+                    <div th:if="${!file.filePath.endsWith('.mp4') and !file.filePath.endsWith('.avi') and !file.filePath.endsWith('.mkv')}">
+                        <img th:src="@{'/video/display?fileName=' + ${file.filePath}}" class="thumbnail" alt="Uploaded Image" />
+                    </div>
+                </div>
+                <div class="upload-content">
+                    <p th:text="${work.fileContent}">
+                    </p>
+                    <hr />
+                    <!-- 띄어쓰기용 -->
+                    <p>&nbsp;</p>
+                </div>
+                <!-- 좋아요 댓글수이모티콘 자리 -->
+                <div class="detail-btn-wrapper">
+                    <div class="detail-btn-container">
+                        <div class="btn-group">
+                            <div class="btn-wrapper">
+                                <div class="btn-wrapper">
+                                    <p
+                                            class="action-tooltip-reply bottom-action"
                                     >
-                                        <source
-                                            src="첨부된_비디오_파일_URL"
-                                            type="video/mp4"
-                                        />
-                                    </video>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- 작품 내용 -->
-                        <div class="content">
-                            <p>
-                                IT 지식이 무엇보다 중요해진 요즘, 여러분은
-                                어떻게 공부하고 있나요? 가장 먼저 눈길이 가는 건
-                                다양한 IT 강의 영상일 겁니다. 강의를 제공하는
-                                교육 기업들과 함께, 요즘IT에서 ‘IT 강의
-                                시리즈’를 준비했습니다. 엄선한 교육 영상을
-                                텍스트로 읽고 필요한 정보를 빠르게 가져가세요.
-                            </p>
-                            <hr />
-                            <!-- 띄어쓰기용 -->
-                            <p>&nbsp;</p>
-                            <div class="attachment">
-                                <!-- 예시용
-                                <iframe
-                                    width="100%"
-                                    height="315"
-                                    src="https://www.youtube.com/embed/kTyXFL1TYDY"
-                                    title="YouTube video player"
-                                    frameborder="0"
-                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                    allowfullscreen
-                                    class="attachment-video"
-                                >
-                                </iframe> -->
-                                <!-- 첨부파일로 받아온 영상올리는 부분 -->
-                                <video
-                                    class="my-video"
-                                    width="100%"
-                                    height="315"
-                                    controls
-                                >
-                                    <source
-                                        src="첨부된_비디오_파일_URL"
-                                        type="video/mp4"
-                                    />
-                                </video>
-                                <p>&nbsp;</p>
-                                <p class="attachment-video-content">영상설명</p>
-                                <p>&nbsp;</p>
-                            </div>
-                        </div>
-                        <!-- 좋아요 댓글수이모티콘 자리 -->
-                        <div class="detail-btn-wrapper">
-                            <div class="detail-btn-container">
-                                <div class="btn-group">
-                                    <div class="btn-wrapper">
-                                        <div class="btn-wrapper">
-                                            <p
-                                                class="action-tooltip-reply bottom-action"
-                                            >
-                                                댓글
-                                            </p>
-                                            <button class="reply-btn">
-                                                <div
-                                                    class="flex-box btn-box with-text"
-                                                >
-                                                    <img
-                                                        src="https://yozm.wishket.com/static/renewal/img/news/icon_toolbar_comment.png"
-                                                    />
-                                                    <p
-                                                        class="bottom-action-count reply-count"
-                                                    >
-                                                        1
-                                                    </p>
-                                                </div>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="report">
-                                    <img
-                                        src="/static/images/video/report.jpg"
-                                    />
-                                    <button id="report-btn">신고하기</button>
-                                </div>
-                                <!-- 작품 신고 모달창 -->
-                                <div id="report-modal" class="modal">
-                                    <div class="modal-content">
-                                        <span class="close">&times;</span>
-                                        <h2>작품 신고</h2>
-                                        <br />
-                                        <br />
-                                        <form>
-                                            <label for="reason"
-                                                >신고하려는 이유를
-                                                적어주세요:</label
-                                            ><br />
-                                            <br />
-                                            <textarea
-                                                id="reason"
-                                                name="reason"
-                                                rows="4"
-                                                cols="50"
-                                            ></textarea
-                                            ><br /><br />
-                                            <button
-                                                class="report-submit"
-                                                type="submit"
-                                            >
-                                                신고하기
-                                            </button>
-                                        </form>
-                                    </div>
-                                </div>
-                                <!-- 댓글 신고 모달창 -->
-                                <div
-                                    id="report-modal-reply"
-                                    class="modal-reply"
-                                >
-                                    <div class="modal-reply-content">
-                                        <span class="modal-reply-close"
-                                            >&times;</span
+                                        댓글
+                                    </p>
+                                    <button class="reply-btn">
+                                        <div
+                                                class="flex-box btn-box with-text"
                                         >
-                                        <h2>댓글 신고</h2>
-                                        <br />
-                                        <br />
-                                        <form>
-                                            <label for="reason"
-                                                >신고하려는 이유를
-                                                적어주세요:</label
-                                            ><br />
-                                            <br />
-                                            <textarea
-                                                id="reason"
-                                                name="reason"
-                                                rows="4"
-                                                cols="50"
-                                            ></textarea
-                                            ><br /><br />
-                                            <button
-                                                class="report-submit-reply"
-                                                type="submit"
+                                            <img
+                                                    src="https://yozm.wishket.com/static/renewal/img/news/icon_toolbar_comment.png"
+                                            />
+                                            <p
+                                                    class="bottom-action-count reply-count"
+                                                    id="total-reply-count"
                                             >
-                                                신고하기
-                                            </button>
-                                        </form>
-                                    </div>
+
+                                            </p>
+                                        </div>
+                                    </button>
                                 </div>
                             </div>
                         </div>
-                        <!-- 댓글내용,작성 -->
-                        <div class="comment-area">
-                            <div class="comment-count">
-                                댓글
-                                <a class="count-number reply-count">1</a>
-                            </div>
-                            <div class="comment-row" id="comment-row">
-                                <div class="comment-list">
-                                    <div class="comment-group">
-                                        <div class="comment-box">
-                                            <div class="comment-wrapper">
-                                                <div class="write-user">
-                                                    <img
-                                                        src="https://yozm.wishket.com/static/img/default_avatar.png"
-                                                        class="comment-writer-img"
-                                                    />
-                                                    <div
-                                                        class="comment-writer-name"
-                                                    >
-                                                        <div
-                                                            class="writer-name"
-                                                        >
-                                                            댓글작성자
-                                                        </div>
-                                                        <div
-                                                            class="btn-comment-action"
-                                                        >
-                                                            <button
-                                                                class="btn-comment-delete cursor"
-                                                            >
-                                                                삭제
-                                                            </button>
-                                                            <img
-                                                                src="/static/images/video/report.jpg"
-                                                            />
-                                                            <button
-                                                                class="btn-comment-report cursor"
-                                                            >
-                                                                신고
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="comment">
-                                                    <a class="comment-content">
-                                                        댓글내용
-                                                    </a>
-                                                </div>
-                                                <div
-                                                    class="comment-date-created"
-                                                >
-                                                    2024.10.23
-                                                    <div class="comment-review">
-                                                        <div class="review-box">
-                                                            <div
-                                                                class="star-box"
-                                                            >
-                                                                <img
-                                                                    src="https://www.wishket.com/static/renewal/img/project/wishket-project-portfolio/icon-review-star-full.png"
-                                                                />
-                                                            </div>
-                                                            <span
-                                                                class="review-score"
-                                                                >5.0</span
-                                                            >
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="center-text pagination-box">
-                                    <ul class="pagination theme-ggumteo">
-                                        <li class="page-item">
-                                            <a id="page-btn" class="page-link"
-                                                >이전</a
-                                            >
-                                        </li>
-                                        <li class="page-item">
-                                            <a
-                                                id="page-btn"
-                                                class="page-link active"
-                                                >1</a
-                                            >
-                                        </li>
-                                        <li class="page-item">
-                                            <a id="page-btn" class="page-link"
-                                                >2</a
-                                            >
-                                        </li>
-                                        <li class="page-item">
-                                            <a id="page-btn" class="page-link"
-                                                >3</a
-                                            >
-                                        </li>
-                                        <li class="page-item">
-                                            <a id="page-btn" class="page-link"
-                                                >4</a
-                                            >
-                                        </li>
-                                        <li class="page-item">
-                                            <a id="page-btn" class="page-link"
-                                                >5</a
-                                            >
-                                        </li>
-                                        <!-- li채로 복사 -->
-                                        <li class="page-item">
-                                            <a id="page-btn" class="page-link"
-                                                >다음</a
-                                            >
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div class="comment-writer">
-                                    <form
-                                        action=""
-                                        class="reply-and-review-form"
+                        <div class="report">
+                            <img
+                                    src="/images/video/report.jpg"
+                            />
+                            <button id="report-btn">작품 신고하기</button>
+                        </div>
+                        <!-- 작품 신고 모달창 -->
+                        <div id="report-modal" class="modal">
+                            <div class="modal-content">
+                                <span class="close">&times;</span>
+                                <h2>작품 신고</h2>
+                                <br />
+                                <br />
+                                <form>
+                                    <label for="reason"
+                                    >신고하려는 이유를
+                                        적어주세요:</label
+                                    ><br />
+                                    <br />
+                                    <textarea
+                                            id="reason"
+                                            name="reason"
+                                            rows="4"
+                                            cols="50"
+                                    ></textarea
+                                    ><br /><br />
+                                    <button
+                                            class="report-submit"
+                                            type="submit"
                                     >
-                                        <div class="write-user">
-                                            <img
-                                                src="https://yozm.wishket.com/static/img/default_avatar.png"
-                                                class="comment-writer-img"
-                                            />
-                                            <a class="comment-writer-name"
-                                                >댓글작성자</a
-                                            >
-                                        </div>
-                                        <textarea
+                                        신고하기
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                        <!-- 댓글 신고 모달창 -->
+                        <div
+                                id="report-modal-reply"
+                                class="modal-reply"
+                        >
+                            <div class="modal-reply-content">
+                                        <span class="modal-reply-close"
+                                        >&times;</span
+                                        >
+                                <h2>댓글 신고</h2>
+                                <br />
+                                <br />
+                                <form>
+                                    <label for="reason"
+                                    >신고하려는 이유를
+                                        적어주세요:</label
+                                    ><br />
+                                    <br />
+                                    <textarea
+                                            id="reason"
+                                            name="reason"
+                                            rows="4"
+                                            cols="50"
+                                    ></textarea
+                                    ><br /><br />
+                                    <button
+                                            class="report-submit-reply"
+                                            type="submit"
+                                    >
+                                        신고하기
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- 댓글내용,작성 -->
+                <div class="comment-area">
+                    <div class="comment-count">
+                        댓글
+                        <a class="count-number reply-count" id="comment-count">0</a>
+                    </div>
+                    <div class="comment-row" id="comment-row">
+
+
+                    </div>
+                    <div id="pagination" class="center-text pagination-box">
+
+                    </div>
+                    <div class="comment-writer">
+                        <form onsubmit="event.preventDefault();"
+                              class="reply-and-review-form"
+                        >
+
+                                    <textarea
                                             class="comment comment-textarea"
                                             id="comment"
                                             maxlength="500"
                                             name="comment"
                                             placeholder="방금 읽은 콘텐츠 어떠셨나요? 자유롭게 의견을 남겨주세요."
                                             rows="6"
-                                        ></textarea>
-                                        <div
-                                            class="check-length comment-length"
-                                        >
-                                            0/500
-                                        </div>
-                                        <div class="comment-guide">
-                                            건전한 댓글 문화를 위해 불쾌감을
-                                            주는 욕설, 특정 대상을 비하하는
-                                            댓글은 표시가 제한됩니다.
-                                        </div>
-                                        <div class="btn-create-div">
-                                            <div class="star-a">별점</div>
-                                            <div class="star-rating">
+                                    ></textarea>
+                            <div
+                                    class="check-length comment-length"
+                            >
+                                0/500
+                            </div>
+                            <div class="comment-guide">
+                                건전한 댓글 문화를 위해 불쾌감을
+                                주는 욕설, 특정 대상을 비하하는
+                                댓글은 표시가 제한됩니다.
+                            </div>
+                            <div class="btn-create-div">
+                                <div class="star-a">별점</div>
+                                <div class="star-rating">
                                                 <span
-                                                    class="star"
-                                                    data-value="1"
-                                                    >&#9733;</span
+                                                        class="star"
+                                                        data-value="1"
+                                                >&#9733;</span
                                                 >
-                                                <span
-                                                    class="star"
-                                                    data-value="2"
-                                                    >&#9733;</span
-                                                >
-                                                <span
-                                                    class="star"
-                                                    data-value="3"
-                                                    >&#9733;</span
-                                                >
-                                                <span
-                                                    class="star"
-                                                    data-value="4"
-                                                    >&#9733;</span
-                                                >
-                                                <span
-                                                    class="star"
-                                                    data-value="5"
-                                                    >&#9733;</span
-                                                >
-                                                <button
-                                                    class="btn-create-comment cursor"
-                                                    type="submit"
-                                                >
-                                                    작성하기
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </form>
+                                    <span
+                                            class="star"
+                                            data-value="2"
+                                    >&#9733;</span
+                                    >
+                                    <span
+                                            class="star"
+                                            data-value="3"
+                                    >&#9733;</span
+                                    >
+                                    <span
+                                            class="star"
+                                            data-value="4"
+                                    >&#9733;</span
+                                    >
+                                    <span
+                                            class="star"
+                                            data-value="5"
+                                    >&#9733;</span
+                                    >
+                                    <button
+                                            class="btn-create-comment cursor"
+                                            type="submit"
+                                    >
+                                        작성하기
+                                    </button>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                    <!-- 메인 오른쪽내용 -->
-                    <div class="right-content-container pc-only">
-                        <div class="right-content-list">
-                            <a class="right-content-title">
-                                <div class="work-price">
-                                    <h3 class="price">
-                                        <span>작품 가격</span>
-                                        <span class="price-detail"
-                                            >10,000원</span
-                                        >
-                                    </h3>
-                                    <!-- <h3 class="price-charge">
-                                        <span
-                                            >수수료
-                                            <img
-                                                class="charge-image"
-                                                src="https://d2v80xjmx68n4w.cloudfront.net/assets/order/help.png"
-                                            />
-                                            <p
-                                                class="action-tooltip bottom-action charge-p"
-                                            >
-                                                구매가격의 10%
-                                            </p>
-                                        </span>
-                                        <span class="price-detail">
-                                            1,000원
-                                        </span>
-                                    </h3> -->
-                                    <!-- <div class="line"></div>
-                                    <h3 class="price-total">
-                                        <span>총 결제가격</span>
-                                        <span class="price-detail-total"
-                                            >11,000원</span
-                                        >
-                                    </h3> -->
-                                </div>
-                            </a>
-                            <div class="side-card-list-box">
-                                <button class="buy-btn cursor" type="button">
-                                    구매하기
-                                </button>
-                            </div>
-                        </div>
-                        <div class="right-content-list-2">
-                            <a class="right-content-title-2">
-                                <div class="other-content">
-                                    감독의 다른 콘텐츠
-                                </div>
-                            </a>
-                            <div class="side-card-list-box-2">
-                                <div class="side-card-list-2">
-                                    <a href="">
-                                        <img
-                                            src="https://yozm.wishket.com/media/news/2782/02_02.jpeg"
-                                            class="thumbnail-other-image"
-                                        />
-                                    </a>
-                                    <a href="" class="card-text"
-                                        ><span class="other-title"
-                                            >작품제목</span
-                                        >
-                                        <div class="other-review-box">
-                                            <div class="other-star-box">
-                                                <img
-                                                    src="https://www.wishket.com/static/renewal/img/project/wishket-project-portfolio/icon-review-star-full.png"
-                                                />
-                                            </div>
-                                            <span class="other-review-score"
-                                                >5.0</span
-                                            >
-                                        </div>
-                                        <div class="content-meta-elem">
-                                            <img
-                                                src="https://yozm.wishket.com/static/renewal/img/news/icon-clock.png"
-                                                class="content-meta-elem meta-icon other-img"
-                                            />
-                                            <span class="other-time"
-                                                >2024.10.25</span
-                                            >
-                                        </div>
-                                    </a>
-                                </div>
-                                <div class="line"></div>
-                            </div>
-                            <div class="side-card-list-box-2">
-                                <div class="side-card-list-2">
-                                    <a href="">
-                                        <img
-                                            src="https://yozm.wishket.com/media/news/2782/02_02.jpeg"
-                                            class="thumbnail-other-image"
-                                        />
-                                    </a>
-                                    <a href="" class="card-text"
-                                        ><span class="other-title"
-                                            >작품제목</span
-                                        >
-                                        <div class="other-review-box">
-                                            <div class="other-star-box">
-                                                <img
-                                                    src="https://www.wishket.com/static/renewal/img/project/wishket-project-portfolio/icon-review-star-full.png"
-                                                />
-                                            </div>
-                                            <span class="other-review-score"
-                                                >5.0</span
-                                            >
-                                        </div>
-                                        <div class="content-meta-elem">
-                                            <img
-                                                src="https://yozm.wishket.com/static/renewal/img/news/icon-clock.png"
-                                                class="content-meta-elem meta-icon other-img"
-                                            />
-                                            <span class="other-time"
-                                                >2024.10.25</span
-                                            >
-                                        </div>
-                                    </a>
-                                </div>
-                                <div class="line"></div>
-                            </div>
-                            <div class="side-card-list-box-2">
-                                <div class="side-card-list-2">
-                                    <a href="">
-                                        <img
-                                            src="https://yozm.wishket.com/media/news/2782/02_02.jpeg"
-                                            class="thumbnail-other-image"
-                                        />
-                                    </a>
-                                    <a href="" class="card-text"
-                                        ><span class="other-title"
-                                            >작품제목</span
-                                        >
-                                        <div class="other-review-box">
-                                            <div class="other-star-box">
-                                                <img
-                                                    src="https://www.wishket.com/static/renewal/img/project/wishket-project-portfolio/icon-review-star-full.png"
-                                                />
-                                            </div>
-                                            <span class="other-review-score"
-                                                >5.0</span
-                                            >
-                                        </div>
-                                        <div class="content-meta-elem">
-                                            <img
-                                                src="https://yozm.wishket.com/static/renewal/img/news/icon-clock.png"
-                                                class="content-meta-elem meta-icon other-img"
-                                            />
-                                            <span class="other-time"
-                                                >2024.10.25</span
-                                            >
-                                        </div>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
+                        </form>
                     </div>
                 </div>
-                <!-- 댓글과 코드잇사이 여백 -->
-                <div style="margin-top: 40px"></div>
             </div>
-            <!-- 왼쪽에 고정되어 있는 버튼들 좋아요 댓글 -->
-            <section class="left-sidebar"></section>
-            <!-- 같은 작성자의 다른 작품 -->
-            <div class="container detail-footer">
-                <div class="detail-footer-list-box">
-                    <div class="list-cover other-list-cover">
-                        <div class="other-list-title-layer flex-box">
-                            <div class="same-category-title">
-                                같은 장르에 다른 작품들
-                            </div>
+            <!-- 메인 오른쪽내용 -->
+            <div class="right-content-container pc-only">
+                <div class="right-content-list">
+                    <a class="right-content-title">
+                        <div class="work-price">
+                            <h3 class="price">
+                                <span>작품 가격</span>
+                                <span class="price-detail" th:text="${work.workPrice + '원'}"
+                                ></span
+                                >
+                            </h3>
+
                         </div>
-                        <div class="main-list other-list other-scraped-content">
-                            <div class="main-list-row list-item-horizontal">
-                                <!-- 처음 다른 작품들 -->
-                                <div
-                                    class="list-item-link other-list list-item-show"
-                                >
-                                    <div class="list-item card-grid">
-                                        <div class="list-item-thumbnail">
-                                            <img
-                                                src="https://yozm.wishket.com/media/news/2767/image__3_.png"
-                                                class="thumbnail-image"
-                                            />
-                                        </div>
-                                        <div class="item-main">
-                                            <!-- 작품장르 -->
-                                            <div>
-                                                <a
-                                                    class="list-item-category content-meta-elem link-text link-underline"
-                                                >
-                                                    장르
-                                                </a>
-                                            </div>
-                                            <!-- 작품제목 -->
-                                            <h3>
-                                                <a
-                                                    href=""
-                                                    class="item-title link-text link-underline"
-                                                >
-                                                    작품타이틀
-                                                </a>
-                                            </h3>
-                                            <!-- 올린시간 -->
-                                            <div class="content-meta flex-box">
-                                                <img
-                                                    src="https://yozm.wishket.com/static/renewal/img/news/icon-clock.png"
-                                                    class="content-meta-elem meta-icon"
-                                                />
-                                                <div
-                                                    class="content-meta-elem time"
-                                                >
-                                                    2024.10.26
-                                                </div>
-                                                <div
-                                                    class="content-meta-elem content-meta-sep"
-                                                >
-                                                    |
-                                                </div>
-                                                <div class="review-box">
-                                                    <div class="star-box">
-                                                        <img
-                                                            src="https://www.wishket.com/static/renewal/img/project/wishket-project-portfolio/icon-review-star-full.png"
-                                                        />
-                                                    </div>
-                                                    <span class="review-score"
-                                                        >5.0</span
-                                                    >
-                                                </div>
-                                            </div>
-                                            <!-- 작성자 -->
-                                            <div class="author-info flex-box">
-                                                <img
-                                                    src="https://cdn.wishket.com/news_profiles/278363_20240116_5c2efa336003f792.png"
-                                                    class="author-image"
-                                                />
-                                                <p class="author-name">
-                                                    작성자이름
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div
-                                    class="list-item-link other-list list-item-show"
-                                >
-                                    <div class="list-item card-grid">
-                                        <div class="list-item-thumbnail">
-                                            <img
-                                                src="https://yozm.wishket.com/media/news/2767/image__3_.png"
-                                                class="thumbnail-image"
-                                            />
-                                        </div>
-                                        <div class="item-main">
-                                            <!-- 작품장르 -->
-                                            <div>
-                                                <a
-                                                    class="list-item-category content-meta-elem link-text link-underline"
-                                                >
-                                                    장르
-                                                </a>
-                                            </div>
-                                            <!-- 작품제목 -->
-                                            <h3>
-                                                <a
-                                                    href=""
-                                                    class="item-title link-text link-underline"
-                                                >
-                                                    작품타이틀
-                                                </a>
-                                            </h3>
-                                            <!-- 올린시간 -->
-                                            <div class="content-meta flex-box">
-                                                <img
-                                                    src="https://yozm.wishket.com/static/renewal/img/news/icon-clock.png"
-                                                    class="content-meta-elem meta-icon"
-                                                />
-                                                <div
-                                                    class="content-meta-elem time"
-                                                >
-                                                    2024.10.26
-                                                </div>
-                                                <div
-                                                    class="content-meta-elem content-meta-sep"
-                                                >
-                                                    |
-                                                </div>
-                                                <div class="review-box">
-                                                    <div class="star-box">
-                                                        <img
-                                                            src="https://www.wishket.com/static/renewal/img/project/wishket-project-portfolio/icon-review-star-full.png"
-                                                        />
-                                                    </div>
-                                                    <span class="review-score"
-                                                        >5.0</span
-                                                    >
-                                                </div>
-                                            </div>
-                                            <!-- 작성자 -->
-                                            <div class="author-info flex-box">
-                                                <img
-                                                    src="https://cdn.wishket.com/news_profiles/278363_20240116_5c2efa336003f792.png"
-                                                    class="author-image"
-                                                />
-                                                <p class="author-name">
-                                                    작성자이름
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div
-                                    class="list-item-link other-list list-item-show"
-                                >
-                                    <div class="list-item card-grid">
-                                        <div class="list-item-thumbnail">
-                                            <img
-                                                src="https://yozm.wishket.com/media/news/2767/image__3_.png"
-                                                class="thumbnail-image"
-                                            />
-                                        </div>
-                                        <div class="item-main">
-                                            <!-- 작품장르 -->
-                                            <div>
-                                                <a
-                                                    class="list-item-category content-meta-elem link-text link-underline"
-                                                >
-                                                    장르
-                                                </a>
-                                            </div>
-                                            <!-- 작품제목 -->
-                                            <h3>
-                                                <a
-                                                    href=""
-                                                    class="item-title link-text link-underline"
-                                                >
-                                                    작품타이틀
-                                                </a>
-                                            </h3>
-                                            <!-- 올린시간 -->
-                                            <div class="content-meta flex-box">
-                                                <img
-                                                    src="https://yozm.wishket.com/static/renewal/img/news/icon-clock.png"
-                                                    class="content-meta-elem meta-icon"
-                                                />
-                                                <div
-                                                    class="content-meta-elem time"
-                                                >
-                                                    2024.10.26
-                                                </div>
-                                                <div
-                                                    class="content-meta-elem content-meta-sep"
-                                                >
-                                                    |
-                                                </div>
-                                                <div class="review-box">
-                                                    <div class="star-box">
-                                                        <img
-                                                            src="https://www.wishket.com/static/renewal/img/project/wishket-project-portfolio/icon-review-star-full.png"
-                                                        />
-                                                    </div>
-                                                    <span class="review-score"
-                                                        >5.0</span
-                                                    >
-                                                </div>
-                                            </div>
-                                            <!-- 작성자 -->
-                                            <div class="author-info flex-box">
-                                                <img
-                                                    src="https://cdn.wishket.com/news_profiles/278363_20240116_5c2efa336003f792.png"
-                                                    class="author-image"
-                                                />
-                                                <p class="author-name">
-                                                    작성자이름
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                    </a>
+                    <div class="side-card-list-box">
+                        <button class="buy-btn cursor" type="button" id="paymentButton">
+                            구매하기
+                        </button>
+                    </div>
+                </div>
+                <div class="right-content-list-2">
+                    <a class="right-content-title-2">
+                        <div class="other-content">
+                            감독의 다른 콘텐츠
                         </div>
-                        <!-- 바닥선 -->
-                        <div class="line-divider"></div>
+                    </a>
+                    <div class="side-card-list-box-2">
+                        <div th:each="work : ${threeAuthorWorks}" class="side-card-list-2">
+                            <a th:href="@{'/video/detail/' + ${work.id}}">
+                                <img
+                                        th:src="@{'/video/display?fileName=' + ${work.thumbnailFilePath}}"
+                                        class="thumbnail-other-image"
+                                />
+                            </a>
+                            <a th:href="@{'/video/detail/' + ${work.id}}" class="card-text"
+                            ><span class="other-title" th:text="${work.postTitle}"
+                            >작품제목</span
+                            >
+                                <div class="other-review-box">
+                                    <div class="other-star-box" >
+                                        <img
+                                                src="https://www.wishket.com/static/renewal/img/project/wishket-project-portfolio/icon-review-star-full.png"
+                                        />
+                                    </div>
+                                    <span class="other-review-score" th:text="${work.star}"
+                                    >5.0</span
+                                    >
+                                </div>
+                                <div class="content-meta-elem">
+                                    <img
+                                            src="https://yozm.wishket.com/static/renewal/img/news/icon-clock.png"
+                                            class="content-meta-elem meta-icon other-img"
+                                    />
+                                    <span class="other-time" th:text="${work.createdDate.substring(0, 10)}"
+                                    >2024.10.25</span
+                                    >
+                                </div>
+                            </a>
+                        </div>
+                        <div class="line"></div>
                     </div>
                 </div>
             </div>
         </div>
-    </body>
-    <script src="/static/js/video/detail.js"></script>
+        <!-- 댓글과 코드잇사이 여백 -->
+        <div style="margin-top: 40px"></div>
+    </div>
+    <!-- 왼쪽에 고정되어 있는 버튼들 좋아요 댓글 -->
+    <section class="left-sidebar"></section>
+    <!-- 같은 작성자의 다른 작품 -->
+    <div class="container detail-footer">
+        <div class="detail-footer-list-box">
+            <div class="list-cover other-list-cover">
+                <div class="other-list-title-layer flex-box">
+                    <div class="same-category-title">
+                        같은 장르에 다른 작품들
+                    </div>
+                </div>
+                <div class="main-list other-list other-scraped-content">
+                    <div class="main-list-row list-item-horizontal">
+                        <!-- 처음 다른 작품들 -->
+                        <div  th:each="work : ${threeWorks}"
+                              class="list-item-link other-list list-item-show"
+                        >
+                            <div class="list-item card-grid">
+                                <div class="list-item-thumbnail">
+                                    <img
+                                            th:src="@{'/video/display?fileName=' + ${work.thumbnailFilePath}}"
+                                            src="https://yozm.wishket.com/media/news/2767/image__3_.png"
+                                            class="thumbnail-image"
+                                    />
+                                </div>
+                                <div class="item-main">
+                                    <!-- 작품장르 -->
+                                    <div>
+                                        <a
+                                                class="list-item-category content-meta-elem link-text link-underline"
+                                                th:text="${work.genreType}"
+                                        >
+                                            장르
+                                        </a>
+                                    </div>
+                                    <!-- 작품제목 -->
+                                    <h3>
+                                        <a
+                                                th:href="@{'/video/detail/' + ${work.id}}"
+                                                class="item-title link-text link-underline"
+                                                th:text="${work.postTitle}"
+                                        >
+                                            작품타이틀
+                                        </a>
+                                    </h3>
+                                    <!-- 올린시간 -->
+                                    <div class="content-meta flex-box">
+                                        <img
+                                                src="https://yozm.wishket.com/static/renewal/img/news/icon-clock.png"
+                                                class="content-meta-elem meta-icon"
+                                        />
+                                        <div
+                                                class="content-meta-elem time"
+                                                th:text="${work.createdDate.substring(0, 10)}"
+                                        >
+                                            2024.10.26
+                                        </div>
+                                        <div
+                                                class="content-meta-elem content-meta-sep"
+                                        >
+                                            |
+                                        </div>
+                                        <div class="review-box">
+                                            <div class="star-box">
+                                                <img
+                                                        src="https://www.wishket.com/static/renewal/img/project/wishket-project-portfolio/icon-review-star-full.png"
+                                                />
+                                            </div>
+                                            <span class="review-score"
+                                                  th:text="${work.star}"
+                                            >5.0</span
+                                            >
+                                        </div>
+                                    </div>
+                                    <!-- 작성자 -->
+                                    <div class="author-info flex-box">
+                                        <img
+                                                src="https://cdn.wishket.com/news_profiles/278363_20240116_5c2efa336003f792.png"
+                                                class="author-image"
+                                        />
+                                        <p class="author-name"
+                                           th:text="${work.profileNickName}">
+                                            작성자이름
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- 바닥선 -->
+                <div class="line-divider"></div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script src="/js/video/detail-work-pay.js"></script>
+<script src="/js/video/detail-work-service.js"></script>
+<script src="/js/video/detail-work-layout.js"></script>
+<script src="/js/video/detail-work-event.js"></script>
 </html>

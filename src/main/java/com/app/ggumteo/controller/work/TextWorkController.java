@@ -36,6 +36,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -121,12 +122,15 @@ public class TextWorkController {
     }
 
     // 작품 업데이트 요청 처리
+    // 작품 업데이트 요청 처리
     @PostMapping("modify")
     public String updateWork(
             @ModelAttribute WorkDTO workDTO,
             @RequestParam(value = "newFiles", required = false) List<MultipartFile> newFiles,
             @RequestParam(value = "deletedFileIds", required = false) List<Long> deletedFileIds,
             @RequestParam(value = "newThumbnailFile", required = false) MultipartFile newThumbnailFile,
+            @ModelAttribute Search search,  // 검색 조건 추가
+            @RequestParam(value = "page", defaultValue = "1") int page,  // 페이지 파라미터 추가
             Model model) {
         try {
             log.info("수정 요청 - 작품 정보: {}", workDTO);
@@ -137,50 +141,84 @@ public class TextWorkController {
                 workDTO.setThumbnailFileId(currentWork.getThumbnailFileId());
             }
 
+            // 서비스에서 작품 업데이트 로직 실행
             workService.updateWork(workDTO, newFiles, deletedFileIds, newThumbnailFile); // 서비스로 전달
-            return "redirect:/text/list";
+
+            // 수정 후 바로 리스트 페이지로 이동하여 데이터 전달
+            search.setPostType(PostType.TEXT.name());
+            log.info("Received Search Parameters: {}", search);
+            log.info("Received page: {}", page);
+
+            Pagination pagination = new Pagination();
+            pagination.setPage(page);
+
+            int totalWorks = workService.findTotalWithSearchAndType(search);
+            pagination.setTotal(totalWorks);
+            pagination.progress2();
+
+            List<WorkDTO> works = workService.findAllWithThumbnailAndSearchAndType(search, pagination);
+
+            model.addAttribute("works", works);
+            model.addAttribute("pagination", pagination);
+            model.addAttribute("search", search);
+
+            return "text/list"; // 수정 후 바로 list 페이지로 이동
         } catch (Exception e) {
             log.error("Error updating work: ", e);
             model.addAttribute("error", "업데이트 중 오류가 발생했습니다: " + e.getMessage());
             return "text/modify";
         }
     }
-    @GetMapping("/list")
+
+
+
+    @GetMapping("list")
     public String list(
-            @RequestParam(value = "genreType", required = false) String genreType,
-            @RequestParam(value = "keyword", required = false) String keyword,
+            @ModelAttribute Search search,
             @RequestParam(value = "page", defaultValue = "1") int page,
             Model model) {
+
+
+        search.setPostType(PostType.TEXT.name());
+        log.info("Received Search Parameters: {}", search);
+        log.info("Received page: {}", page);
 
         Pagination pagination = new Pagination();
         pagination.setPage(page);
 
-        int totalWorks = workService.findTotalWithSearch(genreType, keyword);
+        int totalWorks = workService.findTotalWithSearchAndType(search);
         pagination.setTotal(totalWorks);
         pagination.progress2();
 
-        List<WorkDTO> works = workService.findAllWithThumbnailAndSearch(genreType, keyword, pagination);
+        log.info("Pagination - Page: {}", pagination.getPage());
+        log.info("Pagination - Total: {}", pagination.getTotal());
+        log.info("Pagination - Start Row: {}", pagination.getStartRow());
+        log.info("Pagination - Row Count: {}", pagination.getRowCount());
+
+        List<WorkDTO> works = workService.findAllWithThumbnailAndSearchAndType(search, pagination);
+        log.info("Retrieved works list: {}", works);
 
         model.addAttribute("works", works);
         model.addAttribute("pagination", pagination);
-        model.addAttribute("keyword", keyword);
-        model.addAttribute("genreType", genreType);
+        model.addAttribute("search", search);
 
         return "text/list";
     }
 
-    @GetMapping("/display")
+
+
+
+
+    @GetMapping("display")
     @ResponseBody
-    public ResponseEntity<byte[]> display(@RequestParam("fileName") String fileName) throws IOException {
-        byte[] fileData = postFileService.getFileData(fileName);
-        if (fileData == null) {
-            return ResponseEntity.notFound().build();
+    public byte[] display(@RequestParam("fileName") String fileName) throws IOException {
+        File file = new File("C:/upload", fileName);
+
+        if (!file.exists()) {
+            throw new FileNotFoundException("파일을 찾을 수 없습니다: " + fileName);
         }
 
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.IMAGE_JPEG);
-        return new ResponseEntity<>(fileData, headers, HttpStatus.OK);
+        return FileCopyUtils.copyToByteArray(file);
     }
 
     @GetMapping("/detail/{id}")
@@ -189,8 +227,8 @@ public class TextWorkController {
         workService.incrementReadCount(id);
 
         List<PostFileDTO> postFiles = workService.findFilesByPostId(id);
-        List<WorkDTO> threeWorks = workService.getThreeWorksByGenre(work.getGenreType(), work.getId());
-        List<WorkDTO> threeAuthorWorks = workService.getThreeWorksByAuthor(work.getMemberProfileId(), work.getId());
+        List<WorkDTO> threeWorks = workService.getThreeWorksByGenre(work.getGenreType(), work.getId(), PostType.TEXT.name());
+        List<WorkDTO> threeAuthorWorks = workService.getThreeWorksByAuthor(work.getMemberProfileId(), work.getId(), PostType.TEXT.name());
 
         model.addAttribute("work", work);
         model.addAttribute("postFiles", postFiles);

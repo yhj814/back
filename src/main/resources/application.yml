@@ -14,8 +14,8 @@ spring:
   servlet:
     multipart:
       enabled: true
-      max-request-size: 40MB
-      max-file-size: 40MB
+      max-request-size: 300MB
+      max-file-size: 300MB
       file-size-threshold: 100MB
 
   mail:
@@ -35,3 +35,5 @@ spring:
 mybatis:
   config-location: classpath:/config/config.xml
   mapper-locations: classpath*:/mapper/*.xml
+
+

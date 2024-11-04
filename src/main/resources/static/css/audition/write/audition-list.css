@@ -480,7 +480,27 @@ a {
 }
 
 .content-bottom .pagination {
+    display: flex;
+    justify-content: center;
     margin: 9px 0 10px;
+}
+
+.active{
+    color: #00a878;
+    border-color: #bdbdbd;
+    border-radius: 2px;
+}
+
+.page-item.active .page{
+    font-weight: bold;
+    color: #ffffff;
+    background-color: #00a878;
+    border-color: black;
+    cursor: default;
+}
+
+.page-wrap{
+    display: flex;
 }
 
 .pagination span.page, .pagination button.page, .pagination a.page {
@@ -829,3 +849,9 @@ a {
 
 }
 
+.btn-gray{
+    position: relative;
+    width: 52px;
+    border: 1px solid gray;
+    color: gray;
+}

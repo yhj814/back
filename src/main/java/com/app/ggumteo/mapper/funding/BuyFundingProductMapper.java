@@ -22,4 +22,12 @@ public interface BuyFundingProductMapper {
 
 //    발송 여부 체크
     public void updateFundingSendStatus(BuyFundingProductVO buyFundingProductVO);
+
+//   내가 결제한 펀딩 목록 조회
+    public List<BuyFundingProductDTO> selectBuyFundingListByMember
+    (@Param("workAndFundingPagination") WorkAndFundingPagination workAndFundingPagination
+            , @Param("memberId") Long memberId, @Param("postType") String postType);
+
+//  내가 결제한 펀딩 목록 전체 갯수
+    public int selectCountBuyFundingListByMember(@Param("memberId") Long memberId, @Param("postType") String postType);
 }

@@ -15,11 +15,12 @@ import java.util.Optional;
 @Mapper
 public interface FundingMapper {
 //    내 펀딩 게시물 전체 조회
-    public List<FundingDTO> selectByMemberId(@Param("workAndFundingPagination") WorkAndFundingPagination workAndFundingPagination, @Param("memberId") Long memberId);
+    public List<FundingDTO> selectByMemberId(@Param("workAndFundingPagination") WorkAndFundingPagination workAndFundingPagination
+            , @Param("memberId") Long memberId, @Param("postType") String postType);
 
 //    내 펀딩 게시물 전체 갯수
-    public int selectCount(Long memberId);
+    public int selectCount(@Param("memberId") Long memberId, @Param("postType") String postType);
 
 //    펀딩 정보 조회
-    public Optional<FundingDTO> selectById(Long id);
+    public Optional<FundingDTO> selectById(@Param("id") Long id, @Param("postType") String postType);
 }

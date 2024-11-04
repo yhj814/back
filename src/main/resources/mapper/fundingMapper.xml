@@ -2,26 +2,30 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.app.ggumteo.mapper.funding.FundingMapper">
     <select id="selectByMemberId" resultType="fundingDTO">
-        select f.id, f.genre_type, p.post_title, p.post_content, p.post_type, p.member_profile_id, p.created_date, p.updated_date, mp.profile_nickname, mp.member_id, m.profile_img_url
+        select f.id, f.genre_type, p.post_title, p.post_content, p.post_type, p.member_profile_id, p.created_date, p.updated_date
+             , mp.profile_nickname, mp.member_id, m.profile_img_url
+             , fl.file_name, fl.file_path
         from
             tbl_funding f
-                join tbl_post p on f.id = p.id
+                join tbl_post p on f.id = p.id and p.post_type = #{postType}
                 join tbl_member_profile mp on p.member_profile_id = mp.id
                 join tbl_member m on mp.member_id = m.id and m.id = #{memberId}
+                join tbl_post_file pfl on p.id = pfl.post_id
+                join tbl_file fl on pfl.id = fl.id
         order by f.id desc
             limit #{workAndFundingPagination.startRow}, #{workAndFundingPagination.rowCount};
     </select>
 
     <select id="selectCount">
         select count(*) from tbl_funding f
-        join tbl_post p on f.id = p.id
+        join tbl_post p on f.id = p.id and p.post_type = #{postType}
         join tbl_member_profile mp on p.member_profile_id = mp.id
         join tbl_member m on mp.member_id = m.id and m.id = #{memberId};
     </select>
 
     <select id="selectById" resultType="fundingDTO">
-        select id, genre_type, investor_number, target_price, converge_price, funding_status, file_content
-        from tbl_funding
-        where id = #{id}
+        select f.id, f.genre_type, f.investor_number, f.target_price, f.converge_price, f.funding_status, f.file_content
+        from tbl_funding f join tbl_post p
+        on f.id = p.id and f.id = #{id} and p.post_type = #{postType}
     </select>
 </mapper>
