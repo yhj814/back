@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>글 상세</title>
+    <title>영상 상세</title>
     <script src="https://js.bootpay.co.kr/bootpay-5.0.1.min.js" type="application/javascript"></script>
     <link rel="stylesheet" href="/css/video/detail.css" />
 </head>
@@ -80,9 +80,15 @@
                     <!-- 띄어쓰기용 -->
                     <p>&nbsp;</p>
                 </div>
-                <!--  마지막 파일은 안가져오도록 함. 구글링함 postFiles 중 마지막.-->
                 <div class="upload-img" th:each="file : ${postFiles}" th:if="${file.filePath != work.thumbnailFilePath}">
-                    <img th:src="@{'/video/display?fileName=' + ${file.filePath}}" alt="Uploaded Image" />
+                    <!-- 비디오 파일일 경우 -->
+                    <div th:if="${file.filePath.endsWith('.mp4') or file.filePath.endsWith('.avi') or file.filePath.endsWith('.mkv')}">
+                        <video th:src="@{'/video/display?fileName=' + ${file.filePath}}" controls class="thumbnail" alt="Uploaded Video"></video>
+                    </div>
+                    <!-- 이미지 파일일 경우 -->
+                    <div th:if="${!file.filePath.endsWith('.mp4') and !file.filePath.endsWith('.avi') and !file.filePath.endsWith('.mkv')}">
+                        <img th:src="@{'/video/display?fileName=' + ${file.filePath}}" class="thumbnail" alt="Uploaded Image" />
+                    </div>
                 </div>
                 <div class="upload-content">
                     <p th:text="${work.fileContent}">
@@ -297,7 +303,7 @@
                         <div th:each="work : ${threeAuthorWorks}" class="side-card-list-2">
                             <a th:href="@{'/video/detail/' + ${work.id}}">
                                 <img
-                                        th:src="@{'/text/display?fileName=' + ${work.thumbnailFilePath}}"
+                                        th:src="@{'/video/display?fileName=' + ${work.thumbnailFilePath}}"
                                         class="thumbnail-other-image"
                                 />
                             </a>
@@ -372,7 +378,7 @@
                                     <!-- 작품제목 -->
                                     <h3>
                                         <a
-                                                th:href="@{'/text/detail/' + ${work.id}}"
+                                                th:href="@{'/video/detail/' + ${work.id}}"
                                                 class="item-title link-text link-underline"
                                                 th:text="${work.postTitle}"
                                         >
