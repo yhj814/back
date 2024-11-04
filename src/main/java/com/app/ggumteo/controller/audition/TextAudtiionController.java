@@ -61,12 +61,12 @@ public class TextAudtiionController {
         }
     }
 
-    @GetMapping("audition-write")
+    @GetMapping("write")
     public void goToWritePage() {
         log.info("작성 페이지로 이동");
     }
 
-    @PostMapping("audition-write")
+    @PostMapping("write")
     public String write(AuditionDTO auditionDTO, @RequestParam("auditionFile") MultipartFile[] auditionFiles, Model model) {
         try {
             MemberVO member = (MemberVO) session.getAttribute("member");
@@ -88,7 +88,7 @@ public class TextAudtiionController {
             auditionService.write(auditionDTO, auditionFiles);
 
             // 리디렉션으로 이동
-            return "redirect:/audition/text/audition-list";
+            return "redirect:/audition/text/list";
         } catch (Exception e) {
             log.error("오류 발생", e);
             model.addAttribute("error", "저장 중 오류가 발생했습니다.");
@@ -97,7 +97,7 @@ public class TextAudtiionController {
     }
 
 
-    @GetMapping("/audition-list")
+    @GetMapping("/list")
     public String list(@RequestParam(value = "keyword", required = false) String keyword,
                        @RequestParam(value = "page", defaultValue = "1") int page,
                        Model model) {
@@ -111,21 +111,21 @@ public class TextAudtiionController {
         AuditionPagination pagination = new AuditionPagination();
         pagination.setPage(page);
 
-        int totalAudition = auditionService.findTotal();
-        int totalSearchAudition = auditionService.findTotalAuditionsSearch(keyword);
+        int totalAudition = auditionService.findTotal(PostType.TEXT);
+        int totalSearchAudition = auditionService.findTotalAuditionsSearch(PostType.TEXT, keyword);
 
         int totalCount = keyword.isEmpty() ? totalAudition : totalSearchAudition;
         pagination.setTotal(totalCount);
         pagination.progress();
 
-        List<AuditionDTO> auditions = auditionService.findAllAuditions(keyword, pagination);
+        List<AuditionDTO> auditions = auditionService.findAllAuditions(PostType.TEXT, keyword, pagination);
 
         model.addAttribute("auditions", auditions);
         model.addAttribute("keyword", keyword);
         model.addAttribute("pagination", pagination);
         model.addAttribute("totalCount", totalCount);
 
-        return "/audition/video/audition-list";
+        return "/audition/text/list";
     }
 
     @GetMapping("/display")
@@ -142,7 +142,7 @@ public class TextAudtiionController {
     }
 
 
-    @GetMapping("/audition-detail/{id}")
+    @GetMapping("/detail/{id}")
     public String detail(@PathVariable("id") Long id, Model model) {
         MemberVO member = (MemberVO) session.getAttribute("member");
         MemberProfileDTO memberProfile = (MemberProfileDTO) session.getAttribute("memberProfile");
@@ -155,6 +155,6 @@ public class TextAudtiionController {
         model.addAttribute("audition", audition);
         model.addAttribute("postFiles", postFiles);
 
-        return "/audition/video/audition-detail";
+        return "/audition/text/detail";
     }
 }

@@ -1,5 +1,7 @@
 package com.app.ggumteo.service.audition;
 
+import com.app.ggumteo.aspect.LogAspect;
+import com.app.ggumteo.constant.PostType;
 import com.app.ggumteo.domain.audition.AuditionDTO;
 import com.app.ggumteo.domain.audition.AuditionVO;
 import com.app.ggumteo.domain.file.PostFileDTO;
@@ -10,6 +12,7 @@ import com.app.ggumteo.repository.audition.AuditionDAO;
 import com.app.ggumteo.repository.post.PostDAO;
 import com.app.ggumteo.service.file.PostFileService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,12 +24,14 @@ import java.util.List;
 @Primary
 @RequiredArgsConstructor
 @Transactional(rollbackFor = Exception.class)
+@Slf4j
 public class AuditionServiceImpl implements AuditionService {
 
     private final AuditionDAO auditionDAO;
     private final PostDAO postDAO;
     private final AuditionVO auditionVO;
     private final PostFileService postFileService;  // 파일 저장 서비스 주입
+    private final LogAspect logAspect;
 
     @Override
     public void write(AuditionDTO auditionDTO, MultipartFile[] auditionFiles) {
@@ -71,20 +76,54 @@ public class AuditionServiceImpl implements AuditionService {
     public AuditionDTO findAuditionById(Long id) {return auditionDAO.findAuditionById(id);}
 
     @Override
-    public List<AuditionDTO> findAllAuditions(String keyword, AuditionPagination pagination) {
+    public List<AuditionDTO> findAllAuditions(PostType postType, String keyword, AuditionPagination pagination) {
         pagination.progress();
 
-        return auditionDAO.findAllAuditions(keyword, pagination);
+        return auditionDAO.findAllAuditions(postType, keyword, pagination);
     }
 
     @Override
-    public int findTotal(){
-        return auditionDAO.findTotalAuditions();
+    public void updateAudition(AuditionDTO auditionDTO, List<MultipartFile> newFiles, List<Long> deletedFileIds) {
+        log.info("업데이트 요청 - 작품 ID: {}", auditionDTO.getId());
+        log.info("삭제할 파일 IDs: {}", deletedFileIds);
+        log.info("새로 추가할 파일 수: {}", (newFiles != null ? newFiles.size() : 0));
+
+        // 기존 데이터를 다시 조회하여 최신 정보를 가져옴 (특히 썸네일 파일 ID)
+        AuditionDTO currentAudition = auditionDAO.findAuditionById(auditionDTO.getId());
+
+        // 기존 파일 삭제
+        if (deletedFileIds != null && !deletedFileIds.isEmpty()) {
+            postFileService.deleteFilesByIds(deletedFileIds);
+        }
+
+        // 새 파일 추가 (썸네일 파일이 아닌 일반 파일들)
+        if (newFiles != null && !newFiles.isEmpty()) {
+            for (MultipartFile file : newFiles) {
+                if (!file.isEmpty()) {
+                    postFileService.saveFile(file, auditionDTO.getId());
+                }
+            }
+        }
+
+        // 모집 정보 업데이트
+        auditionDAO.updateAudition(auditionDTO);
+        log.info("작품 정보 업데이트 완료: 작품 ID: {}", auditionDTO.getId());
     }
 
     @Override
-    public int findTotalAuditionsSearch(String keyword) {
-        return auditionDAO.findTotalAuditionsSearch(keyword);
+    public void deleteAuditionById(Long id) {
+        auditionDAO.deleteAudition(id);
+        postDAO.deleteById(id);
+    }
+
+    @Override
+    public int findTotal(PostType postType) {
+        return auditionDAO.findTotalAuditions(postType);
+    }
+
+    @Override
+    public int findTotalAuditionsSearch(PostType postType, String keyword) {
+        return auditionDAO.findTotalAuditionsSearch(postType, keyword);
     }
 
     @Override

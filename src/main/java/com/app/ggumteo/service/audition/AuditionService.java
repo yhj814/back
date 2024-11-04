@@ -1,5 +1,6 @@
 package com.app.ggumteo.service.audition;
 
+import com.app.ggumteo.constant.PostType;
 import com.app.ggumteo.domain.audition.AuditionDTO;
 import com.app.ggumteo.domain.file.PostFileDTO;
 import com.app.ggumteo.pagination.AuditionPagination;
@@ -12,11 +13,14 @@ public interface AuditionService {
 
     AuditionDTO findAuditionById(Long id);
 
-    List<AuditionDTO> findAllAuditions(String keyword, AuditionPagination pagination);
+    List<AuditionDTO> findAllAuditions(PostType postType, String keyword, AuditionPagination pagination);
 
-    int findTotal();
+    void updateAudition(AuditionDTO auditionDTO, List<MultipartFile> newFiles, List<Long> deletedFileIds);
+    void deleteAuditionById(Long id);
 
-    int findTotalAuditionsSearch(String keyword);
+    int findTotal(PostType postType);
+
+    int findTotalAuditionsSearch(PostType postType, String keyword);
 
     List<PostFileDTO> findAllPostFiles(Long postId);
 }
