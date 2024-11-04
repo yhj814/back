@@ -1,3 +1,4 @@
+// 나의 펀딩 목록, 페이징
 const myFundingListLayout = document.getElementById("my-funding-list");
 const myFundingListPaging = document.getElementById("my-funding-list-paging");
 
@@ -198,7 +199,7 @@ function timeForToday(datetime) {
     return `${gap}년 전`;
 }
 
-
+// 나의 펀딩 - 구매자 목록, 페이징
 const showFundingBuyerList = ({myFundingBuyers, settingTablePagination}) => {
 
     let text = `<div class="setting-th">
@@ -344,7 +345,7 @@ const showFundingBuyerList = ({myFundingBuyers, settingTablePagination}) => {
     return text;
 }
 
-
+// 결제한 펀딩 목록, 페이징
 const myBuyFundingListLayout = document.getElementById("my-buy-funding-list");
 const myBuyFundingListPaging = document.getElementById("my-buy-funding-list-paging");
 
@@ -499,4 +500,186 @@ const showMyBuyFundingList = ({myBuyFundingPosts, workAndFundingPagination}) => 
     }
 
     myBuyFundingListPaging.innerHTML = pagingText;
+}
+
+// 문의내역, 페이징
+const myInquiryHistoryListLayout = document.getElementById("my-inquiry-history-list");
+const myInquiryHistoryListPaging = document.getElementById("my-inquiry-history-list-paging");
+
+
+const showMyInquiryHistoryList = ({myInquiryHistories, workAndFundingPagination}) => {
+let text = ``;
+let pagingText = ``;
+
+    console.log("layout: myInquiryHistories", myInquiryHistories);
+    console.log("workAndFundingPagination", workAndFundingPagination);
+
+    myInquiryHistories.forEach((myInquiryHistory) => {
+
+        console.log("myInquiryHistory", myInquiryHistory);
+
+        text += `<div class="list-item">
+            <div class="inquiry-list">
+                <div class="flex-box">
+                    <div class="inquiry-text">
+                        <a
+                            ><p
+                                class="my-inquiry-title"
+                            >
+                                ${myInquiryHistory.postTitle}
+                            </p></a
+                        >
+                        <div
+                            class="my-inquiry-info"
+                        >
+                            <div class="flex-box">
+                                <img
+                                    class="time"
+                                    src="/images/member/clock.png"
+                                />
+                                <div
+                                    class="timecontent-font"
+                                >
+                                    몇 시간 전인지
+                                </div>
+                            </div>
+                        </div>
+                        <a
+                            ><p
+                                class="timecontent-font content inquiry-description"
+                            >
+                                 ${myInquiryHistory.postContent}
+                            </p></a
+                        >
+                    </div>
+                </div>
+                <div
+                    class="flex-box inquiry-author-box"
+                >
+                    <div
+                        class="author-info flex-box"
+                    >
+                        <img
+                            class="author-image"
+                            src="/images/member/member-image.jpg"
+                        />
+                        <p class="author-name">
+                            ${myInquiryHistory.profileNickname}
+                        </p>
+                    </div>
+                    <div
+                        class="flex-box"
+                        style="margin-left: 370px"
+                    >
+                        <div class="btn-wrapper">
+                            <button
+                                class="btn btn-action btn-icon-edit-my"
+                                name="toggle_btn"
+                                type="button"
+                                style="
+                                    background-color: white;
+                                "
+                            >
+                                <p
+                                    class="action-tooltip bottom-action edit-my-off"
+                                >
+                                    관리자 답변 보기
+                                </p>
+                                <div
+                                    class="edit-my-off"
+                                >
+                                    <div
+                                        class="icon-my-edit-off"
+                                    ></div>
+                                </div>
+                                <div
+                                    class="edit-my-on"
+                                    style="
+                                        display: none;
+                                    "
+                                >
+                                    <div
+                                        class="icon-my-edit-on"
+                                    ></div>
+                                </div>
+                            </button>
+                        </div>
+    
+                    </div>
+                </div>
+                <div
+                    class="setting-table"
+                    style="
+                        border-top: 1px solid
+                            rgb(224, 224, 224);
+                        display: none;
+                    "
+                >
+                    <div class="setting-th">
+                        <div
+                            class="setting-td manager"
+                        >
+                            관리자 답변
+                        </div>
+                    </div>
+                    <div
+                        class="setting-tr-group"
+                        style="
+                            border-bottom: solid 1px
+                                #e0e0e0;
+                            padding-bottom: 0px;
+                        "
+                    >
+                        <div
+                            class="setting-tr"
+                            style="padding-top: 7px"
+                        >
+                            <div
+                                class="setting-td with-sub manager"
+                                style="width: 700px"
+                            >
+                                <div
+                                    class="sub-span"
+                                >
+                                    문의 답변(관리자)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>`;
+
+        console.log("text", text);
+    });
+    myInquiryHistoryListLayout.innerHTML = text;
+
+
+
+
+
+    if(workAndFundingPagination.prev){
+        pagingText += `
+            <li class="page-item">
+                <a href="${workAndFundingPagination.startPage - 1}" class="page-link back"></a>
+            </li>
+        `
+    }
+    for(let i=workAndFundingPagination.startPage; i<=workAndFundingPagination.endPage; i++){
+        if(workAndFundingPagination.page === i){
+            pagingText += `<li class="page-item"><div class="page-link active">${i}</div></li>`
+        }else{
+            pagingText += `<li class="page-item"><a href="${i}" class="page-link">${i}</a></li>`
+        }
+    }
+
+    if(workAndFundingPagination.next) {
+        pagingText += `
+            <li class="page-item">
+                <a href="${workAndFundingPagination.endPage + 1}" class="page-link next"></a>
+            </li>
+        `
+    }
+    myInquiryHistoryListPaging.innerHTML = pagingText;
+
 }

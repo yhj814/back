@@ -1,10 +1,14 @@
 package com.app.ggumteo.mapper;
 
+import com.app.ggumteo.constant.PostType;
+import com.app.ggumteo.domain.funding.BuyFundingProductDTO;
+import com.app.ggumteo.domain.funding.FundingDTO;
 import com.app.ggumteo.domain.inquiry.InquiryDTO;
 import com.app.ggumteo.domain.member.MemberVO;
 import com.app.ggumteo.mapper.inquiry.InquiryMapper;
 import com.app.ggumteo.mapper.member.MemberMapper;
 import com.app.ggumteo.pagination.AdminPagination;
+import com.app.ggumteo.pagination.SettingTablePagination;
 import com.app.ggumteo.pagination.WorkAndFundingPagination;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.juli.logging.Log;
@@ -17,6 +21,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 public class InquiryMapperTests {
     @Autowired
     private InquiryMapper inquiryMapper;
+    @Autowired
+    private MemberMapper memberMapper;
 
     @Test
     public void testInquiryMapper() {
@@ -27,29 +33,24 @@ public class InquiryMapperTests {
     }
 
     // 마이페이지 - 문의 내역
-    @Autowired
-    private MemberMapper memberMapper;
-
     @Test
     public void testSelectInquiryHistoryByMember() {
         MemberVO memberVO = null;
         WorkAndFundingPagination workAndFundingPagination = new WorkAndFundingPagination();
         memberVO = memberMapper.selectById(1L).get();
-        log.info("memberVO={}", memberVO);
         workAndFundingPagination.setTotal(inquiryMapper.selectCountInquiryHistoryByMember(memberVO.getId()));
-        log.info("workAndFundingPagination.getTotal()={}", workAndFundingPagination.getTotal());
-        log.info("workAndFundingPagination.getStartPage()={}", workAndFundingPagination.getStartPage());
-        log.info("workAndFundingPagination.getEndPage()={}", workAndFundingPagination.getEndPage());
-        log.info("workAndFundingPagination.getRowCount()={}", workAndFundingPagination.getRowCount());
         workAndFundingPagination.progress();
-        log.info("memberVO={}", memberVO);
-        log.info("inquiryMapper={}", inquiryMapper);
         inquiryMapper.selectInquiryHistoryByMember(workAndFundingPagination, memberVO.getId())
                 .stream().map(InquiryDTO::toString).forEach(log::info);
-
-        log.info("inquiryMapper={}", inquiryMapper);
-        log.info("inquiryMapper.selectCountInquiryHistoryByMember(memberVO.getId())={}", inquiryMapper.selectCountInquiryHistoryByMember(memberVO.getId()));
-        log.info("inquiryMapper={}", inquiryMapper.selectInquiryHistoryByMember(workAndFundingPagination, memberVO.getId()).stream());
-        log.info("inquiryMapper.selectInquiryHistoryByMember={}", inquiryMapper.selectInquiryHistoryByMember(workAndFundingPagination, memberVO.getId()));
     }
+
+//    FundingDTO fundingDTO = null;
+//    SettingTablePagination settingTablePagination = new SettingTablePagination();
+//    fundingDTO = fundingMapper.selectById(9L, PostType.VIDEO.name()).get();
+//        settingTablePagination.setTotal(buyFundingProductMapper.selectCount(fundingDTO.getId()));
+//        settingTablePagination.progress();
+//        buyFundingProductMapper.selectByFundingPostId(
+//    settingTablePagination, fundingDTO.getId()).stream()
+//                .map(BuyFundingProductDTO::toString).forEach(log::info);
+//}
 }

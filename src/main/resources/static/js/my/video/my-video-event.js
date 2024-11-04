@@ -67,3 +67,6 @@ myBuyFundingListPaging.addEventListener("click", (e)=>{
         myPageService.getMyBuyFundingList(globalThis.myBuyFundingPage, memberId, showMyBuyFundingList);
     }
 });
+
+
+myPageService.getMyInquiryHistoryList(1, memberId, showMyInquiryHistoryList);

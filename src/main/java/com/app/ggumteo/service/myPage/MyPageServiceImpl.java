@@ -114,10 +114,17 @@ public class MyPageServiceImpl implements MyPageService {
     public MyInquiryHistoryListDTO getMyInquiryHistoryList(int page, WorkAndFundingPagination workAndFundingPagination, Long memberId) {
         MyInquiryHistoryListDTO myInquiryHistories = new MyInquiryHistoryListDTO();
         workAndFundingPagination.setPage(page);
-        workAndFundingPagination.setPage(inquiryDAO.getTotalInquiryHistoryByMember(memberId));
+        workAndFundingPagination.setTotal(inquiryDAO.getTotalInquiryHistoryByMember(memberId));
         workAndFundingPagination.progress();
         myInquiryHistories.setWorkAndFundingPagination(workAndFundingPagination);
         myInquiryHistories.setMyInquiryHistories(inquiryDAO.findInquiryHistoryByMember(workAndFundingPagination, memberId));
+
+        log.info("myInquiryHistories={}", myInquiryHistories);
+        log.info("workAndFundingPagination.getPage={}", workAndFundingPagination.getPage());
+        log.info("workAndFundingPagination.getRealEnd={}", workAndFundingPagination.getRealEnd());
+        log.info("workAndFundingPagination.getPageCount={}", workAndFundingPagination.getPageCount());
+        log.info("workAndFundingPagination.getTotal={}", workAndFundingPagination.getTotal());
+        log.info("workAndFundingPagination.getRowCount()={}", workAndFundingPagination.getRowCount());
 
         return myInquiryHistories;
     }
@@ -125,7 +132,6 @@ public class MyPageServiceImpl implements MyPageService {
     // 마이페이지 - 문의 내역 전체 갯수
     @Override
     public int getMyInquiryHistoriesTotal(Long memberId) {
-
         return inquiryDAO.getTotalInquiryHistoryByMember(memberId);
     }
 }

@@ -18,15 +18,22 @@ select id, inquiry_status from tbl_inquiry;
 insert into tbl_inquiry(id, inquiry_status)
 values (25,'NO');
 
-select i.id, i.inquiry_status, p.post_title, p.created_date as postCreatedDate, p.post_content,
-       m.profile_img_url ,mp.profile_nickname
+select p.id as postId,
+       p.post_title as postTitle,
+       p.post_content as postContent,
+       p.created_date as postCreatedDate,
+       m.profile_img_url as profileImgUrl,
+       mp.profile_nickname as profileNickname,
+       i.inquiry_status as inquiryStatus,
+       mp.member_id as memberId
 from
     tbl_inquiry i
         join tbl_post p on i.id = p.id
         join tbl_member_profile mp on p.member_profile_id = mp.id
-        join tbl_member m on mp.member_id = m.id and m.id = 1
+        join tbl_member m on mp.member_id = m.id and mp.member_id = 1
         and p.post_type = 'INQUIRY'
-order by i.id desc;
+order by i.id desc
+limit 0, 2;
 
 select count(*) from
     tbl_inquiry i

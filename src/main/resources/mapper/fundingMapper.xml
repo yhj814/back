@@ -24,8 +24,8 @@
     </select>
 
     <select id="selectById" resultType="fundingDTO">
-        select id, genre_type, investor_number, target_price, converge_price, funding_status, file_content
+        select f.id, f.genre_type, f.investor_number, f.target_price, f.converge_price, f.funding_status, f.file_content
         from tbl_funding f join tbl_post p
-        on f.id = p.id and p.post_type = #{postType} and f.id = #{id}
+        on f.id = p.id and f.id = #{id} and p.post_type = #{postType}
     </select>
 </mapper>

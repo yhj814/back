@@ -5,6 +5,7 @@ import com.app.ggumteo.domain.funding.BuyFundingProductDTO;
 import com.app.ggumteo.domain.funding.MyBuyFundingListDTO;
 import com.app.ggumteo.domain.funding.MyFundingBuyerListDTO;
 import com.app.ggumteo.domain.funding.MyFundingListDTO;
+import com.app.ggumteo.domain.inquiry.MyInquiryHistoryListDTO;
 import com.app.ggumteo.domain.member.MemberVO;
 import com.app.ggumteo.pagination.SettingTablePagination;
 import com.app.ggumteo.pagination.WorkAndFundingPagination;
@@ -39,33 +40,9 @@ public class MemberRestController {
     }
 //    http://localhost:10000/member/video/my-page?id=1
 
-    @PostMapping("upload")
-    @ResponseBody
-    public List<PostFileDTO> upload(@RequestParam("file") List<MultipartFile> files) {
-        try {
-            return postFileService.uploadFile(files);  // 서비스의 uploadFile 메서드 호출
-        } catch (IOException e) {
-            log.error("파일 업로드 중 오류 발생: ", e);
-            return Collections.emptyList();  // 오류 발생 시 빈 리스트 반환
-        }
-    }
-
-    @GetMapping("/display")
-    @ResponseBody
-    public ResponseEntity<byte[]> display(@RequestParam("fileName") String fileName) throws IOException {
-        byte[] fileData = postFileService.getFileData(fileName);
-        if (fileData == null) {
-            return ResponseEntity.notFound().build();
-        }
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.IMAGE_JPEG);
-        return new ResponseEntity<>(fileData, headers, HttpStatus.OK);
-    }
-
     // SELECT
     @ResponseBody
-    @GetMapping("/members/video/my/funding/{memberId}/{page}")
+    @GetMapping("/members/{memberId}/video/my/funding/{page}")
     public MyFundingListDTO getMyVideoFundingList(@PathVariable("memberId") Long memberId
             , @PathVariable("page") int page, WorkAndFundingPagination workAndFundingPagination, String postType) {
 
@@ -92,10 +69,20 @@ public class MemberRestController {
 
     // SELECT
     @ResponseBody
-    @GetMapping("/members/video/my/buy/funding/{memberId}/{page}")
+    @GetMapping("/members/{memberId}/video/my/buy/funding/{page}")
     public MyBuyFundingListDTO getMyBuyFundingList(@PathVariable("memberId") Long memberId
             , @PathVariable("page") int page, WorkAndFundingPagination workAndFundingPagination, String postType) {
 
         return myPageService.getMyBuyFundingList(page, workAndFundingPagination, memberId, postType);
+    }
+
+    // SELECT
+    @ResponseBody
+    @GetMapping("/members/{memberId}/inquiry-histories/{page}")
+    public MyInquiryHistoryListDTO getMyInquiryHistoryList(@PathVariable("memberId") Long memberId
+            , @PathVariable("page") int page, WorkAndFundingPagination workAndFundingPagination) {
+
+        log.info("workAndFundingPagination={}", workAndFundingPagination);
+        return myPageService.getMyInquiryHistoryList(page, workAndFundingPagination, memberId);
     }
 }

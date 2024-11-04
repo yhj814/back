@@ -2,7 +2,7 @@ const myPageService = (() => {
 
     const getMyFundingList = async (page, memberId, callback) => {
         page = page || 1;
-        const response = await fetch(`/members/video/my/funding/${memberId}/${page}`);
+        const response = await fetch(`/members/${memberId}/video/my/funding/${page}`);
         const myFundingPosts = await response.json();
 
         if(callback){
@@ -32,7 +32,7 @@ const myPageService = (() => {
 
     const getMyBuyFundingList = async (page, memberId, callback) => {
         page = page || 1;
-        const response = await fetch(`/members/video/my/buy/funding/${memberId}/${page}`);
+        const response = await fetch(`/members/${memberId}/video/my/buy/funding/${page}`);
         const myBuyFundingPosts = await response.json();
 
         if(callback){
@@ -40,9 +40,25 @@ const myPageService = (() => {
         }
     }
 
+    const getMyInquiryHistoryList = async (page, memberId, callback) => {
+        page = page || 1;
+        const response = await fetch(`/members/${memberId}/inquiry-histories/${page}`);
+        const myInquiryHistories = await response.json();
+
+        console.log("response", response)
+        console.log("service: myInquiryHistories", myInquiryHistories)
+
+
+        if(callback) {
+            callback(myInquiryHistories);
+        }
+    }
+    console.log("getMyInquiryHistoryList",getMyInquiryHistoryList)
+
     return {
         getMyFundingList: getMyFundingList,
         getFundingBuyerList: getFundingBuyerList,
         updateFundingSendStatus: updateFundingSendStatus,
-        getMyBuyFundingList: getMyBuyFundingList}
+        getMyBuyFundingList: getMyBuyFundingList,
+        getMyInquiryHistoryList: getMyInquiryHistoryList}
 })()
