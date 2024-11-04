@@ -102,7 +102,8 @@ public class MemberRestController {
     }
 
     //    파일 업로드
-    @PostMapping("upload")
+    @PostMapping("/members/file/upload")
+    @ResponseBody
     public void upload(@RequestParam("file") List<MultipartFile> files) throws IOException {
         String rootPath = "C:/upload" + getPath();
 
@@ -124,6 +125,9 @@ public class MemberRestController {
     private String getPath() {
         return LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd"));
     }
+
+    @GetMapping("/member/video/file/write")
+    public void goToWriteForm() {;}
 
     //    가져오기
     @GetMapping("display")
