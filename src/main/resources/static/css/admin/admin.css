@@ -434,6 +434,15 @@ video {
     margin: 10px;
     padding: 10px;
 }
+#member-container .filter-wrap {
+    width: 1350px;
+    justify-content: space-between;
+    display: flex;
+    border-top: 1px solid #e2e8f0;
+    border-bottom: 1px solid #e2e8f0;
+    margin: 10px;
+    padding: 10px;
+}
 .sort-filter-options {
     display: flex;
     gap: 5px;
@@ -504,6 +513,15 @@ video {
 /* ******************************************* */
 .apply-table-container {
     width: 1250px;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    overflow: hidden;
+    display: table; /* 테이블처럼 보이도록 설정 */
+    table-layout: fixed; /* 모든 열이 지정된 비율에 맞게 크기를 고정 */
+    text-align: center;
+}
+#member-container .apply-table-container {
+    width: 1350px;
     border: 1px solid #dee2e6;
     border-radius: 8px;
     overflow: hidden;
@@ -995,7 +1013,7 @@ h1.common-header-description {
 /* 체크박스 열 */
 #member-section .apply-header-cell:nth-child(1),
 #member-section .apply-table-cell:nth-child(1) {
-    width: 4%;
+    width: 2%;
 }
 
 /* 첫번째 열 */
@@ -1431,7 +1449,7 @@ h1.common-header-description {
 /* 다섯번째 열 */
 #inquiry-section .apply-header-cell:nth-child(6),
 #inquiry-section .apply-table-cell:nth-child(6) {
-    width: 5%;
+    width: 4%;
 }
 
 /* 여섯번째 열 */

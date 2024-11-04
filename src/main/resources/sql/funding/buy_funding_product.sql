@@ -38,7 +38,6 @@ insert into tbl_buy_funding_product
 (member_profile_id, funding_product_id)
 values (3, 2);
 
-
 SELECT f.id, f.genre_type, p.post_title, p.post_content, p.post_type, p.member_profile_id, p.created_date, p.updated_date, mp.profile_nickname, mp.member_id, m.profile_img_url
 FROM
     tbl_funding f
@@ -70,3 +69,7 @@ select count(*) FROM
         JOIN tbl_member_profile mp ON p.member_profile_id = mp.id
         JOIN tbl_member m ON mp.member_id = m.id
         JOIN tbl_member_profile bfp_mp ON bfp.member_profile_id = bfp_mp.id;
+
+update tbl_buy_funding_product
+set funding_send_status = 'YES'
+where id = 12;

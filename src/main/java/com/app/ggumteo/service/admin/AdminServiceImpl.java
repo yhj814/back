@@ -1,10 +1,13 @@
 package com.app.ggumteo.service.admin;
 
 import com.app.ggumteo.domain.admin.AdminVO;
+import com.app.ggumteo.domain.member.MemberProfileDTO;
 import com.app.ggumteo.repository.admin.AdminDAO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 
 @Service
@@ -21,6 +24,10 @@ public class AdminServiceImpl implements AdminService {
         return adminVO != null;
     }
 
-
+    @Override
+    public List<MemberProfileDTO> getMembers() {
+        // 회원 정보 조회
+        return adminDAO.getMembers();
+    }
 }
 
