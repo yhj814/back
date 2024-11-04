@@ -1,10 +1,10 @@
 package com.app.ggumteo.service;
 
+import com.app.ggumteo.constant.PostType;
 import com.app.ggumteo.domain.funding.*;
 import com.app.ggumteo.domain.inquiry.MyInquiryHistoryListDTO;
 import com.app.ggumteo.domain.member.MemberDTO;
 import com.app.ggumteo.domain.member.MemberVO;
-import com.app.ggumteo.mapper.funding.BuyFundingProductMapper;
 import com.app.ggumteo.pagination.SettingTablePagination;
 import com.app.ggumteo.pagination.WorkAndFundingPagination;
 import com.app.ggumteo.service.myPage.MyPageService;
@@ -36,9 +36,9 @@ public class MyPageServiceTests {
         MemberVO memberVO = null;
         WorkAndFundingPagination workAndFundingPagination = new WorkAndFundingPagination();
         memberVO = myPageService.getMember(1L).get();
-        workAndFundingPagination.setTotal(myPageService.getMyFundingPostsTotal(memberVO.getId()));
+        workAndFundingPagination.setTotal(myPageService.getMyFundingPostsTotal(memberVO.getId(), PostType.VIDEO.name()));
         workAndFundingPagination.progress();
-        MyFundingListDTO myFundingPosts = myPageService.getMyFundingList(1, workAndFundingPagination, memberVO.getId());
+        MyFundingListDTO myFundingPosts = myPageService.getMyVideoFundingList(1, workAndFundingPagination, memberVO.getId(), PostType.VIDEO.name());
 
         log.info("GetMyFundingPosts-test={}", myFundingPosts.toString());
     }
@@ -47,7 +47,7 @@ public class MyPageServiceTests {
     public void testGetMyFundingBuyerList() {
         FundingDTO fundingDTO = null;
         SettingTablePagination settingTablePagination = new SettingTablePagination();
-        fundingDTO = myPageService.getFunding(9L).get();
+        fundingDTO = myPageService.getFunding(9L, PostType.VIDEO.name()).get();
         settingTablePagination.setTotal(myPageService.getMyFundingPostBuyersTotal(fundingDTO.getId()));
         settingTablePagination.progress();
         MyFundingBuyerListDTO myFundingBuyers = myPageService.getMyFundingBuyerList(1, settingTablePagination, fundingDTO.getId());
@@ -69,9 +69,10 @@ public class MyPageServiceTests {
         MemberVO memberVO = null;
         WorkAndFundingPagination workAndFundingPagination = new WorkAndFundingPagination();
         memberVO = myPageService.getMember(1L).get();
-        workAndFundingPagination.setTotal(myPageService.getMyBuyFundingListTotal(memberVO.getId()));
+        workAndFundingPagination.setTotal(myPageService.getMyBuyFundingListTotal(memberVO.getId(), PostType.VIDEO.name()));
         workAndFundingPagination.progress();
-        MyBuyFundingListDTO fundingPostsPaidByMember = myPageService.getMyBuyFundingList(1, workAndFundingPagination, memberVO.getId());
+        MyBuyFundingListDTO fundingPostsPaidByMember = myPageService
+                .getMyBuyFundingList(1, workAndFundingPagination, memberVO.getId(), PostType.VIDEO.name());
 
         log.info(fundingPostsPaidByMember.toString());
     }

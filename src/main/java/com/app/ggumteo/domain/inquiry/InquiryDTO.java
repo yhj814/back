@@ -21,9 +21,7 @@ public class InquiryDTO {
     private String answerDate;  // 답변 작성 날짜
     private String answerContent;
 
-    private Long id;
     private Long memberId;
-    private String createdDate;
     private String profileImgUrl; // 프로필 이미지
     private String profileNickname; // 프로필 닉네임
 }

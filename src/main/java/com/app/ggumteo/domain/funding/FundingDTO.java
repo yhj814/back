@@ -29,8 +29,6 @@ public class FundingDTO {
     private Long memberId; // 회원 ID
     private String profileImgUrl; // 카카오톡 프로필 이미지 url
     private String fileName; // 파일명
-    private String fileSize; // 파일 사이즈
-    private String fileType; // 파일 타입
     private String filePath; // 파일 경로
 
 

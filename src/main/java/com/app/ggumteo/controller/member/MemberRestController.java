@@ -1,5 +1,6 @@
 package com.app.ggumteo.controller.member;
 
+import com.app.ggumteo.domain.file.PostFileDTO;
 import com.app.ggumteo.domain.funding.BuyFundingProductDTO;
 import com.app.ggumteo.domain.funding.MyBuyFundingListDTO;
 import com.app.ggumteo.domain.funding.MyFundingBuyerListDTO;
@@ -7,18 +8,29 @@ import com.app.ggumteo.domain.funding.MyFundingListDTO;
 import com.app.ggumteo.domain.member.MemberVO;
 import com.app.ggumteo.pagination.SettingTablePagination;
 import com.app.ggumteo.pagination.WorkAndFundingPagination;
+import com.app.ggumteo.service.file.PostFileService;
 import com.app.ggumteo.service.myPage.MyPageService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.util.Collections;
+import java.util.List;
 
 @Controller
 @Slf4j
 @RequiredArgsConstructor
 public class MemberRestController {
     private final MyPageService myPageService;
+    private final PostFileService postFileService;
 
     @GetMapping("/member/video/my-page")
     public void read(Long id, Model model){
@@ -27,14 +39,38 @@ public class MemberRestController {
     }
 //    http://localhost:10000/member/video/my-page?id=1
 
+    @PostMapping("upload")
+    @ResponseBody
+    public List<PostFileDTO> upload(@RequestParam("file") List<MultipartFile> files) {
+        try {
+            return postFileService.uploadFile(files);  // 서비스의 uploadFile 메서드 호출
+        } catch (IOException e) {
+            log.error("파일 업로드 중 오류 발생: ", e);
+            return Collections.emptyList();  // 오류 발생 시 빈 리스트 반환
+        }
+    }
+
+    @GetMapping("/display")
+    @ResponseBody
+    public ResponseEntity<byte[]> display(@RequestParam("fileName") String fileName) throws IOException {
+        byte[] fileData = postFileService.getFileData(fileName);
+        if (fileData == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.IMAGE_JPEG);
+        return new ResponseEntity<>(fileData, headers, HttpStatus.OK);
+    }
+
     // SELECT
     @ResponseBody
     @GetMapping("/members/video/my/funding/{memberId}/{page}")
-    public MyFundingListDTO getMyFundingList(@PathVariable("memberId") Long memberId
-            , @PathVariable("page") int page, WorkAndFundingPagination workAndFundingPagination) {
+    public MyFundingListDTO getMyVideoFundingList(@PathVariable("memberId") Long memberId
+            , @PathVariable("page") int page, WorkAndFundingPagination workAndFundingPagination, String postType) {
 
         log.info("memberId={}", memberId);
-        return myPageService.getMyFundingList(page, workAndFundingPagination, memberId);
+        return myPageService.getMyVideoFundingList(page, workAndFundingPagination, memberId, postType);
     }
 
     // SELECT
@@ -58,8 +94,8 @@ public class MemberRestController {
     @ResponseBody
     @GetMapping("/members/video/my/buy/funding/{memberId}/{page}")
     public MyBuyFundingListDTO getMyBuyFundingList(@PathVariable("memberId") Long memberId
-            , @PathVariable("page") int page, WorkAndFundingPagination workAndFundingPagination) {
+            , @PathVariable("page") int page, WorkAndFundingPagination workAndFundingPagination, String postType) {
 
-        return myPageService.getMyBuyFundingList(page, workAndFundingPagination, memberId);
+        return myPageService.getMyBuyFundingList(page, workAndFundingPagination, memberId, postType);
     }
 }

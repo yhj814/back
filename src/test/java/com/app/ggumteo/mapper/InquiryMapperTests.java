@@ -38,6 +38,9 @@ public class InquiryMapperTests {
         log.info("memberVO={}", memberVO);
         workAndFundingPagination.setTotal(inquiryMapper.selectCountInquiryHistoryByMember(memberVO.getId()));
         log.info("workAndFundingPagination.getTotal()={}", workAndFundingPagination.getTotal());
+        log.info("workAndFundingPagination.getStartPage()={}", workAndFundingPagination.getStartPage());
+        log.info("workAndFundingPagination.getEndPage()={}", workAndFundingPagination.getEndPage());
+        log.info("workAndFundingPagination.getRowCount()={}", workAndFundingPagination.getRowCount());
         workAndFundingPagination.progress();
         log.info("memberVO={}", memberVO);
         log.info("inquiryMapper={}", inquiryMapper);

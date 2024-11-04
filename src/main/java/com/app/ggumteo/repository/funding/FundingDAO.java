@@ -21,17 +21,17 @@ public class FundingDAO {
     private final FundingMapper fundingMapper;
 
 //    내 펀딩 게시물 전체 조회
-    public List<FundingDTO> findByMemberId(WorkAndFundingPagination workAndFundingPagination, Long memberId) {
-        return fundingMapper.selectByMemberId(workAndFundingPagination, memberId);
+    public List<FundingDTO> findByMemberId(WorkAndFundingPagination workAndFundingPagination, Long memberId, String postType) {
+        return fundingMapper.selectByMemberId(workAndFundingPagination, memberId, postType);
     }
 
 //    내 펀딩 게시물 전체 개수
-    public int getTotal(Long memberId){
-        return fundingMapper.selectCount(memberId);
+    public int getTotal(Long memberId, String postType){
+        return fundingMapper.selectCount(memberId, postType);
     }
 
 //    펀딩 정보 조회
-    public Optional<FundingDTO> findById(Long id) {
-        return fundingMapper.selectById(id);
+    public Optional<FundingDTO> findById(Long id, String postType) {
+        return fundingMapper.selectById(id, postType);
     }
 }

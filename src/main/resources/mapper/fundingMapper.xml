@@ -4,10 +4,10 @@
     <select id="selectByMemberId" resultType="fundingDTO">
         select f.id, f.genre_type, p.post_title, p.post_content, p.post_type, p.member_profile_id, p.created_date, p.updated_date
              , mp.profile_nickname, mp.member_id, m.profile_img_url
-             , fl.file_name, fl.file_size, fl.file_type, fl.file_path
+             , fl.file_name, fl.file_path
         from
             tbl_funding f
-                join tbl_post p on f.id = p.id and p.post_type = 'VIDEO'
+                join tbl_post p on f.id = p.id and p.post_type = #{postType}
                 join tbl_member_profile mp on p.member_profile_id = mp.id
                 join tbl_member m on mp.member_id = m.id and m.id = #{memberId}
                 join tbl_post_file pfl on p.id = pfl.post_id
@@ -18,7 +18,7 @@
 
     <select id="selectCount">
         select count(*) from tbl_funding f
-        join tbl_post p on f.id = p.id and p.post_type = 'VIDEO'
+        join tbl_post p on f.id = p.id and p.post_type = #{postType}
         join tbl_member_profile mp on p.member_profile_id = mp.id
         join tbl_member m on mp.member_id = m.id and m.id = #{memberId};
     </select>
@@ -26,6 +26,6 @@
     <select id="selectById" resultType="fundingDTO">
         select id, genre_type, investor_number, target_price, converge_price, funding_status, file_content
         from tbl_funding f join tbl_post p
-        on f.id = p.id and p.post_type = 'VIDEO' and f.id = #{id}
+        on f.id = p.id and p.post_type = #{postType} and f.id = #{id}
     </select>
 </mapper>

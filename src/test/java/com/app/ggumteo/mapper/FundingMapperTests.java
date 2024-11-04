@@ -1,5 +1,6 @@
 package com.app.ggumteo.mapper;
 
+import com.app.ggumteo.constant.PostType;
 import com.app.ggumteo.domain.funding.BuyFundingProductDTO;
 import com.app.ggumteo.domain.funding.FundingDTO;
 import com.app.ggumteo.mapper.funding.BuyFundingProductMapper;
@@ -37,7 +38,7 @@ public class FundingMapperTests {
     public void testSelectBuyerByFundingPostId() {
         FundingDTO fundingDTO = null;
         SettingTablePagination settingTablePagination = new SettingTablePagination();
-        fundingDTO = fundingMapper.selectById(9L).get();
+        fundingDTO = fundingMapper.selectById(9L, PostType.VIDEO.name()).get();
         settingTablePagination.setTotal(buyFundingProductMapper.selectCount(fundingDTO.getId()));
         settingTablePagination.progress();
         buyFundingProductMapper.selectByFundingPostId(

@@ -13,13 +13,14 @@ public interface MyPageService {
     public Optional<MemberVO> getMember(Long id);
 
     //    내 펀딩 게시물 전체 조회
-    public MyFundingListDTO getMyFundingList(int page , WorkAndFundingPagination workAndFundingPagination, Long memberId);
+    public MyFundingListDTO getMyVideoFundingList(
+            int page , WorkAndFundingPagination workAndFundingPagination, Long memberId, String postType);
 
     //    내 펀딩 게시물 전체 개수
-    public int getMyFundingPostsTotal(Long memberId);
+    public int getMyFundingPostsTotal(Long memberId, String postType);
 
     //    펀딩 정보 조회
-    public Optional<FundingDTO> getFunding(Long id);
+    public Optional<FundingDTO> getFunding(Long id, String postType);
 
     //    펀딩 구매자 목록 조회
     public MyFundingBuyerListDTO getMyFundingBuyerList(
@@ -33,10 +34,10 @@ public interface MyPageService {
 
     //   내가 결제한 펀딩 목록 조회
     public MyBuyFundingListDTO getMyBuyFundingList(
-            int page, WorkAndFundingPagination workAndFundingPagination, Long memberId);
+            int page, WorkAndFundingPagination workAndFundingPagination, Long memberId, String postType);
 
     //  내가 결제한 펀딩 목록 전체 갯수
-    public int getMyBuyFundingListTotal(Long memberId);
+    public int getMyBuyFundingListTotal(Long memberId, String postType);
 
     // 마이페이지 - 문의 내역 조회
     public MyInquiryHistoryListDTO getMyInquiryHistoryList(
