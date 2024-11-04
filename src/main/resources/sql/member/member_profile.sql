@@ -28,6 +28,6 @@ alter table tbl_member_profile
 DELETE from tbl_member_profile where profile_age = 12;
 
 insert into tbl_member_profile(profile_name,profile_nickname,profile_gender,profile_age,profile_email,profile_phone,member_id)
-value ('이수진','수진','남','26','d2k3k@gmail.com','01030389112','8');
+value ('웅이','웅','남','28','qwqwd@gmail.com','01019674112','12');
 
 delete from tbl_member_profile;

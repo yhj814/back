@@ -168,6 +168,7 @@ public class AdminController {
             return ResponseEntity.ok("선택된 문의사항이 성공적으로 삭제되었습니다.");
         } catch (Exception e) {
             log.error("문의사항 삭제 중 오류 발생: ", e);
+            //  서버 쪽에 문제 발생을 알림
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("문의사항 삭제 중 오류가 발생했습니다.");
         }
     }
@@ -175,11 +176,73 @@ public class AdminController {
     // 회원 정보 조회
     @GetMapping("/members")
     @ResponseBody
-    public List<MemberProfileDTO> getMembers() {
-        List<MemberProfileDTO> members = adminService.getMembers();
-        log.info("회원 정보 조회 완료: {}", members);
-        return members;
+    public Map<String, Object> getMembers(
+            @RequestParam(value = "page", defaultValue = "1") Integer page,
+            @RequestParam(value = "search", required = false) String search,
+            @RequestParam(value = "order", required = false) String order) {
+
+        // 페이지네이션 설정
+        AdminPagination pagination = new AdminPagination();
+        pagination.setPage(page);
+
+        // 전체 회원 수 조회
+        int totalMemberCount = adminService.getTotalMemberCount(search, order);
+        pagination.setTotal(totalMemberCount); // 총 데이터 개수 설정
+        pagination.progress(); // 페이지네이션 계산 수행
+
+        // 회원 정보 조회 (검색, 정렬, 페이지네이션 포함)
+        List<MemberProfileDTO> members = adminService.getMembers(search, order, pagination);
+
+        // 로그 정보 출력
+        log.info("검색어: {}", search);
+        log.info("정렬 기준: {}", order);
+        log.info("페이지네이션 정보: {}", pagination);
+        log.info("회원 정보 조회 완료: 총 {}명", members.size());
+
+        // 결과를 반환할 맵 생성
+        Map<String, Object> result = new HashMap<>();
+        result.put("members", members);
+        result.put("pagination", pagination);
+
+        return result;
     }
+
+    // 회원 상태 변경
+    @PostMapping("/members/status")
+    @ResponseBody
+    public ResponseEntity<String> updateMemberStatus(@RequestBody Map<String, Object> requestData) {
+        Long memberId = Long.valueOf(requestData.get("memberId").toString());
+        String status = requestData.get("status").toString();
+
+        int updateCount = adminService.updateMemberStatus(memberId, status);
+
+        if (updateCount > 0) {
+            log.info("회원 ID {}의 상태가 {}로 변경되었습니다.", memberId, status);
+            return ResponseEntity.ok("회원 상태가 성공적으로 변경되었습니다.");
+        } else {
+            log.warn("회원 상태 변경 실패 - 회원 ID: {}", memberId);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("회원 상태 변경에 실패했습니다.");
+        }
+    }
+
+    // 회원 삭제
+    @PostMapping("/members/delete")
+    @ResponseBody
+    public ResponseEntity<String> deleteMembers(@RequestBody List<Long> memberIds) {
+        if (memberIds == null || memberIds.isEmpty()) {
+            return ResponseEntity.badRequest().body("삭제할 회원을 선택하세요.");
+        }
+
+        try {
+            adminService.deleteMembersByIds(memberIds); // 회원 삭제
+            log.info("총 {}명의 회원이 삭제되었습니다. 삭제된 회원 IDs: {}", memberIds.size(), memberIds);
+            return ResponseEntity.ok("회원 삭제가 성공적으로 완료되었습니다.");
+        } catch (Exception e) {
+            log.error("회원 삭제 중 오류 발생 - 삭제 요청 IDs: {}", memberIds, e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("회원 삭제에 실패했습니다.");
+        }
+    }
+
 }
 
 
