@@ -1,5 +1,6 @@
 package com.app.ggumteo.mapper.audition;
 
+import com.app.ggumteo.constant.PostType;
 import com.app.ggumteo.domain.audition.AuditionDTO;
 import com.app.ggumteo.domain.audition.AuditionVO;
 import com.app.ggumteo.domain.file.PostFileDTO;
@@ -19,13 +20,15 @@ public interface AuditionMapper {
     void insert(AuditionVO auditionVO);
 
     // 총 작품 수 조회
-    int selectTotal();
+    int selectTotal(@Param("postType") PostType postType);
+
 
     // 작품 ID로 작품 조회
     AuditionDTO selectById(Long id);
 
     // 작품 정보 수정 (tbl_work 및 tbl_post 업데이트)
     void updateAudition(AuditionDTO auditionDTO);
+    void updatePost(AuditionDTO auditionDTO);
 
     // 모집 삭제
     void deleteById(Long id);
@@ -35,12 +38,16 @@ public interface AuditionMapper {
 
     // 전체목록 조회
     List<AuditionDTO> selectAll(
+            @Param("postType") PostType postType,
             @Param("keyword") String keyword,
             @Param("pagination") AuditionPagination pagination
     );
 
     // 검색 조건이 포함된 총 작품 수 조회
-    int selectTotalWithSearch(@Param("keyword") String keyword);
+    int selectTotalWithSearch(
+            @Param("postType") PostType postType,
+            @Param("keyword") String keyword
+    );
 
     // 상세페이지에서 다중 파일 조회
     List<PostFileDTO> selectFilesByPostId(Long postId);

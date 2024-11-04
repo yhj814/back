@@ -4,6 +4,8 @@ import com.app.ggumteo.domain.post.PostVO;
 import lombok.*;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 @Getter
 @Setter
@@ -18,7 +20,7 @@ public class AuditionDTO {
     private String profileName;
     private String profileNickName;
     private String profileEmail;
-    private String profileImageUrl;
+    private String profileImgUrl;
     private Long memberProfileId;
     private Long memberId;
     private int auditionField;
@@ -39,6 +41,7 @@ public class AuditionDTO {
     private String filePath;
     private String createdDate;
     private String updatedDate;
+    private List<Long> ids;
 
     public AuditionVO toVO() {
         return new AuditionVO(id, auditionField, auditionCareer, expectedAmount, serviceStartDate,

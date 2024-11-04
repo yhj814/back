@@ -1,9 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
     const inputElement = document.querySelector(".label-input-partner input");
     const labelInputPartner = document.querySelector(".label-input-partner");
-    const textareaElement = document.querySelector(
-        ".textarea__border textarea"
-    );
+    const textareaElement = document.querySelector(".textarea__border textarea");
     const textareaBorder = document.querySelector(".textarea__border");
 
     if (inputElement) {
@@ -13,7 +11,7 @@ document.addEventListener("DOMContentLoaded", function () {
         inputElement.addEventListener("focus", function () {
             labelInputPartner.classList.add("label-effect");
             if (!inputElement.classList.contains("error")) {
-                inputElement.style.borderColor = "#2099bb";
+                inputElement.style.borderColor = "#00a878";
                 inputElement.style.borderWidth = "1px";
                 inputElement.style.borderStyle = "solid";
             }
@@ -35,7 +33,7 @@ document.addEventListener("DOMContentLoaded", function () {
         inputElement.addEventListener("input", function () {
             if (inputElement.classList.contains("error")) {
                 inputElement.classList.remove("error");
-                inputElement.style.borderColor = "#2099bb";
+                inputElement.style.borderColor = "#00a878";
                 inputElement.style.borderWidth = "1px";
                 inputElement.style.borderStyle = "solid";
             }
@@ -44,17 +42,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
         inputElement.addEventListener("mouseover", function () {
             if (!inputElement.classList.contains("error")) {
-                inputElement.style.borderColor = "#2099bb";
+                inputElement.style.borderColor = "#00a878";
                 inputElement.style.borderWidth = "1px";
                 inputElement.style.borderStyle = "solid";
             }
         });
 
         inputElement.addEventListener("mouseout", function () {
-            if (
-                !inputElement.value &&
-                !inputElement.classList.contains("error")
-            ) {
+            if (!inputElement.value && !inputElement.classList.contains("error")) {
                 inputElement.style.border = "1px solid #e0e0e0";
             }
         });
@@ -75,7 +70,7 @@ document.addEventListener("DOMContentLoaded", function () {
             if (textareaBorder.classList.contains("error")) {
                 textareaBorder.style.borderColor = "#e52929";
             } else {
-                textareaBorder.style.borderColor = "#2099bb";
+                textareaBorder.style.borderColor = "#00a878";
             }
         });
 
@@ -93,7 +88,7 @@ document.addEventListener("DOMContentLoaded", function () {
         textareaElement.addEventListener("input", function () {
             if (textareaBorder.classList.contains("error")) {
                 textareaBorder.classList.remove("error");
-                textareaBorder.style.borderColor = "#2099bb";
+                textareaBorder.style.borderColor = "#00a878";
             }
         });
 
@@ -103,6 +98,117 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
     }
+    const fileUploadInputs = document.querySelectorAll('input[type="file"]');
+
+    // 각 파일 업로드 필드에 대해 change 이벤트 리스너 추가
+    fileUploadInputs.forEach((fileInput) => {
+        fileInput.addEventListener("change", function () {
+            const file = fileInput.files[0];
+            if (file) {
+                const formData = new FormData();
+                formData.append("file", file);
+
+                // 파일 서버로 업로드
+                fetch("/video/upload", {
+                    method: "POST",
+                    body: formData,
+                })
+                    .then((response) => response.json())
+                    .then((data) => {
+                        if (data.fileName && data.filePath) {
+                            console.log("파일이 성공적으로 업로드되었습니다.");
+                        } else {
+                            console.error("파일 업로드 중 오류가 발생했습니다.");
+                        }
+                    })
+                    .catch((error) => {
+                        console.error("Error:", error);
+                    });
+            }
+        });
+    });
+
+    const form = document.querySelector("#writeForm");
+    const submitButton = document.querySelector(".btn-submit");
+
+    submitButton.addEventListener("click", function (event) {
+        event.preventDefault(); // 폼 기본 제출 방지
+
+        const formData = new FormData(form); // 폼 데이터 수집
+
+        // 수집된 formData의 모든 값 출력 (디버깅용)
+        for (let [key, value] of formData.entries()) {
+            console.log(`${key}: ${value}`);
+        }
+        console.log(document.querySelector('input[name="workFile"]').files[0]);
+
+        //폼 데이터 전송
+        fetch("/video/write", {
+            method: "POST",
+            body: formData
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                if (data.success) {
+                    window.location.href = "/video/list"; // 성공 시 리스트 페이지로 이동
+                } else {
+                    alert("저장 중 오류가 발생했습니다.");
+                }
+            })
+            .catch((error) => {
+                console.error("Error:", error);
+            });
+    });
+
+    const radioButtons = document.querySelectorAll('input[type="radio"]');
+    const fileInputs = document.querySelectorAll('input[type="file"]');
+
+    // 버튼 활성화 확인 함수
+    function checkFormCompletion() {
+        // 파일 업로드가 완료되었는지 확인
+        const allFilesUploaded = Array.from(fileInputs).every(
+            (fileInput) => fileInput.files.length > 0
+        );
+        // 텍스트 필드가 비어있지 않은지 확인
+        const isInputValid = inputElement && inputElement.value.trim() !== "";
+        const isTextareaValid =
+            textareaElement && textareaElement.value.trim() !== "";
+        // 라디오 버튼이 선택되었는지 확인
+        const isRadioSelected = Array.from(radioButtons).some(
+            (radio) => radio.checked
+        );
+
+        // 모든 조건을 만족하면 버튼 활성화, 그렇지 않으면 비활성화
+        if (
+            allFilesUploaded &&
+            isInputValid &&
+            isTextareaValid &&
+            isRadioSelected
+        ) {
+            submitButton.disabled = false;
+            submitButton.classList.add("active"); // 버튼 활성화 스타일 추가
+        } else {
+            submitButton.disabled = true;
+            submitButton.classList.remove("active"); // 버튼 비활성화 스타일 제거
+        }
+    }
+
+    // 각 입력 필드에 이벤트 리스너 추가
+    if (inputElement) {
+        inputElement.addEventListener("input", checkFormCompletion);
+    }
+    if (textareaElement) {
+        textareaElement.addEventListener("input", checkFormCompletion);
+    }
+    radioButtons.forEach((radio) => {
+        radio.addEventListener("change", checkFormCompletion);
+    });
+    fileInputs.forEach((fileInput) => {
+        fileInput.addEventListener("change", checkFormCompletion);
+    });
+
+    // 페이지 로드 시에도 버튼 상태 확인
+    checkFormCompletion();
 });
 
 // 모든 img-box-list에 대해 이벤트 리스너를 설정하는 함수
@@ -136,7 +242,6 @@ function setupEventListeners(imgBox) {
         const title = imgBox.querySelector(".img-box-title");
         const text = imgBox.querySelector(".img-box-text");
         const help = imgBox.querySelector(".img-box-help");
-        const imgEditBox = imgBox.querySelector(".img-edit-box"); // img-edit-box에 대한 참조 추가
 
         imgCaptionBox.style.display = "none"; // 캡션 입력 박스 숨기기
         title.style.display = "block"; // 제목 다시 보이기
@@ -179,14 +284,14 @@ document.querySelector(".img-add").addEventListener("click", function () {
                     <div class="img-box-title">작품 영상, 이미지 등록</div>
                     <div class="img-box-text">작품 결과물 혹은 설명을 돕는 이미지를 선택해 주세요.</div>
                     <div class="img-box-help"><span>· 이미지 최적 사이즈: 가로 720px</span></div>
-                    <input id="file-upload-${timestamp}" type="file" accept="image/*,video/*" style="display: none;" />
+                    <input id="file-upload-${timestamp}" type="file" name="workFile" accept="image/*,video/*" style="display: none;" />
                 </div>
             </div>
-            <div class="img-caption-box" style="display: none;">
-                <div class="default-input-partner">
-                    <input type="text" class="img-caption-box-content" placeholder="올린 파일에 대한 설명을 입력해주세요." />
-                </div>
-            </div>
+<!--            <div class="img-caption-box" style="display: none;">-->
+<!--                <div class="default-input-partner">-->
+<!--                    <input type="text" class="img-caption-box-content" placeholder="올린 파일에 대한 설명을 입력해주세요." />-->
+<!--                </div>-->
+<!--            </div>-->
         </div>
     `;
 
@@ -199,6 +304,10 @@ document.querySelector(".img-add").addEventListener("click", function () {
 
 // 파일 미리보기 함수 (파일 선택 시 이미지 및 비디오 미리보기)
 function previewFile(fileInput, previewSelector, videoPreviewSelector) {
+    if (!fileInput || !fileInput.files || fileInput.files.length === 0) {
+        console.error("No file selected.");
+        return;
+    }
     const file = fileInput.files[0];
     const preview = document.querySelector(previewSelector);
     const videoPreview = document.querySelector(videoPreviewSelector); // 비디오 미리보기 요소
@@ -241,43 +350,50 @@ function previewFile(fileInput, previewSelector, videoPreviewSelector) {
     if (file) {
         reader.readAsDataURL(file);
     }
+
+    // 파일을 서버로 전송하는 로직 추가
+    const formData = new FormData();
+    formData.append('file', file);
+
+    // 서버로 파일을 전송
+    fetch('/uploadFile', {
+        method: 'POST',
+        body: formData
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                console.log('파일이 성공적으로 업로드되었습니다.');
+                // 필요한 경우, 파일과 관련된 다른 데이터를 처리하는 로직 추가
+            } else {
+                console.error('파일 업로드 중 오류가 발생했습니다.');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
 }
 
 function previewImage(event) {
     const previewContainer = document.getElementById("preview-container");
     const file = event.target.files[0];
 
-    // 이전 내용을 지웁니다 (존재하는 경우)
+    // 이전 이미지를 지웁니다 (존재하는 경우)
     previewContainer.innerHTML = "";
 
     if (file) {
-        const fileType = file.type.split("/")[0]; // 파일 타입 확인 (image, video 등)
-
         const reader = new FileReader();
         reader.onload = function (e) {
-            if (fileType === "image") {
-                // 이미지 파일인 경우
-                const img = document.createElement("img");
-                img.src = e.target.result;
-                img.alt = "Uploaded Preview";
-                img.style.width = "100%";
-                img.style.borderRadius = "10px";
+            // 새 이미지 요소를 생성합니다
+            const img = document.createElement("img");
+            img.src = e.target.result;
+            img.alt = "Uploaded Preview";
+            img.style.width = "100%";
+            img.style.borderRadius = "10px";
 
-                // 이미지 미리보기 추가
-                previewContainer.appendChild(img);
-            } else if (fileType === "video") {
-                // 비디오 파일인 경우
-                const video = document.createElement("video");
-                video.src = e.target.result;
-                video.controls = true; // 비디오 컨트롤 추가
-                video.style.width = "100%";
-                video.style.borderRadius = "10px";
-
-                // 비디오 미리보기 추가
-                previewContainer.appendChild(video);
-            }
+            // 새 이미지를 미리보기 컨테이너에 추가
+            previewContainer.appendChild(img);
         };
-
         // 업로드된 파일을 데이터 URL로 읽음
         reader.readAsDataURL(file);
     }
@@ -302,66 +418,6 @@ document.addEventListener("click", () => {
         });
 
         // 마우스 뗐을 때 배경색 원래대로 변경
-        box.addEventListener("mouseleave", () => {
-            // 원래 배경색으로 복원
-            box.style.backgroundColor = "";
-        });
+        box.style.backgroundColor = "";
     });
-});
-
-document.addEventListener("DOMContentLoaded", function () {
-    const inputElement = document.querySelector(".label-input-partner input");
-    const textareaElement = document.querySelector(
-        ".textarea__border textarea"
-    );
-    const radioButtons = document.querySelectorAll('input[type="radio"]');
-    const fileInputs = document.querySelectorAll('input[type="file"]');
-    const submitButton = document.querySelector(".btn-submit");
-
-    // 버튼 활성화 확인 함수
-    function checkFormCompletion() {
-        // 파일 업로드가 완료되었는지 확인
-        const allFilesUploaded = Array.from(fileInputs).every(
-            (fileInput) => fileInput.files.length > 0
-        );
-        // 텍스트 필드가 비어있지 않은지 확인
-        const isInputValid = inputElement && inputElement.value.trim() !== "";
-        const isTextareaValid =
-            textareaElement && textareaElement.value.trim() !== "";
-        // 라디오 버튼이 선택되었는지 확인
-        const isRadioSelected = Array.from(radioButtons).some(
-            (radio) => radio.checked
-        );
-
-        // 모든 조건을 만족하면 버튼 활성화, 그렇지 않으면 비활성화
-        if (
-            allFilesUploaded &&
-            isInputValid &&
-            isTextareaValid &&
-            isRadioSelected
-        ) {
-            submitButton.disabled = false;
-            submitButton.classList.add("active"); // 버튼 활성화 스타일 추가 (필요에 따라 클래스명 수정 가능)
-        } else {
-            submitButton.disabled = true;
-            submitButton.classList.remove("active"); // 버튼 비활성화 스타일 제거
-        }
-    }
-
-    // 각 입력 필드에 이벤트 리스너 추가
-    if (inputElement) {
-        inputElement.addEventListener("input", checkFormCompletion);
-    }
-    if (textareaElement) {
-        textareaElement.addEventListener("input", checkFormCompletion);
-    }
-    radioButtons.forEach((radio) => {
-        radio.addEventListener("change", checkFormCompletion);
-    });
-    fileInputs.forEach((fileInput) => {
-        fileInput.addEventListener("change", checkFormCompletion);
-    });
-
-    // 페이지 로드 시에도 버튼 상태 확인
-    checkFormCompletion();
 });

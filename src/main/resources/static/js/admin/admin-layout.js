@@ -189,6 +189,163 @@ const inquiryLayout = {
 
 };
 
+//-------------------------------------------------------------------------------------------------------------------------
+// 회원관리
+
+// 각 회원 정보를 HTML 요소로 변환하는 함수
+function createMemberRow(member) {
+    return `
+        <div class="apply-table-row" data-member-id="${member.memberId}">
+            <div class="apply-table-cell">
+                <input type="checkbox" class="apply-checkbox" data-member-id="${member.memberId}" />
+            </div>
+            <div class="apply-table-cell">${member.memberId}</div>
+            <div class="apply-table-cell">${member.profileName}</div>
+            <div class="apply-table-cell">${member.createdDate}</div>
+            <div class="apply-table-cell">${member.memberEmail}</div>
+            <div class="apply-table-cell">${member.profilePhone}</div>
+            <div class="apply-table-cell">${member.profileAge}</div>
+            <div class="apply-table-cell">${member.profileGender}</div>
+            <div class="apply-table-cell">${member.profileEmail}</div>
+            <div class="apply-table-cell ${member.memberStatus === 'YES' ? 'active-member' : 'inactive-member'}">
+                ${member.memberStatus === 'YES' ? '활동 중' : '탈퇴'}
+            </div>
+            <div class="apply-table-cell">
+                <button class="edit-btn" data-member-id="${member.memberId}">
+                    수정
+                </button>
+            </div>
+        </div>
+    `;
+}
+
+// 회원 상태 업데이트 후 UI 업데이트 함수
+async function updateMemberStatusUI(memberId, newStatus) {
+    const success = await updateMemberStatus(memberId, newStatus);
+    if (success) {
+        const memberRow = document.querySelector(`.apply-table-row[data-member-id="${memberId}"]`);
+        if (memberRow) {
+            const statusCell = memberRow.querySelector('.active-member, .inactive-member');
+            statusCell.textContent = newStatus === 'YES' ? '활동 중' : '탈퇴';
+            statusCell.className = `apply-table-cell ${newStatus === 'YES' ? 'active-member' : 'inactive-member'}`;
+        }
+    } else {
+        console.error("회원 상태 변경에 실패했습니다.");
+    }
+}
+
+// 선택된 회원 삭제 함수
+async function deleteSelectedMembers() {
+    const selectedCheckboxes = document.querySelectorAll('.apply-checkbox:checked');
+    const memberIds = Array.from(selectedCheckboxes).map(checkbox => checkbox.dataset.memberId);
+
+    // 선택한 회원없이 삭제할 경우
+    if (memberIds.length === 0) {
+        alert("삭제할 회원을 선택하세요.");
+        return;
+    }
+
+    const success = await deleteMembersByIds(memberIds);
+    if (success) {
+        alert("회원이 성공적으로 삭제되었습니다.");
+        renderMembers(); // 회원 목록 갱신
+    } else {
+        console.error("회원 삭제에 실패했습니다.");
+    }
+}
+
+// 회원 페이지네이션 버튼 (검색과 정렬 포함)
+function renderPagination(pagination, currentPage, search = '', order = '') {
+    const { startPage, endPage, realEnd } = pagination;
+    const paginationContainer = document.querySelector('#pagination-members .pagination-list');
+    paginationContainer.innerHTML = ''; // 기존 페이지 버튼 초기화
+
+    // 이전 페이지 버튼 (1페이지에서는 비활성화)
+    paginationContainer.innerHTML += `
+        <li class="pagination-prev ${currentPage === 1 ? 'disabled' : ''}">
+            <a href="#" data-page="${currentPage > 1 ? currentPage - 1 : 1}">&lt;</a>
+        </li>`;
+
+    // 페이지 번호 버튼 생성
+    for (let i = startPage; i <= endPage; i++) {
+        paginationContainer.innerHTML += `
+            <li class="pagination-page ${i === currentPage ? 'active' : ''}">
+                <a href="#" data-page="${i}">${i}</a>
+            </li>`;
+    }
+
+    // 다음 페이지 버튼 (마지막 페이지에서는 비활성화)
+    paginationContainer.innerHTML += `
+        <li class="pagination-next ${currentPage === realEnd ? 'disabled' : ''}">
+            <a href="#" data-page="${currentPage < realEnd ? currentPage + 1 : realEnd}">&gt;</a>
+        </li>`;
+
+    // 페이지네이션 클릭 이벤트 추가
+    paginationContainer.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', (event) => {
+            event.preventDefault();
+            const page = parseInt(event.target.dataset.page);
+            // (!isNaN(page) 페이지가 숫자인지
+            if (!isNaN(page) && page > 0 && page <= realEnd && page !== currentPage) {
+                renderMembers(page, search, order);
+            }
+        });
+    });
+}
+
+// 전체 선택 및 개별 체크박스 설정
+function setupCheckboxEvents() {
+    const selectAllCheckbox = document.querySelector('#member-container .select-all');
+    const memberCheckboxes = document.querySelectorAll('.apply-table-row .apply-checkbox');
+
+    // 전체 선택 체크박스 클릭 시, 모든 개별 체크박스 선택/해제
+    selectAllCheckbox.addEventListener('change', (event) => {
+        const isChecked = event.target.checked;
+        memberCheckboxes.forEach(checkbox => {
+            checkbox.checked = isChecked;
+        });
+    });
+
+    // 개별 체크박스 클릭 시, 전체 선택 체크박스 상태 업데이트
+    memberCheckboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', () => {
+            const allChecked = Array.from(memberCheckboxes).every(cb => cb.checked);
+            selectAllCheckbox.checked = allChecked;
+        });
+    });
+}
+
+// 삭제 버튼 클릭 이벤트 추가
+document.getElementById('delete-members').addEventListener('click', deleteSelectedMembers);
+
+// 회원 데이터를 화면에 랜더링
+async function renderMembers(page = 1, search = '', order = '') {
+    const data = await fetchMembers(page, search, order);
+    if (data) {
+        const { members, pagination } = data;
+
+        // 회원 목록
+        const memberList = document.getElementById('member-list');
+        // join('') : map 함수로 생성된 문자열 배열을 하나로 합치기
+        memberList.innerHTML = members.map(createMemberRow).join('');
+
+        // 페이지네이션
+        renderPagination(pagination, page, search, order);
+
+        // 페이지 변경 시 체크박스 이벤트 다시 설정
+        setupCheckboxEvents();
+    }
+}
+
+// 초기화 함수
+function init() {
+    renderMembers(); // 첫 페이지 렌더링
+    setupCheckboxEvents(); // 체크박스 이벤트 설정
+}
+
+document.addEventListener('DOMContentLoaded', init);
+
+
 
 
 

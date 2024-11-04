@@ -14,22 +14,109 @@
         where admin_verify_code = #{adminVerifyCode}
     </select>
 
-    <!--회원조회-->
+    <!-- 회원 조회 쿼리 페이지네이션, 검색, 필터 -->
     <select id="selectMembers" resultType="MemberProfileDTO">
-        SELECT
-            m.id AS memberId,
-            m.member_email AS memberEmail,
-            m.member_status AS memberStatus,
-            p.profile_name AS profileName,
-            p.created_date AS createdDate,
-            p.profile_phone AS profilePhone,
-            p.profile_age AS profileAge,
-            p.profile_gender AS profileGender,
-            p.profile_email AS profileEmail
-        FROM
-            tbl_member m
-                JOIN
-            tbl_member_profile p ON m.id = p.member_id
+        select
+        m.id as memberId,
+        m.member_email as memberEmail,
+        m.member_status as memberStatus,
+        p.profile_name as profileName,
+        p.created_date as createdDate,
+        p.profile_phone as profilePhone,
+        p.profile_age as profileAge,
+        p.profile_gender as profileGender,
+        p.profile_email as profileEmail
+        from
+        tbl_member m
+        join
+        tbl_member_profile p on m.id = p.member_id
+        where
+        1 = 1
+        <!-- 검색 조건 (이메일, 이름, 나이, 성별) -->
+        <if test="search != null and search != ''">
+            and (
+            m.member_email like CONCAT('%', #{search}, '%')
+            or p.profile_email like CONCAT('%', #{search}, '%')
+            or p.profile_name like CONCAT('%', #{search}, '%')
+            or p.profile_age like CONCAT('%', #{search}, '%')
+            or p.profile_gender like CONCAT('%', #{search}, '%')
+            )
+        </if>
+
+        <!-- 필터 및 정렬 조건 -->
+        <choose>
+            <when test="order == 'createdDate'">
+                order by p.created_date desc
+            </when>
+            <when test="order == 'statusYES'">
+                and m.member_status = 'YES'
+                order by p.created_date desc
+            </when>
+            <when test="order == 'statusNO'">
+                and m.member_status = 'NO'
+                order by p.created_date desc
+            </when>
+            <otherwise>
+                order by p.created_date desc
+            </otherwise>
+        </choose>
+
+        <!-- 페이지네이션 처리 -->
+        limit #{pagination.startRow}, #{pagination.rowCount}
     </select>
 
+    <!-- 조건에 맞는 전체 회원 수 조회 -->
+    <select id="countTotalMembers" resultType="int">
+        select COUNT(*)
+        from
+        tbl_member m
+        join
+        tbl_member_profile p on m.id = p.member_id
+        where
+        1 = 1
+
+        <!-- 검색 조건 (이메일, 이름, 나이, 성별) -->
+        <if test="search != null and search != ''">
+            and (
+            m.member_email like CONCAT('%', #{search}, '%')
+            or p.profile_email like CONCAT('%', #{search}, '%')
+            or p.profile_name like CONCAT('%', #{search}, '%')
+            or p.profile_age like CONCAT('%', #{search}, '%')
+            or p.profile_gender like CONCAT('%', #{search}, '%')
+            )
+        </if>
+
+        <!-- 필터 조건 -->
+        <if test="order == 'statusYES'">
+            and m.member_status = 'YES'
+        </if>
+        <if test="order == 'statusNO'">
+            and m.member_status = 'NO'
+        </if>
+    </select>
+
+    <!-- 회원 상태 변경 -->
+    <update id="updateMemberStatus">
+        update tbl_member
+        set member_status = #{status}
+        where id = #{memberId}
+    </update>
+
+    <!-- 회원 삭제 -->
+    <delete id="deleteMembersByIds">
+        delete from tbl_member
+        where id in
+        <foreach item="id" collection="memberIds" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <!-- 회원 프로필 삭제 -->
+    <delete id="deleteMemberProfilesByMemberIds">
+        delete from tbl_member_profile
+        where member_id in
+        <foreach item="id" collection="memberIds" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
 </mapper>

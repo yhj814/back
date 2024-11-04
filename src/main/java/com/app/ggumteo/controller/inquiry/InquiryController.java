@@ -47,7 +47,7 @@ public class InquiryController {
         postDTO.setPostTitle(postTitle);
         postDTO.setPostContent(postContent);
         postDTO.setPostType("INQUIRY"); // 문의사항 타입 설정
-        postDTO.setMemberProfileId(memberProfileId);
+        postDTO.setMemberProfileId(memberProfileId); //회원 바꿔넣어 문의하려면 여기에 ID 직접입력
 
         // 문의사항 작성 처리
         inquiryService.writeInquiry(postDTO);

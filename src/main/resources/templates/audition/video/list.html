@@ -80,7 +80,7 @@
                                             <h2 class="job-tit">
                                                 <a
                                                     title=""
-                                                    th:href="@{/audition/video/audition-detail/{id}(id=${audition.id})}"
+                                                    th:href="@{/audition/video/detail/{id}(id=${audition.id})}"
                                                 >
                                                     <span th:text="${audition.postTitle}">
                                                     </span>
@@ -144,7 +144,7 @@
                                                 <a href="#recruit-info"
                                                    class="btnPrev page-move track-event"
                                                    th:if="${pagination.prev}"
-                                                   th:href="@{/audition/video/audition-list(page=${pagination.startPage - 10}, keyword=${keyword})}">
+                                                   th:href="@{/audition/video/list(page=${pagination.startPage - 10}, keyword=${keyword})}">
                                                     이전
                                                 </a>
                                                 <span th:unless="${pagination.prev}"></span>
@@ -155,7 +155,7 @@
                                                 th:class="${pagination.page == i} ? 'page-item active' : 'page-item'">
                                                 <a href="#recruit-info"
                                                    class="page page-move track-event"
-                                                   th:href="@{/audition/video/audition-list(page=${i}, keyword=${keyword})}"
+                                                   th:href="@{/audition/video/list(page=${i}, keyword=${keyword})}"
                                                    th:text="${i}">
                                                 </a>
                                             </li>
@@ -164,7 +164,7 @@
                                                 <a href="#recruit-info"
                                                    class="btnNext page-move track-event"
                                                    th:if="${pagination.next}"
-                                                   th:href="@{/audition/video/audition-list(page=${pagination.endPage + 1}, keyword=${keyword})}">
+                                                   th:href="@{/audition/video/list(page=${pagination.endPage + 1}, keyword=${keyword})}">
                                                     다음
                                                 </a>
                                                 <span th:unless="${pagination.next}"></span>
@@ -230,6 +230,7 @@
     <footer th:replace="~{footer.html :: footer}"></footer>
     </body>
     <script src="/js/audition/audition-list.js"></script>
+    <script src="/js/audition/audition-search-video.js"></script>
     <script th:src="@{/js/header/header-logout.js}"></script>
     <script th:src="@{/js/header/header-login.js}"></script>
     <script th:src="@{/js/header/logout-click.js}"></script>

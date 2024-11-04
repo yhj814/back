@@ -44,7 +44,7 @@ public class PostFileServiceImpl implements PostFileService {
         String relativePath = "uploads/" + UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
         fileVO.setFilePath(relativePath);
 
-        String rootPath = "C:/ggumteofile/";
+        String rootPath = "C:/upload/";
         File saveLocation = new File(rootPath + relativePath);
         try {
             if (!saveLocation.getParentFile().exists()) {
@@ -64,7 +64,7 @@ public class PostFileServiceImpl implements PostFileService {
 
     @Override
     public byte[] getFileData(String fileName) {
-        String rootPath = "C:/ggumteofile/";
+        String rootPath = "C:/upload/";
         File file = new File(rootPath + fileName);
         try {
             if (file.exists()) {

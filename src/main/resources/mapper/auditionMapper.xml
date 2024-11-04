@@ -13,8 +13,11 @@
     </insert>
 
     <!-- 총 작품 수 조회 -->
-    <select id="selectTotal">
-        select count(*) from tbl_audition
+    <select id="selectTotal" parameterType="map">
+        select count(*)
+        from tbl_audition a
+                 join tbl_post p on a.id = p.id
+        where p.post_type = #{postType}
     </select>
 
     <!-- 조회수 증가 -->
@@ -24,9 +27,8 @@
         where id = #{id}
     </update>
 
-    <!-- 작품 정보 수정 (tbl_work 및 tbl_post 업데이트) -->
+    <!-- 모집 정보 수정 -->
     <update id="updateWork" parameterType="auditionDTO">
-    <!-- tbl_audition 업데이트 -->
     update tbl_audition
     set
         audition_field = #{auditionField}, audition_career = #{auditionCareer}, expected_amount = #{expectedAmount},
@@ -35,15 +37,16 @@
         file_content = #{fileContent}, audition_status = #{auditionStatus}, updated_date = current_timestamp
     where
         id = #{id}
+    </update>
 
-        <!-- tbl_post 업데이트 -->
+    <!-- post테이블 수정 -->
+    <update id="updatePost">
         update tbl_post
         set
-        post_title = #{postTitle},
-        post_content = #{postContent},
-        updated_date = current_timestamp
-        where
-        id = #{id};
+            post_title = #{postTitle},
+            post_content = #{postContent},
+            updated_date = current_timestamp
+        where id = #{postId}
     </update>
 
     <!-- 모집 삭제 -->
@@ -77,16 +80,16 @@
         join tbl_post p on a.id = p.id
         join tbl_member_profile mp on p.member_profile_id = mp.id
         where
-        a.id is not null
-        <if test="keyword != null and keyword != '' ">
+        p.post_type = #{postType}
+        <if test="keyword != null and keyword != ''">
             and (p.post_title like concat('%', #{keyword}, '%')
             or p.post_content like concat('%', #{keyword}, '%')
-            or mp.profile_nickname like concat('%', #{keyword}, '%')
-            )
+            or mp.profile_nickname like concat('%', #{keyword}, '%'))
         </if>
         order by a.id desc
         limit #{pagination.startRow}, #{pagination.rowCount}
     </select>
+
 
     <!-- 검색 조건이 포함된 총 작품 수 조회 -->
     <select id="selectTotalWithSearch" parameterType="map">
@@ -94,7 +97,7 @@
         from tbl_audition a
         join tbl_post p on a.id = p.id
         join tbl_member_profile mp on p.member_profile_id = mp.id
-        where a.id is not null
+        where p.post_type = #{postType}
         <if test="keyword != null and keyword != ''">
             and (
             p.post_title like concat('%', #{keyword}, '%')
