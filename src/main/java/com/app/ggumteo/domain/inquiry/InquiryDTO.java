@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Getter
 @Setter
+@ToString
 @NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @AllArgsConstructor
@@ -20,6 +21,10 @@ public class InquiryDTO {
     private String inquiryStatus;  // 문의 상태 기본은 NO
     private String answerDate;  // 답변 작성 날짜
     private String answerContent;
+
+    private Long memberId;
+    private String profileImgUrl; // 프로필 이미지
+    private String profileNickname; // 프로필 닉네임
 }
 
 

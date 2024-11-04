@@ -135,6 +135,36 @@
         </foreach>
         and post_type = 'INQUIRY';
     </delete>
+
+    <!--  마이페이지  -->
+    <!--내 문의 내역 목록 조회-->
+    <select id="selectInquiryHistoryByMember">
+        select p.id as postId,
+               p.post_title as postTitle,
+               p.post_content as postContent,
+               p.created_date as postCreatedDate,
+               m.profile_img_url as profileImgUrl,
+               mp.profile_nickname as profileNickname,
+               i.inquiry_status as inquiryStatus
+        from
+            tbl_inquiry i
+                join tbl_post p on i.id = p.id
+                join tbl_member_profile mp on p.member_profile_id = mp.id
+                join tbl_member m on mp.member_id = m.id and mp.member_id = #{memberId}
+                and p.post_type = 'INQUIRY'
+        order by i.id desc
+            limit #{workAndFundingPagination.startRow}, #{workAndFundingPagination.rowCount};
+    </select>
+
+    <!--내 문의 내역 목록 전체 갯수-->
+    <select id="selectCountInquiryHistoryByMember">
+        select count(*) from
+            tbl_inquiry i
+                join tbl_post p on i.id = p.id
+                join tbl_member_profile mp on p.member_profile_id = mp.id
+                join tbl_member m on mp.member_id = m.id and m.id = #{memberId}
+                and p.post_type = 'INQUIRY'
+    </select>
 </mapper>
 
 

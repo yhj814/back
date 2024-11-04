@@ -1,11 +1,11 @@
-globalThis.pageA = 1;
-myPageService.getMyFundingList(globalThis.pageA, memberId, showMyFundingList);
+globalThis.myFundingPage = 1;
+myPageService.getMyFundingList(globalThis.myFundingPage, memberId, showMyFundingList);
 
 myFundingListPaging.addEventListener("click", (e)=>{
     e.preventDefault();
     if(e.target.tagName === "A") {
-    globalThis.pageA = e.target.getAttribute("href");
-    myPageService.getMyFundingList(globalThis.pageA, memberId, showMyFundingList);
+    globalThis.myFundingPage = e.target.getAttribute("href");
+    myPageService.getMyFundingList(globalThis.myFundingPage, memberId, showMyFundingList);
     }
 });
 
@@ -22,20 +22,30 @@ myFundingListLayout.addEventListener('click', async (e) => {
             console.log("펀딩구매자테이블의 자식요소 길이 : ",fundingBuyerTable.children.length)
             if(fundingBuyerTable.children.length == 0) {
                 // 1. 펀딩 구매자 테이블 html 에 목록을 추가해라.
-                globalThis.pageB = 1;
-                fundingBuyerTable.innerHTML += await myPageService.getFundingBuyerList(globalThis.pageB, myFundingPostId, showFundingBuyerList);
-                const sendButton = document.querySelector(".btn-choice.btn-public");
+                globalThis.myFundingBuyerPage = 1;
+                fundingBuyerTable.innerHTML += await myPageService.getFundingBuyerList(globalThis.myFundingBuyerPage, myFundingPostId, showFundingBuyerList);
 
                 fundingBuyerTable.addEventListener('click', async (e) => {
                     e.preventDefault();
                     if(e.target.tagName === 'A') {
-                        globalThis.pageB = e.target.getAttribute("href");
-                        const fundingBuyerListWrapper = fundingBuyerTable.children[1]
-                        const fundingBuyerList = fundingBuyerListWrapper.children[0]
-                        fundingBuyerTable.innerHTML = await myPageService.getFundingBuyerList(globalThis.pageB, myFundingPostId, showFundingBuyerList);
+                        globalThis.myFundingBuyerPage = e.target.getAttribute("href");
+                        fundingBuyerTable.innerHTML = await myPageService.getFundingBuyerList(globalThis.myFundingBuyerPage, myFundingPostId, showFundingBuyerList);
+                    }
+
+                    if(e.target.classList[1] === "btn-public") {
+                        const buyFundingProductId = e.target.classList[2];
+                        const sendYes = "YES";
+
+                        if(e.target.nextElementSibling.classList[2] === "active") {
+                            e.target.classList.add("active");
+                            e.target.nextElementSibling.classList.remove("active")
+                            await myPageService.updateFundingSendStatus({
+                                id: buyFundingProductId,
+                                fundingSendStatus: sendYes
+                            })
+                        }
                     }
                 });
-
             }
             // 2. 펀딩 구매자 테이블에 목록을 추가하지 말고 펀딩 구매자 테이블을 화면에 보여줘라.
             // 펀딩 구매자 테이블을 화면에서 보여줘라.
@@ -46,3 +56,17 @@ myFundingListLayout.addEventListener('click', async (e) => {
     }
 
 });
+
+globalThis.myBuyFundingPage = 1;
+myPageService.getMyBuyFundingList(globalThis.myBuyFundingPage, memberId, showMyBuyFundingList);
+
+myBuyFundingListPaging.addEventListener("click", (e)=>{
+    e.preventDefault();
+    if(e.target.tagName === "A") {
+        globalThis.myBuyFundingPage = e.target.getAttribute("href");
+        myPageService.getMyBuyFundingList(globalThis.myBuyFundingPage, memberId, showMyBuyFundingList);
+    }
+});
+
+
+myPageService.getMyInquiryHistoryList(1, memberId, showMyInquiryHistoryList);
