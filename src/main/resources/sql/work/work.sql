@@ -8,3 +8,7 @@ create table tbl_work (
     references tbl_post(id)
 );
 
+insert into tbl_work
+values(10,9000,'comedy','파일설명6','7');
+
+select *from tbl_work;
