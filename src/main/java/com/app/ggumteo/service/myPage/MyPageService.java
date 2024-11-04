@@ -1,9 +1,6 @@
 package com.app.ggumteo.service.myPage;
 
-import com.app.ggumteo.domain.funding.BuyFundingProductDTO;
-import com.app.ggumteo.domain.funding.FundingDTO;
-import com.app.ggumteo.domain.funding.MyFundingBuyerListDTO;
-import com.app.ggumteo.domain.funding.MyFundingListDTO;
+import com.app.ggumteo.domain.funding.*;
 import com.app.ggumteo.domain.member.MemberDTO;
 import com.app.ggumteo.domain.member.MemberVO;
 import com.app.ggumteo.pagination.MyPagePagination;
@@ -33,4 +30,7 @@ public interface MyPageService {
 
     //    내 펀딩 게시물 하나의 구매자 전체 갯수
     public int getMyFundingPostBuyerTotal(Long fundingPostId);
+
+    //    펀딩상품 발송여부 체크
+    public void setFundingSendStatus(BuyFundingProductVO buyFundingProductVO);
 }

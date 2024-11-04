@@ -54,4 +54,11 @@ public class MemberRestController {
         log.info("test 9={}", fundingPostId);
         return myPageService.getMyFundingBuyerList(page, settingTablePagination, fundingPostId);
     }
+
+    // UPDATE
+    @ResponseBody
+    @PatchMapping("/members/video/fundingPost/buyers/sendStatus/update")
+    public void update(@RequestBody BuyFundingProductDTO buyFundingProductDTO) {
+        myPageService.setFundingSendStatus(buyFundingProductDTO.toVO());
+    }
 }

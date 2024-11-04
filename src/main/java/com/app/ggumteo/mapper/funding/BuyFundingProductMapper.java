@@ -1,6 +1,7 @@
 package com.app.ggumteo.mapper.funding;
 
 import com.app.ggumteo.domain.funding.BuyFundingProductDTO;
+import com.app.ggumteo.domain.funding.BuyFundingProductVO;
 import com.app.ggumteo.domain.funding.FundingDTO;
 import com.app.ggumteo.pagination.SettingTablePagination;
 import com.app.ggumteo.pagination.WorkAndFundingPagination;
@@ -18,4 +19,7 @@ public interface BuyFundingProductMapper {
 
 //    내 펀딩 게시물 하나의 구매자 전체 갯수
     public int selectCount(Long fundingPostId);
+
+//    발송 여부 체크
+    public void updateFundingSendStatus(BuyFundingProductVO buyFundingProductVO);
 }

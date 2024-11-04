@@ -4,6 +4,7 @@ import com.app.ggumteo.domain.funding.*;
 import com.app.ggumteo.domain.member.MemberDTO;
 import com.app.ggumteo.domain.member.MemberVO;
 import com.app.ggumteo.mapper.FundingMapperTests;
+import com.app.ggumteo.mapper.funding.BuyFundingProductMapper;
 import com.app.ggumteo.pagination.MyPagePagination;
 import com.app.ggumteo.pagination.SettingTablePagination;
 import com.app.ggumteo.pagination.WorkAndFundingPagination;
@@ -22,6 +23,8 @@ import java.util.Optional;
 public class MyPageServiceTests {
     @Autowired
     private MyPageService myPageService;
+    @Autowired
+    private BuyFundingProductMapper buyFundingProductMapper;
 
     @Test
     public void testGetMember() {
@@ -54,6 +57,15 @@ public class MyPageServiceTests {
         MyFundingBuyerListDTO myFundingBuyers = myPageService.getMyFundingBuyerList(1, settingTablePagination, fundingDTO.getId());
 
         log.info("GetMyFundingBuyerList-test={}", myFundingBuyers.toString());
+  }
+
+  @Test
+    public void testCheckFundingSendStatus() {
+      BuyFundingProductDTO buyFundingProductDTO = new BuyFundingProductDTO();
+      buyFundingProductDTO.setId(7L);
+      buyFundingProductDTO.setFundingSendStatus("YES");
+
+      myPageService.setFundingSendStatus(buyFundingProductDTO.toVO());
   }
 
 }

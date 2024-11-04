@@ -8,27 +8,22 @@
         values (#{id}, #{workPrice}, #{fileContent}, #{readCount}, #{genreType})
     </insert>
 
-    <!-- 작품 id로 작품 조회 -->
+    <!-- 작품 id로 작품 조회 (썸네일 파일 ID 포함) -->
     <select id="selectById" resultType="workDTO">
         select
-            w.id, w.work_price, w.file_content, w.read_count, w.genre_type,
-            p.post_title, p.post_content, p.member_profile_id, p.created_date, p.updated_date,
-            f.file_name as thumbnail_file_name, f.file_path as thumbnail_file_path,
-            mp.profile_nickname
+        w.id, w.work_price, w.file_content, w.read_count, w.genre_type,
+        p.post_title, p.post_content, p.member_profile_id, p.created_date, p.updated_date,
+        f.file_name as thumbnail_file_name, f.file_path as thumbnail_file_path,
+        w.thumbnail_file_id as thumbnailFileId,  <!-- 썸네일 파일 ID 추가 -->
+        mp.profile_nickname
         from
-            tbl_work w
-                join tbl_post p on w.id = p.id
-                join tbl_member_profile mp on p.member_profile_id = mp.id
-                left join (
-                select pf.post_id, f.file_name, f.file_path
-                from tbl_post_file pf
-                         join tbl_file f on pf.id = f.id
-                where pf.id = (select max(id) from tbl_post_file where post_id = pf.post_id)
-            ) as f on f.post_id = p.id
+        tbl_work w
+        join tbl_post p on w.id = p.id
+        join tbl_member_profile mp on p.member_profile_id = mp.id
+        left join tbl_file f on w.thumbnail_file_id = f.id
         where
-            w.id = #{id}
+        w.id = #{id}
     </select>
-
 
     <!-- 조회수 증가 -->
     <update id="increaseReadCount" parameterType="Long">
@@ -37,24 +32,27 @@
         where id = #{id}
     </update>
 
-    <!-- 작품 정보 수정 -->
-    <update id="updateWork" parameterType="workDTO">
+    <!-- 작품 정보 수정 (썸네일 파일 ID 포함) -->
+    <update id="updateWork">
         update tbl_work
         set
-            work_price = #{workPrice},
-            file_content = #{fileContent},
-            genre_type = #{genreType},
-            updated_date = current_timestamp
-        where
-            id = #{id};
+        work_price = #{workPrice},
+        file_content = #{fileContent},
+        genre_type = #{genreType}
+        <if test="thumbnailFileId != null">
+            , thumbnail_file_id = #{thumbnailFileId}
+        </if>
+        where id = #{id}
+    </update>
 
+    <!-- 게시글 내용 수정 -->
+    <update id="updatePost">
         update tbl_post
         set
             post_title = #{postTitle},
             post_content = #{postContent},
             updated_date = current_timestamp
-        where
-            id = #{id};
+        where id = #{postId}
     </update>
 
     <!-- 작품 삭제 -->
@@ -69,48 +67,35 @@
         where id = #{id}
     </delete>
 
-
-    <!-- 작품 목록 조회에 평균 star 추가, 소수점 첫째 자리까지 표시 -->
+    <!-- 작품 목록 조회 및 썸네일 불러오기 -->
     <select id="selectAllWithThumbnailAndSearch" resultType="workDTO" parameterType="map">
         select
         w.id, w.work_price, w.read_count, w.genre_type,
         p.post_title, p.post_content, p.member_profile_id, p.created_date, p.updated_date,
         f.file_name as thumbnail_file_name, f.file_path as thumbnail_file_path,
-        mp.profile_nickname as profile_nickname,
-        ifnull(round(avg(r.star), 1), 0) as star -- 평균 star 소수점 첫째 자리까지(round=>평균 별점을 소수점 첫째자리까지 반올림) ifnull => 만약 댓글이 없으면 0을 반환함 -> as star => 계산결과를 star 로 사용할 수 있음
+        mp.profile_nickname,
+        ifnull(round(avg(r.star), 1), 0) as star
         from
         tbl_work w
         join tbl_post p on w.id = p.id
         join tbl_member_profile mp on p.member_profile_id = mp.id
-        left join tbl_reply r on w.id = r.work_id -- star 컬럼이 있는 tbl_reply를 join
-        left join (
-        select pf.post_id, f.file_name, f.file_path
-        from tbl_post_file pf
-        join tbl_file f on pf.id = f.id
-        where pf.id = (select max(id) from tbl_post_file where post_id = pf.post_id)
-        ) as f on f.post_id = p.id
+        left join tbl_reply r on w.id = r.work_id
+        left join tbl_file f on w.thumbnail_file_id = f.id
         where w.id is not null
         <if test="keyword != null and keyword != ''">
-            and (
-            p.post_title like concat('%', #{keyword}, '%')
+            and (p.post_title like concat('%', #{keyword}, '%')
             or p.post_content like concat('%', #{keyword}, '%')
-            or mp.profile_nickname like concat('%', #{keyword}, '%')
-            )
+            or mp.profile_nickname like concat('%', #{keyword}, '%'))
         </if>
         <if test="genreType != null and genreType != ''">
             and w.genre_type = #{genreType}
         </if>
-        group by w.id -- id별로 group by 하여 평균 star 계산
+        group by w.id
         order by w.id desc
         limit #{pagination.startRow}, #{pagination.rowCount}
     </select>
 
-
-
-
-
     <!-- 검색 조건이 포함된 총 작품 수 조회 -->
-<!--   꼭 concat 써라 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 제발 -->
     <select id="selectTotalWithSearch" parameterType="map">
         select count(*)
         from tbl_work w
@@ -118,11 +103,9 @@
         join tbl_member_profile mp on p.member_profile_id = mp.id
         where w.id is not null
         <if test="keyword != null and keyword != ''">
-            and (
-            p.post_title like concat('%', #{keyword}, '%')
+            and (p.post_title like concat('%', #{keyword}, '%')
             or p.post_content like concat('%', #{keyword}, '%')
-            or mp.profile_nickname like concat('%', #{keyword}, '%')
-            )
+            or mp.profile_nickname like concat('%', #{keyword}, '%'))
         </if>
         <if test="genreType != null and genreType != ''">
             and w.genre_type = #{genreType}
@@ -136,23 +119,14 @@
         from
             tbl_post_file pf
                 join tbl_file f on pf.id = f.id
-        where
-            pf.post_id = #{postId}
+        where pf.post_id = #{postId}
         order by pf.id
     </select>
 
-    <insert id="insertPurchase">
-        insert into tbl_buy_work (member_profile_id, work_id, work_send_status)
-        values (#{memberProfileId}, #{workId}, #{workSendStatus})
-    </insert>
-
-    <!-- 같은 장르의 최신순 3개 작품 조회 (상세보기에서)-->
+    <!-- 같은 장르의 최신순 3개 작품 조회 -->
     <select id="selectThreeByGenre" resultType="workDTO">
         select
-            w.id,
-            w.work_price,
-            p.post_title,
-            p.created_date,
+            w.id, w.work_price, p.post_title, p.created_date,
             mp.profile_nickname as profileNickName,
             f.file_path as thumbnailFilePath,
             ifnull(round(avg(r.star), 1), 0) as star
@@ -161,42 +135,38 @@
                 join tbl_post p on w.id = p.id
                 join tbl_member_profile mp on p.member_profile_id = mp.id
                 left join tbl_reply r on w.id = r.work_id
-                left join (
-                select pf.post_id, f.file_path
-                from tbl_post_file pf
-                         join tbl_file f on pf.id = f.id
-                where pf.id = (select max(id) from tbl_post_file where post_id = pf.post_id)
-            ) f on f.post_id = p.id
+                left join tbl_file f on w.thumbnail_file_id = f.id
         where w.genre_type = #{genreType} and w.id != #{workId}
         group by w.id
             limit 3
     </select>
 
-
-<!--    같은 작가의 작품 3개불러오기(작품 상세)-->
+    <!-- 같은 작가의 작품 3개 불러오기 -->
     <select id="selectThreeByAuthor" resultType="workDTO">
-        select w.id, w.work_price, w.read_count, w.genre_type,
-               p.post_title, p.post_content, p.member_profile_id, p.created_date, p.updated_date,
-               f.file_name as thumbnail_file_name, f.file_path as thumbnail_file_path,
-               mp.profile_nickname,
-               ifnull(round(avg(r.star), 1), 0) as star
-        from tbl_work w
-                 join tbl_post p on w.id = p.id
-                 join tbl_member_profile mp on p.member_profile_id = mp.id
-                 left join (
-            select pf.post_id, f.file_name, f.file_path
-            from tbl_post_file pf
-                     join tbl_file f on pf.id = f.id
-            where pf.id = (select max(id) from tbl_post_file where post_id = pf.post_id)
-        ) as f on f.post_id = p.id
-                 left join tbl_reply r on r.work_id = w.id
-        where p.member_profile_id = #{memberProfileId}
-          and w.id != #{workId}
+        select
+            w.id, w.work_price, w.read_count, w.genre_type,
+            p.post_title, p.post_content, p.member_profile_id, p.created_date, p.updated_date,
+            f.file_name as thumbnail_file_name, f.file_path as thumbnail_file_path,
+            mp.profile_nickname,
+            ifnull(round(avg(r.star), 1), 0) as star
+        from
+            tbl_work w
+                join tbl_post p on w.id = p.id
+                join tbl_member_profile mp on p.member_profile_id = mp.id
+                left join tbl_file f on w.thumbnail_file_id = f.id
+                left join tbl_reply r on r.work_id = w.id
+        where p.member_profile_id = #{memberProfileId} and w.id != #{workId}
         group by w.id
         order by p.created_date desc
             limit 3
     </select>
 
+    <!-- 썸네일 파일 ID 초기화 -->
+    <update id="updateThumbnailFileId">
+        update tbl_work
+        set thumbnail_file_id = #{thumbnailFileId}
+        where id = #{workId}
+    </update>
 
 
 </mapper>

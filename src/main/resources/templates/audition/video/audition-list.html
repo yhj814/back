@@ -42,7 +42,6 @@
                     >
                         <div class="search-header">
                             <div class="page-title subtitle">모집 찾기</div>
-
                             <div class="text-input-ggumteo icon-right">
                                 <div>
                                     <input
@@ -80,12 +79,10 @@
                                         <div class="area-job">
                                             <h2 class="job-tit">
                                                 <a
-                                                    target="-blank"
                                                     title=""
                                                     th:href="@{/audition/video/audition-detail/{id}(id=${audition.id})}"
                                                 >
                                                     <span th:text="${audition.postTitle}">
-
                                                     </span>
                                                 </a>
                                             </h2>
@@ -112,8 +109,7 @@
                                                 </button>
                                             </div>
                                             <div class="job-condition">
-                                                <span th:text="${audition.auditionLocation}"></span
-                                                >
+                                                <span th:text="${audition.auditionLocation}"></span>
                                                 <span th:text="${audition.auditionCareer}"></span>
                                             </div>
                                             <div class="job-sector">
@@ -129,15 +125,12 @@
                                                     href=""
                                                     target="-blank"
                                                     class="track-event data-layer"
-                                                    th:text="${audition.profileNickName}"
-                                                >
-
+                                                    th:text="${audition.profileNickName}">
                                                 </div>
                                             </strong>
                                             <span class="corp-affiliate"
                                                   th:text="${audition.profileEmail}"
-                                                ></span
-                                            >
+                                                ></span>
                                         </div>
                                         <div
                                             class="similar-recruit"

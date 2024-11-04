@@ -4,17 +4,29 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>모집 작성하기</title>
-        <link rel="stylesheet" href="/static/css/audition/write/write.css" />
+        <link rel="stylesheet" href="/css/audition/write/write.css" />
+        <link rel="stylesheet" th:href="@{/css/header/logout.css}">
+        <link rel="stylesheet" th:href="@{/css/header/login.css}">
+        <link rel="stylesheet" th:href="@{/css/footer/footer.css}">
     </head>
     <body>
-        <header></header>
+    <th:block th:if="${isLoggedIn}">
+        <div th:replace="~{header-login :: header}"></div>
+    </th:block>
+    <th:block th:if="${!isLoggedIn}">
+        <div th:replace="~{header-logout :: header}"></div>
+    </th:block>
         <main>
             <div class="main">
                 <div class="header edit-header">
                     <div class="background"></div>
                     <div class="container">
                         <div class="profile-box write">
-                            <form action="" id="write-form">
+                            <form method="post"
+                                  id="write-form"
+                                  th:action="@{/audition/text/audition-write}"
+                                  enctype="multipart/form-data"
+                            >
                                 <div class="write-add-view">
                                     <div class="subtitle-1 write-add-title">
                                         모집 작성하기
@@ -28,7 +40,7 @@
                                             <div class="label-input-partner">
                                                 <input
                                                     class="required label-input"
-                                                    name="title"
+                                                    name="postTitle"
                                                     type="text"
                                                     value=""
                                                 />
@@ -70,7 +82,8 @@
                                                                 <span>
                                                                     <input
                                                                         type="radio"
-                                                                        name="category"
+                                                                        name="auditionField"
+                                                                        value="1"
                                                                     />
                                                                     <span
                                                                         class="Thumbnail"
@@ -93,7 +106,8 @@
                                                                 <span>
                                                                     <input
                                                                         type="radio"
-                                                                        name="category"
+                                                                        name="auditionField"
+                                                                        value="2"
                                                                     />
                                                                     <span
                                                                         class="arrow"
@@ -115,7 +129,8 @@
                                                                 <span>
                                                                     <input
                                                                         type="radio"
-                                                                        name="category"
+                                                                        name="auditionField"
+                                                                        value="3"
                                                                     />
                                                                     <span
                                                                         class="arrow"
@@ -137,7 +152,8 @@
                                                                 <span>
                                                                     <input
                                                                         type="radio"
-                                                                        name="category"
+                                                                        name="auditionField"
+                                                                        value="4"
                                                                     />
                                                                     <span
                                                                         class="arrow"
@@ -167,7 +183,7 @@
                                                             <input
                                                                 class="theme-partner wishket-label-input not-required-field"
                                                                 data-type="label"
-                                                                name="experience"
+                                                                name="auditionCareer"
                                                                 type="text"
                                                                 value=""
                                                             /><label
@@ -193,7 +209,7 @@
                                                             <input
                                                                 class="theme-partner wishket-label-input not-required-field"
                                                                 data-type="label"
-                                                                name="amount"
+                                                                name="expectedAmount"
                                                                 type="text"
                                                                 value=""
                                                             /><label
@@ -231,7 +247,7 @@
                                                             <input
                                                                 class="required theme-partner wishket-label-input date-input"
                                                                 data-type="label-placeholder"
-                                                                name="date_started"
+                                                                name="serviceStartDate"
                                                                 onkeypress="filter_number(this, 'm')"
                                                                 onkeyup="only_number(this, 'm')"
                                                                 placeholder="YYYY.MM.DD"
@@ -261,7 +277,7 @@
                                                             <input
                                                                 class="required theme-partner wishket-label-input date-input"
                                                                 data-type="label-placeholder"
-                                                                name="date_started"
+                                                                name="auditionDeadLine"
                                                                 onkeypress="filter_number(this, 'm')"
                                                                 onkeyup="only_number(this, 'm')"
                                                                 placeholder="YYYY.MM.DD"
@@ -291,7 +307,7 @@
                                                             <input
                                                                 class="required theme-partner wishket-label-input participation_rate"
                                                                 data-type="label-placeholder"
-                                                                name="participation_rate"
+                                                                name="auditionPersonnel"
                                                                 onkeypress="filter_percent(this)"
                                                                 onkeyup="only_number(this)"
                                                                 placeholder="예) 1명"
@@ -331,7 +347,7 @@
                                                         >
                                                             <input
                                                                 class="theme-partner wishket-text not-required-field"
-                                                                name="reference_url"
+                                                                name="auditionLocation"
                                                                 onkeyup="max_input(this, 500)"
                                                                 placeholder=""
                                                                 type="text"
@@ -361,7 +377,7 @@
                                                         >
                                                             <input
                                                                 class="theme-partner wishket-text not-required-field"
-                                                                name="reference_url"
+                                                                name="auditionBackground"
                                                                 onkeyup="max_input(this, 500)"
                                                                 placeholder=""
                                                                 type="text"
@@ -391,7 +407,7 @@
                                                         >
                                                             <input
                                                                 class="theme-partner wishket-text not-required-field"
-                                                                name="reference_url"
+                                                                name="auditionCategory"
                                                                 onkeyup="max_input(this, 500)"
                                                                 placeholder=""
                                                                 type="text"
@@ -428,7 +444,7 @@
                                                     <textarea
                                                         class="required textarea expand"
                                                         maxlength="5000"
-                                                        name="description"
+                                                        name="postContent"
                                                     ></textarea>
                                                 </div>
                                                 <span
@@ -523,6 +539,8 @@
                                                                         display: none;
                                                                     "
                                                                     onchange="previewFile()"
+                                                                    name="auditionFile"
+                                                                    multiple
                                                                 />
                                                             </div>
                                                         </div>
@@ -535,6 +553,7 @@
                                                                 <input
                                                                     type="text"
                                                                     class="img-caption-box-content"
+                                                                    name="fileContent"
                                                                     placeholder="올린 파일에 대한 설명을 입력해주세요."
                                                                 />
                                                             </div>
@@ -549,101 +568,6 @@
                                                 작품 추가
                                             </div>
                                         </div>
-                                        <!-- 썸내일추가 -->
-                                        <!-- <div class="thumbnail-box">
-                                            <div class="work-name">
-                                                작품글 표지
-                                                <span class="star">*</span>
-                                            </div>
-                                            <div class="work-name-content">
-                                                작품글 표지는 작품목록에 처음
-                                                보이는 사진으로 더욱 돋보이고
-                                                눈길이 가게 작품을 등록해보세요!
-                                            </div>
-                                            <div class="thumbnail-content-box">
-                                                <div class="left-box">
-                                                    <input
-                                                        type="file"
-                                                        id="thumbnail-upload"
-                                                        accept="image/*"
-                                                        style="display: none"
-                                                        onchange="previewImage(event)"
-                                                    />
-                                                    <button
-                                                        class="btn work-thumbnail-add-btn"
-                                                        style="width: 100%"
-                                                        type="button"
-                                                        onclick="document.getElementById('thumbnail-upload').click()"
-                                                    >
-                                                        작품 표지 등록
-                                                    </button>
-                                                    <p class="input_guide">
-                                                        작품 표지 규격: 480px
-                                                        480px
-                                                    </p>
-                                                    <div class="help-text">
-                                                        작품 표지를 등록하지
-                                                        않으면<br />
-                                                        꿈터에서 제공하는
-                                                        기본이미지가 적용됩니다
-                                                    </div>
-                                                </div>
-
-                                                <div class="right-box">
-                                                    <div class="sample-box">
-                                                        <div
-                                                            class="thumbnail-sample-part"
-                                                            id="preview-container"
-                                                        >
-                                                            <div
-                                                                class="preview-img sample"
-                                                            >
-                                                                <img
-                                                                    id="preview-image"
-                                                                    src="https://www.wishket.com/static/renewal/img/partner/profile/icon_btn_add_portfolio_image.png"
-                                                                    alt="Preview"
-                                                                />
-                                                            </div>
-                                                            <div
-                                                                class="preview"
-                                                            ></div>
-                                                        </div>
-                                                        <div
-                                                            class="sample-part"
-                                                        >
-                                                            <div
-                                                                class="work-thumbnail-title"
-                                                            >
-                                                                작품 제목 샘플
-                                                            </div>
-                                                            <div
-                                                                class="work-category"
-                                                            >
-                                                                작품 장르
-                                                            </div>
-                                                            <div
-                                                                class="work-content"
-                                                            >
-                                                                작품의 간단한
-                                                                요약
-                                                            </div>
-                                                            <div
-                                                                class="write-user"
-                                                            >
-                                                                <img
-                                                                    src="https://yozm.wishket.com/static/img/default_avatar.png"
-                                                                    class="comment-writer-img"
-                                                                />
-                                                                <a
-                                                                    class="comment-writer-name"
-                                                                    >작성자명</a
-                                                                >
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div> -->
                                     </div>
                                 </div>
                                 <div class="write-footer">
@@ -665,8 +589,11 @@
                 </div>
             </div>
         </main>
-        <footer></footer>
+    <footer th:replace="~{footer.html :: footer}"></footer>
     </body>
     <script src="/js/audition/write-file.js"></script>
     <script src="/js/audition/write-input.js"></script>
+    <script th:src="@{/js/header/header-logout.js}"></script>
+    <script th:src="@{/js/header/header-login.js}"></script>
+    <script th:src="@{/js/header/logout-click.js}"></script>
 </html>
