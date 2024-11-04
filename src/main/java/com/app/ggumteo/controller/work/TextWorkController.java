@@ -36,6 +36,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -171,13 +172,13 @@ public class TextWorkController {
 
 
 
-    @GetMapping("/list")
+    @GetMapping("list")
     public String list(
             @ModelAttribute Search search,
             @RequestParam(value = "page", defaultValue = "1") int page,
             Model model) {
 
-        // postType을 VIDEO로 설정하여 비디오 작품만 조회
+
         search.setPostType(PostType.TEXT.name());
         log.info("Received Search Parameters: {}", search);
         log.info("Received page: {}", page);
@@ -208,18 +209,16 @@ public class TextWorkController {
 
 
 
-    @GetMapping("/display")
+    @GetMapping("display")
     @ResponseBody
-    public ResponseEntity<byte[]> display(@RequestParam("fileName") String fileName) throws IOException {
-        byte[] fileData = postFileService.getFileData(fileName);
-        if (fileData == null) {
-            return ResponseEntity.notFound().build();
+    public byte[] display(@RequestParam("fileName") String fileName) throws IOException {
+        File file = new File("C:/upload", fileName);
+
+        if (!file.exists()) {
+            throw new FileNotFoundException("파일을 찾을 수 없습니다: " + fileName);
         }
 
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.IMAGE_JPEG);
-        return new ResponseEntity<>(fileData, headers, HttpStatus.OK);
+        return FileCopyUtils.copyToByteArray(file);
     }
 
     @GetMapping("/detail/{id}")

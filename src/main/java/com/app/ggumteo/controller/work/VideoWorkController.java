@@ -36,6 +36,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -170,7 +171,7 @@ public class VideoWorkController {
 
 
 
-    @GetMapping("/list")
+    @GetMapping("list")
     public String list(
             @ModelAttribute Search search,
             @RequestParam(value = "page", defaultValue = "1") int page,
@@ -208,23 +209,16 @@ public class VideoWorkController {
 
 
 
-    @GetMapping("/display")
+    @GetMapping("display")
     @ResponseBody
-    public ResponseEntity<byte[]> display(@RequestParam("fileName") String fileName) throws IOException {
-        byte[] fileData = postFileService.getFileData(fileName);
-        if (fileData == null) {
-            return ResponseEntity.notFound().build();
+    public byte[] display(@RequestParam("fileName") String fileName) throws IOException {
+        File file = new File("C:/upload", fileName);
+
+        if (!file.exists()) {
+            throw new FileNotFoundException("파일을 찾을 수 없습니다: " + fileName);
         }
 
-        HttpHeaders headers = new HttpHeaders();
-        if (fileName.endsWith(".mp4")) {
-            headers.setContentType(MediaType.valueOf("video/mp4"));
-        } else if (fileName.endsWith(".avi")) {
-            headers.setContentType(MediaType.valueOf("video/x-msvideo"));
-        } else {
-            headers.setContentType(MediaType.IMAGE_JPEG);  // 기본값은 이미지
-        }
-        return new ResponseEntity<>(fileData, headers, HttpStatus.OK);
+        return FileCopyUtils.copyToByteArray(file);
     }
 
 
@@ -242,7 +236,7 @@ public class VideoWorkController {
         model.addAttribute("threeWorks", threeWorks);
         model.addAttribute("threeAuthorWorks", threeAuthorWorks);
 
-        return "text/detail";
+        return "video/detail";
     }
     @PostMapping("/order")
     public ResponseEntity<String> completePayment(@RequestBody Map<String, Object> paymentData) {
