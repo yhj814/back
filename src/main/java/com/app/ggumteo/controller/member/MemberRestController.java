@@ -20,9 +20,12 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
@@ -92,5 +95,29 @@ public class MemberRestController {
     @GetMapping("/members/inquiry/{id}/admin-answer")
     public Optional<AdminAnswerDTO> getAdminAnswerByMember(@PathVariable("id") Long id) {
         return myPageService.getAdminAnswer(id);
+    }
+
+    //    파일 업로드
+    @PostMapping("upload")
+    @ResponseBody
+    public List<PostFileDTO> upload(@RequestParam("file") List<MultipartFile> files) {
+        try {
+            return postFileService.uploadFile(files);  // 서비스의 uploadFile 메서드 호출
+        } catch (IOException e) {
+            log.error("파일 업로드 중 오류 발생: ", e);
+            return Collections.emptyList();  // 오류 발생 시 빈 리스트 반환
+        }
+    }
+    //    가져오기
+    @GetMapping("display")
+    @ResponseBody
+    public byte[] display(@RequestParam("fileName") String fileName) throws IOException {
+        File file = new File("C:/upload", fileName);
+
+        if (!file.exists()) {
+            throw new FileNotFoundException("파일을 찾을 수 없습니다: " + fileName);
+        }
+
+        return FileCopyUtils.copyToByteArray(file);
     }
 }
