@@ -189,9 +189,6 @@
                                                     >가입일 순</span
                                                     >
                                             <span class="sort-filter-option"
-                                            >이름순</span
-                                            >
-                                            <span class="sort-filter-option"
                                             >활동 중</span
                                             >
                                             <span class="sort-filter-option"
@@ -205,10 +202,7 @@
                                                     class="filter-search-input"
                                                     placeholder="통합검색"
                                             />
-                                            <button class="selected-btn">
-                                                활동 중
-                                            </button>
-                                            <button class="selected-btn">
+                                            <button class="selected-btn" id="delete-members">
                                                 회원 삭제 (탈퇴)
                                             </button>
                                         </div>
@@ -280,87 +274,19 @@
                                         </div>
 
                                         <!-- Example row (Initial data) -->
-                                        <div class="apply-table-row">
-                                            <div class="apply-table-cell">
-                                                <input
-                                                        type="checkbox"
-                                                        class="apply-checkbox"
-                                                />
-                                            </div>
-                                            <div class="apply-table-cell">1</div>
-                                            <div class="apply-table-cell">
-                                                홍길동
-                                            </div>
-                                            <div class="apply-table-cell">
-                                                2024-01-01 18:28:50
-                                            </div>
-
-                                            <div class="apply-table-cell">
-                                                test@gmail.com
-                                            </div>
-                                            <div class="apply-table-cell">
-                                                01012341234
-                                            </div>
-                                            <div class="apply-table-cell">30</div>
-                                            <div class="apply-table-cell">남</div>
-                                            <div class="apply-table-cell">
-                                                testservice@gmail.com
-                                            </div>
-                                            <div
-                                                    class="apply-table-cell active-member"
-                                            >
-                                                활동 중
-                                            </div>
-                                            <div class="apply-table-cell">
-                                                <button class="edit-btn">
-                                                    수정
-                                                </button>
-                                            </div>
+                                        <div id="member-list">
+                                            <!--js로 삽입-->
                                         </div>
                                     </div>
                                 </div>
-                                <nav class="pagination">
+                                <nav class="pagination" id="pagination-members">
                                     <ul class="pagination-list">
-                                        <!-- 이전 페이지로 이동하는 버튼 -->
-                                        <li class="pagination-prev">
-                                            <a
-                                                    href="#"
-                                                    class="pagination-prev-link"
-                                                    rel="prev nofollow"
-                                            >
-                                                        <span
-                                                                class="pagination-prev-icon"
-                                                                aria-hidden="true"
-                                                        >‹</span
-                                                        >
-                                            </a>
-                                        </li>
-                                        <!-- 페이지 번호 버튼 -->
-                                        <li class="pagination-page active">
-                                            <a href="#" class="pagination-page-link"
-                                            >1</a
-                                            >
-                                        </li>
-
-                                        <!-- 다음 페이지로 이동하는 버튼 -->
-                                        <li class="pagination-next">
-                                            <a
-                                                    href="#"
-                                                    class="pagination-next-link"
-                                                    rel="next nofollow"
-                                            >
-                                                        <span
-                                                                class="pagination-next-icon"
-                                                                aria-hidden="true"
-                                                        >›</span
-                                                        >
-                                            </a>
-                                        </li>
+                                        <!--js로 삽입-->
                                     </ul>
                                 </nav>
 
                                 <!-- 활동상태 수정 모달창 -->
-                                <div class="status-edit-modal">
+                                <div class="status-edit-modal" id="member-status-change-modal">
                                     <div class="background-overlay"></div>
                                     <div class="modal-content">
                                         <div class="choice-container">

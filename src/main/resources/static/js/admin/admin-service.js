@@ -183,7 +183,73 @@ const inquiryService = {
 
 };
 
+// -----------------------------------------------------------------------------------------------
 
+// 회원 관리
+
+// 서버에서 회원 목록가져오기
+async function fetchMembers(page = 1, search = '', order = '') {
+    const searchParam = encodeURIComponent(search);
+    const orderParam = encodeURIComponent(order);
+
+    try {
+        const response = await fetch(`/admin/members?page=${page}&search=${searchParam}&order=${orderParam}`);
+        if (!response.ok) {
+            throw new Error("서버 응답 오류");
+        }
+
+        const { members, pagination } = await response.json();
+        return { members, pagination };
+    } catch (error) {
+        console.error("회원 데이터를 가져오는 중 오류 발생:", error);
+        return { members: [], pagination: null };
+    }
+}
+
+// 회원 상태 변경
+async function updateMemberStatus(memberId, status) {
+    try {
+        const response = await fetch(`/admin/members/status`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ memberId, status })
+        });
+
+        if (!response.ok) {
+            throw new Error("회원 상태 변경에 실패했습니다: " + response.statusText);
+        }
+
+        const result = await response.text(); // 성공 메시지 확인
+        console.log("회원 상태 변경 성공:", result);
+        return true;
+    } catch (error) {
+        console.error("회원 상태 변경 중 오류 발생:", error);
+        return false;
+    }
+}
+
+
+// 회원 삭제
+async function deleteSelectedMembers(memberIds) {
+    try {
+        const response = await fetch(`/admin/members/delete`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(memberIds)
+        });
+
+        if (!response.ok) {
+            throw new Error("회원 삭제에 실패했습니다: " + response.statusText);
+        }
+
+        const result = await response.text(); // 성공 메시지
+        console.log("회원 삭제 성공:", result);
+        return true;
+    } catch (error) {
+        console.error("회원 삭제 중 오류 발생:", error);
+        return false;
+    }
+}
 
 
 

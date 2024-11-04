@@ -586,6 +586,10 @@ video {
     padding: 25px 40px 30px 40px;
     border-radius: 10px;
     overflow-y: auto;
+    width: 400px;
+    height: 220px;
+    align-content: center;
+    margin: 360px auto
 }
 .choice-container {
     display: flex;
@@ -660,7 +664,7 @@ video {
 .choice-container .btn-no-issue.on,
 .choice-container .btn-terminated-member.on,
 .choice-container .btn-cancel.not-allowed.on {
-    background-color: #b7b7b7;
+    background-color: red;
 }
 /* (모달창 아님.) 신고상태 버튼, 문의 처리 상태 버튼 */
 .status{
@@ -1753,4 +1757,8 @@ h1.common-header-description {
     width: 200px;
     margin: 0 auto;
     text-overflow: ellipsis;
+}
+
+.inactive-member{
+    color: red;
 }

@@ -21,6 +21,7 @@ public class MemberProfileDTO implements Serializable {
     private String profileEmail;
     private String profilePhone;
     private String profileEtc;
+    private String memberStatus;
     private Long memberId;
     private String createdDate;
     private String updatedDate;
