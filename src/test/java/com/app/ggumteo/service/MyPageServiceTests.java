@@ -7,6 +7,7 @@ import com.app.ggumteo.domain.member.MemberDTO;
 import com.app.ggumteo.domain.member.MemberVO;
 import com.app.ggumteo.pagination.SettingTablePagination;
 import com.app.ggumteo.pagination.WorkAndFundingPagination;
+import com.app.ggumteo.repository.inquiry.InquiryDAO;
 import com.app.ggumteo.service.myPage.MyPageService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -21,6 +22,8 @@ import java.util.Optional;
 public class MyPageServiceTests {
     @Autowired
     private MyPageService myPageService;
+    @Autowired
+    private InquiryDAO inquiryDAO;
 
     @Test
     public void testGetMember() {
@@ -87,6 +90,11 @@ public class MyPageServiceTests {
         MyInquiryHistoryListDTO myInquiryHistories = myPageService.getMyInquiryHistoryList(1, workAndFundingPagination, memberVO.getId());
 
         log.info(myInquiryHistories.toString());
+    }
+
+    @Test
+    public void testGetAdminAnswer() {
+
     }
 
 }

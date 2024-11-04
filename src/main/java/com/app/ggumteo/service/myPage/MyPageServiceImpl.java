@@ -5,6 +5,7 @@ import com.app.ggumteo.aspect.annotation.MyFundingBuyerListLogStatus;
 import com.app.ggumteo.aspect.annotation.MyFundingListLogStatus;
 import com.app.ggumteo.aspect.annotation.MyInquiryHistoryListLogStatus;
 import com.app.ggumteo.constant.PostType;
+import com.app.ggumteo.domain.admin.AdminAnswerDTO;
 import com.app.ggumteo.domain.funding.*;
 import com.app.ggumteo.domain.inquiry.MyInquiryHistoryListDTO;
 import com.app.ggumteo.domain.member.MemberVO;
@@ -133,5 +134,11 @@ public class MyPageServiceImpl implements MyPageService {
     @Override
     public int getMyInquiryHistoriesTotal(Long memberId) {
         return inquiryDAO.getTotalInquiryHistoryByMember(memberId);
+    }
+
+    // 마이페이지 - 내 문의 관리자 답변
+    @Override
+    public Optional<AdminAnswerDTO> getAdminAnswer(Long id) {
+        return inquiryDAO.findAdminAnswer(id);
     }
 }

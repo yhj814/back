@@ -1,5 +1,6 @@
 package com.app.ggumteo.repository.inquiry;
 
+import com.app.ggumteo.domain.admin.AdminAnswerDTO;
 import com.app.ggumteo.domain.inquiry.InquiryDTO;
 import com.app.ggumteo.domain.post.PostDTO;
 import com.app.ggumteo.mapper.inquiry.InquiryMapper;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 
 @Repository
@@ -78,6 +80,11 @@ public class InquiryDAO {
     // 마이페이지 - 문의 내역 전체 갯수
     public int getTotalInquiryHistoryByMember(Long memberId) {
         return inquiryMapper.selectCountInquiryHistoryByMember(memberId);
+    };
+
+    // 마이페이지 - 문의 내역 관리자 답변
+    public Optional<AdminAnswerDTO> findAdminAnswer(Long id) {
+        return inquiryMapper.selectAdminAnswer(id);
     };
 }
 
