@@ -4,6 +4,7 @@ import com.app.ggumteo.domain.work.WorkDTO;
 import com.app.ggumteo.domain.work.WorkVO;
 import com.app.ggumteo.domain.file.PostFileDTO;
 import com.app.ggumteo.pagination.Pagination;
+import com.app.ggumteo.search.Search;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -35,15 +36,10 @@ public interface WorkMapper {
     void deletePostById(Long id);
 
     // 작품 목록 조회 및 썸네일 불러오기 (검색 및 필터링 추가)
-    List<WorkDTO> selectAllWithThumbnailAndSearchAndType(
-            @Param("keyword") String keyword,
-            @Param("genreType") String genreType,
-            @Param("pagination") Pagination pagination,
-            @Param("postType") String postType
-    );
+    List<WorkDTO> selectAllWithThumbnailAndSearchAndType(@Param("search") Search search, @Param("pagination") Pagination pagination);
 
     // 검색 조건이 포함된 총 작품 수 조회
-    int selectTotalWithSearchAndType(@Param("genreType") String genreType, @Param("keyword") String keyword, @Param("postType") String postType);
+    int selectTotalWithSearchAndType(@Param("search") Search search);
 
     // 상세보기에서 다중 파일 조회
     List<PostFileDTO> selectFilesByPostId(@Param("postId") Long postId);
@@ -61,6 +57,7 @@ public interface WorkMapper {
             @Param("workId") Long workId,
             @Param("postType") String postType
     );
+
     // 썸네일 파일 ID 업데이트 메소드
-    void updateThumbnailFileId(Long workId, Long thumbnailFileId);
+    void updateThumbnailFileId(@Param("workId") Long workId, @Param("thumbnailFileId") Long thumbnailFileId);
 }

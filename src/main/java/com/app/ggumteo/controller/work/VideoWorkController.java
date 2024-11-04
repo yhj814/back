@@ -127,6 +127,7 @@ public class VideoWorkController {
             @RequestParam(value = "newFiles", required = false) List<MultipartFile> newFiles,
             @RequestParam(value = "deletedFileIds", required = false) List<Long> deletedFileIds,
             @RequestParam(value = "newThumbnailFile", required = false) MultipartFile newThumbnailFile,
+            @ModelAttribute Search search,  // 검색 조건 추가
             @RequestParam(value = "page", defaultValue = "1") int page,  // 페이지 파라미터 추가
             Model model) {
         try {
@@ -142,22 +143,22 @@ public class VideoWorkController {
             workService.updateWork(workDTO, newFiles, deletedFileIds, newThumbnailFile); // 서비스로 전달
 
             // 수정 후 바로 리스트 페이지로 이동하여 데이터 전달
-            String genreType = null; // 필요 시 적절히 설정
-            String keyword = null; // 필요 시 적절히 설정
+            search.setPostType(PostType.VIDEO.name());
+            log.info("Received Search Parameters: {}", search);
+            log.info("Received page: {}", page);
 
             Pagination pagination = new Pagination();
             pagination.setPage(page);
 
-            int totalWorks = workService.findTotalWithSearchAndType(genreType, keyword, PostType.VIDEO.name());
+            int totalWorks = workService.findTotalWithSearchAndType(search);
             pagination.setTotal(totalWorks);
             pagination.progress2();
 
-            List<WorkDTO> works = workService.findAllWithThumbnailAndSearchAndType(genreType, keyword, pagination, PostType.VIDEO.name());
+            List<WorkDTO> works = workService.findAllWithThumbnailAndSearchAndType(search, pagination);
 
             model.addAttribute("works", works);
             model.addAttribute("pagination", pagination);
-            model.addAttribute("keyword", keyword);
-            model.addAttribute("genreType", genreType);
+            model.addAttribute("search", search);
 
             return "video/list"; // 수정 후 바로 list 페이지로 이동
         } catch (Exception e) {
@@ -168,38 +169,44 @@ public class VideoWorkController {
     }
 
 
+
     @GetMapping("/list")
     public String list(
-            @RequestParam(value = "genreType", required = false) String genreType,
-            @RequestParam(value = "keyword", required = false) String keyword,
+            @ModelAttribute Search search,
             @RequestParam(value = "page", defaultValue = "1") int page,
             Model model) {
 
+        // postType을 VIDEO로 설정하여 비디오 작품만 조회
+        search.setPostType(PostType.VIDEO.name());
+        log.info("Received Search Parameters: {}", search);
+        log.info("Received page: {}", page);
+
         Pagination pagination = new Pagination();
         pagination.setPage(page);
-        String postType = PostType.VIDEO.name();
 
-        // 텍스트 타입만 조회하기 위해서 필터링 추가
-        int totalWorks = workService.findTotalWithSearchAndType(genreType, keyword, postType);
+        int totalWorks = workService.findTotalWithSearchAndType(search);
         pagination.setTotal(totalWorks);
         pagination.progress2();
+
         log.info("Pagination - Page: {}", pagination.getPage());
         log.info("Pagination - Total: {}", pagination.getTotal());
         log.info("Pagination - Start Row: {}", pagination.getStartRow());
         log.info("Pagination - Row Count: {}", pagination.getRowCount());
 
-        List<WorkDTO> works = workService.findAllWithThumbnailAndSearchAndType(genreType, keyword, pagination, postType);
+        List<WorkDTO> works = workService.findAllWithThumbnailAndSearchAndType(search, pagination);
         log.info("Retrieved works list: {}", works);
-        log.info("Received genreType: {}", genreType);
-        log.info("Received keyword: {}", keyword);
-        log.info("Received postType: {}", PostType.VIDEO.name());
+
         model.addAttribute("works", works);
         model.addAttribute("pagination", pagination);
-        model.addAttribute("keyword", keyword);
-        model.addAttribute("genreType", genreType);
+        model.addAttribute("search", search);
 
         return "video/list";
     }
+
+
+
+
+
 
     @GetMapping("/display")
     @ResponseBody

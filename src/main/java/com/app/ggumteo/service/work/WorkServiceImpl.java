@@ -75,9 +75,10 @@ public class WorkServiceImpl implements WorkService {
     }
 
     @Override
-    public List<WorkDTO> findAllWithThumbnailAndSearchAndType(String genreType, String keyword, Pagination pagination, String postType) {
+    public List<WorkDTO> findAllWithThumbnailAndSearchAndType(Search search, Pagination pagination) {
+        log.info("Service Layer - Search Parameters: {}", search);
         pagination.progress2();
-        return workDAO.findAllWithThumbnailAndSearchAndType(genreType, keyword, pagination, postType);
+        return workDAO.findAllWithThumbnailAndSearchAndType(search, pagination);
     }
 
     @Override
@@ -150,9 +151,10 @@ public class WorkServiceImpl implements WorkService {
     }
 
     @Override
-    public int findTotalWithSearchAndType(String genreType, String keyword, String postType) {
-        return workDAO.findTotalWithSearchAndType(genreType, keyword, postType);
+    public int findTotalWithSearchAndType(Search search) {
+        return workDAO.findTotalWithSearchAndType(search);
     }
+
 
     @Override
     public List<WorkDTO> getThreeWorksByGenre(String genreType, Long workId, String postType) {

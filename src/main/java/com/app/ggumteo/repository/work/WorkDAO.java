@@ -60,17 +60,14 @@ public class WorkDAO {
         workMapper.deletePostById(id);
     }
 
-    // 작품 목록 조회 (썸네일 포함, 장르 필터, 검색 추가)
-    public List<WorkDTO> findAllWithThumbnailAndSearchAndType(String genreType, String keyword, Pagination pagination, String postType) {
-        return workMapper.selectAllWithThumbnailAndSearchAndType(genreType, keyword, pagination, postType);
+    // 작품 목록 조회 (썸네일 포함, 검색 및 필터링 추가)
+    public List<WorkDTO> findAllWithThumbnailAndSearchAndType(Search search, Pagination pagination) {
+        return workMapper.selectAllWithThumbnailAndSearchAndType(search, pagination);
     }
 
-
-
-
     // 검색 조건이 포함된 총 작품 수 조회
-    public int findTotalWithSearchAndType(String genreType, String keyword, String postType) {
-        return workMapper.selectTotalWithSearchAndType(genreType, keyword, postType);
+    public int findTotalWithSearchAndType(Search search) {
+        return workMapper.selectTotalWithSearchAndType(search);
     }
 
 

@@ -3,6 +3,7 @@ package com.app.ggumteo.service.work;
 import com.app.ggumteo.domain.file.PostFileDTO;
 import com.app.ggumteo.domain.work.WorkDTO;
 import com.app.ggumteo.pagination.Pagination;
+import com.app.ggumteo.search.Search;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -21,9 +22,10 @@ public interface WorkService {
 
     List<PostFileDTO> findFilesByPostId(Long postId);
 
-    int findTotalWithSearchAndType(String genreType, String keyword, String postType);
+    int findTotalWithSearchAndType(Search search);
 
-    List<WorkDTO> findAllWithThumbnailAndSearchAndType(String genreType, String keyword, Pagination pagination, String postType);
+    List<WorkDTO> findAllWithThumbnailAndSearchAndType(Search search, Pagination pagination);
+
 
     List<WorkDTO> getThreeWorksByGenre(String genreType, Long workId, String postType);
 
