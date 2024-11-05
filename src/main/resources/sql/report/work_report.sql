@@ -4,13 +4,21 @@ create table tbl_work_report (
     work_id bigint unsigned not null,
     created_date datetime default current_timestamp,
     report_status varchar(255) default 'REPORT',
+    member_profile_id bigint unsigned not null,
     constraint fk_work_report_work foreign key (work_id)
-    references tbl_work(id)
+    references tbl_work(id),
+    constraint fk_work_report_member_profile foreign key (member_profile_id)
+    references tbl_member_profile(id)
 );
 
 select *from tbl_work_report;
 
 insert into tbl_work_report
-values (6,'신고내용6',15,now(),default);
+values (9,'신고내용9',12,now(),default,11);
+
+select *from tbl_member_profile;
+
+select *from tbl_reply;
 
 drop table tbl_work_report;
+

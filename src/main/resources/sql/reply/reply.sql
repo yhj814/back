@@ -14,3 +14,8 @@ create table tbl_reply (
 alter table tbl_reply
 add constraint fk_reply_member_profile foreign key (member_profile_id)
     references tbl_member_profile(id);
+
+select * from tbl_reply;
+
+insert into tbl_reply
+values (9,'댓글9',12,11,now(),3);

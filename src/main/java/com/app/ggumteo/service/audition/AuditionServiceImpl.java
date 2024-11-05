@@ -10,6 +10,7 @@ import com.app.ggumteo.pagination.AuditionPagination;
 import com.app.ggumteo.pagination.Pagination;
 import com.app.ggumteo.repository.audition.AuditionDAO;
 import com.app.ggumteo.repository.post.PostDAO;
+import com.app.ggumteo.search.Search;
 import com.app.ggumteo.service.file.PostFileService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -76,10 +77,10 @@ public class AuditionServiceImpl implements AuditionService {
     public AuditionDTO findAuditionById(Long id) {return auditionDAO.findAuditionById(id);}
 
     @Override
-    public List<AuditionDTO> findAllAuditions(PostType postType, String keyword, AuditionPagination pagination) {
+    public List<AuditionDTO> findAllAuditions(PostType postType, Search search, AuditionPagination pagination) {
         pagination.progress();
 
-        return auditionDAO.findAllAuditions(postType, keyword, pagination);
+        return auditionDAO.findAllAuditions(postType, search, pagination);
     }
 
     @Override
@@ -87,28 +88,38 @@ public class AuditionServiceImpl implements AuditionService {
         log.info("업데이트 요청 - 작품 ID: {}", auditionDTO.getId());
         log.info("삭제할 파일 IDs: {}", deletedFileIds);
         log.info("새로 추가할 파일 수: {}", (newFiles != null ? newFiles.size() : 0));
+        auditionDTO.setPostId(auditionDTO.getId());
 
-        // 기존 데이터를 다시 조회하여 최신 정보를 가져옴 (특히 썸네일 파일 ID)
         AuditionDTO currentAudition = auditionDAO.findAuditionById(auditionDTO.getId());
 
-        // 기존 파일 삭제
-        if (deletedFileIds != null && !deletedFileIds.isEmpty()) {
-            postFileService.deleteFilesByIds(deletedFileIds);
-        }
+        if (currentAudition != null) {
+            // currentAudition에서 id 값을 auditionDTO로 설정
+            auditionDTO.setId(currentAudition.getId());
 
-        // 새 파일 추가 (썸네일 파일이 아닌 일반 파일들)
-        if (newFiles != null && !newFiles.isEmpty()) {
-            for (MultipartFile file : newFiles) {
-                if (!file.isEmpty()) {
-                    postFileService.saveFile(file, auditionDTO.getId());
+            // 기존 파일 삭제
+            if (deletedFileIds != null && !deletedFileIds.isEmpty()) {
+                postFileService.deleteFilesByIds(deletedFileIds);
+            }
+
+            // 새 파일 추가
+            if (newFiles != null && !newFiles.isEmpty()) {
+                for (MultipartFile file : newFiles) {
+                    if (!file.isEmpty()) {
+                        postFileService.saveFile(file, auditionDTO.getId());
+                    }
                 }
             }
+
+            // 모집 정보 업데이트
+            auditionDAO.updateAudition(auditionDTO);
+            log.info("작품 정보 업데이트 완료: 작품 ID: {}", auditionDTO.getId());
+            auditionDAO.updatePost(auditionDTO);
+        } else {
+            log.warn("업데이트할 작품을 찾을 수 없습니다. 작품 ID: {}", auditionDTO.getId());
         }
 
-        // 모집 정보 업데이트
-        auditionDAO.updateAudition(auditionDTO);
-        log.info("작품 정보 업데이트 완료: 작품 ID: {}", auditionDTO.getId());
     }
+
 
     @Override
     public void deleteAuditionById(Long id) {
@@ -117,13 +128,8 @@ public class AuditionServiceImpl implements AuditionService {
     }
 
     @Override
-    public int findTotal(PostType postType) {
-        return auditionDAO.findTotalAuditions(postType);
-    }
-
-    @Override
-    public int findTotalAuditionsSearch(PostType postType, String keyword) {
-        return auditionDAO.findTotalAuditionsSearch(postType, keyword);
+    public int findTotalAuditionsSearch(PostType postType, Search search) {
+        return auditionDAO.findTotalAuditionsSearch(postType, search);
     }
 
     @Override

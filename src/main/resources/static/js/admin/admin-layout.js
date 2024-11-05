@@ -91,6 +91,11 @@ const inquiryLayout = {
         this.currentOrder = order; // 현재 필터 상태 저장
         inquiryList.innerHTML = ""; // 기존 목록 초기화
 
+        if (!inquiries || inquiries.length === 0) {
+            inquiryList.innerHTML = '<p>조회할 데이터가 없습니다.</p>';
+            return;
+        }
+
         inquiries.forEach((inquiry) => {
             // 필터에 따른 데이터 표시 조건
             if (this.currentOrder === this.ORDER_NO_ANSWER && inquiry.inquiryStatus !== "NO") return;
@@ -346,6 +351,98 @@ function init() {
 document.addEventListener('DOMContentLoaded', init);
 
 
+//----------------------------------------------------------------------------------------------------------
+// 작품(영상)신고관리
+// 목록 HTML을 생성
+function renderReportList(reports) {
+    const container = document.getElementById("work-video-report-list");
+    container.innerHTML = ''; // 기존 내용을 지웁니다.
+
+    if (!reports || reports.length === 0) {
+        container.innerHTML = '<p>조회할 데이터가 없습니다.</p>';
+        return;
+    }
+
+    reports.forEach((report) => {
+        const row = document.createElement("div");
+        row.className = "apply-table-row";
+
+        row.innerHTML = `
+            <div class="apply-table-cell">
+                <input type="checkbox" class="apply-checkbox" data-id="${report.postId}"/>
+            </div>
+            <div class="apply-table-cell">${report.postId}</div>
+            <div class="apply-table-cell">${report.profileName || ''}</div>
+            <div class="apply-table-cell">${report.postCreatedDate || ''}</div>
+            <div class="apply-table-cell">${report.genreType || ''}</div>
+            <div class="apply-table-cell post-title">
+                <a href="#">${report.postTitle || ''}</a>
+            </div>
+            <div class="apply-table-cell">${report.readCount || 0}</div>
+            <div class="apply-table-cell">${report.star || 0}</div>
+            <div class="apply-table-cell">${report.workPrice || '0원'} 원</div>
+            <div class="apply-table-cell">
+                <button class="report-management-btn status report">
+                    ${report.reportStatus || '신고'}
+                </button>
+            </div>
+            <div class="apply-table-cell">
+                <button class="reasons-report-btn">보기</button>
+            </div>
+        `;
+
+        container.appendChild(row);
+    });
+
+    // 체크박스 이벤트 초기화
+    videoReportCheckboxEvents();
+}
+
+// 페이지네이션 HTML을 생성
+function renderVideoReportPagination(pagination) {
+    const paginationContainer = document.getElementById("pagination-video-report");
+    paginationContainer.innerHTML = ''; // 기존 페이지네이션 내용을 지웁니다.
+
+    if (!pagination) return;
+
+    // 이전 버튼
+    const prevButton = document.createElement("li");
+    prevButton.className = `pagination-prev ${pagination.page > 1 ? '' : 'disabled'}`;
+    prevButton.innerHTML = `
+        <a href="#" class="pagination-prev-link" rel="prev nofollow">
+            <span class="pagination-prev-icon" aria-hidden="true">‹</span>
+        </a>`;
+    prevButton.addEventListener("click", (e) => {
+        e.preventDefault();
+        if (pagination.page > 1) changePage(pagination.page - 1); // 이전 페이지로 이동
+    });
+    paginationContainer.appendChild(prevButton);
+
+    // 페이지 번호 버튼
+    for (let i = pagination.startPage; i <= Math.min(pagination.endPage, pagination.realEnd); i++) {
+        const pageButton = document.createElement("li");
+        pageButton.className = `pagination-page ${i === pagination.page ? 'active' : ''}`;
+        pageButton.innerHTML = `<a href="#" class="pagination-page-link">${i}</a>`;
+        pageButton.addEventListener("click", (e) => {
+            e.preventDefault();
+            changePage(i); // 선택한 페이지로 이동
+        });
+        paginationContainer.appendChild(pageButton);
+    }
+
+    // 다음 버튼
+    const nextButton = document.createElement("li");
+    nextButton.className = `pagination-next ${pagination.page < pagination.realEnd ? '' : 'disabled'}`;
+    nextButton.innerHTML = `
+        <a href="#" class="pagination-next-link" rel="next nofollow">
+            <span class="pagination-next-icon" aria-hidden="true">›</span>
+        </a>`;
+    nextButton.addEventListener("click", (e) => {
+        e.preventDefault();
+        if (pagination.page < pagination.realEnd) changePage(pagination.page + 1); // 다음 페이지로 이동
+    });
+    paginationContainer.appendChild(nextButton);
+}
 
 
 

@@ -823,3 +823,20 @@ textarea {
     border-radius: 10px;
     border: none;
 }
+
+.file-content {
+    margin-bottom: 20px;
+}
+
+.media-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.center-media {
+    max-width: 100%;
+    height: auto;
+}
+

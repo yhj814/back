@@ -664,14 +664,14 @@ video {
 .choice-container .btn-no-issue.on,
 .choice-container .btn-terminated-member.on,
 .choice-container .btn-cancel.not-allowed.on {
-    background-color: red;
+    background-color: rgb(183, 183, 183);
 }
 /* (모달창 아님.) 신고상태 버튼, 문의 처리 상태 버튼 */
 .status{
     color: white;
     border: none;
     border-radius: 4px;
-    width: 80px;
+    width: 97px;
     padding: 8px;
     box-sizing: border-box;
 }
@@ -1146,14 +1146,14 @@ h1.common-header-description {
 /* 세번째 열 */
 #work-section .apply-header-cell:nth-child(4),
 #work-section .apply-table-cell:nth-child(4) {
-    width: 7%;
+    width: 8%;
 
 }
 
 /* 네번째 열 */
 #work-section .apply-header-cell:nth-child(5),
 #work-section .apply-table-cell:nth-child(5) {
-    width: 5%;
+    width: 7%;
 }
 
 /* 다섯번째 열 */
@@ -1174,24 +1174,24 @@ h1.common-header-description {
 /* 일곱 열 */
 #work-section .apply-header-cell:nth-child(8),
 #work-section .apply-table-cell:nth-child(8) {
-    width: 5%;
+    width: 6%;
 }
 /* 여덟 열 */
 #work-section .apply-header-cell:nth-child(9),
 #work-section .apply-table-cell:nth-child(9) {
-    width: 6%;
+    width: 9%;
 }
 
 /* 아홉 열 */
 #work-section .apply-header-cell:nth-child(10),
 #work-section .apply-table-cell:nth-child(10) {
-    width: 6%;
+    width: 9%;
 }
 
 /* 마지막 열 */
 #work-section .apply-header-cell:nth-child(11),
 #work-section .apply-table-cell:nth-child(11) {
-    width: 7%;
+    width: 8%;
 }
 
 

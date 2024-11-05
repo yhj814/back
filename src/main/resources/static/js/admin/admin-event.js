@@ -522,7 +522,89 @@ function init() {
 
 document.addEventListener('DOMContentLoaded', init);
 
+//----------------------------------------------------------------------------------------------------------
+// 작품(영상)신고관리
 
+// 정렬 옵션
+let currentOrder = 'postCreatedDate';
+let currentSearch = '';
+
+// 페이지 변경
+async function changePage(page) {
+    const data = await fetchVideoReports(page, currentSearch, currentOrder);
+    renderReportList(data.reports);
+    renderVideoReportPagination(data.pagination);
+}
+
+// 전체 선택 및 개별 체크박스 이벤트
+function videoReportCheckboxEvents() {
+    const selectAllCheckbox = document.querySelector('#video-report-selectAll .select-all');
+    const videoReportCheckboxes = document.querySelectorAll('.apply-table-row .apply-checkbox');
+
+    selectAllCheckbox.addEventListener('change', (event) => {
+        const isChecked = event.target.checked;
+        videoReportCheckboxes.forEach(checkbox => {
+            checkbox.checked = isChecked;
+        });
+    });
+
+    videoReportCheckboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', () => {
+            const allChecked = Array.from(videoReportCheckboxes).every(cb => cb.checked);
+            selectAllCheckbox.checked = allChecked;
+        });
+    });
+}
+
+// 초기화 함수
+async function initPage() {
+    // 기본 데이터를 불러옵니다.
+    const data = await fetchVideoReports();
+    renderReportList(data.reports);
+    renderVideoReportPagination(data.pagination);
+
+    // 검색 입력 필드에 이벤트 리스너 추가 (Enter 입력 시 검색 실행)
+    const searchInput = document.getElementById("video-report-search");
+    searchInput.addEventListener("keypress", (e) => {
+        if (e.key === "Enter") {
+            currentSearch = searchInput.value;
+            changePage(1);
+        }
+    });
+
+    // 정렬 옵션 클릭 시 정렬 적용
+    document.querySelectorAll(".sort-filter-option").forEach((option) => {
+        option.addEventListener("click", () => {
+            document.querySelectorAll(".sort-filter-option").forEach(opt => opt.classList.remove("selected"));
+            option.classList.add("selected");
+
+            // 정렬 조건 설정
+            const selectedOrder = option.textContent.trim();
+            switch (selectedOrder) {
+                case "작성일 순":
+                    currentOrder = "postCreatedDate";
+                    break;
+                case "조회수 순":
+                    currentOrder = "readCount";
+                    break;
+                case "평점수 순":
+                    currentOrder = "star";
+                    break;
+                case "신고관리":
+                    currentOrder = "reportStatus"; // REPORT 상태 필터링
+                    break;
+                default:
+                    currentOrder = "postCreatedDate";
+            }
+
+            // 첫 페이지부터 적용
+            changePage(1);
+        });
+    });
+}
+
+// 페이지가 로드되면 initPage 함수를 실행
+document.addEventListener("DOMContentLoaded", initPage);
 
 
 
