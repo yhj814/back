@@ -1,5 +1,6 @@
 package com.app.ggumteo.mapper.inquiry;
 
+import com.app.ggumteo.domain.admin.AdminAnswerDTO;
 import com.app.ggumteo.domain.inquiry.InquiryDTO;
 import com.app.ggumteo.domain.post.PostDTO;
 import com.app.ggumteo.pagination.AdminPagination;
@@ -11,6 +12,7 @@ import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Mapper
 public interface InquiryMapper {
@@ -66,6 +68,9 @@ public interface InquiryMapper {
 
     // 마이페이지 - 문의 내역 전체 갯수
     public int selectCountInquiryHistoryByMember(Long memberId);
+
+    // 마이페이지 - 문의 내역 관리자 답변
+    public Optional<AdminAnswerDTO> selectAdminAnswer(Long id);
 }
 
 
