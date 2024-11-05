@@ -6,7 +6,6 @@ import com.app.ggumteo.domain.file.PostFileDTO;
 import com.app.ggumteo.domain.funding.FundingDTO;
 import com.app.ggumteo.domain.member.MemberProfileVO;
 import com.app.ggumteo.domain.member.MemberVO;
-import com.app.ggumteo.domain.work.WorkDTO;
 import com.app.ggumteo.service.file.PostFileService;
 import com.app.ggumteo.service.funding.FundingService;
 import jakarta.servlet.http.HttpSession;
@@ -25,7 +24,7 @@ import java.util.List;
 @RequestMapping("/text/funding/*")
 @RequiredArgsConstructor
 @Slf4j
-public class FundingController {
+public class TextFundingController {
     private final HttpSession session;
     private final PostFileService postFileService;
     private final FundingService fundingService;
@@ -50,6 +49,7 @@ public class FundingController {
             return Collections.emptyList();  // 오류 발생 시 빈 리스트 반환
         }
     }
+
 
     @GetMapping("write")
     public String goToWriteForm() {

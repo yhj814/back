@@ -31,9 +31,11 @@ public interface FundingMapper {
     // 펀딩 삽입
     public void insert(FundingDTO fundingDTO);
     // 펀딩 상품 저장
-    void saveFundingProduct(FundingProductVO fundingProductVO);
+    void insertFundingProduct(FundingProductVO fundingProductVO);
 
     // 펀딩 정보 수정 (tbl_funding 및 tbl_post 업데이트)
     void updateFunding(FundingDTO fundingDTO);
+
+    public void updateFundingStatusToEnded();
 
 }
