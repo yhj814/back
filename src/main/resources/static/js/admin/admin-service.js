@@ -186,7 +186,6 @@ const inquiryService = {
 // -----------------------------------------------------------------------------------------------
 
 // 회원 관리
-
 // 서버에서 회원 목록가져오기
 async function fetchMembers(page = 1, search = '', order = '') {
     const searchParam = encodeURIComponent(search);
@@ -250,6 +249,28 @@ async function deleteSelectedMembers(memberIds) {
         return false;
     }
 }
+
+//----------------------------------------------------------------------------------------------------------
+// 작품(영상)신고관리
+
+async function fetchVideoReports(page = 1, search = '', order = 'postCreatedDate') {
+    const searchParam = encodeURIComponent(search);
+    const orderParam = encodeURIComponent(order);
+
+    try {
+        const response = await fetch(`/admin/videoReports?page=${page}&search=${search}&order=${order}`);
+        if (!response.ok) {
+            throw new Error("서버 응답 오류");
+        }
+
+        const { reports, pagination } = await response.json();
+        return { reports, pagination };
+    } catch (error) {
+        console.error("영상 신고 데이터를 가져오는 중 오류 발생:", error);
+        return { reports: [], pagination: null };
+    }
+}
+
 
 
 
