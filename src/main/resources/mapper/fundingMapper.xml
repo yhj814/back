@@ -28,4 +28,36 @@
         from tbl_funding f join tbl_post p
         on f.id = p.id and f.id = #{id} and p.post_type = #{postType}
     </select>
+
+    <!-- 펀딩 삽입 -->
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        insert into tbl_funding (id, genre_type, investor_number, target_price, converge_price, file_content, funding_content, funding_status)
+        values (#{id}, #{genreType}, #{investorNumber}, #{targetPrice}, #{convergePrice}, #{fileContent}, #{fundingContent}, '펀딩 중')
+    </insert>
+    <!-- 펀딩 상품 삽입 -->
+    <insert id="insertFundingProduct" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        insert into tbl_funding_product (product_name, product_price, product_amount, funding_id)
+        values (#{productName}, #{productPrice}, #{productAmount}, #{fundingId})
+    </insert>
+
+    <!-- 펀딩 정보 수정 (썸네일 파일 ID 포함) -->
+    <update id="updateFunding">
+        update tbl_funding
+        set
+        genre_type = #{genreType},
+        investor_number = #{investorNumber},
+        target_price = #{targetPrice},
+        converge_price = #{convergePrice},
+        file_content = #{fileContent},
+        funding_content = #{fundingContent}
+        funding_status = #{fundingStatus}
+        <if test="thumbnailFileId != null">
+            , thumbnail_file_id = #{thumbnailFileId}
+        </if>
+        where id = #{id}
+    </update>
+
+
+
+
 </mapper>
