@@ -31,15 +31,18 @@
             p.post_title, p.post_content, p.member_profile_id, p.created_date, p.updated_date,
             f.file_name as thumbnail_file_name, f.file_path as thumbnail_file_path,
             w.thumbnail_file_id as thumbnailFileId,
-            mp.profile_nickname
+            mp.profile_nickname,
+            m.profile_img_url as profileImgUrl
         from
             tbl_work w
                 join tbl_post p on w.id = p.id
                 join tbl_member_profile mp on p.member_profile_id = mp.id
+                join tbl_member m on mp.member_id = m.id
                 left join tbl_file f on w.thumbnail_file_id = f.id
         where
             w.id = #{id}
     </select>
+
 
     <!-- 조회수 증가 -->
     <update id="increaseReadCount" parameterType="Long">
@@ -90,11 +93,13 @@
         p.post_title, p.post_content, p.member_profile_id, p.created_date, p.updated_date,
         f.file_name as thumbnail_file_name, f.file_path as thumbnail_file_path,
         mp.profile_nickname,
+        m.profile_img_url as profileImgUrl,
         ifnull(round(avg(r.star), 1), 0) as star
         from
         tbl_work w
         join tbl_post p on w.id = p.id
         join tbl_member_profile mp on p.member_profile_id = mp.id
+        join tbl_member m on mp.member_id = m.id
         left join tbl_reply r on w.id = r.work_id
         left join tbl_file f on w.thumbnail_file_id = f.id
         where 1 = 1
@@ -103,6 +108,7 @@
         order by w.id desc
         limit #{pagination.startRow}, #{pagination.rowCount}
     </select>
+
 
 
     <!-- 검색 조건이 포함된 총 작품 수 조회 -->
@@ -131,12 +137,14 @@
         select
             w.id, w.work_price, p.post_title, p.created_date,
             mp.profile_nickname as profileNickName,
+            m.profile_img_url as profileImgUrl,
             f.file_path as thumbnailFilePath,
             ifnull(round(avg(r.star), 1), 0) as star
         from
             tbl_work w
                 join tbl_post p on w.id = p.id
                 join tbl_member_profile mp on p.member_profile_id = mp.id
+                join tbl_member m on mp.member_id = m.id
                 left join tbl_reply r on w.id = r.work_id
                 left join tbl_file f on w.thumbnail_file_id = f.id
         where w.genre_type = #{genreType} and w.id != #{workId}
@@ -146,6 +154,7 @@
             limit 3
     </select>
 
+
     <!-- 같은 작가의 작품 3개 불러오기 -->
     <select id="selectThreeByAuthor" resultType="workDTO" parameterType="map">
         select
@@ -153,11 +162,13 @@
             p.post_title, p.post_content, p.member_profile_id, p.created_date, p.updated_date,
             f.file_name as thumbnail_file_name, f.file_path as thumbnail_file_path,
             mp.profile_nickname,
+            m.profile_img_url as profileImgUrl,
             ifnull(round(avg(r.star), 1), 0) as star
         from
             tbl_work w
                 join tbl_post p on w.id = p.id
                 join tbl_member_profile mp on p.member_profile_id = mp.id
+                join tbl_member m on mp.member_id = m.id
                 left join tbl_file f on w.thumbnail_file_id = f.id
                 left join tbl_reply r on r.work_id = w.id
         where p.member_profile_id = #{memberProfileId} and w.id != #{workId}
@@ -166,6 +177,7 @@
         order by p.created_date desc
             limit 3
     </select>
+
 
     <!-- 썸네일 파일 ID 초기화 -->
     <update id="updateThumbnailFileId">
