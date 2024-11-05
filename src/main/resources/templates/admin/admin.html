@@ -185,13 +185,13 @@
                                     <div class="filter-wrap">
                                         <div class="sort-filter-options">
                                                     <span
-                                                            class="sort-filter-option selected"
+                                                            class="sort-filter-option selected member"
                                                     >가입일 순</span
                                                     >
-                                            <span class="sort-filter-option"
+                                            <span class="sort-filter-option member"
                                             >활동 중</span
                                             >
-                                            <span class="sort-filter-option"
+                                            <span class="sort-filter-option member"
                                             >탈퇴</span
                                             >
                                         </div>
@@ -337,7 +337,7 @@
                                     <div class="filter-wrap">
                                         <div class="sort-filter-options">
                                                     <span
-                                                            class="sort-filter-option selected" id="announcement-list-created-date"
+                                                            class="sort-filter-option selected " id="announcement-list-created-date"
                                                     >작성일 순</span
                                                     >
                                             <span class="sort-filter-option" id="announcement-list-updated-date"
@@ -510,18 +510,18 @@
                                 <div class="common-layout-container">
                                     <div class="filter-wrap">
                                         <div class="sort-filter-options" id="video-report-filter">
-                                                    <span class="sort-filter-option selected"
+                                                    <span class="sort-filter-option selected video"
                                                     >작성일 순</span
                                                     >
-                                            <span class="sort-filter-option"
+                                            <span class="sort-filter-option video"
                                             >조회수 순</span
                                             >
-                                            <span class="sort-filter-option"
+                                            <span class="sort-filter-option video"
                                             >평점수 순</span
                                             >
                                             <!-- 신고관리 defalt  -->
                                             <span
-                                                    class="sort-filter-option"
+                                                    class="sort-filter-option video"
                                             >신고관리</span
                                             >
                                         </div>
@@ -649,24 +649,27 @@
                                 <div class="background-overlay"></div>
                             </div>
                             <!-- 신고관리 모달창 -->
-                            <div class="report-management-modal video">
+                            <div class="report-management-modal video" id="video-report-modal">
                                 <div class="background-overlay"></div>
                                 <div class="modal-content">
                                     <div class="choice-container">
                                         <input
                                                 class="btn-delete-processing"
                                                 type="button"
-                                                value="삭제 처리"
+                                                value="DELETE"
+                                                data-status="DELETE"
                                         />
                                         <input
                                                 class="btn-hold"
                                                 type="button"
-                                                value="보류"
+                                                value="HOLD"
+                                                data-status="HOLD"
                                         />
                                         <input
                                                 class="btn-no-issue"
                                                 type="button"
-                                                value="이상 없음"
+                                                value="NOPROBLEM"
+                                                data-status="NOPROBLEM"
                                         />
                                     </div>
                                     <div class="button-container">
@@ -676,7 +679,7 @@
                             </div>
                             <!-- 여기까지(신고관리 모달창)!! -->
                             <!-- 신고내역 모달창 -->
-                            <div class="reasons-report-modal video">
+                            <div class="reasons-report-modal video" id="video-report-modal-content">
                                 <div class="modal-content">
                                     <div class="reasons-report-header">
                                         <div class="header-title-wrapper">
@@ -702,7 +705,7 @@
                                                     >
                                                         <strong>이름 :</strong>
                                                         <span class="name">
-                                                                    정지수
+                                                                    신고자이름
                                                                 </span>
                                                     </p>
                                                     <p
@@ -710,7 +713,7 @@
                                                     >
                                                         <strong>이메일 : </strong>
                                                         <span class="email"
-                                                        >000jisoo@naver.com</span
+                                                        >신고자 이메일</span
                                                         >
                                                     </p>
                                                     <p
@@ -720,7 +723,7 @@
                                                         >신고 시간 :
                                                         </strong>
                                                         <span class="time"
-                                                        >2024-10-19 15:00</span
+                                                        >신고한시간</span
                                                         >
                                                     </p>
                                                 </div>
@@ -736,7 +739,7 @@
                                                         rows="4"
                                                         cols="50"
                                                         readonly
-                                                >작품 결제를 했는데, 작품 영상 링크를 아직까지 안 보냈습니다. 메일로 연락해도 답이 없습니다.....ㅠㅠ</textarea
+                                                >신고내용</textarea
                                                 >
                                             </div>
                                         </form>

@@ -26,4 +26,10 @@ public class WorkReportServiceImpl implements WorkReportService {
     public int getVideoReportsCount(String search, String order) {
         return workReportDAO.getVideoReportsCount(search, order);
     }
+
+    //    신고 상태 업데이트
+    @Override
+    public void updateReportStatus(Long workId, String reportStatus) {
+        workReportDAO.updateReportStatus(workId, reportStatus);
+    }
 }

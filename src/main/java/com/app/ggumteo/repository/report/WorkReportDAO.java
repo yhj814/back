@@ -22,4 +22,9 @@ public class WorkReportDAO {
     public int getVideoReportsCount(String search, String order) {
         return workReportMapper.countVideoReports(search,order);
     }
+
+//    신고 상태 업데이트
+    public void updateReportStatus(Long workId, String reportStatus) {
+        workReportMapper.videoStatusChange(workId, reportStatus);
+    }
 }

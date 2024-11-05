@@ -252,7 +252,7 @@ async function deleteSelectedMembers(memberIds) {
 
 //----------------------------------------------------------------------------------------------------------
 // 작품(영상)신고관리
-
+// 영상 신고 목록 가져오기
 async function fetchVideoReports(page = 1, search = '', order = 'postCreatedDate') {
     const searchParam = encodeURIComponent(search);
     const orderParam = encodeURIComponent(order);
@@ -271,7 +271,28 @@ async function fetchVideoReports(page = 1, search = '', order = 'postCreatedDate
     }
 }
 
+// 신고 상태 업데이트 요청 함수
+async function updateVideoReportStatus(workId, reportStatus) {
+    try {
+        const response = await fetch(`/admin/videoReports/status`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ workId, reportStatus }),
+        });
 
+        if (!response.ok) {
+            throw new Error("신고 상태 업데이트 실패");
+        }
+
+        console.log("신고 상태가 성공적으로 업데이트되었습니다.");
+        return true;
+    } catch (error) {
+        console.error("신고 상태 업데이트 중 오류 발생:", error);
+        return false;
+    }
+}
 
 
 
