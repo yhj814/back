@@ -11,6 +11,7 @@ import com.app.ggumteo.pagination.Pagination;
 import com.app.ggumteo.pagination.SettingTablePagination;
 import com.app.ggumteo.pagination.WorkAndFundingPagination;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -19,6 +20,7 @@ import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
+@Slf4j
 public class FundingDAO {
     private final FundingMapper fundingMapper;
 
@@ -42,6 +44,7 @@ public class FundingDAO {
         if (fundingDTO.getFundingStatus() == null) {
             fundingDTO.setFundingStatus("펀딩 중");
         }
+
         fundingMapper.insert(fundingDTO);
     }
 

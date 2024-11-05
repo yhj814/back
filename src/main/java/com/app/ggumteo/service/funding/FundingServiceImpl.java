@@ -45,15 +45,20 @@ public class FundingServiceImpl implements FundingService{
         // Funding 테이블에 저장할 데이터 설정
         fundingDTO.setId(postId);
         fundingDAO.save(fundingDTO);
-
+        log.info("Saving FundingDTO: {}", fundingDTO);
         // 펀딩 상품 삽입 처리
+        log.info("Saving FundingDTO: {}", fundingDTO);
         List<FundingProductVO> fundingProducts = fundingDTO.getFundingProducts();
         if (fundingProducts != null && !fundingProducts.isEmpty()) {
             for (FundingProductVO product : fundingProducts) {
                 product.setFundingId(postId); // 펀딩 ID 설정
                 fundingDAO.saveFundingProduct(product);
+                log.info("Saving Product: {}", product);
             }
+        } else {
+            log.error("No products found in FundingDTO");
         }
+
 
         // 파일 저장 처리 (펀딩 파일)
         if (fundingFiles != null && fundingFiles.length > 0) {

@@ -67,6 +67,9 @@ public class TextFundingController {
             }
             fundingDTO.setPostType(PostType.TEXT.name());
             fundingDTO.setMemberProfileId(member.getId());
+            log.info("Received FundingDTO: {}", fundingDTO);
+            log.info("Received Funding Products: {}", fundingDTO.getFundingProducts());
+
 
             // Work 저장, 파일은 서비스에서 처리
             fundingService.write(fundingDTO, fundingFiles, thumbnailFile);
