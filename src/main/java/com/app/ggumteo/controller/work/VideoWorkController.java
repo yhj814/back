@@ -165,7 +165,7 @@ public class VideoWorkController {
         } catch (Exception e) {
             log.error("Error updating work: ", e);
             model.addAttribute("error", "업데이트 중 오류가 발생했습니다: " + e.getMessage());
-            return "video/modify";
+            return "video/list";
         }
     }
 

@@ -2,6 +2,8 @@ package com.app.ggumteo.repository.funding;
 
 import com.app.ggumteo.domain.funding.BuyFundingProductDTO;
 import com.app.ggumteo.domain.funding.FundingDTO;
+import com.app.ggumteo.domain.funding.FundingProductVO;
+import com.app.ggumteo.domain.work.WorkDTO;
 import com.app.ggumteo.mapper.funding.BuyFundingProductMapper;
 import com.app.ggumteo.mapper.funding.FundingMapper;
 import com.app.ggumteo.pagination.MyPagePagination;
@@ -34,4 +36,21 @@ public class FundingDAO {
     public Optional<FundingDTO> findById(Long id, String postType) {
         return fundingMapper.selectById(id, postType);
     }
+
+    // 펀딩 삽입 메서드
+    public void save(FundingDTO fundingDTO) {
+        fundingMapper.insert(fundingDTO);
+    }
+
+    // 펀딩 상품 삽입 메서드
+    public void saveFundingProduct(FundingProductVO fundingProductVO) {
+        fundingMapper.saveFundingProduct(fundingProductVO);
+    }
+
+    // 펀딩 정보 수정
+    public void updateFunding(FundingDTO fundingDTO) {
+        fundingMapper.updateFunding(fundingDTO);
+    }
+
+
 }
