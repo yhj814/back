@@ -88,19 +88,13 @@ public class AuditionServiceImpl implements AuditionService {
         log.info("업데이트 요청 - 작품 ID: {}", auditionDTO.getId());
         log.info("삭제할 파일 IDs: {}", deletedFileIds);
         log.info("새로 추가할 파일 수: {}", (newFiles != null ? newFiles.size() : 0));
+        auditionDTO.setPostId(auditionDTO.getId());
 
-        // 기존 데이터를 다시 조회하여 최신 정보를 가져옴 (특히 썸네일 파일 ID)
         AuditionDTO currentAudition = auditionDAO.findAuditionById(auditionDTO.getId());
 
         if (currentAudition != null) {
             // currentAudition에서 id 값을 auditionDTO로 설정
             auditionDTO.setId(currentAudition.getId());
-
-            // 기타 필요한 필드들을 currentAudition에서 가져와서 설정
-            auditionDTO.setPostTitle(currentAudition.getPostTitle());
-            auditionDTO.setPostContent(currentAudition.getPostContent());
-            auditionDTO.setPostType(currentAudition.getPostType());
-            auditionDTO.setMemberProfileId(currentAudition.getMemberProfileId());
 
             // 기존 파일 삭제
             if (deletedFileIds != null && !deletedFileIds.isEmpty()) {
@@ -119,9 +113,11 @@ public class AuditionServiceImpl implements AuditionService {
             // 모집 정보 업데이트
             auditionDAO.updateAudition(auditionDTO);
             log.info("작품 정보 업데이트 완료: 작품 ID: {}", auditionDTO.getId());
+            auditionDAO.updatePost(auditionDTO);
         } else {
             log.warn("업데이트할 작품을 찾을 수 없습니다. 작품 ID: {}", auditionDTO.getId());
         }
+
     }
 
 
