@@ -56,7 +56,7 @@ const showMyFundingList = ({myFundingPosts, workAndFundingPagination}) => {
                     <div class="btn products-image">
                         <a
                             ><img
-                                src="/images/member/thumnail.png"
+                             src="/images/member/thumnail.png"
                         /></a>
                     </div>
                 </div>
@@ -138,8 +138,6 @@ const showMyFundingList = ({myFundingPosts, workAndFundingPagination}) => {
                 <a href="${workAndFundingPagination.startPage - 1}" class="page-link back"></a>
             </li>
         `
-        console.log("펀딩 게시물 목록/이전 : ", workAndFundingPagination.prev);
-        console.log("펀딩 게시물 목록/이전 : ", pagingText);
     }
     for(let i=workAndFundingPagination.startPage; i<=workAndFundingPagination.endPage; i++){
         if(workAndFundingPagination.page === i){
@@ -155,8 +153,6 @@ const showMyFundingList = ({myFundingPosts, workAndFundingPagination}) => {
                 <a href="${workAndFundingPagination.endPage + 1}" class="page-link next"></a>
             </li>
         `
-        console.log("펀딩 게시물 목록/다음 : ", workAndFundingPagination.next);
-        console.log("펀딩 게시물 목록/다음 : ", pagingText);
     }
 
     myFundingListPaging.innerHTML = pagingText;
@@ -255,7 +251,6 @@ const showFundingBuyerList = ({myFundingBuyers, settingTablePagination}) => {
                                     class="btn-group choice-group"
                             >
                             `
-        console.log(myFundingBuyer.fundingSendStatus);
             if(myFundingBuyer.fundingSendStatus === "YES") {
                         text += `
                                 <div
@@ -327,8 +322,6 @@ const showFundingBuyerList = ({myFundingBuyers, settingTablePagination}) => {
                 <a href="${settingTablePagination.startPage - 1}" class="page-link back"></a>
             </li>
         `
-        console.log("구매자 목록/이전 : ", settingTablePagination.prev);
-        console.log("구매자 목록/이전 : ", text);
     }
 
     if(settingTablePagination.next) {
@@ -337,8 +330,6 @@ const showFundingBuyerList = ({myFundingBuyers, settingTablePagination}) => {
                 <a href="${settingTablePagination.endPage + 1}" class="page-link next"></a>
             </li>
         `
-        console.log("구매자 목록/다음 : ",settingTablePagination.next);
-        console.log("구매자 목록/다음 : ",text);
     }
     text += `    </ul>`;
 
@@ -478,8 +469,6 @@ const showMyBuyFundingList = ({myBuyFundingPosts, workAndFundingPagination}) => 
                 <a href="${workAndFundingPagination.startPage - 1}" class="page-link back"></a>
             </li>
         `
-        console.log("결제한 펀딩 게시물 목록/이전 : ", workAndFundingPagination.prev);
-        console.log("결제한 펀딩 게시물 목록/이전 : ", pagingText);
     }
     for(let i=workAndFundingPagination.startPage; i<=workAndFundingPagination.endPage; i++){
         if(workAndFundingPagination.page === i){
@@ -495,8 +484,6 @@ const showMyBuyFundingList = ({myBuyFundingPosts, workAndFundingPagination}) => 
                 <a href="${workAndFundingPagination.endPage + 1}" class="page-link next"></a>
             </li>
         `
-        console.log("결제한 펀딩 게시물 목록/다음 : ", workAndFundingPagination.next);
-        console.log("결제한 펀딩 게시물 목록/다음 : ", pagingText);
     }
 
     myBuyFundingListPaging.innerHTML = pagingText;
@@ -511,13 +498,7 @@ const showMyInquiryHistoryList = ({myInquiryHistories, workAndFundingPagination}
 let text = ``;
 let pagingText = ``;
 
-    console.log("layout: myInquiryHistories", myInquiryHistories);
-    console.log("workAndFundingPagination", workAndFundingPagination);
-
     myInquiryHistories.forEach((myInquiryHistory) => {
-
-        console.log("myInquiryHistory", myInquiryHistory);
-
         text += `<div class="list-item">
             <div class="inquiry-list">
                 <div class="flex-box">
@@ -540,7 +521,7 @@ let pagingText = ``;
                                 <div
                                     class="timecontent-font"
                                 >
-                                    몇 시간 전인지
+                                     ${timeForToday(myInquiryHistory.postCreatedDate)}
                                 </div>
                             </div>
                         </div>
@@ -589,7 +570,8 @@ let pagingText = ``;
                                     class="edit-my-off"
                                 >
                                     <div
-                                        class="icon-my-edit-off"
+                                        id="admin-answer-btn"
+                                        class="icon-my-edit-off ${myInquiryHistory.postId}"
                                     ></div>
                                 </div>
                                 <div
@@ -608,54 +590,19 @@ let pagingText = ``;
                     </div>
                 </div>
                 <div
-                    class="setting-table"
+                    class="setting-table inquiry-${myInquiryHistory.postId}""
                     style="
                         border-top: 1px solid
                             rgb(224, 224, 224);
                         display: none;
-                    "
+                    " 
                 >
-                    <div class="setting-th">
-                        <div
-                            class="setting-td manager"
-                        >
-                            관리자 답변
-                        </div>
-                    </div>
-                    <div
-                        class="setting-tr-group"
-                        style="
-                            border-bottom: solid 1px
-                                #e0e0e0;
-                            padding-bottom: 0px;
-                        "
-                    >
-                        <div
-                            class="setting-tr"
-                            style="padding-top: 7px"
-                        >
-                            <div
-                                class="setting-td with-sub manager"
-                                style="width: 700px"
-                            >
-                                <div
-                                    class="sub-span"
-                                >
-                                    문의 답변(관리자)
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+<!--답변 테이블 -->
                 </div>
             </div>
         </div>`;
-
-        console.log("text", text);
     });
     myInquiryHistoryListLayout.innerHTML = text;
-
-
-
 
 
     if(workAndFundingPagination.prev){
@@ -681,5 +628,53 @@ let pagingText = ``;
         `
     }
     myInquiryHistoryListPaging.innerHTML = pagingText;
-
 }
+
+// 내 문의 내역 관리자 답변
+const showAdminAnswer = (adminAnswer) => {
+    let text =``;
+    console.log("layout-adminAnswer: ",adminAnswer);
+
+        text =  `<div class="setting-th">
+                <div
+                    class="setting-td manager"
+                >
+                    관리자 답변
+                </div>
+            </div>
+            <div
+                class="setting-tr-group"
+                style="
+                    border-bottom: solid 1px
+                        #e0e0e0;
+                    padding-bottom: 0px;
+                "
+            >
+                <div
+                    class="setting-tr"
+                    style="padding-top: 7px"
+                >
+                    <div
+                        class="setting-td with-sub manager"
+                        style="width: 700px"
+                    >`
+            if(adminAnswer.inquiryStatus === 'YES')  {
+               text +=  `<div class="sub-span">
+                            ${adminAnswer.adminAnswerContent}
+                        </div>`
+            }
+            else {
+
+                text +=  `<div class="sub-span">
+                            아직 미답변 상태입니다.
+                        </div>`
+
+            }
+    text +=    `</div>
+                </div>
+            </div>`
+
+    return text;
+}
+
+

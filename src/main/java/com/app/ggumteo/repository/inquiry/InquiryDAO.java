@@ -72,7 +72,7 @@ public class InquiryDAO {
         inquiryMapper.deleteFromPost(ids);
     }
 
-    // 마이페이지 - 문의 내역 조회
+    // 마이페이지 - 문의 내역 목록 조회
     public List<InquiryDTO> findInquiryHistoryByMember(WorkAndFundingPagination workAndFundingPagination, Long memberId) {
        return inquiryMapper.selectInquiryHistoryByMember(workAndFundingPagination, memberId);
     }
@@ -82,9 +82,14 @@ public class InquiryDAO {
         return inquiryMapper.selectCountInquiryHistoryByMember(memberId);
     };
 
+    // 문의 내역 조회
+    public Optional<InquiryDTO> findById(Long postId) {
+        return inquiryMapper.selectById(postId);
+    };
+
     // 마이페이지 - 문의 내역 관리자 답변
-    public Optional<AdminAnswerDTO> findAdminAnswer(Long id) {
-        return inquiryMapper.selectAdminAnswer(id);
+    public Optional<AdminAnswerDTO> findAdminAnswerByInquiryId(Long inquiryId) {
+        return inquiryMapper.selectAdminAnswerByInquiryId(inquiryId);
     };
 }
 

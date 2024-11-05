@@ -78,3 +78,25 @@ myInquiryHistoryListPaging.addEventListener("click", (e)=>{
         myPageService.getMyInquiryHistoryList(globalThis.myInquiryHistoryPage, memberId, showMyInquiryHistoryList)
     }
 });
+
+myInquiryHistoryListLayout.addEventListener('click', async (e) => {
+    if(e.target.id === "admin-answer-btn" ) {
+        const myInquiryId = e.target.classList[1];
+        console.log("event-e.target: ",e.target);
+        const adminAnswer = document.querySelector(`.inquiry-${myInquiryId}`);
+
+        if (
+            adminAnswer.style.display === "none"
+        ) {
+            console.log("펀딩구매자테이블의 자식요소 길이 : ",adminAnswer.children.length)
+            if(adminAnswer.children.length == 0) {
+                adminAnswer.innerHTML += await myPageService.getAdminAnswerByInquiryId(myInquiryId, showAdminAnswer)
+                console.log("event-myInquiryId: ",myInquiryId);
+                console.log("event-adminAnswer: ",adminAnswer);
+            }
+            adminAnswer.style.display = "block";
+        } else {
+            adminAnswer.style.display = "none";
+        }
+    }
+});
