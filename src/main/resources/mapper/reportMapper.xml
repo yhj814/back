@@ -1,100 +1,101 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.app.ggumteo.mapper.report.WorkReportMapper">
-<!--관리자 영상 신고 조회-->
     <select id="selectVideoReports" resultType="WorkReportDTO">
-        select
-        p.id as postId,
-        mp.profile_name as profileName,
-        p.created_date as createdDate,
-        w.genre_type as genreType,
-        p.post_title as postTitle,
-        w.read_count as readCount,
-        w.star as star,
-        w.work_price as workPrice,
-        wr.report_status as reportStatus,
-
-        -- 신고 내역 모달창에 필요한 내용
-        rp.profile_name as reportProfileName,
-        rp.profile_email as reportProfileEmail,
-        wr.created_date as reportCreatedDate,
-        wr.report_contents as reportContents
-        from
+        SELECT
+        p.id AS postId,
+        p.post_title AS postTitle,
+        p.post_type AS postType,
+        mp.profile_name AS profileName,
+        mp.profile_email AS profileEmail,
+        rpt.profile_name AS reportProfileName, -- 신고한 사람의 이름
+        rpt.profile_email AS reportProfileEmail, -- 신고한 사람의 이메일
+        p.created_date AS postCreatedDate,
+        w.genre_type AS genreType,
+        w.read_count AS readCount,
+        COALESCE(AVG(r.star), 0) AS star, -- 댓글 별점 평균, NULL일 경우 0으로 표시
+        w.work_price AS workPrice,
+        wr.report_status AS reportStatus,
+        wr.created_date AS reportCreatedDate,
+        wr.report_contents AS reportContents
+        FROM
         tbl_post p
-        join tbl_member_profile mp on p.member_profile_id = mp.id
-        join tbl_work w on p.id = w.id
-        left join tbl_work_report wr on w.id = wr.work_id
-        left join tbl_member_profile rp on wr.work_id = rp.member_id -- 신고자 정보
-
-        where
+        JOIN
+        tbl_member_profile mp ON p.member_profile_id = mp.id
+        JOIN
+        tbl_work w ON w.id = p.id
+        LEFT JOIN
+        tbl_reply r ON r.work_id = w.id
+        JOIN
+        tbl_work_report wr ON wr.work_id = w.id
+        JOIN
+        tbl_member_profile rpt ON wr.member_profile_id = rpt.id -- 신고한 사람의 프로필 정보
+        WHERE
         p.post_type = 'VIDEO'
-
-        <!-- 신고 상태가 'REPORT'인 항목만 필터처리 -->
-        <if test="reportStatus != null and reportStatus == 'REPORT'">
-            and wr.report_status = #{reportStatus}
+        <!-- 신고 관리 조건 추가 -->
+        <if test="order == 'reportStatus'">
+            AND wr.report_status = 'REPORT'
         </if>
-
-        <!-- 검색 조건 -->
+        <!-- 통합 검색 조건: 제목, 장르, 작성자 중 하나에 검색어 포함 -->
         <if test="search != null and search != ''">
-            and (
-            mp.profile_name like concat('%', #{search}, '%')
-            or p.post_title like concat('%', #{search}, '%')
-            or w.genre_type like concat('%', #{search}, '%')
+            AND (
+            p.post_title LIKE CONCAT('%', #{search}, '%')
+            OR w.genre_type LIKE CONCAT('%', #{search}, '%')
+            OR mp.profile_name LIKE CONCAT('%', #{search}, '%')
             )
         </if>
-
+        GROUP BY
+        p.id, p.post_title, p.post_type, mp.profile_name, mp.profile_email,
+        rpt.profile_name, rpt.profile_email, p.created_date, w.genre_type,
+        w.read_count, w.work_price, wr.report_status, wr.created_date, wr.report_contents
         <!-- 정렬 조건 -->
-        order by
-        <choose>
-            <when test="order == 'createdDate'">
-                p.created_date desc
-            </when>
-            <when test="order == 'readCount'">
-                w.read_count desc
-            </when>
-            <when test="order == 'star'">
-                w.star desc
-            </when>
-            <otherwise>
-                p.created_date desc
-            </otherwise>
-        </choose>
-
-        limit #{pagination.startRow}, #{pagination.rowCount}
+        <if test="order != null and order != ''">
+            ORDER BY
+            <choose>
+                <when test="order == 'postCreatedDate'">p.created_date DESC</when>
+                <when test="order == 'readCount'">w.read_count DESC</when>
+                <when test="order == 'star'">star DESC</when>
+                <!-- 신고관리일 경우 기본 정렬 추가 -->
+                <when test="order == 'reportStatus'">p.created_date DESC</when>
+            </choose>
+        </if>
+        <!-- 기본 정렬 조건 추가 -->
+        <if test="order == null or order == ''">
+            ORDER BY p.created_date DESC
+        </if>
+        <!-- 페이징 -->
+        LIMIT #{pagination.startRow}, #{pagination.rowCount}
     </select>
 
-    <!--관리자 전체 영상 신고글 조회-->
-    <select id="countAllReports" resultType="int">
-        select count(*)
-        from tbl_post p
-        join tbl_member_profile mp on p.member_profile_id = mp.id
-        join tbl_work w on p.id = w.id
-        left join tbl_work_report wr on w.id = wr.work_id
-        left join tbl_member_profile rp on wr.work_id = rp.member_id -- 신고자 정보
-
-        where
-        p.post_type = 'VIDEO'  <!-- 'VIDEO' 타입만 조회 -->
-
-        <!-- 신고 상태가 'REPORT'인 항목만 필터링 -->
-        <if test="reportStatus != null and reportStatus == 'REPORT'">
-            and wr.report_status = #{reportStatus}
+    <!-- 전체 신고 내역 수 조회 (페이징을 위한 총 개수) -->
+    <select id="countVideoReports" resultType="int">
+        SELECT
+        COUNT(*)
+        FROM
+        tbl_post p
+        JOIN
+        tbl_member_profile mp ON p.member_profile_id = mp.id
+        JOIN
+        tbl_work w ON w.id = p.id
+        LEFT JOIN
+        tbl_reply r ON r.work_id = w.id
+        JOIN
+        tbl_work_report wr ON wr.work_id = w.id
+        JOIN
+        tbl_member_profile rpt ON wr.member_profile_id = rpt.id -- 신고한 사람의 프로필 정보
+        WHERE
+        p.post_type = 'VIDEO'
+        <!-- 신고 관리 조건 추가 -->
+        <if test="order == 'reportStatus'">
+            AND wr.report_status = 'REPORT'
         </if>
-
-        <!-- 검색 조건 -->
+        <!-- 통합 검색 조건 -->
         <if test="search != null and search != ''">
-            and (
-            mp.profile_name like concat('%', #{search}, '%')
-            or p.post_title like concat('%', #{search}, '%')
-            or w.genre_type like concat('%', #{search}, '%')
+            AND (
+            p.post_title LIKE CONCAT('%', #{search}, '%')
+            OR w.genre_type LIKE CONCAT('%', #{search}, '%')
+            OR mp.profile_name LIKE CONCAT('%', #{search}, '%')
             )
         </if>
     </select>
-
-    <!--관라자 신고 상태 변경-->
-    <update id="updateReportStatus">
-        update tbl_work_report
-        set report_status = #{reportStatus}
-        where id = #{reportId}
-    </update>
-
 </mapper>

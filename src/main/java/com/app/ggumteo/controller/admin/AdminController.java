@@ -4,12 +4,12 @@ import com.app.ggumteo.domain.admin.AdminDTO;
 import com.app.ggumteo.domain.admin.AnnouncementVO;
 import com.app.ggumteo.domain.inquiry.InquiryDTO;
 import com.app.ggumteo.domain.member.MemberProfileDTO;
+import com.app.ggumteo.domain.report.WorkReportDTO;
 import com.app.ggumteo.pagination.AdminPagination;
 import com.app.ggumteo.service.admin.AdminService;
 import com.app.ggumteo.service.admin.AnnouncementService;
 import com.app.ggumteo.service.inquiry.InquiryService;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
+import com.app.ggumteo.service.report.WorkReportService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -30,6 +30,7 @@ public class AdminController {
     private final AdminService adminService;
     private final InquiryService inquiryService;
     private final AnnouncementService announcementService;
+    private final WorkReportService workReportService;
 
     // 인증번호 입력 페이지
     @GetMapping("/verify")
@@ -243,7 +244,36 @@ public class AdminController {
         }
     }
 
-}
+    // 영상 신고 목록
+    @GetMapping("/videoReports")
+    @ResponseBody
+    public Map<String, Object> getVideoReports(
+            @RequestParam(value = "search", required = false) String search,
+            @RequestParam(value = "order", required = false) String order,
+            @RequestParam(value = "page", defaultValue = "1") Integer page
+    ) {
+        // 페이징 설정
+        AdminPagination pagination = new AdminPagination();
+        pagination.setPage(page);
 
+        // 총 데이터 개수를 가져와서 페이징 진행
+        pagination.setTotal(workReportService.getVideoReportsCount(search,order));
+        pagination.progress();
+
+        // 데이터 조회
+        List<WorkReportDTO> reports = workReportService.getVideoReports(search, order, pagination);
+
+        log.info("{}",search);
+        log.info("{}",order);
+        log.info("{}",reports.size());
+
+        // 결과를 Map에 담아 반환
+        Map<String, Object> response = new HashMap<>();
+        response.put("reports", reports);
+        response.put("pagination", pagination);
+
+        return response;
+    }
+}
 
 
