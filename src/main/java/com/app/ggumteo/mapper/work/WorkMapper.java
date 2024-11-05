@@ -1,5 +1,6 @@
 package com.app.ggumteo.mapper.work;
 
+import com.app.ggumteo.domain.post.PostDTO;
 import com.app.ggumteo.domain.work.WorkDTO;
 import com.app.ggumteo.domain.work.WorkVO;
 import com.app.ggumteo.domain.file.PostFileDTO;
@@ -27,6 +28,8 @@ public interface WorkMapper {
 
     // 작품 정보 수정 (tbl_work 및 tbl_post 업데이트)
     void updateWork(WorkDTO workDTO);
+
+
     void updatePost(WorkDTO workDTO);
 
     // 작품 삭제

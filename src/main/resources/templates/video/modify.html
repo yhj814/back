@@ -1,438 +1,460 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>올린작품수정</title>
-        <link rel="stylesheet" href="/static/css/video/modify.css" />
-    </head>
-    <body>
-        <header></header>
-        <main>
-            <div class="main">
-                <div class="header edit-header">
-                    <div class="background"></div>
-                    <div class="container">
-                        <div class="profile-box write">
-                            <form action="" id="write-form">
-                                <div class="write-add-view">
-                                    <div class="subtitle-1 write-add-title">
-                                        내 작품 수정
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>올린작품수정</title>
+    <link rel="stylesheet" href="/css/video/modify.css" />
+</head>
+<body>
+<header></header>
+<main>
+    <div class="main">
+        <div class="header edit-header">
+            <div class="background"></div>
+            <div class="container">
+                <div class="profile-box write">
+                    <form action="/video/modify" id="write-form" method="post" enctype="multipart/form-data">
+                        <input type="hidden" name="thumbnailFileId" th:value="${work.thumbnailFileId}" />
+                        <div th:if="${work != null}">
+                            <input type="hidden" name="id" th:value="${work.id}" />
+                        </div>
+                        <div class="write-add-view">
+                            <div class="subtitle-1 write-add-title">
+                                내 작품 수정
+                            </div>
+                            <div class="write-add-content-box">
+                                <div class="write-title">
+                                    작품제목수정
+                                    <span class="star">*</span>
+                                </div>
+                                <div class="write-name write-detail">
+                                    <div class="label-input-partner">
+                                        <input
+                                                class="required label-input"
+                                                name="postTitle"
+                                                type="text"
+                                                th:value="${work.postTitle}"
+                                                required
+                                        />
+                                        <label for="title"
+                                        >제목을 입력해주세요
+                                            *</label
+                                        >
                                     </div>
-                                    <div class="write-add-content-box">
-                                        <div class="write-title">
-                                            작품제목수정
-                                            <span class="star">*</span>
-                                        </div>
-                                        <div class="write-name write-detail">
-                                            <div class="label-input-partner">
-                                                <input
-                                                    class="required label-input"
-                                                    name="title"
-                                                    type="text"
-                                                    value=""
-                                                />
-                                                <label for="title"
-                                                    >제목을 입력해주세요
-                                                    *</label
-                                                >
-                                            </div>
-                                            <span
-                                                class="error-text"
-                                                style="display: none"
-                                                >에러상세 메시지</span
+                                    <span
+                                            class="error-text"
+                                            style="display: none"
+                                    >에러상세 메시지</span
+                                    >
+                                </div>
+                                <div class="input-guide-helpertext">
+                                    작품 목록에 가장먼저 보이는
+                                    제목입니다
+                                </div>
+                                <div class="detail-box-wrapper">
+                                    <div class="write-category">
+                                        작품장르변경
+                                        <span class="star">*</span>
+                                    </div>
+                                    <div class="work-detail">
+                                        <div
+                                                class="project-category-box"
+                                        >
+                                            <label
+                                                    for="romance"
+                                                    class="checkbox-partner"
                                             >
-                                        </div>
-                                        <div class="input-guide-helpertext">
-                                            작품 목록에 가장먼저 보이는
-                                            제목입니다
-                                        </div>
-                                        <div class="detail-box-wrapper">
-                                            <div class="write-category">
-                                                작품장르변경
-                                                <span class="star">*</span>
-                                            </div>
-                                            <div class="work-detail">
-                                                <div
-                                                    class="project-category-box"
-                                                >
-                                                    <label
-                                                        for="romance"
-                                                        class="checkbox-partner"
-                                                    >
                                                         <span>
-                                                            <input
-                                                                type="radio"
-                                                                name="category"
-                                                            />
+                                                            <input type="radio" name="genreType" value="romance" th:checked="${work.genreType == 'romance'}" />
                                                             <span
-                                                                class="arrow"
+                                                                    class="arrow"
                                                             ></span>
                                                         </span>
-                                                        <span
-                                                            class="category-span"
-                                                            >로맨스</span
-                                                        >
-                                                    </label>
-                                                </div>
-                                                <div
-                                                    class="project-category-box"
+                                                <span
+                                                        class="category-span"
+                                                >로맨스</span
                                                 >
-                                                    <label
-                                                        for="comedy"
-                                                        class="checkbox-partner"
-                                                    >
-                                                        <span>
-                                                            <input
-                                                                type="radio"
-                                                                name="category"
-                                                            />
-                                                            <span
-                                                                class="arrow"
-                                                            ></span>
-                                                        </span>
-                                                        <span
-                                                            class="category-span"
-                                                            >코미디</span
-                                                        >
-                                                    </label>
-                                                </div>
-                                                <div
-                                                    class="project-category-box"
-                                                >
-                                                    <label
-                                                        for="horror"
-                                                        class="checkbox-partner"
-                                                    >
-                                                        <span>
-                                                            <input
-                                                                type="radio"
-                                                                name="category"
-                                                            />
-                                                            <span
-                                                                class="arrow"
-                                                            ></span>
-                                                        </span>
-                                                        <span
-                                                            class="category-span"
-                                                            >공포</span
-                                                        >
-                                                    </label>
-                                                </div>
-                                                <div
-                                                    class="project-category-box"
-                                                >
-                                                    <label
-                                                        for="action"
-                                                        class="checkbox-partner"
-                                                    >
-                                                        <span>
-                                                            <input
-                                                                type="radio"
-                                                                name="category"
-                                                            />
-                                                            <span
-                                                                class="arrow"
-                                                            ></span>
-                                                        </span>
-                                                        <span
-                                                            class="category-span"
-                                                            >액션</span
-                                                        >
-                                                    </label>
-                                                </div>
-                                                <div
-                                                    class="project-category-box"
-                                                >
-                                                    <label
-                                                        for="drama"
-                                                        class="checkbox-partner"
-                                                    >
-                                                        <span>
-                                                            <input
-                                                                type="radio"
-                                                                name="category"
-                                                            />
-                                                            <span
-                                                                class="arrow"
-                                                            ></span>
-                                                        </span>
-                                                        <span
-                                                            class="category-span"
-                                                            >드라마</span
-                                                        >
-                                                    </label>
-                                                </div>
-                                            </div>
-                                            <div class="project-price">
-                                                작품가격
-                                                <span class="star">*</span>
-                                                <input
-                                                        type="number"
-                                                        class="required label-input"
-                                                        name="price"
-                                                        style="outline: none"
-                                                        placeholder="무료일 경우 0원이라고 입력해주세요."
-                                                />
-                                            </div>
+                                            </label>
                                         </div>
                                         <div
-                                            class="write-description-box write-detail"
+                                                class="project-category-box"
                                         >
-                                            <div class="write-content">
-                                                작품설명수정
-                                                <span class="star">*</span>
-                                            </div>
-                                            <input
-                                                hidden
-                                                id="is_changed_textarea"
-                                                type="checkbox"
-                                            />
-                                            <div class="ui-textarea-partner">
-                                                <div class="textarea__border">
-                                                    <textarea
-                                                        class="required textarea expand"
-                                                        maxlength="5000"
-                                                        name="description"
-                                                    ></textarea>
-                                                </div>
+                                            <label
+                                                    for="comedy"
+                                                    class="checkbox-partner"
+                                            >
+                                                        <span>
+                                                            <input type="radio" name="genreType" value="comedy" th:checked="${work.genreType == 'comedy'}" />
+                                                            <span
+                                                                    class="arrow"
+                                                            ></span>
+                                                        </span>
                                                 <span
-                                                    class="error-text"
-                                                    style="display: none"
-                                                    >에러상세 메시지</span
-                                                ><span class="word-length"
-                                                    >0/5000</span
+                                                        class="category-span"
+                                                >코미디</span
                                                 >
+                                            </label>
+                                        </div>
+                                        <div
+                                                class="project-category-box"
+                                        >
+                                            <label
+                                                    for="horror"
+                                                    class="checkbox-partner"
+                                            >
+                                                        <span>
+                                                             <input type="radio" name="genreType" value="horror" th:checked="${work.genreType == 'horror'}" />
+                                                            <span
+                                                                    class="arrow"
+                                                            ></span>
+                                                        </span>
+                                                <span
+                                                        class="category-span"
+                                                >공포</span
+                                                >
+                                            </label>
+                                        </div>
+                                        <div
+                                                class="project-category-box"
+                                        >
+                                            <label
+                                                    for="action"
+                                                    class="checkbox-partner"
+                                            >
+                                                        <span>
+                                                           <input type="radio" name="genreType" value="action" th:checked="${work.genreType == 'action'}" />
+                                                            <span
+                                                                    class="arrow"
+                                                            ></span>
+                                                        </span>
+                                                <span
+                                                        class="category-span"
+                                                >액션</span
+                                                >
+                                            </label>
+                                        </div>
+                                        <div
+                                                class="project-category-box"
+                                        >
+                                            <label
+                                                    for="drama"
+                                                    class="checkbox-partner"
+                                            >
+                                                        <span>
+                                                             <input type="radio" name="genreType" value="drama" th:checked="${work.genreType == 'drama'}" />
+                                                            <span
+                                                                    class="arrow"
+                                                            ></span>
+                                                        </span>
+                                                <span
+                                                        class="category-span"
+                                                >드라마</span
+                                                >
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="project-price">
+                                        작품가격
+                                        <span class="star">*</span>
+                                        <input
+                                                type="number"
+                                                class="required label-input"
+                                                name="workPrice"
+                                                th:value="${work.workPrice}"
+                                                placeholder="무료일 경우 0원이라고 입력해주세요."
+                                                required
+                                        />
+                                    </div>
+                                </div>
+                                <div
+                                        class="write-description-box write-detail"
+                                >
+                                    <div class="write-content">
+                                        작품설명수정
+                                        <span class="star">*</span>
+                                    </div>
+                                    <input
+                                            hidden
+                                            id="is_changed_textarea"
+                                            type="checkbox"
+                                    />
+                                    <div class="ui-textarea-partner">
+                                        <div class="textarea__border">
+                                                    <textarea
+                                                            class="required textarea expand"
+                                                            maxlength="5000"
+                                                            name="postContent"
+                                                            th:text="${work.postContent}"
+                                                            required
+                                                    ></textarea>
+                                        </div>
+                                        <span
+                                                class="error-text"
+                                                style="display: none"
+                                        >에러상세 메시지</span
+                                        ><span class="word-length"
+                                    >0/5000</span
+                                    >
+                                    </div>
+                                </div>
+                                <div class="work-img-box">
+                                    <div class="title-img-box">
+                                        <img src="https://www.wishket.com/static/renewal/img/partner/profile/icon_portfolio_image_upload.png" class="title-img"/>
+                                        <span class="title-text">현재 업로드된 작품 이미지 및 파일</span>
+                                    </div>
+                                    <div id="existing-files-container">
+                                        <!--                                                썸네일 파일은 안가져옴 아래에 가져옴-->
+                                        <div th:each="file : ${existingFiles}" th:if="${file.filePath != work.thumbnailFilePath}" class="img-box-list existing-file">
+                                            <div class="img-edit-box" style="margin-top: 10px;width: 88px;margin-left: 635px;display: block;">
+                                                <div type="button" class="btn-edit-item" id="btn-delete-image-1730446634855" th:attr="data-file-id=${file.id}">
+                                                     삭제
+                                                </div>
+                                            </div>
+                                            <div class="img-content-box">
+                                                <!-- 비디오 파일일 경우 -->
+                                                <div th:if="${file.filePath.endsWith('.mp4') or file.filePath.endsWith('.avi') or file.filePath.endsWith('.mkv')}">
+                                                    <video th:src="@{'/video/display?fileName=' + ${file.filePath}}" controls class="thumbnail" alt="Uploaded Video" style="width: 600px" ></video>
+                                                </div>
+                                                <!-- 이미지 파일일 경우 -->
+                                                <div th:if="${!file.filePath.endsWith('.mp4') and !file.filePath.endsWith('.avi') and !file.filePath.endsWith('.mkv')}">
+                                                    <img th:src="@{'/video/display?fileName=' + ${file.filePath}}" alt="Uploaded Image" class="thumbnail" />
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="work-img-box">
-                                            <div class="title-img-box">
-                                                <img
-                                                    src="https://www.wishket.com/static/renewal/img/partner/profile/icon_portfolio_image_upload.png"
-                                                    class="title-img"
+                                        <div class="img-caption-box" style="display: block;">
+                                            <p style="margin-bottom: 10px">파일 설명</p>
+                                            <div class="default-input-partner">
+                                                <input
+                                                        type="text"
+                                                        class="img-caption-box-content"
+                                                        name="fileContent"
+                                                        th:value="${work.fileContent != null ? work.fileContent : ''}"
+                                                        placeholder="올린 파일에 대한 설명을 입력해주세요."
                                                 />
-                                                <span class="title-text">
-                                                    올린 작품의 사진, 영상
-                                                    수정하기
-                                                </span>
                                             </div>
-                                            <div id="img-box-container">
-                                                <div class="img-box-list">
-                                                    <div class="img-edit-box">
-                                                        <div
-                                                            class="btn-edit-item"
-                                                        >
-                                                            이미지 변경
-                                                        </div>
-                                                        <div
-                                                            class="btn-edit-item"
-                                                        >
-                                                            이미지 삭제
-                                                        </div>
-                                                    </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="work-img-box">
+                                    <div class="title-img-box">
+                                        <img
+                                                src="https://www.wishket.com/static/renewal/img/partner/profile/icon_portfolio_image_upload.png"
+                                                class="title-img"
+                                        />
+                                        <span class="title-text">
+                                                    파일 추가하기
+                                                </span>
+                                    </div>
+                                    <div id="img-box-container">
+                                        <div class="img-box-list">
+                                            <div class="img-edit-box">
+                                                <div
+                                                        class="btn-edit-item"
+                                                >
+                                                    이미지 변경
+                                                </div>
+                                                <div
+                                                        class="btn-edit-item"
+                                                >
+                                                    이미지 삭제
+                                                </div>
+                                            </div>
+                                            <div
+                                                    class="img-content-box"
+                                            >
+                                                <div
+                                                        class="center-text img-box"
+                                                >
                                                     <div
-                                                        class="img-content-box"
+                                                            class="default-img"
+                                                            id="default-img"
                                                     >
-                                                        <div
-                                                            class="center-text img-box"
-                                                        >
-                                                            <div
-                                                                class="default-img"
-                                                                id="default-img"
-                                                            >
-                                                                <!-- 이미지 미리보기 -->
-                                                                <img
-                                                                    id="preview"
-                                                                    src="https://www.wishket.com/static/renewal/img/partner/profile/icon_btn_add_portfolio_image.png"
-                                                                    class="img-tag"
-                                                                />
-                                                                <video
-                                                                    id="video-preview"
-                                                                    class="video-tag"
-                                                                    style="
+                                                        <!-- 이미지 미리보기 -->
+                                                        <img
+                                                                id="preview"
+                                                                src="https://www.wishket.com/static/renewal/img/partner/profile/icon_btn_add_portfolio_image.png"
+                                                                class="img-tag"
+                                                        />
+                                                        <video
+                                                                id="video-preview"
+                                                                class="video-tag"
+                                                                style="
                                                                         display: none;
                                                                         width: 100%;
                                                                     "
-                                                                    controls
-                                                                ></video>
-                                                                <div
-                                                                    class="img-box-title"
-                                                                >
-                                                                    작품 영상,
-                                                                    이미지 등록
-                                                                </div>
-                                                                <div
-                                                                    class="img-box-text"
-                                                                >
-                                                                    작품 결과물
-                                                                    혹은 설명을
-                                                                    돕는
-                                                                    이미지를
-                                                                    선택해
-                                                                    주세요.
-                                                                </div>
-                                                                <div
-                                                                    class="img-box-help"
-                                                                >
-                                                                    <span>
+                                                                controls
+                                                        ></video>
+                                                        <div
+                                                                class="img-box-title"
+                                                        >
+                                                            작품 영상,
+                                                            이미지 등록
+                                                        </div>
+                                                        <div
+                                                                class="img-box-text"
+                                                        >
+                                                            작품 결과물
+                                                            혹은 설명을
+                                                            돕는
+                                                            이미지를
+                                                            선택해
+                                                            주세요.
+                                                        </div>
+                                                        <div
+                                                                class="img-box-help"
+                                                        >
+                                                                    <span
+                                                                            style="
+                                                                            margin-left: 26px;
+                                                                        "
+                                                                    >
                                                                         · 이미지
                                                                         최적
                                                                         사이즈:
                                                                         가로
                                                                         720px
                                                                     </span>
-                                                                </div>
-                                                                <!-- 숨겨진 파일 첨부 기능 -->
-                                                                <input
-                                                                    id="file-upload"
-                                                                    type="file"
-                                                                    accept="image/*,video/*"
-                                                                    style="
+                                                        </div>
+                                                        <!-- 숨겨진 파일 첨부 기능 -->
+                                                        <input
+                                                                id="file-upload"
+                                                                type="file"
+                                                                name="newFiles"
+                                                                accept="image/*,video/*"
+                                                                style="
                                                                         display: none;
                                                                     "
-                                                                    onchange="previewFile()"
-                                                                />
-                                                            </div>
-                                                        </div>
-                                                        <div
-                                                            class="img-caption-box"
-                                                        >
-                                                            <div
-                                                                class="default-input-partner"
-                                                            >
-                                                                <input
-                                                                    type="text"
-                                                                    class="img-caption-box-content"
-                                                                    placeholder="올린 파일에 대한 설명을 입력해주세요."
-                                                                />
-                                                            </div>
-                                                        </div>
+                                                        />
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div class="img-add">
-                                                <img
-                                                    src="https://www.wishket.com/static/renewal/img/partner/profile/btn_icon_add.png"
-                                                />
-                                                작품 추가
+
                                             </div>
                                         </div>
-                                        <!-- 썸내일추가 -->
-                                        <div class="thumbnail-box">
-                                            <div class="work-name">
-                                                작품글 표지 변경
-                                                <span class="star">*</span>
+                                    </div>
+                                    <div class="img-add">
+                                        <img
+                                                src="https://www.wishket.com/static/renewal/img/partner/profile/btn_icon_add.png"
+                                        />
+                                        작품 추가
+                                    </div>
+                                </div>
+                                <!-- 썸내일추가 -->
+                                <div class="thumbnail-box">
+                                    <div class="work-name">
+                                        작품글 표지 변경
+                                        <span class="star">*</span>
+                                    </div>
+                                    <div class="work-name-content">
+                                        작품글 표지는 작품목록에 처음
+                                        보이는 사진으로 더욱 돋보이고
+                                        눈길이 가게 작품을 등록해보세요!
+                                    </div>
+                                    <div class="thumbnail-content-box">
+                                        <div class="left-box">
+                                            <input
+                                                    type="file"
+                                                    id="thumbnail-upload"
+                                                    accept="image/*"
+                                                    name="newThumbnailFile"
+                                                    style="display: none"
+                                                    onchange="previewImage(event)"
+                                            />
+                                            <button
+                                                    class="btn work-thumbnail-add-btn"
+                                                    style="width: 100%"
+                                                    type="button"
+
+                                            >
+                                                작품 표지 수정
+                                            </button>
+                                            <p class="input_guide">
+                                                작품 표지 규격: 246px
+                                                246px
+                                            </p>
+                                            <div class="help-text">
+                                                작품 표지를 등록하지
+                                                않으면<br />
+                                                꿈터에서 제공하는
+                                                기본이미지가 적용됩니다
                                             </div>
-                                            <div class="work-name-content">
-                                                작품글 표지는 작품목록에 처음
-                                                보이는 사진으로 더욱 돋보이고
-                                                눈길이 가게 작품을 등록해보세요!
-                                            </div>
-                                            <div class="thumbnail-content-box">
-                                                <div class="left-box">
-                                                    <input
-                                                        type="file"
-                                                        id="thumbnail-upload"
-                                                        accept="image/*"
-                                                        style="display: none"
-                                                        onchange="previewImage(event)"
-                                                    />
-                                                    <button
-                                                        class="btn work-thumbnail-add-btn"
-                                                        style="width: 100%"
-                                                        type="button"
-                                                        onclick="document.getElementById('thumbnail-upload').click()"
+                                        </div>
+                                        <!-- 오른쪽부분 -->
+                                        <div class="right-box">
+
+                                            <div class="sample-box">
+                                                <div
+                                                        class="thumbnail-sample-part"
+                                                        id="preview-container"
+                                                >
+                                                    <div
+                                                            class="preview-img sample"
                                                     >
-                                                        작품 표지 수정
-                                                    </button>
-                                                    <p class="input_guide">
-                                                        작품 표지 규격: 246px
-                                                        180px
-                                                    </p>
-                                                    <div class="help-text">
-                                                        작품 표지를 등록하지
-                                                        않으면<br />
-                                                        꿈터에서 제공하는
-                                                        기본이미지가 적용됩니다
+                                                        <img style="height: 240px"
+
+                                                             th:src="@{/video/display?fileName={thumbnailFilePath}(thumbnailFilePath=${work.thumbnailFilePath})}" alt="Thumbnail Image" />
                                                     </div>
+                                                    <div
+                                                            class="preview"
+                                                    ></div>
                                                 </div>
-                                                <!-- 오른쪽부분 -->
-                                                <div class="right-box">
-                                                    <div class="sample-box">
-                                                        <div
-                                                            class="thumbnail-sample-part"
-                                                            id="preview-container"
+                                                <div
+                                                        class="sample-part"
+                                                >
+                                                    <div
+                                                            class="work-thumbnail-title"
+                                                    >
+                                                        작품 제목 샘플
+                                                    </div>
+                                                    <div
+                                                            class="work-category"
+                                                    >
+                                                        작품 장르
+                                                    </div>
+                                                    <div
+                                                            class="work-content"
+                                                    >
+                                                        작품의 간단한
+                                                        요약
+                                                    </div>
+                                                    <div
+                                                            class="write-user"
+                                                    >
+                                                        <img
+                                                                src="https://yozm.wishket.com/static/img/default_avatar.png"
+                                                                class="comment-writer-img"
+                                                        />
+                                                        <a
+                                                                class="comment-writer-name"
+                                                        >작성자명</a
                                                         >
-                                                            <div
-                                                                class="preview-img sample"
-                                                            >
-                                                                <img
-                                                                    id="preview-image"
-                                                                    src="https://www.wishket.com/static/renewal/img/partner/profile/icon_btn_add_portfolio_image.png"
-                                                                    alt="Preview"
-                                                                />
-                                                            </div>
-                                                            <div
-                                                                class="preview"
-                                                            ></div>
-                                                        </div>
-                                                        <div
-                                                            class="sample-part"
-                                                        >
-                                                            <div
-                                                                class="work-thumbnail-title"
-                                                            >
-                                                                작품 제목 샘플
-                                                            </div>
-                                                            <div
-                                                                class="work-category"
-                                                            >
-                                                                작품 장르
-                                                            </div>
-                                                            <div
-                                                                class="work-content"
-                                                            >
-                                                                작품의 간단한
-                                                                요약
-                                                            </div>
-                                                            <div
-                                                                class="write-user"
-                                                            >
-                                                                <img
-                                                                    src="https://yozm.wishket.com/static/img/default_avatar.png"
-                                                                    class="comment-writer-img"
-                                                                />
-                                                                <a
-                                                                    class="comment-writer-name"
-                                                                    >작성자명</a
-                                                                >
-                                                            </div>
-                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="write-footer">
-                                    <div class="button-box">
-                                        <button class="btn btn-back">
-                                            취소</button
-                                        ><button
-                                            class="btn btn-submit"
-                                            type="submit"
-                                        >
-                                            수정
-                                        </button>
-                                    </div>
-                                </div>
-                            </form>
+                            </div>
                         </div>
-                    </div>
+                        <div class="write-footer">
+                            <div class="button-box">
+                                <button class="btn btn-back">
+                                    취소</button
+                                ><button
+                                    class="btn btn-submit"
+                                    type="submit"
+                            >
+                                수정
+                            </button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
-        </main>
-        <footer></footer>
-    </body>
-    <script src="/static/js/video/modify.js"></script>
+        </div>
+    </div>
+</main>
+<footer></footer>
+</body>
+<script src="/js/video/modify.js"></script>
 </html>

@@ -13,6 +13,7 @@
                 <div class="header edit-header">
                     <div class="background"></div>
                     <div class="container">
+                        <form action="/text/funding/write" method="post" enctype="multipart/form-data">
                         <div class="profile-box write">
                             <form action="" id="write-form">
                                 <div class="write-add-view">
@@ -36,10 +37,13 @@
                                         <div class="write-name write-detail">
                                             <div class="label-input-partner">
                                                 <input
-                                                    class="required label-input"
-                                                    name="title"
-                                                    type="text"
-                                                    value=""
+                                                        class="required label-input"
+                                                        name="postTitle"
+                                                        type="text"
+                                                        th:value="${post?.postTitle}"
+                                                        id="postTitle"
+
+                                                        required
                                                 />
                                                 <label for="title"
                                                     >제목을 입력해주세요
@@ -63,117 +67,122 @@
                                             </div>
                                             <div class="work-detail">
                                                 <div
-                                                    class="project-category-box"
+                                                        class="project-category-box"
                                                 >
                                                     <label
-                                                        for="romance"
-                                                        class="checkbox-partner"
+                                                            for="romance"
+                                                            class="checkbox-partner"
                                                     >
                                                         <span>
                                                             <input
-                                                                type="radio"
-                                                                name="category"
+                                                                    type="radio"
+                                                                    name="genreType"
+                                                                    value="romance"
                                                             />
                                                             <span
-                                                                class="arrow"
+                                                                    class="arrow"
                                                             ></span>
                                                         </span>
                                                         <span
-                                                            class="category-span"
-                                                            >로맨스</span
+                                                                class="category-span"
+                                                        >로맨스</span
                                                         >
                                                     </label>
                                                 </div>
                                                 <div
-                                                    class="project-category-box"
+                                                        class="project-category-box"
                                                 >
                                                     <label
-                                                        for="comedy"
-                                                        class="checkbox-partner"
+                                                            for="comedy"
+                                                            class="checkbox-partner"
                                                     >
                                                         <span>
                                                             <input
-                                                                type="radio"
-                                                                name="category"
+                                                                    type="radio"
+                                                                    name="genreType"
+                                                                    value="comedy"
                                                             />
                                                             <span
-                                                                class="arrow"
+                                                                    class="arrow"
                                                             ></span>
                                                         </span>
                                                         <span
-                                                            class="category-span"
-                                                            >코미디</span
+                                                                class="category-span"
+                                                        >코미디</span
                                                         >
                                                     </label>
                                                 </div>
                                                 <div
-                                                    class="project-category-box"
+                                                        class="project-category-box"
                                                 >
                                                     <label
-                                                        for="horror"
-                                                        class="checkbox-partner"
+                                                            for="horror"
+                                                            class="checkbox-partner"
                                                     >
                                                         <span>
                                                             <input
-                                                                type="radio"
-                                                                name="category"
+                                                                    type="radio"
+                                                                    name="genreType"
+                                                                    value="horror"
                                                             />
                                                             <span
-                                                                class="arrow"
+                                                                    class="arrow"
                                                             ></span>
                                                         </span>
                                                         <span
-                                                            class="category-span"
-                                                            >공포</span
+                                                                class="category-span"
+                                                        >공포</span
                                                         >
                                                     </label>
                                                 </div>
                                                 <div
-                                                    class="project-category-box"
+                                                        class="project-category-box"
                                                 >
                                                     <label
-                                                        for="action"
-                                                        class="checkbox-partner"
+                                                            for="action"
+                                                            class="checkbox-partner"
                                                     >
                                                         <span>
                                                             <input
-                                                                type="radio"
-                                                                name="category"
+                                                                    type="radio"
+                                                                    name="genreType"
+                                                                    value="action"
                                                             />
                                                             <span
-                                                                class="arrow"
+                                                                    class="arrow"
                                                             ></span>
                                                         </span>
                                                         <span
-                                                            class="category-span"
-                                                            >액션</span
+                                                                class="category-span"
+                                                        >액션</span
                                                         >
                                                     </label>
                                                 </div>
                                                 <div
-                                                    class="project-category-box"
+                                                        class="project-category-box"
                                                 >
                                                     <label
-                                                        for="drama"
-                                                        class="checkbox-partner"
+                                                            for="drama"
+                                                            class="checkbox-partner"
                                                     >
                                                         <span>
                                                             <input
-                                                                type="radio"
-                                                                name="category"
+                                                                    type="radio"
+                                                                    name="genreType"
+                                                                    value="drama"
                                                             />
                                                             <span
-                                                                class="arrow"
+                                                                    class="arrow"
                                                             ></span>
                                                         </span>
                                                         <span
-                                                            class="category-span"
-                                                            >드라마</span
+                                                                class="category-span"
+                                                        >드라마</span
                                                         >
                                                     </label>
                                                 </div>
                                             </div>
-                                            <div></div>
+
                                         </div>
                                         <div
                                             class="write-description-box write-detail"
@@ -190,18 +199,19 @@
                                             <div class="ui-textarea-partner">
                                                 <div class="textarea__border">
                                                     <textarea
-                                                        class="required textarea expand"
-                                                        maxlength="5000"
-                                                        name="description"
+                                                            class="required textarea expand"
+                                                            maxlength="5000"
+                                                            name="postContent"
+                                                            id="postContent"
                                                     ></textarea>
                                                 </div>
                                                 <span
-                                                    class="error-text"
-                                                    style="display: none"
-                                                    >에러상세 메시지</span
+                                                        class="error-text"
+                                                        style="display: none"
+                                                >에러상세 메시지</span
                                                 ><span class="word-length"
-                                                    >0/5000</span
-                                                >
+                                            >0/5000</span
+                                            >
                                             </div>
                                         </div>
                                         <div class="info-text-content">
@@ -212,7 +222,8 @@
                                             <input
                                                 type="text"
                                                 class="info-text"
-                                                name="funding-info"
+                                                name="fundingContent"
+                                                id="fundingContent"
                                                 placeholder="펀딩상세페이지 우측에 들어가는 소개글입니다."
                                             />
                                         </div>
@@ -224,7 +235,8 @@
                                             <input
                                                 type="number"
                                                 class="hope-text"
-                                                name="hope-people"
+                                                name="investorNumber"
+                                                id="investorNumber"
                                                 placeholder="ex) 10명"
                                             />
                                         </div>
@@ -236,7 +248,8 @@
                                             <input
                                                 type="number"
                                                 class="hope-text"
-                                                name="hope-people"
+                                                name="targetPrice"
+                                                id="targetPrice"
                                                 placeholder="ex) 1,000,000원"
                                             />
                                         </div>
@@ -322,26 +335,28 @@
                                                                 </div>
                                                                 <!-- 숨겨진 파일 첨부 기능 -->
                                                                 <input
-                                                                    id="file-upload"
-                                                                    type="file"
-                                                                    accept="image/*,video/*"
-                                                                    style="
+                                                                        id="file-upload"
+                                                                        type="file"
+                                                                        name="fundingFile"
+                                                                        accept="image/*,video/*"
+                                                                        style="
                                                                         display: none;
                                                                     "
-                                                                    onchange="previewFile()"
+                                                                        onchange="previewFile()"
                                                                 />
                                                             </div>
                                                         </div>
                                                         <div
-                                                            class="img-caption-box"
+                                                            class="img-caption-box" style="display: block"
                                                         >
                                                             <div
                                                                 class="default-input-partner"
                                                             >
                                                                 <input
-                                                                    type="text"
-                                                                    class="img-caption-box-content"
-                                                                    placeholder="올린 파일에 대한 설명을 입력해주세요."
+                                                                        type="text"
+                                                                        name="fileContent"
+                                                                        class="img-caption-box-content"
+                                                                        placeholder="올린 파일에 대한 설명을 입력해주세요."
                                                                 />
                                                             </div>
                                                         </div>
@@ -535,6 +550,7 @@
                                 </div>
                             </form>
                         </div>
+                        </form>
                     </div>
                 </div>
             </div>

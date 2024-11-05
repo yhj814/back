@@ -57,10 +57,10 @@ public class VideoWorkController {
     @ModelAttribute
     public void setTestMember(HttpSession session) {
         if (session.getAttribute("member") == null) {
-            session.setAttribute("member", new MemberVO(2L, "", "", "", "", ""));
+            session.setAttribute("member", new MemberVO(3L, "", "", "", "", ""));
         }
         if (session.getAttribute("memberProfile") == null) {
-            session.setAttribute("memberProfile", new MemberProfileVO(2L, "", "", "", 99, "", "", "", 2L, "", ""));
+            session.setAttribute("memberProfile", new MemberProfileVO(3L, "", "", "", 99, "", "", "", 3L, "", ""));
         }
     }
 
@@ -165,7 +165,7 @@ public class VideoWorkController {
         } catch (Exception e) {
             log.error("Error updating work: ", e);
             model.addAttribute("error", "업데이트 중 오류가 발생했습니다: " + e.getMessage());
-            return "video/modify";
+            return "video/list";
         }
     }
 

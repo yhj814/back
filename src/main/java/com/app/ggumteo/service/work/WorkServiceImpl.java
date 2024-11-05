@@ -2,6 +2,7 @@ package com.app.ggumteo.service.work;
 
 import com.app.ggumteo.domain.file.FileVO;
 import com.app.ggumteo.domain.file.PostFileDTO;
+import com.app.ggumteo.domain.post.PostDTO;
 import com.app.ggumteo.domain.post.PostVO;
 import com.app.ggumteo.domain.work.WorkDTO;
 import com.app.ggumteo.domain.work.WorkVO;
@@ -86,6 +87,7 @@ public class WorkServiceImpl implements WorkService {
         log.info("업데이트 요청 - 작품 ID: {}", workDTO.getId());
         log.info("삭제할 파일 IDs: {}", deletedFileIds);
         log.info("새로 추가할 파일 수: {}", (newFiles != null ? newFiles.size() : 0));
+        workDTO.setPostId(workDTO.getId());
 
         // 기존 데이터를 다시 조회하여 최신 정보를 가져옴 (특히 썸네일 파일 ID)
         WorkDTO currentWork = workDAO.findWorkById(workDTO.getId());
@@ -126,7 +128,16 @@ public class WorkServiceImpl implements WorkService {
 
         // 작품 정보 업데이트
         workDAO.updateWork(workDTO);
+
         log.info("작품 정보 업데이트 완료: 작품 ID {}", workDTO.getId());
+
+        if (workDTO.getPostTitle() != null && workDTO.getPostContent() != null) {
+            log.info("게시글 정보 업데이트 시도: 제목 - {}, 내용 - {}", workDTO.getPostTitle(), workDTO.getPostContent());
+            workDAO.updatePost(workDTO);
+            log.info("게시글 정보 업데이트 완료: 작품 ID {}", workDTO.getId());
+        } else {
+            log.warn("게시글 정보가 부족하여 업데이트를 건너뜁니다: 작품 ID {}", workDTO.getId());
+        }
     }
 
 

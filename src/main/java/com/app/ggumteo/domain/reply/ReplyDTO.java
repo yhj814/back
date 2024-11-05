@@ -18,6 +18,7 @@ public class ReplyDTO {
     private String createDate;
     private int star;
     private String profileNickname;
+    private String profileImgUrl; // 카카오톡 프로필 이미지 url
 
     public ReplyVO toVO() {
         return new ReplyVO(id, replyContent, memberProfileId, workId, createDate, star);
