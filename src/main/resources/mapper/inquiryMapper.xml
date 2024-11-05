@@ -165,6 +165,14 @@
                 join tbl_member m on mp.member_id = m.id and m.id = #{memberId}
                 and p.post_type = 'INQUIRY'
     </select>
+
+    <!-- 내 문의 답변 -->
+    <select id="selectAdminAnswerByMember">
+        select admin_answer_content, aa.inquiry_id
+             , created_date, i.inquiry_status, i.id
+        from tbl_admin_answer aa join tbl_inquiry i
+        on aa.inquiry_id = i.id and i.id = #{id}
+    </select>
 </mapper>
 
 

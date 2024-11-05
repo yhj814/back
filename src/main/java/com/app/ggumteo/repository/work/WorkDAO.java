@@ -1,5 +1,6 @@
 package com.app.ggumteo.repository.work;
 
+import com.app.ggumteo.domain.post.PostDTO;
 import com.app.ggumteo.domain.work.WorkDTO;
 import com.app.ggumteo.domain.work.WorkVO;
 import com.app.ggumteo.domain.file.PostFileDTO;
@@ -20,6 +21,7 @@ import java.util.Map;
 public class WorkDAO {
 
     private final WorkMapper workMapper;
+    private final PostDTO postDTO;
 
     // 게시글 작성
     public void save(WorkVO workVO) {
