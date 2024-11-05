@@ -61,7 +61,7 @@ public interface InquiryMapper {
     // post테이블에 postType이 INQUIRY 인거 삭제
     void deleteFromPost(@Param("list") List<Long> ids);
 
-    // 마이페이지 - 문의 내역 조회
+    // 마이페이지 - 문의 내역 목록 조회
     public List<InquiryDTO> selectInquiryHistoryByMember(
             @Param("workAndFundingPagination") WorkAndFundingPagination workAndFundingPagination
             , @Param("memberId") Long memberId);
@@ -69,8 +69,11 @@ public interface InquiryMapper {
     // 마이페이지 - 문의 내역 전체 갯수
     public int selectCountInquiryHistoryByMember(Long memberId);
 
+    // 문의 내역 조회
+    public Optional<InquiryDTO> selectById(Long postId);
+
     // 마이페이지 - 문의 내역 관리자 답변
-    public Optional<AdminAnswerDTO> selectAdminAnswer(Long id);
+    public Optional<AdminAnswerDTO> selectAdminAnswerByInquiryId(Long inquiryId);
 }
 
 

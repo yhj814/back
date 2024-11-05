@@ -7,6 +7,7 @@ import com.app.ggumteo.aspect.annotation.MyInquiryHistoryListLogStatus;
 import com.app.ggumteo.constant.PostType;
 import com.app.ggumteo.domain.admin.AdminAnswerDTO;
 import com.app.ggumteo.domain.funding.*;
+import com.app.ggumteo.domain.inquiry.InquiryDTO;
 import com.app.ggumteo.domain.inquiry.MyInquiryHistoryListDTO;
 import com.app.ggumteo.domain.member.MemberVO;
 import com.app.ggumteo.pagination.SettingTablePagination;
@@ -29,7 +30,6 @@ public class MyPageServiceImpl implements MyPageService {
     private final FundingDAO fundingDAO;
     private final BuyFundingProductDAO buyFundingProductDAO;
     private final InquiryDAO inquiryDAO;
-    private final FundingDTO fundingDTO;
 
     @Override
     public Optional<MemberVO> getMember(Long id) {
@@ -120,13 +120,6 @@ public class MyPageServiceImpl implements MyPageService {
         myInquiryHistories.setWorkAndFundingPagination(workAndFundingPagination);
         myInquiryHistories.setMyInquiryHistories(inquiryDAO.findInquiryHistoryByMember(workAndFundingPagination, memberId));
 
-        log.info("myInquiryHistories={}", myInquiryHistories);
-        log.info("workAndFundingPagination.getPage={}", workAndFundingPagination.getPage());
-        log.info("workAndFundingPagination.getRealEnd={}", workAndFundingPagination.getRealEnd());
-        log.info("workAndFundingPagination.getPageCount={}", workAndFundingPagination.getPageCount());
-        log.info("workAndFundingPagination.getTotal={}", workAndFundingPagination.getTotal());
-        log.info("workAndFundingPagination.getRowCount()={}", workAndFundingPagination.getRowCount());
-
         return myInquiryHistories;
     }
 
@@ -136,9 +129,15 @@ public class MyPageServiceImpl implements MyPageService {
         return inquiryDAO.getTotalInquiryHistoryByMember(memberId);
     }
 
+    // 문의 정보 조회
+    @Override
+    public Optional<InquiryDTO> getInquiry(Long postId) {
+        return inquiryDAO.findById(postId);
+    }
+
     // 마이페이지 - 내 문의 관리자 답변
     @Override
-    public Optional<AdminAnswerDTO> getAdminAnswer(Long id) {
-        return inquiryDAO.findAdminAnswer(id);
+    public Optional<AdminAnswerDTO> getAdminAnswerByInquiryId(Long inquiryId) {
+        return inquiryDAO.findAdminAnswerByInquiryId(inquiryId);
     }
 }
