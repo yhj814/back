@@ -32,6 +32,7 @@ public class WorkDTO {
     private String thumbnailFilePath; // 썸네일 파일 경로
     private Long thumbnailFileId; // 썸네일 파일 ID (추가된 필드)
     private List<Long> ids; // 삭제할 파일 id 목록
+    private String profileImgUrl; // 카카오톡 프로필 이미지 url
 
     public WorkVO toVO() {
         return new WorkVO(id, workPrice, genreType, fileContent, readCount, createdDate, updatedDate, thumbnailFileId);

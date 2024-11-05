@@ -18,6 +18,7 @@ public class FundingVO {
     private int convergePrice; // 모인 금액
     private String fileContent; // 파일 설명
     private String fundingStatus; // 펀딩 상태
+    private String fundingContent;
     private String createdDate; // 생성 날짜
     private String updatedDate; // 수정 날짜
 }

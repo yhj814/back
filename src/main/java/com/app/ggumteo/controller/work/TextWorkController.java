@@ -9,6 +9,7 @@ import com.app.ggumteo.domain.file.PostFileDTO;
 import com.app.ggumteo.domain.file.PostFileVO;
 import com.app.ggumteo.domain.member.MemberProfileVO;
 import com.app.ggumteo.domain.member.MemberVO;
+import com.app.ggumteo.domain.post.PostDTO;
 import com.app.ggumteo.domain.post.PostVO;
 import com.app.ggumteo.domain.reply.ReplyDTO;
 import com.app.ggumteo.domain.work.WorkDTO;
@@ -57,10 +58,10 @@ public class TextWorkController {
    @ModelAttribute
     public void setTestMember(HttpSession session) {
         if (session.getAttribute("member") == null) {
-            session.setAttribute("member", new MemberVO(2L, "", "", "", "", ""));
+            session.setAttribute("member", new MemberVO(3L, "", "", "", "", ""));
         }
         if (session.getAttribute("memberProfile") == null) {
-            session.setAttribute("memberProfile", new MemberProfileVO(2L, "", "", "", 99, "", "", "", 2L, "", ""));
+            session.setAttribute("memberProfile", new MemberProfileVO(3L, "", "", "", 99, "", "", "", 3L, "", ""));
         }
     }
 
@@ -122,7 +123,6 @@ public class TextWorkController {
     }
 
     // 작품 업데이트 요청 처리
-    // 작품 업데이트 요청 처리
     @PostMapping("modify")
     public String updateWork(
             @ModelAttribute WorkDTO workDTO,
@@ -143,7 +143,6 @@ public class TextWorkController {
 
             // 서비스에서 작품 업데이트 로직 실행
             workService.updateWork(workDTO, newFiles, deletedFileIds, newThumbnailFile); // 서비스로 전달
-
             // 수정 후 바로 리스트 페이지로 이동하여 데이터 전달
             search.setPostType(PostType.TEXT.name());
             log.info("Received Search Parameters: {}", search);
@@ -166,7 +165,7 @@ public class TextWorkController {
         } catch (Exception e) {
             log.error("Error updating work: ", e);
             model.addAttribute("error", "업데이트 중 오류가 발생했습니다: " + e.getMessage());
-            return "text/modify";
+            return "text/list";
         }
     }
 

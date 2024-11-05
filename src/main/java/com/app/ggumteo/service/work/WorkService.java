@@ -1,6 +1,7 @@
 package com.app.ggumteo.service.work;
 
 import com.app.ggumteo.domain.file.PostFileDTO;
+import com.app.ggumteo.domain.post.PostDTO;
 import com.app.ggumteo.domain.work.WorkDTO;
 import com.app.ggumteo.pagination.Pagination;
 import com.app.ggumteo.search.Search;

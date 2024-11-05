@@ -5,6 +5,8 @@ import com.app.ggumteo.domain.post.PostVO;
 import lombok.*;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 @Getter
 @Setter
@@ -22,6 +24,7 @@ public class FundingDTO {
     private String postTitle; // 포스트 제목
     private String postContent; // 포스트 내용
     private String postType; // 포스트 타입 (영상, 글, 문의사항 등)
+    private String fundingContent;
     private Long memberProfileId; // 회원 프로필 ID
     private String createdDate; // 생성 날짜
     private String updatedDate; // 수정 날짜
@@ -30,9 +33,11 @@ public class FundingDTO {
     private String profileImgUrl; // 카카오톡 프로필 이미지 url
     private String thumbnailFilePath; // 썸네일 파일 경로
     private Long thumbnailFileId; // 썸네일 파일 ID (추가된 필드)파일 경로
+    private List<FundingProductVO> fundingProducts; // 펀딩 상품 목록
+
 
 
     public FundingVO toVO() {
-        return new FundingVO(id, genreType, investorNumber, targetPrice, convergePrice, fileContent, fundingStatus, createdDate, updatedDate);
+        return new FundingVO(id, genreType, investorNumber, targetPrice, convergePrice, fileContent, fundingStatus, fundingContent, createdDate, updatedDate);
     }
 }

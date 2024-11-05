@@ -2,6 +2,8 @@ package com.app.ggumteo.mapper.funding;
 
 import com.app.ggumteo.domain.funding.BuyFundingProductDTO;
 import com.app.ggumteo.domain.funding.FundingDTO;
+import com.app.ggumteo.domain.funding.FundingProductVO;
+import com.app.ggumteo.domain.work.WorkDTO;
 import com.app.ggumteo.pagination.MyPagePagination;
 import com.app.ggumteo.pagination.Pagination;
 import com.app.ggumteo.pagination.SettingTablePagination;
@@ -23,4 +25,15 @@ public interface FundingMapper {
 
 //    펀딩 정보 조회
     public Optional<FundingDTO> selectById(@Param("id") Long id, @Param("postType") String postType);
+
+
+
+    // 펀딩 삽입
+    public void insert(FundingDTO fundingDTO);
+    // 펀딩 상품 저장
+    void saveFundingProduct(FundingProductVO fundingProductVO);
+
+    // 펀딩 정보 수정 (tbl_funding 및 tbl_post 업데이트)
+    void updateFunding(FundingDTO fundingDTO);
+
 }
