@@ -92,24 +92,38 @@ public class AuditionServiceImpl implements AuditionService {
         // 기존 데이터를 다시 조회하여 최신 정보를 가져옴 (특히 썸네일 파일 ID)
         AuditionDTO currentAudition = auditionDAO.findAuditionById(auditionDTO.getId());
 
-        // 기존 파일 삭제
-        if (deletedFileIds != null && !deletedFileIds.isEmpty()) {
-            postFileService.deleteFilesByIds(deletedFileIds);
-        }
+        if (currentAudition != null) {
+            // currentAudition에서 id 값을 auditionDTO로 설정
+            auditionDTO.setId(currentAudition.getId());
 
-        // 새 파일 추가
-        if (newFiles != null && !newFiles.isEmpty()) {
-            for (MultipartFile file : newFiles) {
-                if (!file.isEmpty()) {
-                    postFileService.saveFile(file, auditionDTO.getId());
+            // 기타 필요한 필드들을 currentAudition에서 가져와서 설정
+            auditionDTO.setPostTitle(currentAudition.getPostTitle());
+            auditionDTO.setPostContent(currentAudition.getPostContent());
+            auditionDTO.setPostType(currentAudition.getPostType());
+            auditionDTO.setMemberProfileId(currentAudition.getMemberProfileId());
+
+            // 기존 파일 삭제
+            if (deletedFileIds != null && !deletedFileIds.isEmpty()) {
+                postFileService.deleteFilesByIds(deletedFileIds);
+            }
+
+            // 새 파일 추가
+            if (newFiles != null && !newFiles.isEmpty()) {
+                for (MultipartFile file : newFiles) {
+                    if (!file.isEmpty()) {
+                        postFileService.saveFile(file, auditionDTO.getId());
+                    }
                 }
             }
-        }
 
-        // 모집 정보 업데이트
-        auditionDAO.updateAudition(auditionDTO);
-        log.info("작품 정보 업데이트 완료: 작품 ID: {}", auditionDTO.getId());
+            // 모집 정보 업데이트
+            auditionDAO.updateAudition(auditionDTO);
+            log.info("작품 정보 업데이트 완료: 작품 ID: {}", auditionDTO.getId());
+        } else {
+            log.warn("업데이트할 작품을 찾을 수 없습니다. 작품 ID: {}", auditionDTO.getId());
+        }
     }
+
 
     @Override
     public void deleteAuditionById(Long id) {
