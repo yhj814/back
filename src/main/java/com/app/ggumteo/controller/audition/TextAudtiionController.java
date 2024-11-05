@@ -6,6 +6,7 @@ import com.app.ggumteo.domain.file.PostFileDTO;
 import com.app.ggumteo.domain.member.MemberProfileDTO;
 import com.app.ggumteo.domain.member.MemberVO;
 import com.app.ggumteo.pagination.AuditionPagination;
+import com.app.ggumteo.search.Search;
 import com.app.ggumteo.service.audition.AuditionService;
 import com.app.ggumteo.service.file.PostFileService;
 import jakarta.servlet.http.HttpSession;
@@ -98,10 +99,9 @@ public class TextAudtiionController {
 
 
     @GetMapping("/list")
-    public String list(@RequestParam(value = "keyword", required = false) String keyword,
+    public String list(@ModelAttribute Search search,
                        @RequestParam(value = "page", defaultValue = "1") int page,
                        Model model) {
-        if (keyword == null) keyword = "";
 
         MemberVO member = (MemberVO) session.getAttribute("member");
         MemberProfileDTO memberProfile = (MemberProfileDTO) session.getAttribute("memberProfile");
@@ -111,19 +111,18 @@ public class TextAudtiionController {
         AuditionPagination pagination = new AuditionPagination();
         pagination.setPage(page);
 
-        int totalAudition = auditionService.findTotal(PostType.TEXT);
-        int totalSearchAudition = auditionService.findTotalAuditionsSearch(PostType.TEXT, keyword);
+        int totalSearchAudition = auditionService.findTotalAuditionsSearch(PostType.TEXT, search);
 
-        int totalCount = keyword.isEmpty() ? totalAudition : totalSearchAudition;
-        pagination.setTotal(totalCount);
+        pagination.setTotal(totalSearchAudition);
         pagination.progress();
 
-        List<AuditionDTO> auditions = auditionService.findAllAuditions(PostType.TEXT, keyword, pagination);
+        List<AuditionDTO> auditions = auditionService.findAllAuditions(PostType.TEXT, search, pagination);
 
         model.addAttribute("auditions", auditions);
-        model.addAttribute("keyword", keyword);
+        model.addAttribute("search", search);
         model.addAttribute("pagination", pagination);
-        model.addAttribute("totalCount", totalCount);
+        model.addAttribute("totalSearchAudition", totalSearchAudition);
+
 
         return "/audition/text/list";
     }

@@ -10,6 +10,7 @@ import com.app.ggumteo.pagination.AuditionPagination;
 import com.app.ggumteo.pagination.Pagination;
 import com.app.ggumteo.repository.audition.AuditionDAO;
 import com.app.ggumteo.repository.post.PostDAO;
+import com.app.ggumteo.search.Search;
 import com.app.ggumteo.service.file.PostFileService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -76,10 +77,10 @@ public class AuditionServiceImpl implements AuditionService {
     public AuditionDTO findAuditionById(Long id) {return auditionDAO.findAuditionById(id);}
 
     @Override
-    public List<AuditionDTO> findAllAuditions(PostType postType, String keyword, AuditionPagination pagination) {
+    public List<AuditionDTO> findAllAuditions(PostType postType, Search search, AuditionPagination pagination) {
         pagination.progress();
 
-        return auditionDAO.findAllAuditions(postType, keyword, pagination);
+        return auditionDAO.findAllAuditions(postType, search, pagination);
     }
 
     @Override
@@ -96,7 +97,7 @@ public class AuditionServiceImpl implements AuditionService {
             postFileService.deleteFilesByIds(deletedFileIds);
         }
 
-        // 새 파일 추가 (썸네일 파일이 아닌 일반 파일들)
+        // 새 파일 추가
         if (newFiles != null && !newFiles.isEmpty()) {
             for (MultipartFile file : newFiles) {
                 if (!file.isEmpty()) {
@@ -117,13 +118,8 @@ public class AuditionServiceImpl implements AuditionService {
     }
 
     @Override
-    public int findTotal(PostType postType) {
-        return auditionDAO.findTotalAuditions(postType);
-    }
-
-    @Override
-    public int findTotalAuditionsSearch(PostType postType, String keyword) {
-        return auditionDAO.findTotalAuditionsSearch(postType, keyword);
+    public int findTotalAuditionsSearch(PostType postType, Search search) {
+        return auditionDAO.findTotalAuditionsSearch(postType, search);
     }
 
     @Override
