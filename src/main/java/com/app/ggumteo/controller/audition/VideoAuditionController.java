@@ -4,22 +4,24 @@ import com.app.ggumteo.constant.PostType;
 import com.app.ggumteo.domain.audition.AuditionDTO;
 import com.app.ggumteo.domain.file.PostFileDTO;
 import com.app.ggumteo.domain.member.MemberProfileDTO;
+import com.app.ggumteo.domain.member.MemberProfileVO;
 import com.app.ggumteo.domain.member.MemberVO;
 import com.app.ggumteo.pagination.AuditionPagination;
+import com.app.ggumteo.search.Search;
 import com.app.ggumteo.service.audition.AuditionService;
 import com.app.ggumteo.service.file.PostFileService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import com.app.ggumteo.search.Search;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
@@ -49,6 +51,30 @@ public class VideoAuditionController {
             log.info("비로그인 상태입니다.");
         }
     }
+
+//    @ModelAttribute
+//    public void setMemberInfo(HttpSession session, Model model) {
+//        MemberVO member = (MemberVO) session.getAttribute("member");
+//        MemberProfileVO memberProfileVO = (MemberProfileVO) session.getAttribute("memberProfile");
+//
+//        boolean isLoggedIn = member != null;
+//        model.addAttribute("isLoggedIn", isLoggedIn);
+//
+//        if (isLoggedIn) {
+//            model.addAttribute("member", member);
+//
+//            if (memberProfileVO != null) {
+//                MemberProfileDTO memberProfileDTO = memberProfileVO.toDTO(); // VO를 DTO로 변환
+//                model.addAttribute("memberProfile", memberProfileDTO);
+//                log.info("로그인 상태 - 사용자 ID: {}, 프로필 ID: {}", member.getId(), memberProfileDTO.getId());
+//            } else {
+//                log.info("로그인 상태 - 프로필 정보가 없습니다.");
+//            }
+//        } else {
+//            log.info("비로그인 상태입니다.");
+//        }
+//    }
+
 
     @PostMapping("upload")
     @ResponseBody
@@ -116,25 +142,33 @@ public class VideoAuditionController {
             @ModelAttribute AuditionDTO auditionDTO,
             @RequestParam(value = "newFiles", required = false) List<MultipartFile> newFiles,
             @RequestParam(value = "deletedFileIds", required = false) List<Long> deletedFileIds,
+            @ModelAttribute Search search,
+            @RequestParam(value = "page", defaultValue = "1", required = false) int page,
             Model model) {
-        try{
-            log.info("수정 요청 - 모집 정보: {}", auditionDTO);
+        try {
+            // 전달된 AuditionDTO의 필드들을 로그로 확인
+            log.info("수정 요청 - AuditionDTO 정보: {}", auditionDTO);
+            log.info("수정 요청 - 새 파일 목록: {}", newFiles);
+            log.info("수정 요청 - 삭제할 파일 ID 목록: {}", deletedFileIds);
 
             // 기존 데이터를 가져와서 필요한 필드를 설정
             auditionService.updateAudition(auditionDTO, newFiles, deletedFileIds);
+
+            log.info("업데이트 성공 - AuditionDTO ID: {}", auditionDTO.getId());
+
             return "redirect:/audition/video/detail/" + auditionDTO.getId();
         } catch (Exception e) {
-            log.error("Error updating work: ", e);
+            log.error("오류 발생: {}", e.getMessage(), e);
             model.addAttribute("error", "업데이트 중 오류가 발생했습니다: " + e.getMessage());
-            return "/audition/video/modify";
+            return "/audition/video/detail/{id}";
         }
     }
 
+
     @GetMapping("/list")
-    public String list(@RequestParam(value = "keyword", required = false) String keyword,
+    public String list(@ModelAttribute Search search,
                        @RequestParam(value = "page", defaultValue = "1") int page,
                        Model model) {
-        if (keyword == null) keyword = "";
 
         MemberVO member = (MemberVO) session.getAttribute("member");
         MemberProfileDTO memberProfile = (MemberProfileDTO) session.getAttribute("memberProfile");
@@ -144,34 +178,33 @@ public class VideoAuditionController {
         AuditionPagination pagination = new AuditionPagination();
         pagination.setPage(page);
 
-        int totalAudition = auditionService.findTotal(PostType.VIDEO);
-        int totalSearchAudition = auditionService.findTotalAuditionsSearch(PostType.VIDEO, keyword);
+        int totalSearchAudition = auditionService.findTotalAuditionsSearch(PostType.VIDEO, search);
+        log.info("모집건수: {}",totalSearchAudition);
 
-        int totalCount = keyword.isEmpty() ? totalAudition : totalSearchAudition;
-        pagination.setTotal(totalCount);
+        pagination.setTotal(totalSearchAudition);
         pagination.progress();
 
-        List<AuditionDTO> auditions = auditionService.findAllAuditions(PostType.VIDEO, keyword, pagination);
+        List<AuditionDTO> auditions = auditionService.findAllAuditions(PostType.VIDEO, search, pagination);
 
         model.addAttribute("auditions", auditions);
-        model.addAttribute("keyword", keyword);
+        model.addAttribute("search", search);
         model.addAttribute("pagination", pagination);
-        model.addAttribute("totalCount", totalCount);
+        model.addAttribute("totalSearchAudition", totalSearchAudition);
+
 
         return "/audition/video/list";
     }
 
-    @GetMapping("/display")
+    @GetMapping("display")
     @ResponseBody
-    public ResponseEntity<byte[]> display(@RequestParam("fileName") String fileName) throws IOException {
-        byte[] fileData = postFileService.getFileData(fileName);
-        if (fileData == null) {
-            return ResponseEntity.notFound().build();
+    public byte[] display(@RequestParam("fileName") String fileName) throws IOException {
+        File file = new File("C:/upload", fileName);
+
+        if (!file.exists()) {
+            throw new FileNotFoundException("파일을 찾을 수 없습니다: " + fileName);
         }
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.IMAGE_JPEG);
-        return new ResponseEntity<>(fileData, headers, HttpStatus.OK);
+        return FileCopyUtils.copyToByteArray(file);
     }
 
 

@@ -66,12 +66,15 @@ public class KakaoController {
     @PostMapping("/kakao/logout")
     public RedirectView kakaoLogout(HttpSession session) {
         String token = (String) session.getAttribute("kakaoToken");
+        log.info("로그아웃 시 세션에서 가져온 kakaoToken: {}", token);
 
         if (token != null) {
             boolean isLoggedOut = kakaoService.kakaoLogout(token);
 
             if (isLoggedOut) {
-                session.invalidate();
+                session.removeAttribute("kakaoToken");  // 명시적 속성 제거
+                session.removeAttribute("member");       // 세션에서 사용자 정보도 제거
+                session.invalidate();                    // 세션 완전 무효화
                 log.info("로그아웃 성공");
             } else {
                 log.error("로그아웃 실패");
@@ -80,7 +83,7 @@ public class KakaoController {
             log.error("세션에 저장된 토큰이 없습니다.");
         }
 
-        // 로그아웃 후 메인 페이지로 리디렉션
-        return new RedirectView("/main");
+        return new RedirectView("/main"); // 메인 페이지로 리디렉션
     }
+
 }
