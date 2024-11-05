@@ -27,10 +27,8 @@
                             th:action="@{/audition/video/modify}"
                             id="write-form"
                             enctype="multipart/form-data">
-                        <div th:if="${audition != null}"
-                             style="display: none"
-                        >
-                            <input name="id" th:value="${audition.id}" />
+                        <div th:if="${audition != null}">
+                            <input type="hidden" name="id" th:value="${audition.id}" />
                         </div>
                         <div class="write-add-view">
                             <div class="subtitle-1 write-add-title">
