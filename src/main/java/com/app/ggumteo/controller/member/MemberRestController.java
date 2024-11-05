@@ -14,6 +14,7 @@ import com.app.ggumteo.service.file.PostFileService;
 import com.app.ggumteo.service.myPage.MyPageService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import net.coobird.thumbnailator.Thumbnailator;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -26,7 +27,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -97,8 +101,7 @@ public class MemberRestController {
         return myPageService.getAdminAnswer(id);
     }
 
-    //    파일 업로드
-    @PostMapping("upload")
+    @PostMapping("/members/upload")
     @ResponseBody
     public List<PostFileDTO> upload(@RequestParam("file") List<MultipartFile> files) {
         try {
@@ -108,8 +111,10 @@ public class MemberRestController {
             return Collections.emptyList();  // 오류 발생 시 빈 리스트 반환
         }
     }
+
+
     //    가져오기
-    @GetMapping("display")
+    @GetMapping("/members/display")
     @ResponseBody
     public byte[] display(@RequestParam("fileName") String fileName) throws IOException {
         File file = new File("C:/upload", fileName);

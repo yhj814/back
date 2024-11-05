@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>file-테스트</title>
+</head>
+<body>
+<form th:action="@{/member/video/file/write}" method="post" enctype="multipart/form-data">
+    <input type="file" name="file">
+    <input type="file" name="file">
+    <button>완료</button>
+</form>
+</body>
+<script src="/js/my/video/file/file-service.js"></script>
+<script>
+    const button = document.querySelector("button[type=button]");
+    const files = document.querySelectorAll("input[type=file]");
+
+    files.forEach((file) => {
+        file.addEventListener("change", (e) => {
+            const file = e.target.files[0];
+            const formData = new FormData();
+            formData.append("file", file);
+            fileService.upload(formData);
+        });
+    });
+
+    button.addEventListener("click", (e) => {
+
+    });
+
+</script>
+</html>
