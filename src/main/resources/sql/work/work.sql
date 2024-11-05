@@ -12,3 +12,26 @@ insert into tbl_work
 values(10,9000,'comedy','파일설명6','7');
 
 select *from tbl_work;
+
+
+select f.id
+     , f.genre_type
+     , p.post_title
+     , p.post_content
+     , p.post_type
+     , p.member_profile_id
+     , p.created_date
+     , p.updated_date
+     , mp.profile_nickname
+     , mp.member_id
+     , m.profile_img_url
+     , fl.file_name as thumbnail_file_name
+     , fl.file_path as thumbnail_file_path
+     , f.thumbnail_file_id
+from tbl_work w
+         join tbl_post p on w.id = p.id
+         join tbl_member_profile mp on p.member_profile_id = mp.id
+         join tbl_member m on mp.member_id = m.id
+         join tbl_post_file pfl on p.id = pfl.post_id
+         join tbl_file fl on pfl.id = fl.id and f.thumbnail_file_id = f.id
+order by w.id desc
