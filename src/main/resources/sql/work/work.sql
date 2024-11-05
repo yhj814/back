@@ -9,6 +9,6 @@ create table tbl_work (
 );
 
 insert into tbl_work
-values(10,9000,'comedy','파일설명6','7');
+values(28,21000,'comedy','파일설명9','14');
 
 select *from tbl_work;
