@@ -2,18 +2,10 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.app.ggumteo.mapper.funding.FundingMapper">
     <select id="selectByMemberId" resultType="fundingDTO">
-        select f.id, f.genre_type, p.post_title, p.post_content, p.post_type, p.member_profile_id, p.created_date, p.updated_date
-             , mp.profile_nickname, mp.member_id, m.profile_img_url
-             , fl.file_name as thumbnail_file_name, fl.file_path as thumbnail_file_path
-        from
-            tbl_funding f
-                join tbl_post p on f.id = p.id and p.post_type = #{postType}
-                join tbl_member_profile mp on p.member_profile_id = mp.id
-                join tbl_member m on mp.member_id = m.id and m.id = #{memberId}
-                join tbl_post_file pfl on p.id = pfl.post_id
-                join tbl_file fl on pfl.id = fl.id and f.thumbnail_file_id = f.id
-        order by f.id desc
-            limit #{workAndFundingPagination.startRow}, #{workAndFundingPagination.rowCount};
+        select "id", "genre_type", "post_title", "post_content", "post_type", "member_profile_id", "created_date", "updated_date", "profile_nickname", "member_id", "profile_img_url", "thumbnail_file_name", "thumbnail_file_path", "thumbnail_file_id"
+        from view_my_funding
+        where post_type = #{postType} and member_id = #{memberId}
+        limit #{workAndFundingPagination.startRow}, #{workAndFundingPagination.rowCount};
     </select>
 
     <select id="selectCount">
@@ -34,6 +26,7 @@
         insert into tbl_funding (id, genre_type, investor_number, target_price, converge_price, file_content, funding_content, funding_status)
         values (#{id}, #{genreType}, #{investorNumber}, #{targetPrice}, #{convergePrice}, #{fileContent}, #{fundingContent}, '펀딩 중')
     </insert>
+
     <!-- 펀딩 상품 삽입 -->
     <insert id="insertFundingProduct" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
         insert into tbl_funding_product (product_name, product_price, product_amount, funding_id)
@@ -43,13 +36,12 @@
     <!-- 펀딩 정보 수정 (썸네일 파일 ID 포함) -->
     <update id="updateFunding">
         update tbl_funding
-        set
-        genre_type = #{genreType},
+        set genre_type = #{genreType},
         investor_number = #{investorNumber},
         target_price = #{targetPrice},
         converge_price = #{convergePrice},
         file_content = #{fileContent},
-        funding_content = #{fundingContent}
+        funding_content = #{fundingContent},
         funding_status = #{fundingStatus}
         <if test="thumbnailFileId != null">
             , thumbnail_file_id = #{thumbnailFileId}
@@ -57,7 +49,12 @@
         where id = #{id}
     </update>
 
-
+    <!-- 펀딩 상태 갱신 (한 달이 지난 경우 펀딩 종료로 변경) -->
+    <update id="updateFundingStatusToEnded">
+        update tbl_funding
+        set funding_status = '펀딩 종료'
+        where funding_status = '펀딩 중'
+    </update>
 
 
 </mapper>

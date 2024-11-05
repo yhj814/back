@@ -4,12 +4,10 @@ import com.app.ggumteo.constant.PostType;
 import com.app.ggumteo.domain.audition.AuditionDTO;
 import com.app.ggumteo.domain.audition.AuditionVO;
 import com.app.ggumteo.domain.file.PostFileDTO;
-import com.app.ggumteo.domain.work.WorkDTO;
 import com.app.ggumteo.pagination.AuditionPagination;
-import com.app.ggumteo.pagination.Pagination;
+import com.app.ggumteo.search.Search;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import org.springframework.web.bind.annotation.ModelAttribute;
 
 import java.util.List;
 
@@ -39,14 +37,14 @@ public interface AuditionMapper {
     // 전체목록 조회
     List<AuditionDTO> selectAll(
             @Param("postType") PostType postType,
-            @Param("keyword") String keyword,
+            @Param("search") Search search,
             @Param("pagination") AuditionPagination pagination
     );
 
     // 검색 조건이 포함된 총 작품 수 조회
     int selectTotalWithSearch(
             @Param("postType") PostType postType,
-            @Param("keyword") String keyword
+            @Param("search") Search search
     );
 
     // 상세페이지에서 다중 파일 조회

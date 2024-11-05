@@ -4,6 +4,7 @@ import com.app.ggumteo.constant.PostType;
 import com.app.ggumteo.domain.audition.AuditionDTO;
 import com.app.ggumteo.domain.file.PostFileDTO;
 import com.app.ggumteo.pagination.AuditionPagination;
+import com.app.ggumteo.search.Search;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -13,14 +14,12 @@ public interface AuditionService {
 
     AuditionDTO findAuditionById(Long id);
 
-    List<AuditionDTO> findAllAuditions(PostType postType, String keyword, AuditionPagination pagination);
+    List<AuditionDTO> findAllAuditions(PostType postType, Search search, AuditionPagination pagination);
 
     void updateAudition(AuditionDTO auditionDTO, List<MultipartFile> newFiles, List<Long> deletedFileIds);
     void deleteAuditionById(Long id);
 
-    int findTotal(PostType postType);
-
-    int findTotalAuditionsSearch(PostType postType, String keyword);
+    int findTotalAuditionsSearch(PostType postType, Search search);
 
     List<PostFileDTO> findAllPostFiles(Long postId);
 }

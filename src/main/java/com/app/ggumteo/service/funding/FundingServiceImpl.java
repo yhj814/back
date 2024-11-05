@@ -71,4 +71,9 @@ public class FundingServiceImpl implements FundingService{
             fundingDAO.updateFunding(fundingDTO); // 썸네일 ID 업데이트
         }
     }
+
+    @Override
+    public void updateFundingStatusToEnded() {
+        fundingDAO.updateFundingStatusToEnded();
+    }
 }

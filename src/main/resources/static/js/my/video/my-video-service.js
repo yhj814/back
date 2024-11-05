@@ -50,10 +50,32 @@ const myPageService = (() => {
         }
     }
 
+    const getAdminAnswerByInquiryId = async (inquiryId, callback) => {
+        const response = await fetch(`/members/inquiry/${inquiryId}/admin-answer`);
+        const adminAnswer = await response.json();
+
+        console.log("adminAnswer : ", adminAnswer)
+
+        if (callback) {
+            return callback(adminAnswer)
+        }
+    }
+
+    const upload = async (formDate) => {
+        const response = await fetch("/member/video/file/upload", {
+            method: "post",
+            body: formDate
+        });
+        const fileName = await response.json();
+        return fileName;
+    }
+
     return {
         getMyFundingList: getMyFundingList,
         getFundingBuyerList: getFundingBuyerList,
         updateFundingSendStatus: updateFundingSendStatus,
         getMyBuyFundingList: getMyBuyFundingList,
-        getMyInquiryHistoryList: getMyInquiryHistoryList}
+        getMyInquiryHistoryList: getMyInquiryHistoryList,
+        getAdminAnswerByInquiryId: getAdminAnswerByInquiryId,
+        upload : upload}
 })()

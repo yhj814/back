@@ -12,24 +12,27 @@
     <input type="file" name="file">
     <input type="file" name="file">
     <button>완료</button>
+    <div><a class="download"><img class="th" width="100"></a></div>
+    <div><a class="download"><img class="th" width="100"></a></div>
 </form>
 </body>
-<script src="/js/my/video/file/file-service.js"></script>
+<script src="/js/my/video/my-video-service.js"></script>
 <script>
     const button = document.querySelector("button[type=button]");
     const files = document.querySelectorAll("input[type=file]");
+    const ths = document.querySelectorAll("img.th");
+    const downloads = document.querySelectorAll("a.download");
 
     files.forEach((file) => {
-        file.addEventListener("change", (e) => {
+        file.addEventListener("change", async (e) => {
             const file = e.target.files[0];
             const formData = new FormData();
             formData.append("file", file);
-            fileService.upload(formData);
+            const fileInfo = await myPageService.upload(formData);
+            console.log(fileInfo);
+            ths[i].src = `/file/display?fileName=${fileInfo.filePath + "/t_" + fileInfo.fileName}`;
+            downloads[i].href = `/file/download?fileName=${fileInfo.filePath + "/" + fileInfo.fileName}`;
         });
-    });
-
-    button.addEventListener("click", (e) => {
-
     });
 
 </script>

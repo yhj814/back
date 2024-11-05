@@ -14,6 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 public class AuditionDTO {
     private Long id;
+    private Long postId;
     private String postTitle;
     private String postContent;
     private String postType;

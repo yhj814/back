@@ -42,6 +42,11 @@ select count(*) from
         join tbl_member m on mp.member_id = m.id and m.id = 1
         and p.post_type = 'INQUIRY';
 
+select admin_answer_content, aa.inquiry_id
+     , created_date, i.inquiry_status, i.id
+from tbl_admin_answer aa join tbl_inquiry i
+on aa.inquiry_id = i.id and i.inquiry_status = 'YES' and i.id = 19;
+
 select aa.id, admin_answer_content, aa.inquiry_id, created_date, i.inquiry_status
 from tbl_admin_answer aa join tbl_inquiry i
 on aa.inquiry_id = i.id and aa.inquiry_id = 19;

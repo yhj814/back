@@ -12,11 +12,13 @@ import org.springframework.stereotype.Component;
 @AllArgsConstructor
 public class AdminAnswerDTO {
     private Long id;
-    private String admin_answer_content;
+    private String adminAnswerContent;
     private Long inquiryId;
-    private String created_date;
+    private String createdDate;
+    private String inquiryStatus;
 
     public AdminAnswerVO toVO() {
-        return new AdminAnswerVO(id, admin_answer_content, inquiryId, created_date);
+        return new AdminAnswerVO(id
+                , adminAnswerContent, inquiryId, createdDate);
     }
 }

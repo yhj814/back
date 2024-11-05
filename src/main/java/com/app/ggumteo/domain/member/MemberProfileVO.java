@@ -24,4 +24,20 @@ public class MemberProfileVO implements Serializable {
     private Long memberId;
     private String createdDate;
     private String updatedDate;
+
+    public MemberProfileDTO toDTO() {
+        MemberProfileDTO dto = new MemberProfileDTO();
+        dto.setId(this.id);
+        dto.setProfileName(this.profileName);
+        dto.setProfileNickName(this.profileNickName);
+        dto.setProfileGender(this.profileGender);
+        dto.setProfileAge(this.profileAge);
+        dto.setProfileEmail(this.profileEmail);
+        dto.setProfilePhone(this.profilePhone);
+        dto.setProfileEtc(this.profileEtc);
+        dto.setMemberId(this.memberId);
+        dto.setCreatedDate(this.createdDate);
+        dto.setUpdatedDate(this.updatedDate);
+        return dto;
+    }
 }

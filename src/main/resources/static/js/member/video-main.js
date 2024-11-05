@@ -41,6 +41,14 @@ document.addEventListener("DOMContentLoaded", function () {
                 const selectedContent = document.getElementById(contentId);
                 if (selectedContent) {
                     selectedContent.classList.add("active");
+                    globalThis.myFundingPage = 1;
+                    myPageService.getMyFundingList(globalThis.myFundingPage, memberId, showMyFundingList);
+
+                    globalThis.myBuyFundingPage = 1;
+                    myPageService.getMyBuyFundingList(globalThis.myBuyFundingPage, memberId, showMyBuyFundingList);
+
+                    globalThis.myInquiryHistoryPage = 1;
+                    myPageService.getMyInquiryHistoryList(globalThis.myInquiryHistoryPage, memberId, showMyInquiryHistoryList);
                 }
 
                 // 모든 사이드바 메뉴에서 active-menu 클래스 제거

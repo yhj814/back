@@ -39,18 +39,26 @@ public class FundingDAO {
 
     // 펀딩 삽입 메서드
     public void save(FundingDTO fundingDTO) {
+        if (fundingDTO.getFundingStatus() == null) {
+            fundingDTO.setFundingStatus("펀딩 중");
+        }
         fundingMapper.insert(fundingDTO);
     }
 
+
     // 펀딩 상품 삽입 메서드
     public void saveFundingProduct(FundingProductVO fundingProductVO) {
-        fundingMapper.saveFundingProduct(fundingProductVO);
+        fundingMapper.insertFundingProduct(fundingProductVO);
     }
 
     // 펀딩 정보 수정
     public void updateFunding(FundingDTO fundingDTO) {
         fundingMapper.updateFunding(fundingDTO);
     }
-
-
+    // 펀딩 상태 갱신 (펀딩 중 -> 펀딩 종료)
+    public void updateFundingStatusToEnded() {
+        fundingMapper.updateFundingStatusToEnded();
+    }
 }
+
+

@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 @AllArgsConstructor
 public class AdminAnswerVO {
     private Long id;
-    private String admin_answer_content;
+    private String adminAnswerContent;
     private Long inquiryId;
-    private String created_date;
+    private String createdDate;
 }

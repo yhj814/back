@@ -1,6 +1,7 @@
 package com.app.ggumteo.mapper;
 
 import com.app.ggumteo.constant.PostType;
+import com.app.ggumteo.domain.admin.AdminAnswerDTO;
 import com.app.ggumteo.domain.funding.BuyFundingProductDTO;
 import com.app.ggumteo.domain.funding.FundingDTO;
 import com.app.ggumteo.domain.inquiry.InquiryDTO;
@@ -15,6 +16,8 @@ import org.apache.juli.logging.Log;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import java.util.Optional;
 
 @SpringBootTest
 @Slf4j
@@ -44,13 +47,11 @@ public class InquiryMapperTests {
                 .stream().map(InquiryDTO::toString).forEach(log::info);
     }
 
-//    FundingDTO fundingDTO = null;
-//    SettingTablePagination settingTablePagination = new SettingTablePagination();
-//    fundingDTO = fundingMapper.selectById(9L, PostType.VIDEO.name()).get();
-//        settingTablePagination.setTotal(buyFundingProductMapper.selectCount(fundingDTO.getId()));
-//        settingTablePagination.progress();
-//        buyFundingProductMapper.selectByFundingPostId(
-//    settingTablePagination, fundingDTO.getId()).stream()
-//                .map(BuyFundingProductDTO::toString).forEach(log::info);
-//}
+    @Test
+    public void testSelectAdminAnswer() {
+        InquiryDTO inquiryDTO = null;
+        inquiryDTO = inquiryMapper.selectById(20L).get();
+        log.info(inquiryDTO.toString());
+        inquiryMapper.selectAdminAnswerByInquiryId(inquiryDTO.getPostId()).stream().map(AdminAnswerDTO::toString).forEach(log::info);
+    }
 }
