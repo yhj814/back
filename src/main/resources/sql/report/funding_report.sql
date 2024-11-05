@@ -4,6 +4,9 @@ create table tbl_funding_report (
     funding_id bigint unsigned not null,
     created_date datetime default current_timestamp,
     report_status varchar(255) default 'REPORT',
-        constraint fk_funding_report_funding foreign key (funding_id)
-    references tbl_funding(id)
+    member_profile_id bigint unsigned not null,
+    constraint fk_funding_report_funding foreign key (funding_id)
+    references tbl_funding(id),
+    constraint fk_funding_report_member_profile foreign key (member_profile_id)
+    references tbl_member_profile(id)
 );

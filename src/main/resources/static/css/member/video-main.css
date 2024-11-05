@@ -24,6 +24,7 @@ html {
     line-height: 1rem;
     font-size: 16px
 }
+
 .container.mypage {
     display: flex;
     padding-top: 48px;
@@ -2141,7 +2142,276 @@ p {
     
 }
 
-/*서버 작업 - 스타일 추가 내용*/
+/*서버 작업 - 스타일 추가*/
 .setting-table.active {
     display: block;
 }
+
+/*내 정보 수정 및 스타일 추가*/
+html, button, input, select, textarea {
+    font-family: "NotoSansKR";
+}
+
+.form-horizontal {
+    height: 875px;
+    box-sizing: border-box;
+    margin: 0;
+    font-family: "NotoSansKR";
+    line-height: 1rem;
+}
+
+.form-group {
+    margin-bottom: 60px;
+}
+
+.form-horizontal .form-group:before, .form-horizontal .form-group:after {
+    content: " ";
+    display: table;
+}
+
+.form-horizontal .control-label, .form-horizontal .radio, .form-horizontal .checkbox, .form-horizontal .radio-inline, .form-horizontal .checkbox-inline {
+    padding-top: 7px;
+}
+
+.form-horizontal .control-label {
+    font-weight: 500;
+    text-align: right;
+}
+
+.control-label {
+    float: left;
+    margin-left: 10px;
+    margin-right: 10px;
+    width: 250px;
+}
+
+.control-wrapper {
+    float: left;
+    margin-left: 10px;
+    width: 340px;
+}
+
+.form-control {
+    width: 100%;
+    padding: 6px 12px;
+    line-height: 1.428571429;
+    color: #666;
+    outline: none;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #dedede;
+    border-radius: 2px;
+    -webkit-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+    -moz-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+    -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+    transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+}
+
+.error-message {
+    display: none;
+    float: left;
+    color: #f33d12;
+    margin-bottom: 10px;
+}
+
+.fa {
+    display: inline-block;
+    font: normal normal normal 14px / 1 FontAwesome;
+    font-size: inherit;
+    text-rendering: auto;
+}
+
+.list-unstyled {
+    padding-left: 0;
+    list-style: none;
+    margin-top: 0;
+}
+
+.radio-inline, .checkbox-inline {
+    display: block;
+    padding-left: 20px;
+    margin-bottom: 0;
+    font-weight: normal;
+    cursor: pointer;
+}
+
+.radio input[type=radio], .radio-inline input[type=radio], .checkbox input[type=checkbox], .checkbox-inline input[type=checkbox] {
+    float: left;
+    font-size: 100%;
+    margin-left: -20px;
+}
+
+.input-gap {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 2px;
+}
+
+.btn-certification-select {
+    position: relative;
+    padding-right: 25px;
+}
+
+.btn-certification-select {
+    vertical-align: top;
+    display: inline-block;
+    margin-left: 10px;
+    border-radius: 4px;
+    border: 1px solid #bdbdbd;
+    background-color: #fafafa;
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 400;
+    color: #616161;
+    width: 115px;
+    height: 34px;
+    text-align: center;
+}
+
+.form-horizontal .btn {
+    margin-bottom: 0;
+    background-image: none;
+    white-space: nowrap;
+    padding: 6px 12px;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+}
+
+.loading-icon {
+    position: absolute;
+    right: -9%;
+    top: 56%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+    display: none;
+}
+
+.certification-input-phone {
+    display: none;
+}
+
+.timer-container {
+    margin-top: 5px;
+    margin-bottom: 10px;
+    float: left;
+}
+
+.timer-container p {
+    color: #2099bb;
+}
+
+.form-textarea {
+    position: relative;
+    display: block;
+    padding: 8px 12px;
+    width: 100%;
+    min-height: 200px;
+    color: #616161;
+    line-height: 24px;
+    resize: none;
+    overflow: auto;
+    border: 0;
+    outline: none;
+    border-radius: 4px;
+    overflow: hidden;
+    border: 1px solid #e0e0e0;
+}
+
+.selected-file-viewer {
+    position: relative;
+    padding: 9px 13px;
+    width: 203px;
+    display: inline-block;
+    border: 1px solid #e0e0e0;
+    background-color: #fff;
+    border-radius: 4px;
+}
+
+.placeholder-attachment {
+    margin: 0;
+    font-size: 14px;
+    line-height: 24px;
+    font-weight: 400;
+    color: #bdbdbd;
+}
+
+.tooltip-group {
+    display: none;
+}
+
+.tooltip-group {
+    position: relative;
+}
+
+.tooltip-group .viewer-file-icon {
+    position: absolute;
+    top: 5px;
+}
+
+.tooltip-group .file-name-viewer {
+    margin-top: 4px;
+    margin-left: 22px;
+    max-width: 548px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: #3ba3c7;
+    font-weight: 500;
+}
+
+.btn-delete-resume {
+    position: absolute;
+    cursor: pointer;
+    right: -5px;
+    top: 2px;
+}
+
+.btn-file-select {
+    vertical-align: top;
+    display: inline-block;
+    margin-left: 10px;
+    border-radius: 4px;
+    border: 1px dashed #bdbdbd;
+    background-color: #fafafa;
+    font-size: 14px;
+    line-height: 29px;
+    font-weight: 400;
+    color: #616161;
+}
+
+.btn-file-select img {
+    margin-top: 7px;
+    vertical-align: top;
+    margin-right: 6px;
+}
+
+.btn-wishket {
+    background-color: #2099bb;
+    color: #fff;
+    border: #2099bb;
+    padding: 11px 24px;
+    font-size: 16px;
+    line-height: 26px;
+    font-weight: 400;
+}
+
+.form-btn {
+    cursor: pointer;
+    display: inline-block;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    user-select: none;
+    margin-top: 20px;
+    border-radius: 4px;
+    border: none;
+}
+
+
+
+
+

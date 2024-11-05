@@ -1,4 +1,3 @@
-globalThis.myFundingPage = 1;
 myPageService.getMyFundingList(globalThis.myFundingPage, memberId, showMyFundingList);
 
 myFundingListPaging.addEventListener("click", (e)=>{
@@ -8,7 +7,6 @@ myFundingListPaging.addEventListener("click", (e)=>{
     myPageService.getMyFundingList(globalThis.myFundingPage, memberId, showMyFundingList);
     }
 });
-
 
 myFundingListLayout.addEventListener('click', async (e) => {
     if(e.target.id === "my-funding-buyer-btn" ) {
@@ -57,7 +55,6 @@ myFundingListLayout.addEventListener('click', async (e) => {
 
 });
 
-globalThis.myBuyFundingPage = 1;
 myPageService.getMyBuyFundingList(globalThis.myBuyFundingPage, memberId, showMyBuyFundingList);
 
 myBuyFundingListPaging.addEventListener("click", (e)=>{
@@ -68,7 +65,6 @@ myBuyFundingListPaging.addEventListener("click", (e)=>{
     }
 });
 
-globalThis.myInquiryHistoryPage = 1;
 myPageService.getMyInquiryHistoryList(globalThis.myInquiryHistoryPage, memberId, showMyInquiryHistoryList);
 
 myInquiryHistoryListPaging.addEventListener("click", (e)=>{
