@@ -96,12 +96,13 @@ public class MemberRestController {
 
     // SELECT
     @ResponseBody
-    @GetMapping("/members/inquiry/{id}/admin-answer")
-    public Optional<AdminAnswerDTO> getAdminAnswerByMember(@PathVariable("id") Long id) {
-        return myPageService.getAdminAnswer(id);
+    @GetMapping("/members/inquiry/{inquiryId}/admin-answer")
+    public Optional<AdminAnswerDTO> getAdminAnswerByInquiryId(@PathVariable("inquiryId") Long inquiryId) {
+        return myPageService.getAdminAnswerByInquiryId(inquiryId);
     }
 
-    @PostMapping("/members/upload")
+    //    업로드
+    @PostMapping("/member/video/file/upload")
     @ResponseBody
     public List<PostFileDTO> upload(@RequestParam("file") List<MultipartFile> files) {
         try {
@@ -112,9 +113,11 @@ public class MemberRestController {
         }
     }
 
+    @GetMapping("/member/video/file/write")
+    public void goToWriteForm() {;}
 
     //    가져오기
-    @GetMapping("/members/display")
+    @GetMapping("/member/video/file/display")
     @ResponseBody
     public byte[] display(@RequestParam("fileName") String fileName) throws IOException {
         File file = new File("C:/upload", fileName);

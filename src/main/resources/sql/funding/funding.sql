@@ -71,9 +71,47 @@ from
 order by f.id desc;
 
 select id, post_id from tbl_post_file;
-insert into tbl_post_file(post_id)
-values (18);
+insert into tbl_post_file(id, post_id)
+values (32, 6);
 
 select id, file_name, file_size, file_type, file_path, created_date, updated_date from tbl_file;
 insert into tbl_file(file_name, file_size, file_type, file_path)
-values ('thumbnail-09', '100*100', 'thumbnail', '파일 경로 test9');
+values ('35', '100*100', 'thumbnail', '파일 경로');
+
+select f.id, f.genre_type, p.post_title, p.post_content, p.post_type, p.member_profile_id, p.created_date, p.updated_date
+     , mp.profile_nickname, mp.member_id, m.profile_img_url
+     , fl.file_name as thumbnail_file_name, fl.file_path as thumbnail_file_path
+from
+    tbl_funding f
+        join tbl_post p on f.id = p.id and p.post_type = 'VIDEO
+'
+        join tbl_member_profile mp on p.member_profile_id = mp.id
+        join tbl_member m on mp.member_id = m.id and m.id = 1
+        join tbl_post_file pfl on p.id = pfl.post_id
+        join tbl_file fl on pfl.id = fl.id and f.thumbnail_file_id = f.id
+order by f.id desc;
+
+create view view_my_funding as
+(
+select f.id
+     , f.genre_type
+     , p.post_title
+     , p.post_content
+     , p.post_type
+     , p.member_profile_id
+     , p.created_date
+     , p.updated_date
+     , mp.profile_nickname
+     , mp.member_id
+     , m.profile_img_url
+     , fl.file_name as thumbnail_file_name
+     , fl.file_path as thumbnail_file_path
+     , f.thumbnail_file_id
+from tbl_funding f
+         join tbl_post p on f.id = p.id
+         join tbl_member_profile mp on p.member_profile_id = mp.id
+         join tbl_member m on mp.member_id = m.id
+         join tbl_post_file pfl on p.id = pfl.post_id
+         join tbl_file fl on pfl.id = fl.id and f.thumbnail_file_id = f.id
+order by f.id desc
+    );

@@ -14,6 +14,8 @@
         <typeAlias type="com.app.ggumteo.domain.post.PostDTO" alias="postDTO"/>
         <typeAlias type="com.app.ggumteo.domain.inquiry.InquiryVO" alias="inquiryVO"/>
         <typeAlias type="com.app.ggumteo.domain.inquiry.InquiryDTO" alias="inquiryDTO"/>
+        <typeAlias type="com.app.ggumteo.domain.funding.FundingProductVO" alias="fundingProductVO"/>
+        <typeAlias type="com.app.ggumteo.domain.funding.FundingVO" alias="fundingVO"/>
         <typeAlias type="com.app.ggumteo.domain.funding.FundingDTO" alias="fundingDTO"/>
         <typeAlias type="com.app.ggumteo.domain.work.WorkVO" alias="workVO"/>
         <typeAlias type="com.app.ggumteo.domain.reply.ReplyVO" alias="replyVO"/>

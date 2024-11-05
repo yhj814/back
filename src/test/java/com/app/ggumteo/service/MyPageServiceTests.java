@@ -1,7 +1,9 @@
 package com.app.ggumteo.service;
 
 import com.app.ggumteo.constant.PostType;
+import com.app.ggumteo.domain.admin.AdminAnswerDTO;
 import com.app.ggumteo.domain.funding.*;
+import com.app.ggumteo.domain.inquiry.InquiryDTO;
 import com.app.ggumteo.domain.inquiry.MyInquiryHistoryListDTO;
 import com.app.ggumteo.domain.member.MemberDTO;
 import com.app.ggumteo.domain.member.MemberVO;
@@ -93,8 +95,12 @@ public class MyPageServiceTests {
     }
 
     @Test
-    public void testGetAdminAnswer() {
-
+    public void testGetAdminAnswerByInquiryId() {
+        InquiryDTO inquiryDTO = null;
+        inquiryDTO = myPageService.getInquiry(20L).get();
+        log.info(inquiryDTO.toString());
+        myPageService.getAdminAnswerByInquiryId(inquiryDTO.getPostId())
+                .stream().map(AdminAnswerDTO::toString).forEach(log::info);
     }
 
 }

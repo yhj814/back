@@ -1,4 +1,3 @@
-globalThis.myFundingPage = 1;
 myPageService.getMyFundingList(globalThis.myFundingPage, memberId, showMyFundingList);
 
 myFundingListPaging.addEventListener("click", (e)=>{
@@ -8,7 +7,6 @@ myFundingListPaging.addEventListener("click", (e)=>{
     myPageService.getMyFundingList(globalThis.myFundingPage, memberId, showMyFundingList);
     }
 });
-
 
 myFundingListLayout.addEventListener('click', async (e) => {
     if(e.target.id === "my-funding-buyer-btn" ) {
@@ -57,7 +55,6 @@ myFundingListLayout.addEventListener('click', async (e) => {
 
 });
 
-globalThis.myBuyFundingPage = 1;
 myPageService.getMyBuyFundingList(globalThis.myBuyFundingPage, memberId, showMyBuyFundingList);
 
 myBuyFundingListPaging.addEventListener("click", (e)=>{
@@ -68,7 +65,6 @@ myBuyFundingListPaging.addEventListener("click", (e)=>{
     }
 });
 
-globalThis.myInquiryHistoryPage = 1;
 myPageService.getMyInquiryHistoryList(globalThis.myInquiryHistoryPage, memberId, showMyInquiryHistoryList);
 
 myInquiryHistoryListPaging.addEventListener("click", (e)=>{
@@ -76,5 +72,27 @@ myInquiryHistoryListPaging.addEventListener("click", (e)=>{
     if(e.target.tagName === "A") {
         globalThis.myInquiryHistoryPage = e.target.getAttribute("href");
         myPageService.getMyInquiryHistoryList(globalThis.myInquiryHistoryPage, memberId, showMyInquiryHistoryList)
+    }
+});
+
+myInquiryHistoryListLayout.addEventListener('click', async (e) => {
+    if(e.target.id === "admin-answer-btn" ) {
+        const myInquiryId = e.target.classList[1];
+        console.log("event-e.target: ",e.target);
+        const adminAnswer = document.querySelector(`.inquiry-${myInquiryId}`);
+
+        if (
+            adminAnswer.style.display === "none"
+        ) {
+            console.log("펀딩구매자테이블의 자식요소 길이 : ",adminAnswer.children.length)
+            if(adminAnswer.children.length == 0) {
+                adminAnswer.innerHTML += await myPageService.getAdminAnswerByInquiryId(myInquiryId, showAdminAnswer)
+                console.log("event-myInquiryId: ",myInquiryId);
+                console.log("event-adminAnswer: ",adminAnswer);
+            }
+            adminAnswer.style.display = "block";
+        } else {
+            adminAnswer.style.display = "none";
+        }
     }
 });
