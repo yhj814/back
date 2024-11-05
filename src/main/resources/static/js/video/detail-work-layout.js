@@ -10,7 +10,7 @@ function showList({ replies, pagination }) {
             <div class="comment-box">
                 <div class="comment-wrapper">
                     <div class="write-user">
-                        <img src="https://yozm.wishket.com/static/img/default_avatar.png" class="comment-writer-img" />
+                        <img src="${reply.profileImgUrl ? reply.profileImgUrl : 'https://yozm.wishket.com/static/img/default_avatar.png'}" class="comment-writer-img" />
                         <div class="comment-writer-name">
                             <div class="writer-name">${reply.profileNickname}</div>
                             <div class="btn-comment-action">

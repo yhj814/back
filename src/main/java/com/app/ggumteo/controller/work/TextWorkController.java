@@ -57,10 +57,10 @@ public class TextWorkController {
    @ModelAttribute
     public void setTestMember(HttpSession session) {
         if (session.getAttribute("member") == null) {
-            session.setAttribute("member", new MemberVO(2L, "", "", "", "", ""));
+            session.setAttribute("member", new MemberVO(3L, "", "", "", "", ""));
         }
         if (session.getAttribute("memberProfile") == null) {
-            session.setAttribute("memberProfile", new MemberProfileVO(2L, "", "", "", 99, "", "", "", 2L, "", ""));
+            session.setAttribute("memberProfile", new MemberProfileVO(3L, "", "", "", 99, "", "", "", 3L, "", ""));
         }
     }
 
