@@ -14,3 +14,7 @@ select *from tbl_post;
 
 SELECT * FROM tbl_post WHERE post_type = 'INQUIRY';
 
+SELECT * FROM tbl_post WHERE post_type = 'VIDEO';
+
+insert into tbl_post
+values(15,'영상제목6','영상내용6','VIDEO',11,now(),now());
