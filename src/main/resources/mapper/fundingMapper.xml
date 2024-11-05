@@ -4,7 +4,7 @@
     <select id="selectByMemberId" resultType="fundingDTO">
         select f.id, f.genre_type, p.post_title, p.post_content, p.post_type, p.member_profile_id, p.created_date, p.updated_date
              , mp.profile_nickname, mp.member_id, m.profile_img_url
-             , fl.file_name, fl.file_path
+             , fl.file_name as thumbnail_file_name, fl.file_path
         from
             tbl_funding f
                 join tbl_post p on f.id = p.id and p.post_type = #{postType}
