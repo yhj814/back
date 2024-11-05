@@ -464,7 +464,7 @@
                                     >
                                     </div>
                                 </div>
-                                <div class="audition-img-box">
+                                <div class="work-img-box existing-work-img-box">
                                     <div class="title-img-box">
                                         <img src="https://www.wishket.com/static/renewal/img/partner/profile/icon_portfolio_image_upload.png" class="title-img"/>
                                         <span class="title-text">현재 업로드된 작품 이미지 및 파일</span>
@@ -472,7 +472,7 @@
                                     <div id="existing-files-container">
                                         <div th:each="file : ${existingFiles}" class="img-box-list existing-file">
                                             <div class="img-edit-box" style="margin-top: 10px;width: 88px;margin-left: 635px;display: block;">
-                                                <div type="button" class="btn-edit-item" th:attr="data-file-id=${file.id}">
+                                                <div type="button" class="btn-edit-item" th:attr="data-file-id=${file.id}" style="font-size: 12px">
                                                     이미지 삭제
                                                 </div>
                                             </div>
@@ -501,7 +501,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="audition-img-box">
+                                <div class="work-img-box new-work-img-box">
                                     <div class="title-img-box">
                                         <img
                                                 src="https://www.wishket.com/static/renewal/img/partner/profile/icon_portfolio_image_upload.png"
@@ -525,83 +525,6 @@
                                                     이미지 삭제
                                                 </div>
                                             </div>
-                                            <div
-                                                    class="img-content-box"
-                                            >
-                                                <div
-                                                        class="center-text img-box"
-                                                >
-                                                    <div
-                                                            class="default-img"
-                                                            id="default-img"
-                                                    >
-                                                        <!-- 이미지 미리보기 -->
-                                                        <img
-                                                                id="preview"
-                                                                src="https://www.wishket.com/static/renewal/img/partner/profile/icon_btn_add_portfolio_image.png"
-                                                                class="img-tag"
-                                                        />
-                                                        <video
-                                                                id="video-preview"
-                                                                class="video-tag"
-                                                                controls
-                                                        ></video>
-                                                        <div
-                                                                class="img-box-title"
-                                                        >
-                                                            영상,
-                                                            이미지 등록
-                                                        </div>
-                                                        <div
-                                                                class="img-box-text"
-                                                        >
-                                                            모집 내용
-                                                            혹은 설명을
-                                                            돕는
-                                                            이미지를
-                                                            선택해
-                                                            주세요.
-                                                        </div>
-                                                        <div
-                                                                class="img-box-help"
-                                                        >
-                                                                    <span>
-                                                                        · 이미지
-                                                                        최적
-                                                                        사이즈:
-                                                                        가로
-                                                                        720px
-                                                                    </span>
-                                                        </div>
-                                                        <!-- 숨겨진 파일 첨부 기능 -->
-                                                        <input
-                                                                id="file-upload"
-                                                                type="file"
-                                                                accept="image/*,video/*"
-                                                                style="
-                                                                        display: none;
-                                                                    "
-                                                                onchange="previewFile()"
-                                                                name="auditionFile"
-                                                                multiple
-                                                        />
-                                                    </div>
-                                                </div>
-<!--                                                <div-->
-<!--                                                        class="img-caption-box"-->
-<!--                                                >-->
-<!--                                                    <div-->
-<!--                                                            class="default-input-partner"-->
-<!--                                                    >-->
-<!--                                                        <input-->
-<!--                                                                type="text"-->
-<!--                                                                class="img-caption-box-content"-->
-<!--                                                                name="fileContent"-->
-<!--                                                                placeholder="올린 파일에 대한 설명을 입력해주세요."-->
-<!--                                                        />-->
-<!--                                                    </div>-->
-<!--                                                </div>-->
-                                            </div>
                                         </div>
                                     </div>
                                     <div class="img-add">
@@ -615,12 +538,8 @@
                         </div>
                         <div class="write-footer">
                             <div class="button-box">
-                                <button class="btn btn-back"
-                                        style="margin-right: 500px;">
+                                <button class="btn btn-back">
                                     취소</button
-                                >
-                                <button class="btn btn-delete">
-                                    삭제</button
                                 >
                                 <button
                                     class="btn btn-submit"

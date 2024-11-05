@@ -109,7 +109,7 @@
     <!-- 게시글 id로 게시글 조회 -->
     <select id="selectById" resultType="auditionDTO">
         SELECT
-            a.id AS audition_id,a.audition_field,a.audition_career,a.expected_amount,a.service_start_date,a.audition_deadline,a.audition_personnel,
+            a.id, a.audition_field,a.audition_career,a.expected_amount,a.service_start_date,a.audition_deadline,a.audition_personnel,
             a.audition_location,a.audition_background,a.audition_category,a.file_content,a.audition_status,
             p.post_title, p.post_content, p.member_profile_id, p.created_date, p.updated_date,
             mp.profile_nickname, mp.profile_email, m.profile_img_url

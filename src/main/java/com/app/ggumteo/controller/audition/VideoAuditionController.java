@@ -103,14 +103,17 @@ public class VideoAuditionController {
         List<PostFileDTO> existingFiles = postFileService.findFilesByPostId(id);
 
         if (audition != null) {
+            log.info("Fetched audition - ID: {}", audition.getId());
             model.addAttribute("audition", audition);
             model.addAttribute("existingFiles", existingFiles);
             return "/audition/video/modify";
         } else {
+            log.error("해당 게시글을 찾을 수 없습니다. ID: {}", id);
             model.addAttribute("error", "해당 게시글을 찾을 수 없습니다.");
             return "/audition/video/error";
         }
     }
+
 
     @PostMapping("/modify")
     public String updateAudition(
@@ -123,9 +126,16 @@ public class VideoAuditionController {
             log.info("수정 요청 - 새 파일 목록: {}", newFiles);
             log.info("수정 요청 - 삭제할 파일 ID 목록: {}", deletedFileIds);
 
+            AuditionDTO currentAudition = auditionService.findAuditionById(auditionDTO.getId());
+            if (currentAudition != null) {
+                log.info("게시글 id:{}", currentAudition.getId());
+            }
+
             auditionService.updateAudition(auditionDTO, newFiles, deletedFileIds);
 
             log.info("업데이트 성공 - AuditionDTO ID: {}", auditionDTO.getId());
+
+            model.addAttribute("audition", auditionDTO);
 
             return "redirect:/audition/video/detail/" + auditionDTO.getId();
         } catch (Exception e) {

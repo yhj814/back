@@ -81,7 +81,6 @@
                                             <span class="badge" th:case="'2'">스텝</span>
                                             <span class="badge" th:case="'3'">감독</span>
                                             <span class="badge" th:case="'4'">기타</span>
-
                                                 </div>
                                                 <div
                                                     class="detail-target-detail"
@@ -405,7 +404,7 @@
                                 <div class="client-account-info">
                                     <img
                                         class="client-account-info-img"
-                                        th:src="@{'/audition/video/display?fileName=' + ${audition.profileImgUrl}}"
+                                        th:src="@{${audition.profileImgUrl}}"
                                     />
                                     <div>
                                         <div class="client-account-info-base">
