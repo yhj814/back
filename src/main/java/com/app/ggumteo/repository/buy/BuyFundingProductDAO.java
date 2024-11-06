@@ -1,18 +1,14 @@
-package com.app.ggumteo.repository.funding;
+package com.app.ggumteo.repository.buy;
 
-import com.app.ggumteo.domain.funding.BuyFundingProductDTO;
-import com.app.ggumteo.domain.funding.BuyFundingProductVO;
-import com.app.ggumteo.domain.funding.FundingDTO;
-import com.app.ggumteo.mapper.funding.BuyFundingProductMapper;
-import com.app.ggumteo.mapper.funding.FundingMapper;
+import com.app.ggumteo.domain.buy.BuyFundingProductDTO;
+import com.app.ggumteo.domain.buy.BuyFundingProductVO;
+import com.app.ggumteo.mapper.buy.BuyFundingProductMapper;
 import com.app.ggumteo.pagination.SettingTablePagination;
 import com.app.ggumteo.pagination.WorkAndFundingPagination;
 import lombok.RequiredArgsConstructor;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor

@@ -128,7 +128,8 @@ const showMyWorkList = ({myWorkPosts, workAndFundingPagination}) => {
                                         class="edit-my-off"
                                     >
                                         <div
-                                            class="icon-my-edit-off"
+                                            id="my-work-buyer-btn"
+                                            class="icon-my-edit-off ${myWorkPost.id}"
                                         ></div>
                                     </div>
                                     <div
@@ -165,353 +166,7 @@ const showMyWorkList = ({myWorkPosts, workAndFundingPagination}) => {
                                 rgb(224, 224, 224);
                             display: none;
                         ">
-                        <div
-                            class="price-member setting-th"
-                        >
-                            <div
-                                class="setting-td size-l"
-                            >
-                                이름/이메일
-                            </div>
-                            <div
-                                class="center-text setting-td size-s"
-                            >
-                                금액
-                            </div>
-                            <div
-                                class="center-text setting-td trueorfalse"
-                            >
-                                발송 여부
-                            </div>
-                        </div>
-                        <div
-                            class="setting-tr-group"
-                            style="
-                                border-bottom: solid 1px
-                                    #e0e0e0;
-                                padding-bottom: 0px;
-                            "
-                        >
-                            <div
-                                class="price-member setting-tr"
-                                style="padding-top: 7px"
-                            >
-                                <div
-                                    class="setting-td with-sub size-l"
-                                >
-                                    <div
-                                        class="membername major-span"
-                                    >
-                                        멤버 이름
-                                    </div>
-                                    <div
-                                        class="memberemail sub-span"
-                                    >
-                                        멤버 이메일
-                                    </div>
-                                </div>
-                                <div
-                                    class="center-text price-member setting-td with-text primary size-s"
-                                    style="
-                                        margin-bottom: 35px;
-                                    "
-                                >
-                                    5000원
-                                </div>
-                                <div
-                                    class="center-text setting-td with-btn trueorfalse"
-                                >
-                                    <div
-                                        class="btn-group choice-group"
-                                    >
-                                        <div
-                                            class="btn-choice btn-public active"
-                                        >
-                                            <input
-                                                checked=""
-                                                class="radio-value"
-                                                name="is_secret_employment"
-                                                type="radio"
-                                                value="false"
-                                            /><span
-                                                class="name"
-                                                >보냄</span
-                                                >보냄</span
-                                            >
-                                        </div>
-                                        <div
-                                            class="btn-choice btn-secret"
-                                        >
-                                            <input
-                                                class="radio-value"
-                                                name="is_secret_employment"
-                                                type="radio"
-                                                value="true"
-                                            /><span
-                                                class="name"
-                                                >안보냄</span
-                                            >
-                                        </div>
-                                    </div>
-                                </div>
-                                <label
-                                    class="switch"
-                                    style="
-                                        display: none;
-                                    "
-                                >
-                                    <input
-                                        class="media-checkbox"
-                                        type="checkbox"
-                                    />
-                                    <span
-                                        class="slider round"
-                                    ></span>
-                                </label>
-                            </div>
-                            <div
-                                class="price-member setting-tr"
-                                style="padding-top: 7px"
-                            >
-                                <div
-                                    class="setting-td with-sub size-l"
-                                >
-                                    <div
-                                        class="membername major-span"
-                                    >
-                                        멤버 이름
-                                    </div>
-                                    <div
-                                        class="memberemail sub-span"
-                                    >
-                                        멤버 이메일
-                                    </div>
-                                </div>
-                                <div
-                                    class="center-text price-member setting-td with-text primary size-s"
-                                    style="
-                                        margin-bottom: 35px;
-                                    "
-                                >
-                                    5000원
-                                </div>
-                                <div
-                                    class="center-text setting-td with-btn trueorfalse"
-                                >
-                                    <div
-                                        class="btn-group choice-group"
-                                    >
-                                        <div
-                                            class="btn-choice btn-public active"
-                                        >
-                                            <input
-                                                checked=""
-                                                class="radio-value"
-                                                name="is_secret_employment"
-                                                type="radio"
-                                                value="false"
-                                            /><span
-                                                class="name"
-                                                >보냄</span
-                                            >
-                                        </div>
-                                        <div
-                                            class="btn-choice btn-secret"
-                                        >
-                                            <input
-                                                class="radio-value"
-                                                name="is_secret_employment"
-                                                type="radio"
-                                                value="true"
-                                            /><span
-                                                class="name"
-                                                >안보냄</span
-                                            >
-                                        </div>
-                                    </div>
-                                </div>
-                                <label
-                                    class="switch"
-                                    style="
-                                        display: none;
-                                    "
-                                >
-                                    <input
-                                        class="media-checkbox"
-                                        type="checkbox"
-                                    />
-                                    <span
-                                        class="slider round"
-                                    ></span>
-                                </label>
-                            </div>
-                            <div
-                                class="price-member setting-tr"
-                                style="padding-top: 7px"
-                            >
-                                <div
-                                    class="setting-td with-sub size-l"
-                                >
-                                    <div
-                                        class="membername major-span"
-                                    >
-                                        멤버 이름
-                                    </div>
-                                    <div
-                                        class="memberemail sub-span"
-                                    >
-                                        멤버 이메일
-                                    </div>
-                                </div>
-                                <div
-                                    class="center-text price-member setting-td with-text primary size-s"
-                                    style="
-                                        margin-bottom: 35px;
-                                    "
-                                >
-                                    5000원
-                                </div>
-                                <div
-                                    class="center-text setting-td with-btn trueorfalse"
-                                >
-                                    <div
-                                        class="btn-group choice-group"
-                                    >
-                                        <div
-                                            class="btn-choice btn-public active"
-                                        >
-                                            <input
-                                                checked=""
-                                                class="radio-value"
-                                                name="is_secret_employment"
-                                                type="radio"
-                                                value="false"
-                                            /><span
-                                                class="name"
-                                                >보냄</span
-                                            >
-                                        </div>
-                                        <div
-                                            class="btn-choice btn-secret"
-                                        >
-                                            <input
-                                                class="radio-value"
-                                                name="is_secret_employment"
-                                                type="radio"
-                                                value="true"
-                                            /><span
-                                                class="name"
-                                                >안보냄</span
-                                            >
-                                        </div>
-                                    </div>
-                                </div>
-                                <label
-                                    class="switch"
-                                    style="
-                                        display: none;
-                                    "
-                                >
-                                    <input
-                                        class="media-checkbox"
-                                        type="checkbox"
-                                    />
-                                    <span
-                                        class="slider round"
-                                    ></span>
-                                </label>
-                            </div>
-                            <div
-                                class="price-member setting-tr"
-                                style="padding-top: 7px"
-                            >
-                                <div
-                                    class="setting-td with-sub size-l"
-                                >
-                                    <div
-                                        class="membername major-span"
-                                    >
-                                        멤버 이름
-                                    </div>
-                                    <div
-                                        class="memberemail sub-span"
-                                    >
-                                        멤버 이메일
-                                    </div>
-                                </div>
-                                <div
-                                    class="center-text price-member setting-td with-text primary size-s"
-                                    style="
-                                        margin-bottom: 35px;
-                                    "
-                                >
-                                    5000원
-                                </div>
-                                <div
-                                    class="center-text setting-td with-btn trueorfalse"
-                                >
-                                    <div
-                                        class="btn-group choice-group"
-                                    >
-                                        <div
-                                            class="btn-choice btn-public active"
-                                        >
-                                            <input
-                                                checked=""
-                                                class="radio-value"
-                                                name="is_secret_employment"
-                                                type="radio"
-                                                value="false"
-                                            /><span
-                                                class="name"
-                                                >보냄</span
-                                            >
-                                        </div>
-                                        <div
-                                            class="btn-choice btn-secret"
-                                        >
-                                            <input
-                                                class="radio-value"
-                                                name="is_secret_employment"
-                                                type="radio"
-                                                value="true"
-                                            /><span
-                                                class="name"
-                                                >안보냄</span
-                                            >
-                                        </div>
-                                    </div>
-                                </div>
-                                <label
-                                    class="switch"
-                                    style="
-                                        display: none;
-                                    "
-                                >
-                                    <input
-                                        class="media-checkbox"
-                                        type="checkbox"
-                                    />
-                                    <span
-                                        class="slider round"
-                                    ></span>
-                                </label>
-                            </div>
-                        </div>
-                        <ul
-                            class="pagination theme-yozm mypage-page back-or-next"
-                        >
-                            <li class="page-item">
-                                <a
-                                    class="page-link back"
-                                ></a>
-                            </li>
-                            <li class="page-item">
-                                <a
-                                    class="page-link next"
-                                ></a>
-                            </li>
-                        </ul>
+                        <!--내 작품 구매자 테이블-->
                     </div>
                 </div>
             </div>
@@ -544,6 +199,100 @@ const showMyWorkList = ({myWorkPosts, workAndFundingPagination}) => {
     }
 
     myWorkListPaging.innerHTML = pagingText;
+}
+
+// 나의 작품 - 구매자 목록, 페이징
+const showMyWorkBuyerList = ({myWorkBuyers, settingTablePagination}) => {
+
+    let text = `<div class="price-member setting-th">
+                            <div class="setting-td size-l">
+                                이름/이메일
+                            </div>
+                            <div class="center-text setting-td size-s">
+                                금액
+                            </div>
+                            <div class="center-text setting-td trueorfalse">
+                                발송 여부
+                            </div>
+                        </div>
+                       `
+    text += `<div class="setting-tr-group" style="border-bottom: solid 1px #e0e0e0; padding-bottom: 0px;">`;
+
+    myWorkBuyers.forEach((myWorkBuyer) => {
+        text += `<div class="price-member setting-tr" style="padding-top: 7px">
+                    <div class="setting-td with-sub size-l">
+                        <div class="membername major-span">
+                            ${myWorkBuyer.profileName}
+                        </div>
+                        <div class="memberemail sub-span">
+                            ${myWorkBuyer.profileEmail}
+                        </div>
+                    </div>
+                    <div class="center-text price-member setting-td with-text primary size-s"
+                            style="margin-bottom: 35px;">
+                        ${myWorkBuyer.workPrice}
+                    </div>
+                    <div class="center-text setting-td with-btn trueorfalse">
+                        <div class="btn-group choice-group">`
+        if(myWorkBuyer.workSendStatus === "YES") {
+           text += `<div class="btn-choice btn-public active">`
+        } else {
+            text += `<div class="btn-choice btn-public ${myWorkBuyer.id}">`
+        }
+                        text += `<input
+                                        checked=""
+                                        class="radio-value"
+                                        name="is_secret_employment"
+                                        type="radio"
+                                        value="YES"/>보냄
+                            </div>`
+        if(myWorkBuyer.workSendStatus === "NO") {
+            text += `<div class="btn-choice btn-secret active">`
+        } else {
+            text += `<div class="btn-choice btn-secret">`
+        }
+             text +=          `<input
+                                        class="radio-value"
+                                        name="is_secret_employment"
+                                        type="radio"
+                                        value="NO"/>안보냄
+                            </div>
+                        </div>
+                    </div>
+                    <label
+                            class="switch"
+                            style="display: none;">
+                        <input
+                                class="media-checkbox"
+                                type="checkbox"/>
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+            `;
+
+    });
+    text += `    </div>`;
+
+    text += `<ul class="pagination theme-yozm mypage-page back-or-next">`;
+
+    if(settingTablePagination.prev){
+        text += `
+            <li class="page-item">
+                <a href="${settingTablePagination.startPage - 1}" class="page-link back"></a>
+            </li>
+        `
+    }
+
+    if(settingTablePagination.next) {
+        text += `
+            <li class="page-item">
+                <a href="${settingTablePagination.endPage + 1}" class="page-link next"></a>
+            </li>
+        `
+    }
+    text += `    </ul>`;
+
+    return text;
 }
 
 // 나의 펀딩 목록, 페이징

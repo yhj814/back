@@ -1,12 +1,8 @@
 package com.app.ggumteo.mapper.funding;
 
-import com.app.ggumteo.domain.funding.BuyFundingProductDTO;
 import com.app.ggumteo.domain.funding.FundingDTO;
 import com.app.ggumteo.domain.funding.FundingProductVO;
-import com.app.ggumteo.domain.work.WorkDTO;
-import com.app.ggumteo.pagination.MyPagePagination;
 import com.app.ggumteo.pagination.Pagination;
-import com.app.ggumteo.pagination.SettingTablePagination;
 import com.app.ggumteo.pagination.WorkAndFundingPagination;
 import com.app.ggumteo.search.Search;
 import org.apache.ibatis.annotations.Mapper;

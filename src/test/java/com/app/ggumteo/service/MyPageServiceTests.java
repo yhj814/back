@@ -2,12 +2,14 @@ package com.app.ggumteo.service;
 
 import com.app.ggumteo.constant.PostType;
 import com.app.ggumteo.domain.admin.AdminAnswerDTO;
+import com.app.ggumteo.domain.buy.*;
 import com.app.ggumteo.domain.funding.*;
 import com.app.ggumteo.domain.inquiry.InquiryDTO;
 import com.app.ggumteo.domain.inquiry.MyInquiryHistoryListDTO;
 import com.app.ggumteo.domain.member.MemberDTO;
 import com.app.ggumteo.domain.member.MemberVO;
 import com.app.ggumteo.domain.work.MyWorkListDTO;
+import com.app.ggumteo.domain.work.WorkDTO;
 import com.app.ggumteo.pagination.SettingTablePagination;
 import com.app.ggumteo.pagination.WorkAndFundingPagination;
 import com.app.ggumteo.repository.inquiry.InquiryDAO;
@@ -51,6 +53,27 @@ public class MyPageServiceTests {
     }
 
     @Test
+    public void testGetMyVideoWorkBuyerList() {
+        WorkDTO workDTO = null;
+        SettingTablePagination settingTablePagination = new SettingTablePagination();
+        workDTO = myPageService.getWork(38L, PostType.VIDEO.name()).get();
+        settingTablePagination.setTotal(myPageService.getMyVideoWorkBuyersTotal(workDTO.getId()));
+        settingTablePagination.progress();
+        MyWorkBuyerListDTO myWorkBuyers = myPageService.getMyVideoWorkBuyerList(1, settingTablePagination, workDTO.getId());
+
+        log.info("myWorkBuyers.toString()-test={}", myWorkBuyers.toString());
+    }
+
+    @Test
+    public void testUpdateWorkSendStatus() {
+        BuyWorkDTO buyWorkDTO = new BuyWorkDTO();
+        buyWorkDTO.setId(1L);
+        buyWorkDTO.setWorkSendStatus("YES");
+
+        myPageService.updateWorkSendStatus(buyWorkDTO.toVO());
+    }
+
+    @Test
     public void testGetMyFundingPosts() {
         MemberVO memberVO = null;
         WorkAndFundingPagination workAndFundingPagination = new WorkAndFundingPagination();
@@ -75,7 +98,7 @@ public class MyPageServiceTests {
   }
 
     @Test
-    public void testCheckFundingSendStatus() {
+    public void testUpdateFundingSendStatus() {
     BuyFundingProductDTO buyFundingProductDTO = new BuyFundingProductDTO();
     buyFundingProductDTO.setId(7L);
     buyFundingProductDTO.setFundingSendStatus("YES");

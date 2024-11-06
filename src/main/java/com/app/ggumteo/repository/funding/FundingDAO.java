@@ -1,19 +1,13 @@
 package com.app.ggumteo.repository.funding;
 
-import com.app.ggumteo.domain.funding.BuyFundingProductDTO;
 import com.app.ggumteo.domain.funding.FundingDTO;
 import com.app.ggumteo.domain.funding.FundingProductVO;
-import com.app.ggumteo.domain.work.WorkDTO;
-import com.app.ggumteo.mapper.funding.BuyFundingProductMapper;
 import com.app.ggumteo.mapper.funding.FundingMapper;
-import com.app.ggumteo.pagination.MyPagePagination;
 import com.app.ggumteo.pagination.Pagination;
-import com.app.ggumteo.pagination.SettingTablePagination;
 import com.app.ggumteo.pagination.WorkAndFundingPagination;
 import com.app.ggumteo.search.Search;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

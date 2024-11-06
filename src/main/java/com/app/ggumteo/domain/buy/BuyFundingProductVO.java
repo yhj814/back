@@ -1,4 +1,4 @@
-package com.app.ggumteo.domain.funding;
+package com.app.ggumteo.domain.buy;
 
 import lombok.*;
 import org.springframework.stereotype.Component;

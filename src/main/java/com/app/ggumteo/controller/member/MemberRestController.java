@@ -1,10 +1,8 @@
 package com.app.ggumteo.controller.member;
 
+import com.app.ggumteo.aspect.annotation.MyWorkBuyerListLogStatus;
 import com.app.ggumteo.domain.admin.AdminAnswerDTO;
-import com.app.ggumteo.domain.file.PostFileDTO;
-import com.app.ggumteo.domain.funding.BuyFundingProductDTO;
-import com.app.ggumteo.domain.funding.MyBuyFundingListDTO;
-import com.app.ggumteo.domain.funding.MyFundingBuyerListDTO;
+import com.app.ggumteo.domain.buy.*;
 import com.app.ggumteo.domain.funding.MyFundingListDTO;
 import com.app.ggumteo.domain.inquiry.MyInquiryHistoryListDTO;
 import com.app.ggumteo.domain.member.MemberVO;
@@ -15,25 +13,14 @@ import com.app.ggumteo.service.file.PostFileService;
 import com.app.ggumteo.service.myPage.MyPageService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import net.coobird.thumbnailator.Thumbnailator;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.Collections;
-import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -57,6 +44,23 @@ public class MemberRestController {
             , @PathVariable("page") int page, WorkAndFundingPagination workAndFundingPagination, String postType) {
 
         return myPageService.getMyVideoWorkList(page, workAndFundingPagination, memberId, postType);
+    }
+
+    // SELECT
+    @ResponseBody
+    @GetMapping("/members/video/my/work/{workPostId}/buyers/{page}")
+    public MyWorkBuyerListDTO getMyVideoWorkBuyerList(@PathVariable("workPostId") Long workPostId
+            , @PathVariable("page") int page, SettingTablePagination settingTablePagination) {
+
+        log.info("workPostId={}", workPostId);
+        return myPageService.getMyVideoWorkBuyerList(page, settingTablePagination, workPostId);
+    }
+
+    // UPDATE
+    @ResponseBody
+    @PutMapping("/members/video/my/work/buyers/sendStatus/update")
+    public void updateWorkSendStatus(@RequestBody BuyWorkDTO buyWorkDTO) {
+        myPageService.updateWorkSendStatus(buyWorkDTO.toVO());
     }
 
     // SELECT

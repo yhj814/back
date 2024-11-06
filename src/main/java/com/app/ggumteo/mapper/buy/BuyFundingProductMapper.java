@@ -1,15 +1,13 @@
-package com.app.ggumteo.mapper.funding;
+package com.app.ggumteo.mapper.buy;
 
-import com.app.ggumteo.domain.funding.BuyFundingProductDTO;
-import com.app.ggumteo.domain.funding.BuyFundingProductVO;
-import com.app.ggumteo.domain.funding.FundingDTO;
+import com.app.ggumteo.domain.buy.BuyFundingProductDTO;
+import com.app.ggumteo.domain.buy.BuyFundingProductVO;
 import com.app.ggumteo.pagination.SettingTablePagination;
 import com.app.ggumteo.pagination.WorkAndFundingPagination;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
-import java.util.Optional;
 
 @Mapper
 public interface BuyFundingProductMapper {

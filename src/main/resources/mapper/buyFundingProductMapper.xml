@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.app.ggumteo.mapper.funding.BuyFundingProductMapper">
+<mapper namespace="com.app.ggumteo.mapper.buy.BuyFundingProductMapper">
     <select id="selectByFundingPostId" resultType="buyFundingProductDTO">
         select bfp.id, bfp.funding_product_id, bfp.funding_send_status, fp.product_name
              , fp.product_price, fp.funding_id, bfp_mp.profile_name, bfp_mp.profile_email
