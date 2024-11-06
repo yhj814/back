@@ -25,29 +25,28 @@ public class AuditionApplicationServiceImpl implements AuditionApplicationServic
     private final ApplyAuditionNotificationDAO applyAuditionNotificationDAO;
     private final AuditionApplicationFileDAO auditionApplicationFileDAO;
     private final AuditionApplicationFileService auditionApplicationFileService;
-    private final AuditionApplicationFileVO auditionApplicationFileVO;
-
 
     @Override
+    @Transactional
     public void write(AuditionApplicationDTO auditionApplicationDTO, MultipartFile applicationfile) {
         // auditionApplication 테이블에 신청 정보 삽입
         auditionApplicationDAO.save(auditionApplicationDTO);
 
-        // 방금 저장된 신청 정보의 ID 가져오기
+        // 방금 저장된 신청 정보의 ID 가져오기 (삽입 완료 후에 ID를 사용)
         Long auditionApplicationId = auditionApplicationDTO.getId();
         log.info("Generated auditionApplicationId: {}", auditionApplicationId);
 
         // 알림 테이블에 알림 추가
         ApplyAuditionNotificationVO notificationVO = new ApplyAuditionNotificationVO();
-        notificationVO.setAuditionApplicationId(auditionApplicationDTO.getId());
+        notificationVO.setAuditionApplicationId(auditionApplicationId); // ID 설정
         applyAuditionNotificationDAO.save(notificationVO);
 
         log.info("Notification saved with auditionApplicationId: {}", auditionApplicationId);
 
         // 필요 시 파일 첨부 로직 추가
-        if (applicationfile != null) {
-            auditionApplicationFileService.saveAuditionApplicationFile(applicationfile, auditionApplicationDTO.getId());
+        if (applicationfile != null && !applicationfile.isEmpty()) {
+            auditionApplicationFileService.saveAuditionApplicationFile(applicationfile, auditionApplicationId);
         }
     }
-
 }
+
