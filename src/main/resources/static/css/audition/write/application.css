@@ -44,6 +44,10 @@ body {
     font-smoothing: antialiased;
 }
 
+.main{
+    margin-top: 90px;
+}
+
 .gaia {
     min-width: 1080px;
     height: auto;

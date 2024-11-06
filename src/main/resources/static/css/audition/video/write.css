@@ -63,6 +63,10 @@
     font-smoothing: antialiased;
 }
 
+.main{
+    margin-top: 50px;
+}
+
 .main {
     min-width: 1080px;
     height: auto;
