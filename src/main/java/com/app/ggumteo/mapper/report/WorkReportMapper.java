@@ -21,9 +21,29 @@ public interface WorkReportMapper {
             @Param("order") String order
     );
 
-//    신고 상태 업데이트
+//    영상 신고 상태 업데이트
     void videoStatusChange(
             @Param("workId") Long workId,
             @Param("reportStatus") String reportStatus
     );
+
+//    글 신고 목록
+    List<WorkReportDTO> selectTextReports(
+            @Param("search") String search,
+            @Param("order") String order,
+            @Param("pagination") AdminPagination pagination
+    );
+
+//    총 글 신고 목록들
+    int countTextReports(
+            @Param("search") String search,
+            @Param("order") String order
+    );
+
+//    글 신고 상태 업데이트
+    void textStatusChange(
+            @Param("workId") Long workId,
+            @Param("reportStatus") String reportStatus
+    );
+
 }

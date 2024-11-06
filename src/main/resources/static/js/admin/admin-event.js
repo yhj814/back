@@ -657,7 +657,7 @@ async function initPage() {
 // 신고 내역보기 모달
 function setupReportDetailsModal() {
     const modal = document.querySelector(".reasons-report-modal.video"); // 모달 요소
-    const overlay = modal.querySelector(".background-overlay");           // 모달 배경
+    const overlay=document.querySelector(".background-overlay");
     const closeModalButton = modal.querySelector(".close-btn");           // 닫기 버튼
 
     // 모든 "보기" 버튼에 이벤트 리스너 추가
@@ -678,12 +678,8 @@ function setupReportDetailsModal() {
             modal.querySelector("textarea[name='reason']").textContent = content;
 
             modal.style.display = "block"; // 모달 표시
+            overlay.style.display="none";
         });
-    });
-
-    // 모달 배경 클릭 시 모달 닫기
-    overlay.addEventListener("click", () => {
-        modal.style.display = "none";
     });
 
     // 닫기 버튼 클릭 시 모달 닫기
@@ -697,7 +693,177 @@ document.addEventListener("DOMContentLoaded", () => {
     setupReportDetailsModal(); // 모달 이벤트 초기화
 });
 
+//----------------------------------------------------------------------------------------------------------
+// 작품(글)신고관리
 
+// 선언
+let currentTextOrder = 'postCreatedDate';
+let currentTextSearch = '';
+let selectedWorkTextId = null;
+let selectedTextReportStatus = '';
+
+// 페이지 변경
+async function changeTextPage(page) {
+    const data = await fetchTextReports(page, currentTextSearch, currentTextOrder);
+    renderTextReportList(data.reports);
+    renderTextReportPagination(data.pagination);
+}
+
+// 전체 선택 및 개별 체크박스 이벤트
+function textReportCheckboxEvents() {
+    const selectAllCheckbox = document.querySelector('#text-report-selectAll .select-all');
+    const textReportCheckboxes = document.querySelectorAll('.apply-table-row .apply-checkbox');
+
+    // 전체 체크박스
+    selectAllCheckbox.addEventListener('change', (event) => {
+        const isChecked = event.target.checked;
+        textReportCheckboxes.forEach(checkbox => {
+            checkbox.checked = isChecked;
+        });
+    });
+
+    // 개별 체크박스
+    textReportCheckboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', () => {
+            const allChecked = Array.from(textReportCheckboxes).every(cb => cb.checked);
+            selectAllCheckbox.checked = allChecked;
+        });
+    });
+}
+
+// 신고 상태 모달 열기
+function openTextReportModal(event) {
+    const modal = document.getElementById("text-report-modal");
+    modal.style.display = "flex";
+    selectedWorkTextId = event.target.closest(".apply-table-row").querySelector(".apply-checkbox").dataset.id;
+}
+
+// 신고 상태 선택 및 저장
+function setupTextReportModal() {
+    const modal = document.getElementById("text-report-modal");
+    const choiceButtons = modal.querySelectorAll(".choice-container input[type=button]");
+    const saveButton = modal.querySelector(".btn-complete");
+    const overlay = modal.querySelector(".background-overlay");
+
+    choiceButtons.forEach(button => {
+        button.addEventListener("click", () => {
+            choiceButtons.forEach(btn => btn.classList.remove("on"));
+            button.classList.add("on");
+            selectedTextReportStatus = button.getAttribute("data-status");
+        });
+    });
+
+    // 상태 선택 후 저장
+    saveButton.addEventListener("click", async () => {
+        if (selectedTextReportStatus) {
+            const success = await updateTextReportStatus(selectedWorkTextId, selectedTextReportStatus);
+            if (success) {
+                alert("상태가 업데이트되었습니다.");
+                modal.style.display = "none";
+                updateTextReportStatusInView(selectedWorkTextId, selectedTextReportStatus);
+            }
+        } else {
+            alert("상태를 선택해주세요.");
+        }
+    });
+
+    overlay.addEventListener("click", () => {
+        modal.style.display = "none";
+    });
+}
+
+// 화면 상태 업데이트
+function updateTextReportStatusInView(workId, newStatus) {
+    const statusButton = document.querySelector(`.apply-checkbox[data-id="${workId}"]`)
+        .closest(".apply-table-row")
+        .querySelector(".report-management-btn.status");
+    statusButton.textContent = newStatus;
+
+    // 상태에 따른 배경색 변경
+    switch (newStatus) {
+        case "DELETE":
+            statusButton.style.backgroundColor = "rgba(41, 153, 41, 0.818)";
+            break;
+        case "HOLD":
+            statusButton.style.backgroundColor = "#ffa600";
+            break;
+        case "NOPROBLEM":
+            statusButton.style.backgroundColor = "rgb(183, 183, 183)";
+            break;
+        default:
+            statusButton.style.backgroundColor = "";
+    }
+}
+
+// 초기화 함수
+async function initTextPage() {
+    const data = await fetchTextReports();
+    renderTextReportList(data.reports);
+    renderTextReportPagination(data.pagination);
+
+    const searchInput = document.getElementById("text-report-search");
+    searchInput.addEventListener("keypress", (e) => {
+        if (e.key === "Enter") {
+            currentTextSearch = searchInput.value;
+            changeTextPage(1);
+        }
+    });
+
+    // 필터 처리
+    document.querySelectorAll(".sort-filter-option.text").forEach((option) => {
+        option.addEventListener("click", () => {
+            document.querySelectorAll(".sort-filter-option.text").forEach(opt => opt.classList.remove("selected"));
+            option.classList.add("selected");
+
+            const selectedOrder = option.textContent.trim();
+            currentTextOrder = selectedOrder === "작성일 순" ? "postCreatedDate"
+                : selectedOrder === "조회수 순" ? "readCount"
+                    : selectedOrder === "평점수 순" ? "star" : "reportStatus";
+
+            changeTextPage(1);
+        });
+    });
+
+    setupTextReportModal();
+}
+// 신고 내역보기 모달
+function setupTextReportDetailsModal() {
+    const modal = document.querySelector(".reasons-report-modal.text"); // 모달 요소
+    const overlay=document.querySelector(".background-overlay");
+    const closeModalButton = modal.querySelector(".close-btn");           // 닫기 버튼
+
+    // 모든 "보기" 버튼에 이벤트 리스너 추가
+    document.querySelectorAll(".report-content-look-text").forEach(button => {
+        button.addEventListener("click", () => {
+            console.log("보기 버튼 클릭"); // 로그 추가
+
+            // 버튼의 데이터 속성에서 정보를 읽어옴
+            const name = button.getAttribute("data-name") || ' ';
+            const email = button.getAttribute("data-email") || ' ';
+            const time = button.getAttribute("data-time") || ' ';
+            const content = button.getAttribute("data-content") || 'No content provided';
+
+            // 모달 내부에 데이터를 설정
+            modal.querySelector(".name").textContent = name;
+            modal.querySelector(".email").textContent = email;
+            modal.querySelector(".time").textContent = time;
+            modal.querySelector("textarea[name='reason']").textContent = content;
+
+            modal.style.display = "block"; // 모달 표시
+            overlay.style.display="none";
+        });
+    });
+
+    // 닫기 버튼 클릭 시 모달 닫기
+    closeModalButton.addEventListener("click", () => {
+        modal.style.display = "none";
+    });
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    initTextPage();
+    setupTextReportDetailsModal(); // 모달 이벤트 초기화
+});
 
 
 

@@ -397,7 +397,7 @@ function renderReportList(reports) {
             </div>
             <div class="apply-table-cell">${report.readCount || 0}</div>
             <div class="apply-table-cell">${report.star || 0}</div>
-            <div class="apply-table-cell">${report.workPrice || '0원'} 원</div>
+            <div class="apply-table-cell">${report.workPrice || '0원'}원</div>
             <div class="apply-table-cell">
                 <button class="report-management-btn status report" 
                         style="background-color: ${buttonBackgroundColor};"
@@ -469,7 +469,123 @@ function renderVideoReportPagination(pagination) {
     paginationContainer.appendChild(nextButton);
 }
 
+//----------------------------------------------------------------------------------------------------------
 
+// 작품(글)신고관리
+
+function renderTextReportList(reports) {
+    const container = document.getElementById("work-text-report-list");
+    container.innerHTML = '';
+
+    if (!reports || reports.length === 0) {
+        container.innerHTML = '<p>조회할 데이터가 없습니다.</p>';
+        return;
+    }
+
+    reports.forEach((report) => {
+        const row = document.createElement("div");
+        row.className = "apply-table-row";
+
+        // 상태에 따른 배경색 결정
+        let buttonBackgroundColor = "";
+        switch (report.reportStatus) {
+            case "DELETE":
+                buttonBackgroundColor = "rgba(41, 153, 41, 0.818)";
+                break;
+            case "HOLD":
+                buttonBackgroundColor = "#ffa600";
+                break;
+            case "NOPROBLEM":
+                buttonBackgroundColor = "rgb(183, 183, 183)";
+                break;
+            default:
+                buttonBackgroundColor = "";
+        }
+
+        row.innerHTML = `
+            <div class="apply-table-cell">
+                <input type="checkbox" class="apply-checkbox" data-id="${report.postId}"/>
+            </div>
+            <div class="apply-table-cell">${report.postId}</div>
+            <div class="apply-table-cell">${report.profileName || ''}</div>
+            <div class="apply-table-cell">${report.postCreatedDate || ''}</div>
+            <div class="apply-table-cell">${report.genreType || ''}</div>
+            <div class="apply-table-cell post-title">
+                <a href="#">${report.postTitle || ''}</a>
+            </div>
+            <div class="apply-table-cell">${report.readCount || 0}</div>
+            <div class="apply-table-cell">${report.star || 0}</div>
+            <div class="apply-table-cell">${report.workPrice || '0원'}원</div>
+            <div class="apply-table-cell">
+                <button class="report-management-btn status report" 
+                        style="background-color: ${buttonBackgroundColor};"
+                        onclick="openTextReportModal(event)">
+                    ${report.reportStatus || '신고'}
+                </button>
+            </div>
+            <div class="apply-table-cell">
+                <button class="reasons-report-btn report-content-look-text" 
+                    data-name="${report.reportProfileName || ''}" 
+                    data-email="${report.reportProfileEmail || ''}" 
+                    data-time="${report.reportCreatedDate || ''}" 
+                    data-content="${report.reportContents || ''}">
+                    보기
+                </button>
+            </div>
+        `;
+
+        container.appendChild(row);
+    });
+
+    textReportCheckboxEvents();
+    setupTextReportDetailsModal();
+}
+
+// 페이지네이션 HTML을 생성
+function renderTextReportPagination(pagination) {
+    const paginationContainer = document.getElementById("pagination-text-report");
+    paginationContainer.innerHTML = '';
+
+    if (!pagination) return;
+
+    // 이전 버튼
+    const prevButton = document.createElement("li");
+    prevButton.className = `pagination-prev ${pagination.page > 1 ? '' : 'disabled'}`;
+    prevButton.innerHTML = `
+        <a href="#" class="pagination-prev-link" rel="prev nofollow">
+            <span class="pagination-prev-icon" aria-hidden="true">‹</span>
+        </a>`;
+    prevButton.addEventListener("click", (e) => {
+        e.preventDefault();
+        if (pagination.page > 1) changeTextPage(pagination.page - 1);
+    });
+    paginationContainer.appendChild(prevButton);
+
+    // 페이지 번호 버튼
+    for (let i = pagination.startPage; i <= Math.min(pagination.endPage, pagination.realEnd); i++) {
+        const pageButton = document.createElement("li");
+        pageButton.className = `pagination-page ${i === pagination.page ? 'active' : ''}`;
+        pageButton.innerHTML = `<a href="#" class="pagination-page-link">${i}</a>`;
+        pageButton.addEventListener("click", (e) => {
+            e.preventDefault();
+            changeTextPage(i);
+        });
+        paginationContainer.appendChild(pageButton);
+    }
+
+    // 다음 버튼
+    const nextButton = document.createElement("li");
+    nextButton.className = `pagination-next ${pagination.page < pagination.realEnd ? '' : 'disabled'}`;
+    nextButton.innerHTML = `
+        <a href="#" class="pagination-next-link" rel="next nofollow">
+            <span class="pagination-next-icon" aria-hidden="true">›</span>
+        </a>`;
+    nextButton.addEventListener("click", (e) => {
+        e.preventDefault();
+        if (pagination.page < pagination.realEnd) changeTextPage(pagination.page + 1);
+    });
+    paginationContainer.appendChild(nextButton);
+}
 
 
 

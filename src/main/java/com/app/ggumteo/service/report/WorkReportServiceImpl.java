@@ -32,4 +32,22 @@ public class WorkReportServiceImpl implements WorkReportService {
     public void updateReportStatus(Long workId, String reportStatus) {
         workReportDAO.updateReportStatus(workId, reportStatus);
     }
+
+    //    글 신고 목록 조회 (검색, 정렬 ,페이지네이션)
+    @Override
+    public List<WorkReportDTO> getTextReports(String search, String order, AdminPagination pagination) {
+        return workReportDAO.getTextReports(search, order, pagination);
+    }
+
+    //    글 신고 목록 전체조회
+    @Override
+    public int getTextReportsCount(String search, String order) {
+        return workReportDAO.getTextReportsCount(search, order);
+    }
+
+    //    글 상태 업데이트
+    @Override
+    public void updateTextReportStatus(Long workId, String reportStatus) {
+        workReportDAO.updateTextReportStatus(workId, reportStatus);
+    }
 }
