@@ -4,7 +4,7 @@ import lombok.*;
 import org.springframework.stereotype.Component;
 
 @Component
-@Getter
+@Getter @Setter
 @ToString
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @NoArgsConstructor
@@ -12,7 +12,6 @@ import org.springframework.stereotype.Component;
 public class AuditionApplicationDTO {
     @EqualsAndHashCode.Include
     private Long id;
-    private Long memberId;
     private String applyEtc;
     private Long auditionId;
     private String confirmStatus;

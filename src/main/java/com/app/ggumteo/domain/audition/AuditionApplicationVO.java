@@ -14,7 +14,7 @@ import java.io.Serializable;
 public class AuditionApplicationVO implements Serializable {
     @EqualsAndHashCode.Include
     private Long id;
-    private Long memberId;
+    private Long memberProfileId;
     private String applyEtc;
     private Long auditionId;
     private String createdDate;
