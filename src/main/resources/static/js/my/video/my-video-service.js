@@ -1,5 +1,15 @@
 const myPageService = (() => {
 
+    const getMyVideoWorkList = async (page, memberId, callback) => {
+        page = page || 1;
+        const response = await fetch(`/members/${memberId}/video/my/work/${page}`);
+        const myWorkPosts = await response.json();
+
+        if(callback){
+            callback(myWorkPosts);
+        }
+    }
+
     const getMyFundingList = async (page, memberId, callback) => {
         page = page || 1;
         const response = await fetch(`/members/${memberId}/video/my/funding/${page}`);
@@ -71,6 +81,7 @@ const myPageService = (() => {
     }
 
     return {
+        getMyVideoWorkList: getMyVideoWorkList,
         getMyFundingList: getMyFundingList,
         getFundingBuyerList: getFundingBuyerList,
         updateFundingSendStatus: updateFundingSendStatus,

@@ -7,6 +7,7 @@ import com.app.ggumteo.domain.inquiry.InquiryDTO;
 import com.app.ggumteo.domain.inquiry.MyInquiryHistoryListDTO;
 import com.app.ggumteo.domain.member.MemberDTO;
 import com.app.ggumteo.domain.member.MemberVO;
+import com.app.ggumteo.domain.work.MyWorkListDTO;
 import com.app.ggumteo.pagination.SettingTablePagination;
 import com.app.ggumteo.pagination.WorkAndFundingPagination;
 import com.app.ggumteo.repository.inquiry.InquiryDAO;
@@ -34,6 +35,19 @@ public class MyPageServiceTests {
 
         Optional<MemberVO> foundMemberInfo = myPageService.getMember(memberDTO.getId());
         foundMemberInfo.map(MemberVO::toString).ifPresent(log::info);
+    }
+
+    @Test
+    public void testGetMyVideoWorkList() {
+        MemberVO memberVO = null;
+        WorkAndFundingPagination workAndFundingPagination = new WorkAndFundingPagination();
+        memberVO = myPageService.getMember(15L).get();
+        workAndFundingPagination.setTotal(myPageService.getMyVideoWorkPostsTotal(memberVO.getId(), PostType.VIDEO.name()));
+        workAndFundingPagination.progress();
+        MyWorkListDTO myWorkPosts = myPageService.getMyVideoWorkList
+                (1, workAndFundingPagination, memberVO.getId(), PostType.VIDEO.name());
+
+        log.info(" myWorkPosts.toString()-test={}", myWorkPosts.toString());
     }
 
     @Test
