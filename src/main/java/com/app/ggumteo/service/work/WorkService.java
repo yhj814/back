@@ -31,4 +31,7 @@ public interface WorkService {
     List<WorkDTO> getThreeWorksByGenre(String genreType, Long workId, String postType);
 
     List<WorkDTO> getThreeWorksByAuthor(Long memberProfileId, Long workId, String postType);
+
+    void buyFundingProduct(Long productId, Long memberId, int amount);
+
 }

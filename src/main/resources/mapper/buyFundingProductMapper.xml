@@ -64,4 +64,26 @@
                 join tbl_post_file pfl on p.id = pfl.post_id
                 join tbl_file fl on pfl.id = fl.id;
     </select>
+
+    <!-- 펀딩 금액 업데이트 -->
+    <update id="updateConvergePrice">
+        update tbl_funding
+        set converge_price = converge_price + #{amount}
+        where id = #{fundingId}
+    </update>
+
+    <!-- 상품 수량 감소 -->
+    <update id="decrementProductAmount">
+        update tbl_funding_product
+        set product_amount = product_amount - 1
+        where id = #{productId} and product_amount > 0
+    </update>
+
+    <!-- 구매 정보 삽입 -->
+    <insert id="insertBuyFundingProduct" useGeneratedKeys="true" keyProperty="id">
+        insert into tbl_buy_funding_product (member_id, funding_product_id)
+        values (#{memberId}, #{productId})
+    </insert>
+
+
 </mapper>
