@@ -10,7 +10,9 @@ import com.app.ggumteo.pagination.MyPagePagination;
 import com.app.ggumteo.pagination.Pagination;
 import com.app.ggumteo.pagination.SettingTablePagination;
 import com.app.ggumteo.pagination.WorkAndFundingPagination;
+import com.app.ggumteo.search.Search;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -19,6 +21,7 @@ import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
+@Slf4j
 public class FundingDAO {
     private final FundingMapper fundingMapper;
 
@@ -42,6 +45,7 @@ public class FundingDAO {
         if (fundingDTO.getFundingStatus() == null) {
             fundingDTO.setFundingStatus("펀딩 중");
         }
+
         fundingMapper.insert(fundingDTO);
     }
 
@@ -49,6 +53,15 @@ public class FundingDAO {
     // 펀딩 상품 삽입 메서드
     public void saveFundingProduct(FundingProductVO fundingProductVO) {
         fundingMapper.insertFundingProduct(fundingProductVO);
+    }
+
+    // 작품 목록 조회 (썸네일 포함, 검색 및 필터링 추가)
+    public List<FundingDTO> findAllFundingList(Search search, Pagination pagination) {
+        return fundingMapper.selectFundingList(search, pagination);
+    }
+
+    public int findTotalWithSearchAndType(Search search) {
+        return fundingMapper.selectTotalWithSearchAndType(search);
     }
 
     // 펀딩 정보 수정

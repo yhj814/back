@@ -291,6 +291,54 @@ public class AdminController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("영상 신고 상태 변경에 실패했습니다.");
         }
     }
+
+    // 글 신고 목록
+    @GetMapping("/textReports")
+    @ResponseBody
+    public Map<String, Object> getTextReports(
+            @RequestParam(value = "search", required = false) String search,
+            @RequestParam(value = "order", required = false) String order,
+            @RequestParam(value = "page", defaultValue = "1") Integer page
+    ) {
+        // 페이징 설정
+        AdminPagination pagination = new AdminPagination();
+        pagination.setPage(page);
+
+        // 총 데이터 개수를 가져와서 페이징 진행
+        pagination.setTotal(workReportService.getTextReportsCount(search,order));
+        pagination.progress();
+
+        // 데이터 조회
+        List<WorkReportDTO> reports = workReportService.getTextReports(search, order, pagination);
+
+        log.info("{}",search);
+        log.info("{}",order);
+        log.info("{}",reports.size());
+
+        // 결과를 Map에 담아 반환
+        Map<String, Object> response = new HashMap<>();
+        response.put("reports", reports);
+        response.put("pagination", pagination);
+
+        return response;
+    }
+
+    // 글 신고 상태 업데이트
+    @PostMapping("/textReports/status")
+    @ResponseBody
+    public ResponseEntity<String> updateTextReportStatus(@RequestBody Map<String, Object> requestData) {
+        Long workId = Long.valueOf(requestData.get("workId").toString());
+        String status = requestData.get("reportStatus").toString();
+
+        try {
+            workReportService.updateTextReportStatus(workId, status);
+            log.info("영상 신고 ID {}의 상태가 {}로 변경되었습니다.", workId, status);
+            return ResponseEntity.ok("영상 신고 상태가 성공적으로 변경되었습니다.");
+        } catch (Exception e) {
+            log.error("영상 신고 상태 변경 중 오류 발생 - 신고 ID: {}", workId, e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("영상 신고 상태 변경에 실패했습니다.");
+        }
+    }
 }
 
 
