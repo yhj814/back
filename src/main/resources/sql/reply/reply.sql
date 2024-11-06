@@ -18,4 +18,4 @@ add constraint fk_reply_member_profile foreign key (member_profile_id)
 select * from tbl_reply;
 
 insert into tbl_reply
-values (9,'댓글9',12,11,now(),3);
+values (22,'댓글22',9,21,now(),3);

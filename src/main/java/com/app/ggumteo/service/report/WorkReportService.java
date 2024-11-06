@@ -13,4 +13,7 @@ public interface WorkReportService {
 
     //    영상 신고 목록 전체조회
     int getVideoReportsCount(String search, String order);
+
+    //    신고 상태 업데이트
+    void updateReportStatus(Long workId, String reportStatus);
 }

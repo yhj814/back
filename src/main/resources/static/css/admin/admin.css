@@ -586,7 +586,7 @@ video {
     padding: 25px 40px 30px 40px;
     border-radius: 10px;
     overflow-y: auto;
-    width: 400px;
+    width: 405px;
     height: 220px;
     align-content: center;
     margin: 360px auto
@@ -606,7 +606,7 @@ video {
     cursor: pointer;
     border: none;
     border-radius: 5px;
-    width: 101px;
+    width: 125px;
 }
 .choice-container .btn-delete-processing,
 .choice-container .btn-active-member,
@@ -639,6 +639,7 @@ video {
     border: none;
     border-radius: 5px;
     background-color: #007bff;
+    margin-right: 30px;
 }
 .choice-container .btn-delete-processing:hover,
 .choice-container .btn-active-member:hover,
@@ -701,6 +702,7 @@ video {
 }
 
 /* 신고 사유 모달창, 리뷰 상세 모달창 */
+
 .reasons-report-modal, .review-detail-modal, .message-modal {
     display: none;
     position: fixed;
@@ -709,6 +711,10 @@ video {
     left: 0;
     right: 0;
     z-index: 100;
+}
+
+.reasons-report-modal.video{
+    display: none;
 }
 
 .reasons-report-modal .modal-content,
@@ -722,6 +728,7 @@ video {
     position: relative;
     z-index: 10;
     box-shadow: 0 32px 40px -2px rgba(10, 22, 70, .12), 0 0 5px 0 rgba(10, 22, 70, .06);
+    margin-top: 130px;
 }
 
 .reasons-report-header {
@@ -746,7 +753,7 @@ video {
 .review-detail-contents,
 .message-modal-contents {
     margin: auto 40px;
-    margin-top: 12px 0;
+    margin-top: 12px;
     overflow: auto;
     color: #495057;
 }
@@ -1762,3 +1769,4 @@ h1.common-header-description {
 .inactive-member{
     color: red;
 }
+
