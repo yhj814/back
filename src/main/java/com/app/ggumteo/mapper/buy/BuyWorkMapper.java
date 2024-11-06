@@ -7,5 +7,4 @@ import org.apache.ibatis.annotations.Mapper;
 public interface BuyWorkMapper {
     public void insertPurchase(BuyWorkVO buyWorkVO);
 
-
 }

@@ -103,27 +103,23 @@ document.addEventListener("DOMContentLoaded", function () {
     // 각 파일 업로드 필드에 대해 change 이벤트 리스너 추가
     fileUploadInputs.forEach((fileInput) => {
         fileInput.addEventListener("change", function () {
-            if (fileInput.files.length > 0) {
+            const file = fileInput.files[0];
+            if (file) {
                 const formData = new FormData();
 
-                // 모든 선택된 파일을 formData에 추가
-                for (let i = 0; i < fileInput.files.length; i++) {
-                    formData.append("file", fileInput.files[i]);
+                if (fileInput.id === "thumbnailFile") {
+                    formData.append("thumbnailFile", file);
+                } else {
+                    formData.append("fundingFile", file);
                 }
 
-                // 파일 서버로 업로드
                 fetch("/text/funding/upload", {
                     method: "POST",
                     body: formData,
                 })
-                    .then((response) => {
-                        if (!response.ok) {
-                            throw new Error("파일 업로드 실패");
-                        }
-                        return response.json();
-                    })
+                    .then((response) => response.json())
                     .then((data) => {
-                        if (data.length > 0) {
+                        if (data.fileName && data.filePath) {
                             console.log("파일이 성공적으로 업로드되었습니다.");
                         } else {
                             console.error("파일 업로드 중 오류가 발생했습니다.");
@@ -132,11 +128,10 @@ document.addEventListener("DOMContentLoaded", function () {
                     .catch((error) => {
                         console.error("Error:", error);
                     });
-            } else {
-                console.error("파일이 선택되지 않았습니다.");
             }
         });
     });
+
 
     const form = document.querySelector("#write-form");
     const submitButton = document.querySelector(".btn-submit");
@@ -145,12 +140,26 @@ document.addEventListener("DOMContentLoaded", function () {
         event.preventDefault(); // 폼 기본 제출 방지
 
         const formData = new FormData(form); // 폼 데이터 수집
+// 상품 데이터 수집
+        const productNames = document.querySelectorAll('input[name="productName[]"]');
+        const productPrices = document.querySelectorAll('input[name="productPrice[]"]');
+        const productAmounts = document.querySelectorAll('input[name="productAmount[]"]');
 
+        // 배열 데이터들을 FormData에 추가
+        productNames.forEach((input, index) => {
+            formData.append(`fundingProducts[${index}].productName`, input.value);
+        });
+        productPrices.forEach((input, index) => {
+            formData.append(`fundingProducts[${index}].productPrice`, input.value);
+        });
+        productAmounts.forEach((input, index) => {
+            formData.append(`fundingProducts[${index}].productAmount`, input.value);
+        });
         // 수집된 formData의 모든 값 출력 (디버깅용)
         for (let [key, value] of formData.entries()) {
             console.log(`${key}: ${value}`);
         }
-        console.log(document.querySelector('input[name="workFile"]').files[0]);
+        console.log(document.querySelector('input[name="fundingFile"]').files[0]);
 
         //폼 데이터 전송
         fetch("/text/funding/write", {
@@ -175,14 +184,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // 버튼 활성화 확인 함수
     function checkFormCompletion() {
-        // 파일 업로드가 완료되었는지 확인
-        const allFilesUploaded = Array.from(fileInputs).every(
+        // 파일 업로드가 하나라도 완료되었는지 확인
+        const isAnyFileUploaded = Array.from(fileInputs).some(
             (fileInput) => fileInput.files.length > 0
         );
+
         // 텍스트 필드가 비어있지 않은지 확인
         const isInputValid = inputElement && inputElement.value.trim() !== "";
         const isTextareaValid =
             textareaElement && textareaElement.value.trim() !== "";
+
         // 라디오 버튼이 선택되었는지 확인
         const isRadioSelected = Array.from(radioButtons).some(
             (radio) => radio.checked
@@ -190,7 +201,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // 모든 조건을 만족하면 버튼 활성화, 그렇지 않으면 비활성화
         if (
-            allFilesUploaded &&
+            isAnyFileUploaded &&
             isInputValid &&
             isTextareaValid &&
             isRadioSelected
@@ -243,29 +254,8 @@ function setupEventListeners(imgBox) {
 
     const btnDeleteImage = imgBox.querySelector(".btn-edit-item:nth-child(2)");
     btnDeleteImage.addEventListener("click", function () {
-        // 미리보기 이미지 및 관련 요소 초기화
-        preview.src =
-            "https://www.wishket.com/static/renewal/img/partner/profile/icon_btn_add_portfolio_image.png"; // 기본 이미지
-        videoPreview.src = ""; // 비디오 미리보기 초기화
-        videoPreview.style.display = "none"; // 비디오 미리보기 숨기기
-        const imgCaptionBox = imgBox.querySelector(".img-caption-box");
-        if (imgCaptionBox) {
-            imgCaptionBox.style.display = "block";
-        }
-        const title = imgBox.querySelector(".img-box-title");
-        const text = imgBox.querySelector(".img-box-text");
-        const help = imgBox.querySelector(".img-box-help");
-
-        imgCaptionBox.style.display = "none"; // 캡션 입력 박스 숨기기
-        title.style.display = "block"; // 제목 다시 보이기
-        text.style.display = "block"; // 설명 다시 보이기
-        help.style.display = "block"; // 도움말 다시 보이기
-
-        // 삭제버튼 누를 시 div 전체 삭제
-        imgBox.style.display = "none";
-
-        // 파일 입력 필드 초기화
-        fileUpload.value = ""; // 파일 입력 필드 초기화
+        // img-box-list 전체 삭제
+        imgBox.remove();
     });
 }
 
@@ -297,12 +287,7 @@ document.querySelector(".img-add").addEventListener("click", function () {
                     <div class="img-box-title">작품 영상, 이미지 등록</div>
                     <div class="img-box-text">작품 결과물 혹은 설명을 돕는 이미지를 선택해 주세요.</div>
                     <div class="img-box-help"><span>· 이미지 최적 사이즈: 가로 720px</span></div>
-                    <input id="file-upload-${timestamp}" type="file" name="workFile" accept="image/*,video/*" style="display: none;" />
-                </div>
-            </div>
-            <div class="img-caption-box" style="display: none;">
-                <div class="default-input-partner">
-                    <input type="text" class="img-caption-box-content" placeholder="올린 파일에 대한 설명을 입력해주세요." />
+                    <input id="file-upload-${timestamp}" type="file" name="fundingFile" accept="image/*,video/*" style="display: none;" />
                 </div>
             </div>
         </div>
@@ -369,7 +354,7 @@ function previewFile(fileInput, previewSelector, videoPreviewSelector) {
     formData.append('file', file);
 
     // 서버로 파일을 전송
-    fetch('/text/funding/upload', {
+    fetch('/uploadFile', {
         method: 'POST',
         body: formData
     })
@@ -385,7 +370,6 @@ function previewFile(fileInput, previewSelector, videoPreviewSelector) {
         .catch(error => {
             console.error('Error:', error);
         });
-
 }
 
 function previewImage(event) {
@@ -435,6 +419,7 @@ document.addEventListener("click", () => {
         box.style.backgroundColor = "";
     });
 });
+
 
 
 document.addEventListener("DOMContentLoaded", () => {
