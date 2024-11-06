@@ -8,14 +8,22 @@ import java.util.List;
 
 @Mapper
 public interface WorkReportMapper {
+//    영상 신고 목록
     List<WorkReportDTO> selectVideoReports(
             @Param("search") String search,
             @Param("order") String order,
             @Param("pagination") AdminPagination pagination
     );
 
+//    총 영상 신고 목록들
     int countVideoReports(
             @Param("search") String search,
             @Param("order") String order
+    );
+
+//    신고 상태 업데이트
+    void videoStatusChange(
+            @Param("workId") Long workId,
+            @Param("reportStatus") String reportStatus
     );
 }

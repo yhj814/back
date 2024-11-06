@@ -14,7 +14,7 @@ create table tbl_work_report (
 select *from tbl_work_report;
 
 insert into tbl_work_report
-values (9,'신고내용9',12,now(),default,11);
+values (17,'신고내용17',28,now(),default,11);
 
 select *from tbl_member_profile;
 

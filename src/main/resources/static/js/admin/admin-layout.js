@@ -352,11 +352,12 @@ document.addEventListener('DOMContentLoaded', init);
 
 
 //----------------------------------------------------------------------------------------------------------
+
 // 작품(영상)신고관리
-// 목록 HTML을 생성
+
 function renderReportList(reports) {
     const container = document.getElementById("work-video-report-list");
-    container.innerHTML = ''; // 기존 내용을 지웁니다.
+    container.innerHTML = '';
 
     if (!reports || reports.length === 0) {
         container.innerHTML = '<p>조회할 데이터가 없습니다.</p>';
@@ -366,6 +367,22 @@ function renderReportList(reports) {
     reports.forEach((report) => {
         const row = document.createElement("div");
         row.className = "apply-table-row";
+
+        // 상태에 따른 배경색 결정
+        let buttonBackgroundColor = "";
+        switch (report.reportStatus) {
+            case "DELETE":
+                buttonBackgroundColor = "rgba(41, 153, 41, 0.818)";
+                break;
+            case "HOLD":
+                buttonBackgroundColor = "#ffa600";
+                break;
+            case "NOPROBLEM":
+                buttonBackgroundColor = "rgb(183, 183, 183)";
+                break;
+            default:
+                buttonBackgroundColor = "";
+        }
 
         row.innerHTML = `
             <div class="apply-table-cell">
@@ -382,26 +399,34 @@ function renderReportList(reports) {
             <div class="apply-table-cell">${report.star || 0}</div>
             <div class="apply-table-cell">${report.workPrice || '0원'} 원</div>
             <div class="apply-table-cell">
-                <button class="report-management-btn status report">
+                <button class="report-management-btn status report" 
+                        style="background-color: ${buttonBackgroundColor};"
+                        onclick="openReportModal(event)">
                     ${report.reportStatus || '신고'}
                 </button>
             </div>
             <div class="apply-table-cell">
-                <button class="reasons-report-btn">보기</button>
+                <button class="reasons-report-btn report-content-look" 
+                    data-name="${report.reportProfileName || ''}" 
+                    data-email="${report.reportProfileEmail || ''}" 
+                    data-time="${report.reportCreatedDate || ''}" 
+                    data-content="${report.reportContents || ''}">
+                    보기
+                </button>
             </div>
         `;
 
         container.appendChild(row);
     });
 
-    // 체크박스 이벤트 초기화
     videoReportCheckboxEvents();
+    setupReportDetailsModal();
 }
 
 // 페이지네이션 HTML을 생성
 function renderVideoReportPagination(pagination) {
     const paginationContainer = document.getElementById("pagination-video-report");
-    paginationContainer.innerHTML = ''; // 기존 페이지네이션 내용을 지웁니다.
+    paginationContainer.innerHTML = '';
 
     if (!pagination) return;
 
@@ -414,7 +439,7 @@ function renderVideoReportPagination(pagination) {
         </a>`;
     prevButton.addEventListener("click", (e) => {
         e.preventDefault();
-        if (pagination.page > 1) changePage(pagination.page - 1); // 이전 페이지로 이동
+        if (pagination.page > 1) changePage(pagination.page - 1);
     });
     paginationContainer.appendChild(prevButton);
 
@@ -425,7 +450,7 @@ function renderVideoReportPagination(pagination) {
         pageButton.innerHTML = `<a href="#" class="pagination-page-link">${i}</a>`;
         pageButton.addEventListener("click", (e) => {
             e.preventDefault();
-            changePage(i); // 선택한 페이지로 이동
+            changePage(i);
         });
         paginationContainer.appendChild(pageButton);
     }
@@ -439,10 +464,11 @@ function renderVideoReportPagination(pagination) {
         </a>`;
     nextButton.addEventListener("click", (e) => {
         e.preventDefault();
-        if (pagination.page < pagination.realEnd) changePage(pagination.page + 1); // 다음 페이지로 이동
+        if (pagination.page < pagination.realEnd) changePage(pagination.page + 1);
     });
     paginationContainer.appendChild(nextButton);
 }
+
 
 
 
