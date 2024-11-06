@@ -10,6 +10,26 @@ const myPageService = (() => {
         }
     }
 
+    const getMyVideoWorkBuyerList = async (page, workPostId, callback) => {
+        page = page || 1;
+        const response = await fetch(`/members/video/my/work/${workPostId}/buyers/${page}`);
+        const myWorkBuyers = await response.json();
+
+        if(callback){
+            return callback(myWorkBuyers);
+        }
+    }
+
+    const updateWorkSendStatus = async (buyWork) => {
+        await fetch(`/members/video/my/work/buyers/sendStatus/update`, {
+            method: "put",
+            body: JSON.stringify(buyWork),
+            headers: {
+                "Content-Type": "application/json; charset=utf-8"
+            }
+        });
+    }
+
     const getMyFundingList = async (page, memberId, callback) => {
         page = page || 1;
         const response = await fetch(`/members/${memberId}/video/my/funding/${page}`);
@@ -71,22 +91,24 @@ const myPageService = (() => {
         }
     }
 
-    const upload = async (formDate) => {
-        const response = await fetch("/member/video/file/upload", {
-            method: "post",
-            body: formDate
-        });
-        const fileName = await response.json();
-        return fileName;
-    }
+    // const upload = async (formDate) => {
+    //     const response = await fetch("/member/video/file/upload", {
+    //         method: "post",
+    //         body: formDate
+    //     });
+    //     const fileName = await response.json();
+    //     return fileName;
+    // }
 
     return {
         getMyVideoWorkList: getMyVideoWorkList,
+        getMyVideoWorkBuyerList: getMyVideoWorkBuyerList,
+        updateWorkSendStatus: updateWorkSendStatus,
         getMyFundingList: getMyFundingList,
         getFundingBuyerList: getFundingBuyerList,
         updateFundingSendStatus: updateFundingSendStatus,
         getMyBuyFundingList: getMyBuyFundingList,
         getMyInquiryHistoryList: getMyInquiryHistoryList,
-        getAdminAnswerByInquiryId: getAdminAnswerByInquiryId,
-        upload : upload}
+        getAdminAnswerByInquiryId: getAdminAnswerByInquiryId
+    }
 })()

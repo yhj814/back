@@ -80,7 +80,7 @@
                         <div id="ggumteo-list-box">
                             <div class="list-box-wrapper">
                                 <li th:each="funding : ${fundings}" style="width: 213px">
-                                    <a th:href="@{/text/detail/{id}(id=${funding.id})}" class="box">
+                                    <a th:href="@{/text/funding/detail/{id}(id=${funding.id})}" class="box">
                                         <!-- 썸네일 이미지 -->
                                         <img id="thumbnail-image" th:src="@{/text/funding/display(fileName=${funding.thumbnailFilePath})}" class="thumbnail" alt="썸네일 이미지" />
 

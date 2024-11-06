@@ -1,4 +1,4 @@
-package com.app.ggumteo.domain.funding;
+package com.app.ggumteo.domain.buy;
 
 import lombok.*;
 import org.springframework.stereotype.Component;
@@ -32,6 +32,6 @@ public class BuyFundingProductDTO {
     private String filePath; // 파일 경로
 
     public BuyFundingProductVO toVO() {
-        return new BuyFundingProductVO(id, memberProfileId, fundingProductId, fundingSendStatus);
+        return new BuyFundingProductVO(id, memberProfileId, fundingProductId, fundingSendStatus, createdDate);
     }
 }
