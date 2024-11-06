@@ -15,4 +15,5 @@ public class BuyFundingProductVO {
     private Long memberProfileId; // 회원 프로필 ID
     private Long fundingProductId; // 펀딩 상품 ID
     private String fundingSendStatus; // 발송 여부
+    private String createdDate; // 구매 날짜
 }

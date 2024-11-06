@@ -7,5 +7,34 @@
         values (#{memberProfileId}, #{workId}, #{workSendStatus})
     </insert>
 
+    <select id="selectByWorkPostId" resultType="buyWorkDTO">
+        select bw.id, bw.work_send_status,bw.work_id
+             , w.work_price, bw_mp.profile_name, bw_mp.profile_email
+        from
+            tbl_buy_work bw
+                join tbl_work w on bw.work_id = w.id
+                join tbl_post p on w.id = p.id and w.id = #{workPostId}
+                join tbl_member_profile mp on p.member_profile_id = mp.id
+                join tbl_member m on mp.member_id = m.id
+                join tbl_member_profile bw_mp on bw.member_profile_id = bw_mp.id
+        order by w.id desc
+            limit #{settingTablePagination.startRow}, #{settingTablePagination.rowCount};
+    </select>
+
+    <select id="selectCount">
+        select count(*) from
+            tbl_buy_work bw
+                join tbl_work w on bw.work_id = w.id
+                join tbl_post p on w.id = p.id and w.id = #{workPostId}
+                join tbl_member_profile mp on p.member_profile_id = mp.id
+                join tbl_member m on mp.member_id = m.id
+                join tbl_member_profile bw_mp on bw.member_profile_id = bw_mp.id
+    </select>
+
+    <update id="updateWorkSendStatus">
+        update tbl_buy_work
+        set work_send_status = #{workSendStatus}
+        where id = #{id}
+    </update>
 
 </mapper>

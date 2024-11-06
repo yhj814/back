@@ -91,10 +91,11 @@ const showMyWorkList = ({myWorkPosts, workAndFundingPagination}) => {
                             >
                         </div>
                         <div class="btn products-image">
-                            <a
-                                ><img
-                                    src="/images/member/thumnail.png"
-                            /></a>
+                            <a 
+                                ><img 
+                                    src="/member/video/my/work/display?fileName=${myWorkPost.thumbnailFilePath}"
+<!--                                    썸네일이 올라가지 않음 : 집에 돌아가서 살펴보아야 함.-->
+                            </a>
                         </div>
                     </div>
                     <div
@@ -105,7 +106,7 @@ const showMyWorkList = ({myWorkPosts, workAndFundingPagination}) => {
                         >
                             <img
                                 class="author-image"
-                                src="/images/member/member-image.jpg"
+                                src=${myWorkPost.profileImgUrl}
                             />
                             <p class="author-name">
                                 ${myWorkPost.profileNickName}
@@ -234,6 +235,7 @@ const showMyWorkList = ({myWorkPosts, workAndFundingPagination}) => {
                                                 value="false"
                                             /><span
                                                 class="name"
+                                                >보냄</span
                                                 >보냄</span
                                             >
                                         </div>
