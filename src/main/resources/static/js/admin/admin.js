@@ -304,20 +304,20 @@ function showReporProcessingtModal(sectionId) {
             console.log(choiceBtnsVideo[clickedIndex].classList.contains("on"));
         });
     });
-    btnCompleteVideo.addEventListener("click", () => {
-        let anyChoiseSelected = false;
-        // choiceBtnsVideo "on" 클래스를 가진 항목이 있는지 확인
-        choiceBtnsVideo.forEach((choice) => {
-            if (choice.classList.contains("on")) {
-                anyChoiseSelected = true;
-            }
-        });
-        // 선택된 항목이 있으면 모달창이 닫힌다.
-        if (anyChoiseSelected) {
-            modalVideo.style.display = "none";
-        } else {
-        }
-    });
+    // btnCompleteVideo.addEventListener("click", () => {
+    //     let anyChoiseSelected = false;
+    //     // choiceBtnsVideo "on" 클래스를 가진 항목이 있는지 확인
+    //     choiceBtnsVideo.forEach((choice) => {
+    //         if (choice.classList.contains("on")) {
+    //             anyChoiseSelected = true;
+    //         }
+    //     });
+    //     // 선택된 항목이 있으면 모달창이 닫힌다.
+    //     if (anyChoiseSelected) {
+    //         modalVideo.style.display = "none";
+    //     } else {
+    //     }
+    // });
 
     const btnsText = document.querySelectorAll(
         `${sectionId} .text-wrapper .report-management-btn.status`

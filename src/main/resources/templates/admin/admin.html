@@ -202,7 +202,7 @@
                                                     class="filter-search-input"
                                                     placeholder="통합검색"
                                             />
-                                            <button class="selected-btn" id="delete-members">
+                                            <button class="selected-btn" id="delete-members" style="display: none;">
                                                 회원 삭제 (탈퇴)
                                             </button>
                                         </div>
@@ -539,7 +539,7 @@
                                                     문자 발송
                                                 </button>
                                             </div>
-                                            <button class="selected-btn">
+                                            <button class="selected-btn" style="display: none">
                                                 게시글 삭제
                                             </button>
                                         </div>
@@ -787,7 +787,7 @@
                                                     문자 발송
                                                 </button>
                                             </div>
-                                            <button class="selected-btn">
+                                            <button class="selected-btn" style="display: none">
                                                 게시글 삭제
                                             </button>
                                         </div>
@@ -1062,7 +1062,7 @@
                                                     문자 발송
                                                 </button>
                                             </div>
-                                            <button class="selected-btn">
+                                            <button class="selected-btn" style="display: none">
                                                 게시글 삭제
                                             </button>
                                         </div>
@@ -1625,7 +1625,7 @@
                                                         문자 발송
                                                     </button>
                                                 </div>
-                                                <button class="selected-btn">
+                                                <button class="selected-btn" style="display: none">
                                                     게시글 삭제
                                                 </button>
                                             </div>
@@ -2156,7 +2156,7 @@
                                                     class="filter-search-input"
                                                     placeholder="통합검색"
                                             />
-                                            <button class="selected-btn">
+                                            <button class="selected-btn" style="display: none">
                                                 게시글 삭제
                                             </button>
                                         </div>
@@ -2625,7 +2625,7 @@
                                                     class="filter-search-input"
                                                     placeholder="통합검색"
                                             />
-                                            <button class="selected-btn">
+                                            <button class="selected-btn" style="display: none">
                                                 게시글 삭제
                                             </button>
                                         </div>
@@ -3098,17 +3098,19 @@
 
                         <!-- 1. 영상 -->
                         <div>
-                            <div class="video-wrapper">
+                            <div class="video-wrapper" id="video-reply-report">
                                 <!-- body_layout -->
                                 <div class="common-layout-container">
                                     <div class="filter-wrap">
-                                        <div class="sort-filter-options">
-                                                    <span class="sort-filter-option"
+                                        <div class="sort-filter-options" id="video-reply-report-filter"
+                                             data-order="replyCreatedDate">
+                                                    <span class="sort-filter-option selected video-reply"
                                                     >작성일 순</span
                                                     >
                                             <!-- 신고관리 defalt  -->
                                             <span
-                                                    class="sort-filter-option selected"
+                                                    class="sort-filter-option video-reply"
+                                                    data-order="reportStatus"
                                             >신고관리</span
                                             >
                                         </div>
@@ -3118,8 +3120,9 @@
                                                     type="text"
                                                     class="filter-search-input"
                                                     placeholder="통합검색"
+                                                    id="video-reply-report-search"
                                             />
-                                            <button class="selected-btn">
+                                            <button class="selected-btn" style="display: none">
                                                 리뷰 삭제
                                             </button>
                                         </div>
@@ -3131,6 +3134,7 @@
                                         >
                                             <div
                                                     class="apply-table-cell apply-header-cell select-all-cell"
+                                                    id="video-reply-report-selectAll"
                                             >
                                                 <input
                                                         type="checkbox"
@@ -3150,7 +3154,7 @@
                                             <div
                                                     class="apply-table-cell apply-header-cell"
                                             >
-                                                리뷰 내용
+                                                댓글 내용
                                             </div>
 
                                             <div
@@ -3174,347 +3178,39 @@
                                                 신고내역
                                             </div>
                                         </div>
-
-                                        <!-- Example row (Initial data) -->
-                                        <div class="apply-table-row">
-                                            <div class="apply-table-cell">
-                                                <input
-                                                        type="checkbox"
-                                                        class="apply-checkbox"
-                                                />
-                                            </div>
-                                            <div class="apply-table-cell">1</div>
-                                            <div
-                                                    class="apply-table-cell post-title"
-                                            >
-                                                <a href=""
-                                                >영상 작품 테스트 제목입니다.</a
-                                                >
-                                            </div>
-                                            <div class="apply-table-cell detail">
-                                                <svg
-                                                        clip-rule="evenodd"
-                                                        fill-rule="evenodd"
-                                                        stroke-linejoin="round"
-                                                        stroke-miterlimit="2"
-                                                        viewBox="0 0 24 24"
-                                                        xmlns="http://www.w3.org/2000/svg"
-                                                >
-                                                    <path
-                                                            d="m6 18h-3c-.48 0-1-.379-1-1v-14c0-.481.38-1 1-1h14c.621 0 1 .522 1 1v3h3c.621 0 1 .522 1 1v14c0 .621-.522 1-1 1h-14c-.48 0-1-.379-1-1zm1.5-10.5v13h13v-13zm5.75 5.75h-2.5c-.414 0-.75.336-.75.75s.336.75.75.75h2.5v2.5c0 .414.336.75.75.75s.75-.336.75-.75v-2.5h2.5c.414 0 .75-.336.75-.75s-.336-.75-.75-.75h-2.5v-2.5c0-.414-.336-.75-.75-.75s-.75.336-.75.75zm3.25-7.25v-2.5h-13v13h2.5v-9.5c0-.481.38-1 1-1z"
-                                                            fill-rule="nonzero"
-                                                    />
-                                                </svg></span> <span>작품 리뷰 테스트입니다. 내용이
-                                                        길어지면 생략되도록 하였으며~~~~</span>
-                                            </div>
-
-                                            <div class="apply-table-cell">
-                                                홍길동
-                                            </div>
-                                            <div class="apply-table-cell">
-                                                2024-10-24
-                                            </div>
-                                            <div class="apply-table-cell">
-                                                <button
-                                                        class="report-management-btn status hold"
-                                                >
-                                                    보류
-                                                </button>
-                                            </div>
-                                            <div class="apply-table-cell">
-                                                <button class="reasons-report-btn">
-                                                    보기
-                                                </button>
-                                            </div>
-                                        </div>
-                                        <div class="apply-table-row">
-                                            <div class="apply-table-cell">
-                                                <input
-                                                        type="checkbox"
-                                                        class="apply-checkbox"
-                                                />
-                                            </div>
-                                            <div class="apply-table-cell">2</div>
-                                            <div
-                                                    class="apply-table-cell post-title"
-                                            >
-                                                <a href=""
-                                                >영상 작품 테스트 제목입니다.</a
-                                                >
-                                            </div>
-                                            <div class="apply-table-cell detail">
-                                                <svg
-                                                        clip-rule="evenodd"
-                                                        fill-rule="evenodd"
-                                                        stroke-linejoin="round"
-                                                        stroke-miterlimit="2"
-                                                        viewBox="0 0 24 24"
-                                                        xmlns="http://www.w3.org/2000/svg"
-                                                >
-                                                    <path
-                                                            d="m6 18h-3c-.48 0-1-.379-1-1v-14c0-.481.38-1 1-1h14c.621 0 1 .522 1 1v3h3c.621 0 1 .522 1 1v14c0 .621-.522 1-1 1h-14c-.48 0-1-.379-1-1zm1.5-10.5v13h13v-13zm5.75 5.75h-2.5c-.414 0-.75.336-.75.75s.336.75.75.75h2.5v2.5c0 .414.336.75.75.75s.75-.336.75-.75v-2.5h2.5c.414 0 .75-.336.75-.75s-.336-.75-.75-.75h-2.5v-2.5c0-.414-.336-.75-.75-.75s-.75.336-.75.75zm3.25-7.25v-2.5h-13v13h2.5v-9.5c0-.481.38-1 1-1z"
-                                                            fill-rule="nonzero"
-                                                    />
-                                                </svg></span> <span>작품 리뷰 테스트입니다. 내용이
-                                                        길어지면 생략되도록 하였으며~~~~</span>
-                                            </div>
-
-                                            <div class="apply-table-cell">
-                                                홍길동
-                                            </div>
-                                            <div class="apply-table-cell">
-                                                2024-10-24
-                                            </div>
-                                            <div class="apply-table-cell">-</div>
-                                            <div class="apply-table-cell">
-                                                <button class="reasons-report-btn">
-                                                    보기
-                                                </button>
-                                            </div>
-                                        </div>
-                                        <div class="apply-table-row">
-                                            <div class="apply-table-cell">
-                                                <input
-                                                        type="checkbox"
-                                                        class="apply-checkbox"
-                                                />
-                                            </div>
-                                            <div class="apply-table-cell">3</div>
-                                            <div
-                                                    class="apply-table-cell post-title"
-                                            >
-                                                <a href=""
-                                                >영상 작품 테스트 제목입니다.</a
-                                                >
-                                            </div>
-                                            <div class="apply-table-cell detail">
-                                                <svg
-                                                        clip-rule="evenodd"
-                                                        fill-rule="evenodd"
-                                                        stroke-linejoin="round"
-                                                        stroke-miterlimit="2"
-                                                        viewBox="0 0 24 24"
-                                                        xmlns="http://www.w3.org/2000/svg"
-                                                >
-                                                    <path
-                                                            d="m6 18h-3c-.48 0-1-.379-1-1v-14c0-.481.38-1 1-1h14c.621 0 1 .522 1 1v3h3c.621 0 1 .522 1 1v14c0 .621-.522 1-1 1h-14c-.48 0-1-.379-1-1zm1.5-10.5v13h13v-13zm5.75 5.75h-2.5c-.414 0-.75.336-.75.75s.336.75.75.75h2.5v2.5c0 .414.336.75.75.75s.75-.336.75-.75v-2.5h2.5c.414 0 .75-.336.75-.75s-.336-.75-.75-.75h-2.5v-2.5c0-.414-.336-.75-.75-.75s-.75.336-.75.75zm3.25-7.25v-2.5h-13v13h2.5v-9.5c0-.481.38-1 1-1z"
-                                                            fill-rule="nonzero"
-                                                    />
-                                                </svg></span> <span>작품 리뷰 테스트입니다. 내용이
-                                                        길어지면 생략되도록 하였으며~~~~</span>
-                                            </div>
-
-                                            <div class="apply-table-cell">
-                                                홍길동
-                                            </div>
-                                            <div class="apply-table-cell">
-                                                2024-10-24
-                                            </div>
-                                            <div class="apply-table-cell">
-                                                <button
-                                                        class="report-management-btn status report"
-                                                >
-                                                    신고
-                                                </button>
-                                            </div>
-                                            <div class="apply-table-cell edit">
-                                                <button class="reasons-report-btn">
-                                                    보기
-                                                </button>
-                                            </div>
-                                        </div>
-                                        <div class="apply-table-row">
-                                            <div class="apply-table-cell">
-                                                <input
-                                                        type="checkbox"
-                                                        class="apply-checkbox"
-                                                />
-                                            </div>
-                                            <div class="apply-table-cell">4</div>
-                                            <div
-                                                    class="apply-table-cell post-title"
-                                            >
-                                                <a href=""
-                                                >영상 작품 테스트 제목입니다.</a
-                                                >
-                                            </div>
-                                            <div class="apply-table-cell detail">
-                                                <svg
-                                                        clip-rule="evenodd"
-                                                        fill-rule="evenodd"
-                                                        stroke-linejoin="round"
-                                                        stroke-miterlimit="2"
-                                                        viewBox="0 0 24 24"
-                                                        xmlns="http://www.w3.org/2000/svg"
-                                                >
-                                                    <path
-                                                            d="m6 18h-3c-.48 0-1-.379-1-1v-14c0-.481.38-1 1-1h14c.621 0 1 .522 1 1v3h3c.621 0 1 .522 1 1v14c0 .621-.522 1-1 1h-14c-.48 0-1-.379-1-1zm1.5-10.5v13h13v-13zm5.75 5.75h-2.5c-.414 0-.75.336-.75.75s.336.75.75.75h2.5v2.5c0 .414.336.75.75.75s.75-.336.75-.75v-2.5h2.5c.414 0 .75-.336.75-.75s-.336-.75-.75-.75h-2.5v-2.5c0-.414-.336-.75-.75-.75s-.75.336-.75.75zm3.25-7.25v-2.5h-13v13h2.5v-9.5c0-.481.38-1 1-1z"
-                                                            fill-rule="nonzero"
-                                                    />
-                                                </svg><span>
-                                                            작품 리뷰 테스트입니다. 내용이
-                                                        길어지면 생략되도록 하였으며~~~~</span>
-                                            </div>
-
-                                            <div class="apply-table-cell">
-                                                홍길동
-                                            </div>
-                                            <div class="apply-table-cell">
-                                                2024-10-24
-                                            </div>
-                                            <div class="apply-table-cell">
-                                                <button
-                                                        class="status delete-processing"
-                                                >
-                                                    삭제 처리
-                                                </button>
-                                            </div>
-                                            <div class="apply-table-cell edit">
-                                                <button class="reasons-report-btn">
-                                                    보기
-                                                </button>
-                                            </div>
-                                        </div>
-                                        <div class="apply-table-row">
-                                            <div class="apply-table-cell">
-                                                <input
-                                                        type="checkbox"
-                                                        class="apply-checkbox"
-                                                />
-                                            </div>
-                                            <div class="apply-table-cell">5</div>
-                                            <div
-                                                    class="apply-table-cell post-title"
-                                            >
-                                                <a href=""
-                                                >영상 작품 테스트 제목입니다.</a
-                                                >
-                                            </div>
-                                            <div class="apply-table-cell detail">
-                                                <svg
-                                                        clip-rule="evenodd"
-                                                        fill-rule="evenodd"
-                                                        stroke-linejoin="round"
-                                                        stroke-miterlimit="2"
-                                                        viewBox="0 0 24 24"
-                                                        xmlns="http://www.w3.org/2000/svg"
-                                                >
-                                                    <path
-                                                            d="m6 18h-3c-.48 0-1-.379-1-1v-14c0-.481.38-1 1-1h14c.621 0 1 .522 1 1v3h3c.621 0 1 .522 1 1v14c0 .621-.522 1-1 1h-14c-.48 0-1-.379-1-1zm1.5-10.5v13h13v-13zm5.75 5.75h-2.5c-.414 0-.75.336-.75.75s.336.75.75.75h2.5v2.5c0 .414.336.75.75.75s.75-.336.75-.75v-2.5h2.5c.414 0 .75-.336.75-.75s-.336-.75-.75-.75h-2.5v-2.5c0-.414-.336-.75-.75-.75s-.75.336-.75.75zm3.25-7.25v-2.5h-13v13h2.5v-9.5c0-.481.38-1 1-1z"
-                                                            fill-rule="nonzero"
-                                                    />
-                                                </svg></span> <span>작품 리뷰 테스트입니다. 내용이
-                                                        길어지면 생략되도록 하였으며~~~~</span>
-                                            </div>
-
-                                            <div class="apply-table-cell">
-                                                홍길동
-                                            </div>
-                                            <div class="apply-table-cell">
-                                                2024-10-24
-                                            </div>
-                                            <div class="apply-table-cell">
-                                                <button
-                                                        class="status no-issue"
-                                                >
-                                                    이상 없음
-                                                </button>
-                                            </div>
-                                            <div class="apply-table-cell">
-                                                <button class="reasons-report-btn">
-                                                    보기
-                                                </button>
-                                            </div>
+                                        <div id="video-reply-report-list">
+                                            <!-- js로 삽입-->
                                         </div>
                                     </div>
                                 </div>
                                 <nav class="pagination">
-                                    <ul class="pagination-list">
-                                        <!-- 처음 페이지로 이동하는 버튼 -->
-                                        <li class="pagination-first">
-                                            <a
-                                                    href="#"
-                                                    class="pagination-first-link"
-                                                    rel="nofollow"
-                                            >
-                                                        <span
-                                                                class="pagination-first-icon"
-                                                                aria-hidden="true"
-                                                        >«</span
-                                                        >
-                                            </a>
-                                        </li>
-                                        <!-- 이전 페이지로 이동하는 버튼 -->
-                                        <li class="pagination-prev">
-                                            <a
-                                                    href="#"
-                                                    class="pagination-prev-link"
-                                                    rel="prev nofollow"
-                                            >
-                                                        <span
-                                                                class="pagination-prev-icon"
-                                                                aria-hidden="true"
-                                                        >‹</span
-                                                        >
-                                            </a>
-                                        </li>
-                                        <!-- 페이지 번호 버튼 -->
-                                        <li class="pagination-page active">
-                                            <a href="#" class="pagination-page-link"
-                                            >1</a
-                                            >
-                                        </li>
-
-                                        <!-- 다음 페이지로 이동하는 버튼 -->
-                                        <li class="pagination-next">
-                                            <a
-                                                    href="#"
-                                                    class="pagination-next-link"
-                                                    rel="next nofollow"
-                                            >
-                                                        <span
-                                                                class="pagination-next-icon"
-                                                                aria-hidden="true"
-                                                        >›</span
-                                                        >
-                                            </a>
-                                        </li>
-                                        <!-- 마지막 페이지로 이동하는 버튼 -->
-                                        <li class="pagination-last">
-                                            <a
-                                                    href="#"
-                                                    class="pagination-last-link"
-                                                    rel="nofollow"
-                                            >
-                                                        <span
-                                                                class="pagination-last-icon"
-                                                                aria-hidden="true"
-                                                        >»</span
-                                                        >
-                                            </a>
-                                        </li>
+                                    <ul class="pagination-list" id="pagination-video-reply-report">
+                                        <!--  js로 삽입-->
                                     </ul>
                                 </nav>
                             </div>
                             <!-- 신고관리 모달창 -->
-                            <div class="report-management-modal video">
+                            <div class="report-management-modal video-reply" id="video-reply-report-modal">
                                 <div class="background-overlay"></div>
                                 <div class="modal-content">
                                     <div class="choice-container">
                                         <input
                                                 class="btn-delete-processing"
                                                 type="button"
-                                                value="삭제 처리"
+                                                value="DELETE"
+                                                data-status="DELETE"
                                         />
                                         <input
                                                 class="btn-hold"
                                                 type="button"
-                                                value="보류"
+                                                value="HOLD"
+                                                data-status="HOLD"
                                         />
                                         <input
                                                 class="btn-no-issue"
                                                 type="button"
-                                                value="이상 없음"
+                                                value="NOPROBLEM"
+                                                data-status="NOPROBLEM"
                                         />
                                     </div>
                                     <div class="button-container">
@@ -3523,7 +3219,7 @@
                                 </div>
                             </div>
                             <!-- 신고내역 모달창 -->
-                            <div class="reasons-report-modal video">
+                            <div class="reasons-report-modal video-reply" id="video-reply-report-modal-content">
                                 <div class="modal-content">
                                     <div class="reasons-report-header">
                                         <div class="header-title-wrapper">
@@ -3549,7 +3245,7 @@
                                                     >
                                                         <strong>이름 :</strong>
                                                         <span class="name">
-                                                                    정지수
+                                                            신고자이름
                                                                 </span>
                                                     </p>
                                                     <p
@@ -3557,7 +3253,7 @@
                                                     >
                                                         <strong>이메일 : </strong>
                                                         <span class="email"
-                                                        >000jisoo@naver.com</span
+                                                        >신고자 이메일</span
                                                         >
                                                     </p>
                                                     <p
@@ -3567,7 +3263,7 @@
                                                         >신고 시간 :
                                                         </strong>
                                                         <span class="time"
-                                                        >2024-10-19 15:00</span
+                                                        >신고한시간</span
                                                         >
                                                     </p>
                                                 </div>
@@ -3583,7 +3279,7 @@
                                                         rows="4"
                                                         cols="50"
                                                         readonly
-                                                >작품 결제를 했는데, 작품 영상 링크를 아직까지 안 보냈습니다. 메일로 연락해도 답이 없습니다.....ㅠㅠ</textarea
+                                                >신고내용</textarea
                                                 >
                                             </div>
                                         </form>
@@ -3591,27 +3287,25 @@
                                 </div>
                                 <div class="background-overlay"></div>
                             </div>
-                            <!-- 리뷰 상세 모달창 -->
-                            <div class="review-detail-modal video">
+                            <!-- 리뷰 상세 모달창 리뷰내용 누르면 나오는 모달창-->
+                            <div class="review-detail-modal video" id="reply-detail-modal">
                                 <div class="modal-content">
                                     <div class="review-detail-contents">
                                         <form>
                                             <div>
-                                                <div class="content-detail">
-                                                    리뷰 내용
-                                                </div>
+                                                <div class="content-detail">댓글 내용</div>
                                                 <textarea
                                                         name="reason"
                                                         rows="4"
                                                         cols="50"
                                                         readonly
-                                                >작품 리뷰 테스트입니다. 리뷰 내용 클릭하면 모달창으로 자세한 상세내용을 보여줍니다~</textarea
-                                                >
+                                                        id="reply-content-textarea"
+                                                ></textarea>
                                             </div>
                                         </form>
                                     </div>
                                 </div>
-                                <div class="background-overlay"></div>
+                                <div class="background-overlay" id="modal-reply-overlay"></div>
                             </div>
                         </div>
                         <!-- 여기까지 !!영상!! -->
@@ -3623,12 +3317,12 @@
                                 <div class="common-layout-container">
                                     <div class="filter-wrap">
                                         <div class="sort-filter-options">
-                                                    <span class="sort-filter-option"
+                                                    <span class="sort-filter-option selected"
                                                     >작성일 순</span
                                                     >
                                             <!-- 신고관리 defalt  -->
                                             <span
-                                                    class="sort-filter-option selected"
+                                                    class="sort-filter-option"
                                             >신고관리</span
                                             >
                                         </div>
@@ -3670,7 +3364,7 @@
                                             <div
                                                     class="apply-table-cell apply-header-cell"
                                             >
-                                                리뷰 내용
+                                                댓글 내용
                                             </div>
 
                                             <div
@@ -3712,232 +3406,20 @@
                                                 >
                                             </div>
                                             <div class="apply-table-cell detail">
-                                                <svg
-                                                        clip-rule="evenodd"
-                                                        fill-rule="evenodd"
-                                                        stroke-linejoin="round"
-                                                        stroke-miterlimit="2"
-                                                        viewBox="0 0 24 24"
-                                                        xmlns="http://www.w3.org/2000/svg"
-                                                >
-                                                    <path
-                                                            d="m6 18h-3c-.48 0-1-.379-1-1v-14c0-.481.38-1 1-1h14c.621 0 1 .522 1 1v3h3c.621 0 1 .522 1 1v14c0 .621-.522 1-1 1h-14c-.48 0-1-.379-1-1zm1.5-10.5v13h13v-13zm5.75 5.75h-2.5c-.414 0-.75.336-.75.75s.336.75.75.75h2.5v2.5c0 .414.336.75.75.75s.75-.336.75-.75v-2.5h2.5c.414 0 .75-.336.75-.75s-.336-.75-.75-.75h-2.5v-2.5c0-.414-.336-.75-.75-.75s-.75.336-.75.75zm3.25-7.25v-2.5h-13v13h2.5v-9.5c0-.481.38-1 1-1z"
-                                                            fill-rule="nonzero"
-                                                    />
-                                                </svg></span> <span>작품 리뷰 테스트입니다. 내용이
-                                                        길어지면 생략되도록 하였으며~~~~</span>
+                                                <span>작품 리뷰 테스트입니다.</span>
                                             </div>
 
                                             <div class="apply-table-cell">
                                                 홍길동
                                             </div>
                                             <div class="apply-table-cell">
-                                                2024-10-24
+                                                2024-11-04 18:05:17
                                             </div>
                                             <div class="apply-table-cell">
                                                 <button
                                                         class="report-management-btn status hold"
                                                 >
                                                     보류
-                                                </button>
-                                            </div>
-                                            <div class="apply-table-cell">
-                                                <button class="reasons-report-btn">
-                                                    보기
-                                                </button>
-                                            </div>
-                                        </div>
-                                        <div class="apply-table-row">
-                                            <div class="apply-table-cell">
-                                                <input
-                                                        type="checkbox"
-                                                        class="apply-checkbox"
-                                                />
-                                            </div>
-                                            <div class="apply-table-cell">2</div>
-                                            <div
-                                                    class="apply-table-cell post-title"
-                                            >
-                                                <a href=""
-                                                >글 작품 테스트 제목입니다.</a
-                                                >
-                                            </div>
-                                            <div class="apply-table-cell detail">
-                                                <svg
-                                                        clip-rule="evenodd"
-                                                        fill-rule="evenodd"
-                                                        stroke-linejoin="round"
-                                                        stroke-miterlimit="2"
-                                                        viewBox="0 0 24 24"
-                                                        xmlns="http://www.w3.org/2000/svg"
-                                                >
-                                                    <path
-                                                            d="m6 18h-3c-.48 0-1-.379-1-1v-14c0-.481.38-1 1-1h14c.621 0 1 .522 1 1v3h3c.621 0 1 .522 1 1v14c0 .621-.522 1-1 1h-14c-.48 0-1-.379-1-1zm1.5-10.5v13h13v-13zm5.75 5.75h-2.5c-.414 0-.75.336-.75.75s.336.75.75.75h2.5v2.5c0 .414.336.75.75.75s.75-.336.75-.75v-2.5h2.5c.414 0 .75-.336.75-.75s-.336-.75-.75-.75h-2.5v-2.5c0-.414-.336-.75-.75-.75s-.75.336-.75.75zm3.25-7.25v-2.5h-13v13h2.5v-9.5c0-.481.38-1 1-1z"
-                                                            fill-rule="nonzero"
-                                                    />
-                                                </svg></span> <span>작품 리뷰 테스트입니다. 내용이
-                                                        길어지면 생략되도록 하였으며~~~~</span>
-                                            </div>
-
-                                            <div class="apply-table-cell">
-                                                홍길동
-                                            </div>
-                                            <div class="apply-table-cell">
-                                                2024-10-24
-                                            </div>
-                                            <div class="apply-table-cell">-</div>
-                                            <div class="apply-table-cell">
-                                                <button class="reasons-report-btn">
-                                                    보기
-                                                </button>
-                                            </div>
-                                        </div>
-                                        <div class="apply-table-row">
-                                            <div class="apply-table-cell">
-                                                <input
-                                                        type="checkbox"
-                                                        class="apply-checkbox"
-                                                />
-                                            </div>
-                                            <div class="apply-table-cell">3</div>
-                                            <div
-                                                    class="apply-table-cell post-title"
-                                            >
-                                                <a href=""
-                                                >글 작품 테스트 제목입니다.</a
-                                                >
-                                            </div>
-                                            <div class="apply-table-cell detail">
-                                                <svg
-                                                        clip-rule="evenodd"
-                                                        fill-rule="evenodd"
-                                                        stroke-linejoin="round"
-                                                        stroke-miterlimit="2"
-                                                        viewBox="0 0 24 24"
-                                                        xmlns="http://www.w3.org/2000/svg"
-                                                >
-                                                    <path
-                                                            d="m6 18h-3c-.48 0-1-.379-1-1v-14c0-.481.38-1 1-1h14c.621 0 1 .522 1 1v3h3c.621 0 1 .522 1 1v14c0 .621-.522 1-1 1h-14c-.48 0-1-.379-1-1zm1.5-10.5v13h13v-13zm5.75 5.75h-2.5c-.414 0-.75.336-.75.75s.336.75.75.75h2.5v2.5c0 .414.336.75.75.75s.75-.336.75-.75v-2.5h2.5c.414 0 .75-.336.75-.75s-.336-.75-.75-.75h-2.5v-2.5c0-.414-.336-.75-.75-.75s-.75.336-.75.75zm3.25-7.25v-2.5h-13v13h2.5v-9.5c0-.481.38-1 1-1z"
-                                                            fill-rule="nonzero"
-                                                    />
-                                                </svg></span> <span>작품 리뷰 테스트입니다. 내용이
-                                                        길어지면 생략되도록 하였으며~~~~</span>
-                                            </div>
-
-                                            <div class="apply-table-cell">
-                                                홍길동
-                                            </div>
-                                            <div class="apply-table-cell">
-                                                2024-10-24
-                                            </div>
-                                            <div class="apply-table-cell">
-                                                <button
-                                                        class="report-management-btn status report"
-                                                >
-                                                    신고
-                                                </button>
-                                            </div>
-                                            <div class="apply-table-cell edit">
-                                                <button class="reasons-report-btn">
-                                                    보기
-                                                </button>
-                                            </div>
-                                        </div>
-                                        <div class="apply-table-row">
-                                            <div class="apply-table-cell">
-                                                <input
-                                                        type="checkbox"
-                                                        class="apply-checkbox"
-                                                />
-                                            </div>
-                                            <div class="apply-table-cell">4</div>
-                                            <div
-                                                    class="apply-table-cell post-title"
-                                            >
-                                                <a href=""
-                                                >글 작품 테스트 제목입니다.</a
-                                                >
-                                            </div>
-                                            <div class="apply-table-cell detail">
-                                                <svg
-                                                        clip-rule="evenodd"
-                                                        fill-rule="evenodd"
-                                                        stroke-linejoin="round"
-                                                        stroke-miterlimit="2"
-                                                        viewBox="0 0 24 24"
-                                                        xmlns="http://www.w3.org/2000/svg"
-                                                >
-                                                    <path
-                                                            d="m6 18h-3c-.48 0-1-.379-1-1v-14c0-.481.38-1 1-1h14c.621 0 1 .522 1 1v3h3c.621 0 1 .522 1 1v14c0 .621-.522 1-1 1h-14c-.48 0-1-.379-1-1zm1.5-10.5v13h13v-13zm5.75 5.75h-2.5c-.414 0-.75.336-.75.75s.336.75.75.75h2.5v2.5c0 .414.336.75.75.75s.75-.336.75-.75v-2.5h2.5c.414 0 .75-.336.75-.75s-.336-.75-.75-.75h-2.5v-2.5c0-.414-.336-.75-.75-.75s-.75.336-.75.75zm3.25-7.25v-2.5h-13v13h2.5v-9.5c0-.481.38-1 1-1z"
-                                                            fill-rule="nonzero"
-                                                    />
-                                                </svg><span>
-                                                            작품 리뷰 테스트입니다. 내용이
-                                                        길어지면 생략되도록 하였으며~~~~</span>
-                                            </div>
-
-                                            <div class="apply-table-cell">
-                                                홍길동
-                                            </div>
-                                            <div class="apply-table-cell">
-                                                2024-10-24
-                                            </div>
-                                            <div class="apply-table-cell">
-                                                <button
-                                                        class="status delete-processing"
-                                                >
-                                                    삭제 처리
-                                                </button>
-                                            </div>
-                                            <div class="apply-table-cell edit">
-                                                <button class="reasons-report-btn">
-                                                    보기
-                                                </button>
-                                            </div>
-                                        </div>
-                                        <div class="apply-table-row">
-                                            <div class="apply-table-cell">
-                                                <input
-                                                        type="checkbox"
-                                                        class="apply-checkbox"
-                                                />
-                                            </div>
-                                            <div class="apply-table-cell">5</div>
-                                            <div
-                                                    class="apply-table-cell post-title"
-                                            >
-                                                <a href=""
-                                                >글 작품 테스트 제목입니다.</a
-                                                >
-                                            </div>
-                                            <div class="apply-table-cell detail">
-                                                <svg
-                                                        clip-rule="evenodd"
-                                                        fill-rule="evenodd"
-                                                        stroke-linejoin="round"
-                                                        stroke-miterlimit="2"
-                                                        viewBox="0 0 24 24"
-                                                        xmlns="http://www.w3.org/2000/svg"
-                                                >
-                                                    <path
-                                                            d="m6 18h-3c-.48 0-1-.379-1-1v-14c0-.481.38-1 1-1h14c.621 0 1 .522 1 1v3h3c.621 0 1 .522 1 1v14c0 .621-.522 1-1 1h-14c-.48 0-1-.379-1-1zm1.5-10.5v13h13v-13zm5.75 5.75h-2.5c-.414 0-.75.336-.75.75s.336.75.75.75h2.5v2.5c0 .414.336.75.75.75s.75-.336.75-.75v-2.5h2.5c.414 0 .75-.336.75-.75s-.336-.75-.75-.75h-2.5v-2.5c0-.414-.336-.75-.75-.75s-.75.336-.75.75zm3.25-7.25v-2.5h-13v13h2.5v-9.5c0-.481.38-1 1-1z"
-                                                            fill-rule="nonzero"
-                                                    />
-                                                </svg></span> <span>작품 리뷰 테스트입니다. 내용이
-                                                        길어지면 생략되도록 하였으며~~~~</span>
-                                            </div>
-
-                                            <div class="apply-table-cell">
-                                                홍길동
-                                            </div>
-                                            <div class="apply-table-cell">
-                                                2024-10-24
-                                            </div>
-                                            <div class="apply-table-cell">
-                                                <button
-                                                        class="status no-issue"
-                                                >
-                                                    이상 없음
                                                 </button>
                                             </div>
                                             <div class="apply-table-cell">
@@ -4325,17 +3807,7 @@
                                                     >최신순</span
                                                     >
                                             <span class="sort-filter-option"
-                                            >결제 완료</span
-                                            >
-                                            <span class="sort-filter-option selected"
-                                            >환불 요청</span
-                                            >
-                                            <span class="sort-filter-option"
-                                            >환불 완료</span
-                                            >
-                                            <span class="sort-filter-option"
-                                            >환불 불가</span
-                                            >
+                                            >결제 완료</span>
                                         </div>
                                         <!-- Action Buttons -->
                                         <div class="action-buttons">
@@ -4344,7 +3816,7 @@
                                                     class="filter-search-input"
                                                     placeholder="통합검색"
                                             />
-                                            <button class="selected-btn">
+                                            <button class="selected-btn" style="display: none">
                                                 환불 요청
                                             </button>
                                             <button class="selected-btn">
@@ -4405,17 +3877,6 @@
                                             >
                                                 결제 상태
                                             </div>
-
-                                            <div
-                                                    class="apply-table-cell apply-header-cell"
-                                            >
-                                                환불 관리
-                                            </div>
-                                            <div
-                                                    class="apply-table-cell apply-header-cell"
-                                            >
-                                                환불 완료일
-                                            </div>
                                         </div>
 
                                         <!-- Example row (Initial data) -->
@@ -4448,16 +3909,6 @@
                                             >
                                                 결제 완료
                                             </div>
-                                            <div class="apply-table-cell">
-                                                <button
-                                                        class="edit-btn status refund-request"
-                                                >
-                                                    환불 요청
-                                                </button>
-                                            </div>
-                                            <div class="apply-table-cell">
-                                                -
-                                            </div>
                                         </div>
                                         <div class="apply-table-row">
                                             <div class="apply-table-cell">
@@ -4487,11 +3938,6 @@
                                                     class="apply-table-cell payment-complete"
                                             >
                                                 결제 완료
-                                            </div>
-                                            <div class="apply-table-cell">-
-                                            </div>
-                                            <div class="apply-table-cell">
-                                                -
                                             </div>
                                         </div>
                                         <div class="apply-table-row">
@@ -4523,16 +3969,6 @@
                                             >
                                                 결제 완료
                                             </div>
-                                            <div class="apply-table-cell">
-                                                <button
-                                                        class="status refund-completed"
-                                                >
-                                                    환불 완료
-                                                </button>
-                                            </div>
-                                            <div class="apply-table-cell">
-                                                2024-02-02
-                                            </div>
                                         </div>
                                         <div class="apply-table-row">
                                             <div class="apply-table-cell">
@@ -4563,16 +3999,6 @@
                                             >
                                                 결제 완료
                                             </div>
-                                            <div class="apply-table-cell">
-                                                <button
-                                                        class="status refund-cancelled"
-                                                >
-                                                    환불 불가
-                                                </button>
-                                            </div>
-                                            <div class="apply-table-cell">
-                                                -
-                                            </div>
                                         </div>
                                         <div class="apply-table-row">
                                             <div class="apply-table-cell">
@@ -4602,32 +4028,12 @@
                                                     class="apply-table-cell payment-complete"
                                             >
                                                 결제 완료
-                                            </div>
-                                            <div class="apply-table-cell">
-                                                -
-                                            </div>
-                                            <div class="apply-table-cell">
-                                                -
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <nav class="pagination">
                                     <ul class="pagination-list">
-                                        <!-- 처음 페이지로 이동하는 버튼 -->
-                                        <li class="pagination-first">
-                                            <a
-                                                    href="#"
-                                                    class="pagination-first-link"
-                                                    rel="nofollow"
-                                            >
-                                                        <span
-                                                                class="pagination-first-icon"
-                                                                aria-hidden="true"
-                                                        >«</span
-                                                        >
-                                            </a>
-                                        </li>
                                         <!-- 이전 페이지로 이동하는 버튼 -->
                                         <li class="pagination-prev">
                                             <a
@@ -4660,20 +4066,6 @@
                                                                 class="pagination-next-icon"
                                                                 aria-hidden="true"
                                                         >›</span
-                                                        >
-                                            </a>
-                                        </li>
-                                        <!-- 마지막 페이지로 이동하는 버튼 -->
-                                        <li class="pagination-last">
-                                            <a
-                                                    href="#"
-                                                    class="pagination-last-link"
-                                                    rel="nofollow"
-                                            >
-                                                        <span
-                                                                class="pagination-last-icon"
-                                                                aria-hidden="true"
-                                                        >»</span
                                                         >
                                             </a>
                                         </li>
