@@ -28,5 +28,24 @@ public interface ReplyReportMapper {
             @Param("replyId") Long replyId,
             @Param("reportStatus") String reportStatus
     );
+
+    // 글 댓글 신고 목록
+    List<ReplyReportDTO> selectTextReplyReports(
+            @Param("search") String search,
+            @Param("order") String order,
+            @Param("pagination") AdminPagination pagination
+    );
+
+    // 총 글 댓글 신고 목록 카운트
+    int countTextReplyReports(
+            @Param("search") String search,
+            @Param("order") String order
+    );
+
+    // 글 댓글 신고 상태 업데이트
+    void textReplyStatusChange(
+            @Param("replyId") Long replyId,
+            @Param("reportStatus") String reportStatus
+    );
 }
 

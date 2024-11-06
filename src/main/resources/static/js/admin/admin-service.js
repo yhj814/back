@@ -379,5 +379,44 @@ async function fetchUpdateVideoReplyReportStatus(replyId, reportStatus) {
     }
 }
 
+//--------------------------------------------------------------------------------------------------
+// 글 댓글 신고 관리
+
+// 글 신고 댓글 목록 가져오기
+async function fetchTextReplyReports(page = 1, search = '', order = 'replyCreatedDate') {
+    const searchParam = encodeURIComponent(search);
+    const orderParam = encodeURIComponent(order);
+
+    console.log(`Fetching with order: ${orderParam}`); // 확인용 로그
+
+    try {
+        const response = await fetch(`/admin/textReplyReports?page=${page}&search=${searchParam}&order=${orderParam}`);
+        if (!response.ok) throw new Error("서버 응답 오류");
+
+        const { reports, pagination } = await response.json();
+        return { reports, pagination };
+    } catch (error) {
+        console.error("글 댓글 신고 데이터를 가져오는 중 오류 발생:", error);
+        return { reports: [], pagination: null };
+    }
+}
+
+// 글 신고 댓글 상태 업데이트 요청 함수
+async function fetchUpdateTextReplyReportStatus(replyId, reportStatus) {
+    try {
+        const response = await fetch(`/admin/textReplyReports/status`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ replyId, reportStatus }),
+        });
+        if (!response.ok) throw new Error("댓글 신고 상태 업데이트 실패");
+
+        console.log("댓글 신고 상태가 성공적으로 업데이트되었습니다.");
+        return true;
+    } catch (error) {
+        console.error("댓글 신고 상태 업데이트 중 오류 발생:", error);
+        return false;
+    }
+}
 
 

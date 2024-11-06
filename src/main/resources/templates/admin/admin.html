@@ -3288,7 +3288,7 @@
                                 <div class="background-overlay"></div>
                             </div>
                             <!-- 리뷰 상세 모달창 리뷰내용 누르면 나오는 모달창-->
-                            <div class="review-detail-modal video" id="reply-detail-modal">
+                            <div class="review-detail-modal video" id="reply-video-detail-modal">
                                 <div class="modal-content">
                                     <div class="review-detail-contents">
                                         <form>
@@ -3299,30 +3299,32 @@
                                                         rows="4"
                                                         cols="50"
                                                         readonly
-                                                        id="reply-content-textarea"
+                                                        id="reply-video-content-textarea"
                                                 ></textarea>
                                             </div>
                                         </form>
                                     </div>
                                 </div>
-                                <div class="background-overlay" id="modal-reply-overlay"></div>
+                                <div class="background-overlay" id="modal-video-reply-overlay"></div>
                             </div>
                         </div>
                         <!-- 여기까지 !!영상!! -->
 
                         <!-- 2. 글 -->
                         <div>
-                            <div class="text-wrapper">
+                            <div class="text-wrapper" id="text-reply-report">
                                 <!-- body_layout -->
                                 <div class="common-layout-container">
                                     <div class="filter-wrap">
-                                        <div class="sort-filter-options">
-                                                    <span class="sort-filter-option selected"
+                                        <div class="sort-filter-options" id="text-reply-report-filter"
+                                             data-order="replyCreatedDate">
+                                                    <span class="sort-filter-option selected text-reply"
                                                     >작성일 순</span
                                                     >
                                             <!-- 신고관리 defalt  -->
                                             <span
-                                                    class="sort-filter-option"
+                                                    class="sort-filter-option text-reply"
+                                                    data-order="reportStatus"
                                             >신고관리</span
                                             >
                                         </div>
@@ -3332,8 +3334,9 @@
                                                     type="text"
                                                     class="filter-search-input"
                                                     placeholder="통합검색"
+                                                    id="text-reply-report-search"
                                             />
-                                            <button class="selected-btn">
+                                            <button class="selected-btn" style="display: none">
                                                 리뷰 삭제
                                             </button>
                                         </div>
@@ -3345,6 +3348,7 @@
                                         >
                                             <div
                                                     class="apply-table-cell apply-header-cell select-all-cell"
+                                                    id="text-reply-report-selectAll"
                                             >
                                                 <input
                                                         type="checkbox"
@@ -3388,107 +3392,39 @@
                                                 신고내역
                                             </div>
                                         </div>
-
-                                        <!-- Example row (Initial data) -->
-                                        <div class="apply-table-row">
-                                            <div class="apply-table-cell">
-                                                <input
-                                                        type="checkbox"
-                                                        class="apply-checkbox"
-                                                />
-                                            </div>
-                                            <div class="apply-table-cell">1</div>
-                                            <div
-                                                    class="apply-table-cell post-title"
-                                            >
-                                                <a href=""
-                                                >글 작품 테스트 제목입니다.</a
-                                                >
-                                            </div>
-                                            <div class="apply-table-cell detail">
-                                                <span>작품 리뷰 테스트입니다.</span>
-                                            </div>
-
-                                            <div class="apply-table-cell">
-                                                홍길동
-                                            </div>
-                                            <div class="apply-table-cell">
-                                                2024-11-04 18:05:17
-                                            </div>
-                                            <div class="apply-table-cell">
-                                                <button
-                                                        class="report-management-btn status hold"
-                                                >
-                                                    보류
-                                                </button>
-                                            </div>
-                                            <div class="apply-table-cell">
-                                                <button class="reasons-report-btn">
-                                                    보기
-                                                </button>
-                                            </div>
+                                        <div id="text-reply-report-list">
+                                            <!-- js로 삽입-->
                                         </div>
                                     </div>
                                 </div>
                                 <nav class="pagination">
-                                    <ul class="pagination-list">
-                                        <!-- 이전 페이지로 이동하는 버튼 -->
-                                        <li class="pagination-prev">
-                                            <a
-                                                    href="#"
-                                                    class="pagination-prev-link"
-                                                    rel="prev nofollow"
-                                            >
-                                                        <span
-                                                                class="pagination-prev-icon"
-                                                                aria-hidden="true"
-                                                        >‹</span
-                                                        >
-                                            </a>
-                                        </li>
-                                        <!-- 페이지 번호 버튼 -->
-                                        <li class="pagination-page active">
-                                            <a href="#" class="pagination-page-link"
-                                            >1</a
-                                            >
-                                        </li>
-
-                                        <!-- 다음 페이지로 이동하는 버튼 -->
-                                        <li class="pagination-next">
-                                            <a
-                                                    href="#"
-                                                    class="pagination-next-link"
-                                                    rel="next nofollow"
-                                            >
-                                                        <span
-                                                                class="pagination-next-icon"
-                                                                aria-hidden="true"
-                                                        >›</span
-                                                        >
-                                            </a>
-                                        </li>
+                                    <ul class="pagination-list" id="pagination-text-reply-report">
+                                        <!--  js로 삽입-->
                                     </ul>
                                 </nav>
                             </div>
                             <!-- 신고관리 모달창 -->
-                            <div class="report-management-modal text">
+                            <div class="report-management-modal video-reply" id="text-reply-report-modal">
                                 <div class="background-overlay"></div>
                                 <div class="modal-content">
                                     <div class="choice-container">
                                         <input
                                                 class="btn-delete-processing"
                                                 type="button"
-                                                value="삭제 처리"
+                                                value="DELETE"
+                                                data-status="DELETE"
                                         />
                                         <input
                                                 class="btn-hold"
                                                 type="button"
-                                                value="보류"
+                                                value="HOLD"
+                                                data-status="HOLD"
                                         />
                                         <input
                                                 class="btn-no-issue"
                                                 type="button"
-                                                value="이상 없음"
+                                                value="NOPROBLEM"
+                                                data-status="NOPROBLEM"
                                         />
                                     </div>
                                     <div class="button-container">
@@ -3497,7 +3433,7 @@
                                 </div>
                             </div>
                             <!-- 신고내역 모달창 -->
-                            <div class="reasons-report-modal text">
+                            <div class="reasons-report-modal text-reply" id="text-reply-report-modal-content">
                                 <div class="modal-content">
                                     <div class="reasons-report-header">
                                         <div class="header-title-wrapper">
@@ -3523,7 +3459,7 @@
                                                     >
                                                         <strong>이름 :</strong>
                                                         <span class="name">
-                                                                    정지수
+                                                                    신고자이름
                                                                 </span>
                                                     </p>
                                                     <p
@@ -3531,7 +3467,7 @@
                                                     >
                                                         <strong>이메일 : </strong>
                                                         <span class="email"
-                                                        >000jisoo@naver.com</span
+                                                        >신고자 이메일</span
                                                         >
                                                     </p>
                                                     <p
@@ -3541,7 +3477,7 @@
                                                         >신고 시간 :
                                                         </strong>
                                                         <span class="time"
-                                                        >2024-10-19 15:00</span
+                                                        >신고한시간</span
                                                         >
                                                     </p>
                                                 </div>
@@ -3557,7 +3493,7 @@
                                                         rows="4"
                                                         cols="50"
                                                         readonly
-                                                >작품 결제를 했는데, 작품 영상 링크를 아직까지 안 보냈습니다. 메일로 연락해도 답이 없습니다.....ㅠㅠ</textarea
+                                                >신고내용</textarea
                                                 >
                                             </div>
                                         </form>
@@ -3565,27 +3501,27 @@
                                 </div>
                                 <div class="background-overlay"></div>
                             </div>
-                            <!-- 리뷰 상세 모달창 -->
-                            <div class="review-detail-modal text">
+                            <!-- 리뷰 상세 모달창 리뷰내용 누르면 나오는 모달창 -->
+                            <div class="review-detail-modal text" id="reply-text-detail-modal">
                                 <div class="modal-content">
                                     <div class="review-detail-contents">
                                         <form>
                                             <div>
                                                 <div class="content-detail">
-                                                    리뷰 내용
+                                                    댓글 내용
                                                 </div>
                                                 <textarea
                                                         name="reason"
                                                         rows="4"
                                                         cols="50"
                                                         readonly
-                                                >작품 리뷰 테스트입니다. 리뷰 내용 클릭하면 모달창으로 자세한 상세내용을 보여줍니다~</textarea
-                                                >
+                                                        id="reply-text-content-textarea"
+                                                ></textarea>
                                             </div>
                                         </form>
                                     </div>
                                 </div>
-                                <div class="background-overlay"></div>
+                                <div class="background-overlay" id="modal-text-reply-overlay"></div>
                             </div>
                         </div>
                         <!-- 여기까지 !!영상!! -->

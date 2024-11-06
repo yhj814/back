@@ -28,4 +28,19 @@ public class ReplyReportDAO {
         replyReportMapper.videoReplyStatusChange(replyId, reportStatus);
     }
 
+//    글 댓글 신고 목록
+    public List<ReplyReportDTO> getTextReplyReports(String search, String order, AdminPagination pagination) {
+        return replyReportMapper.selectTextReplyReports(search, order, pagination);
+    }
+
+//    글 댓글 신고 목록 전체조회
+    public int getTextReplyReportsCount(String search, String order) {
+        return replyReportMapper.countTextReplyReports(search,order);
+    }
+
+//    글 댓글 신고 상태 업데이트
+    public void updateTextReplyReportStatus(Long replyId, String reportStatus) {
+        replyReportMapper.textReplyStatusChange(replyId, reportStatus);
+    }
+
 }

@@ -89,5 +89,94 @@
         set report_status = #{reportStatus}
         where reply_id = #{replyId}
     </update>
+
+    <!-- 글 댓글 신고 목록 -->
+    <select id="selectTextReplyReports" resultType="ReplyReportDTO">
+        select
+        r.id as replyId,                         <!-- 댓글 ID -->
+        p.post_title as postTitle,               <!-- 게시글 제목 -->
+        p.post_type as postType,                 <!-- 게시글 종류 -->
+        r.reply_content as replyContent,         <!-- 댓글 내용 -->
+        mp.profile_name as profileName,          <!-- 댓글 단 사람 이름 -->
+        r.created_date as replyCreatedDate,      <!-- 댓글 작성일 -->
+        rr.report_status as reportStatus,        <!-- 신고 상태 -->
+        mpr.profile_name as reportProfileName,   <!-- 신고한 사람 이름 -->
+        mpr.profile_email as reportProfileEmail, <!-- 신고한 사람 이메일 -->
+        rr.created_date as reportCreatedDate,    <!-- 신고 작성일 -->
+        rr.report_contents as reportContents     <!-- 신고 내용 -->
+        from tbl_reply_report rr
+        join tbl_reply r on rr.reply_id = r.id
+        join tbl_work w on r.work_id = w.id
+        join tbl_post p on w.id = p.id
+        join tbl_member_profile mp on r.member_profile_id = mp.id
+        join tbl_member_profile mpr on rr.member_profile_id = mpr.id
+        where p.post_type = 'TEXT'
+
+        <!-- 신고 관리 조건: reportStatus가 'REPORT'-->
+        <if test="order == 'reportStatus'">
+            and rr.report_status = 'REPORT'
+        </if>
+
+        <!-- 검색 조건: 제목, 댓글 내용, 댓글 작성자  -->
+        <if test="search != null and search != ''">
+            and (
+            p.post_title like concat('%', #{search}, '%')
+            or r.reply_content like concat('%', #{search}, '%')
+            or mp.profile_name like concat('%', #{search}, '%')
+            )
+        </if>
+
+        group by
+        r.id, p.post_title, p.post_type, r.reply_content, mp.profile_name, r.created_date, rr.report_status,
+        mpr.profile_name, mpr.profile_email, rr.created_date, rr.report_contents
+
+        <!-- 작성일 순 또는 신고 상태 순 정렬 -->
+        <choose>
+            <when test="order == 'replyCreatedDate'">
+                order by r.created_date desc
+            </when>
+            <when test="order == 'reportStatus'">
+                order by r.created_date desc  <!-- '신고관리'일 때도 작성일 순으로 정렬 -->
+            </when>
+            <otherwise>
+                order by r.created_date desc  <!-- 기본 정렬 -->
+            </otherwise>
+        </choose>
+
+        limit #{pagination.startRow}, #{pagination.rowCount}
+    </select>
+
+    <!-- 전체 글 댓글 신고 목록 카운트-->
+    <select id="countTextReplyReports" resultType="int">
+        select COUNT(*)
+        from tbl_reply_report rr
+        join tbl_reply r on rr.reply_id = r.id
+        join tbl_work w on r.work_id = w.id
+        join tbl_post p on w.id = p.id
+        join tbl_member_profile mp on r.member_profile_id = mp.id
+        where p.post_type = 'TEXT'
+
+        <!-- 신고 관리 조건: reportStatus가 'REPORT'-->
+        <if test="order == 'reportStatus'">
+            and rr.report_status = 'REPORT'
+        </if>
+
+        <!-- 검색 조건: 글 제목, 댓글 내용, 댓글 작성자 -->
+        <if test="search != null and search != ''">
+            and (
+            p.post_title like concat('%', #{search}, '%')
+            or r.reply_content like concat('%', #{search}, '%')
+            or mp.profile_name like concat('%', #{search}, '%')
+            )
+        </if>
+    </select>
+
+
+    <!-- 글 댓글 상태 업데이트 쿼리 -->
+    <update id="textReplyStatusChange">
+        update tbl_reply_report
+        set report_status = #{reportStatus}
+        where reply_id = #{replyId}
+    </update>
 </mapper>
 

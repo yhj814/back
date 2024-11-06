@@ -32,4 +32,22 @@ public class ReplyReportServiceImpl implements ReplyReportService {
     public void updateReplyReportStatus(Long replyId, String reportStatus){
         replyReportDAO.updateReplyReportStatus(replyId, reportStatus);
     }
+
+//    글 댓글 신고 목록 조회
+    @Override
+    public List<ReplyReportDTO> getTextReplyReports(String search, String order, AdminPagination pagination){
+        return replyReportDAO.getTextReplyReports(search, order, pagination);
+    }
+
+//    글 댓글 신고 목록 전체조회
+    @Override
+    public int getTextReplyReportsCount(String search, String order){
+        return replyReportDAO.getTextReplyReportsCount(search, order);
+    }
+
+//    글 댓글 신고 상태 업데이트
+    @Override
+    public void updateTextReplyReportStatus(Long replyId, String reportStatus){
+        replyReportDAO.updateTextReplyReportStatus(replyId, reportStatus);
+    }
 }
