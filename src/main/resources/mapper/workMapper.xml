@@ -188,4 +188,34 @@
 
     <!--  마이페이지  -->
     <!--    -->
+    <select id="selectByMemberId" resultType="workDTO">
+        select w.id, w.genre_type, w.thumbnail_file_id,
+               p.id, p.post_title, p.post_content, p.post_type, p.member_profile_id,
+               p.created_date, mp.profile_nickname,
+               mp.member_id, m.profile_img_url,
+               fl.file_name as thumbnail_file_name ,fl.file_path as thumbnail_file_path
+        from tbl_work w
+                 join tbl_post p on w.id = p.id and p.post_type = #{postType}
+                 join tbl_member_profile mp on p.member_profile_id = mp.id
+                 join tbl_member m on mp.member_id = m.id and m.id = #{memberId}
+                 join tbl_post_file pfl on p.id = pfl.post_id
+                 join tbl_file fl on pfl.id = fl.id and w.thumbnail_file_id = fl.id
+        order by w.id desc
+        limit #{workAndFundingPagination.startRow}, #{workAndFundingPagination.rowCount};
+    </select>
+
+    <select id="selectCount">
+        select count(*) from tbl_work w
+        join tbl_post p on w.id = p.id and p.post_type = #{postType}
+        join tbl_member_profile mp on p.member_profile_id = mp.id
+        join tbl_member m on mp.member_id = m.id and m.id = #{memberId};
+    </select>
+
+<!--    selectByIdAndPostType-->
+
+    <select id="selectByIdAndPostType" resultType="workDTO">
+        select w.id, w.work_price, w.genre_type, w.file_content, w.read_count, w.thumbnail_file_id
+        from tbl_work w join tbl_post p
+        on w.id = p.id and w.id = #{id} and p.post_type = #{postType}
+    </select>
 </mapper>
