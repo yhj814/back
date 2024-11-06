@@ -25,12 +25,18 @@
 
     files.forEach((file) => {
         file.addEventListener("change", async (e) => {
+            console.log(e)
             const file = e.target.files[0];
+            console.log(e.target);
+            console.log(e.target.files[0])
             const formData = new FormData();
+            console.log(formData)
             formData.append("file", file);
+            console.log(formData)
             const fileInfo = await myPageService.upload(formData);
             console.log(fileInfo);
             ths[i].src = `/file/display?fileName=${fileInfo.filePath + "/t_" + fileInfo.fileName}`;
+            console.log(ths[i].src)
             downloads[i].href = `/file/download?fileName=${fileInfo.filePath + "/" + fileInfo.fileName}`;
         });
     });
