@@ -211,10 +211,8 @@
         join tbl_member m on mp.member_id = m.id and m.id = #{memberId};
     </select>
 
-<!--    selectByIdAndPostType-->
-
     <select id="selectByIdAndPostType" resultType="workDTO">
-        select w.id, w.work_price, w.genre_type, w.file_content, w.read_count, w.thumbnail_file_id
+        select w.id, w.work_price, w.genre_type, w.file_content, w.read_count
         from tbl_work w join tbl_post p
         on w.id = p.id and w.id = #{id} and p.post_type = #{postType}
     </select>

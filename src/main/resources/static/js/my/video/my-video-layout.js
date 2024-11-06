@@ -94,7 +94,7 @@ const showMyWorkList = ({myWorkPosts, workAndFundingPagination}) => {
                             <a 
                                 ><img 
                                     src="/member/video/my/work/display?fileName=${myWorkPost.thumbnailFilePath}"
-<!--                                    썸네일이 올라가지 않음-->
+<!--                                    썸네일이 올라가지 않음 : 집에 돌아가서 살펴보아야 함.-->
                             /></a>
                         </div>
                     </div>

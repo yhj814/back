@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 @AllArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class BuyWorkVO {
+    @EqualsAndHashCode.Include
     private Long id;
     private Long workId;
     private String workSendStatus;

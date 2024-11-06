@@ -1,45 +1,45 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>file-테스트</title>
-</head>
-<body>
-<form th:action="@{/member/video/file/write}" method="post" enctype="multipart/form-data">
-    <input type="file" name="file">
-    <input type="file" name="file">
-    <button>완료</button>
-    <div><a class="download"><img class="th" width="100"></a></div>
-    <div><a class="download"><img class="th" width="100"></a></div>
-</form>
-</body>
-<script src="/js/my/video/my-video-service.js"></script>
-<script>
-    const button = document.querySelector("button[type=button]");
-    const files = document.querySelectorAll("input[type=file]");
-    const ths = document.querySelectorAll("img.th");
-    const downloads = document.querySelectorAll("a.download");
+<!--<!doctype html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <meta name="viewport"-->
+<!--          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">-->
+<!--    <meta http-equiv="X-UA-Compatible" content="ie=edge">-->
+<!--    <title>file-테스트</title>-->
+<!--</head>-->
+<!--<body>-->
+<!--<form th:action="@{/member/video/file/write}" method="post" enctype="multipart/form-data">-->
+<!--    <input type="file" name="file">-->
+<!--    <input type="file" name="file">-->
+<!--    <button>완료</button>-->
+<!--    <div><a class="download"><img class="th" width="100"></a></div>-->
+<!--    <div><a class="download"><img class="th" width="100"></a></div>-->
+<!--</form>-->
+<!--</body>-->
+<!--<script src="/js/my/video/my-video-service.js"></script>-->
+<!--<script>-->
+<!--    const button = document.querySelector("button[type=button]");-->
+<!--    const files = document.querySelectorAll("input[type=file]");-->
+<!--    const ths = document.querySelectorAll("img.th");-->
+<!--    const downloads = document.querySelectorAll("a.download");-->
 
-    files.forEach((file) => {
-        file.addEventListener("change", async (e) => {
-            console.log(e)
-            const file = e.target.files[0];
-            console.log(e.target);
-            console.log(e.target.files[0])
-            const formData = new FormData();
-            console.log(formData)
-            formData.append("file", file);
-            console.log(formData)
-            const fileInfo = await myPageService.upload(formData);
-            console.log(fileInfo);
-            ths[i].src = `/file/display?fileName=${fileInfo.filePath + "/t_" + fileInfo.fileName}`;
-            console.log(ths[i].src)
-            downloads[i].href = `/file/download?fileName=${fileInfo.filePath + "/" + fileInfo.fileName}`;
-        });
-    });
+<!--    files.forEach((file) => {-->
+<!--        file.addEventListener("change", async (e) => {-->
+<!--            console.log(e)-->
+<!--            const file = e.target.files[0];-->
+<!--            console.log(e.target);-->
+<!--            console.log(e.target.files[0])-->
+<!--            const formData = new FormData();-->
+<!--            console.log(formData)-->
+<!--            formData.append("file", file);-->
+<!--            console.log(formData)-->
+<!--            const fileInfo = await myPageService.upload(formData);-->
+<!--            console.log(fileInfo);-->
+<!--            ths[i].src = `/file/display?fileName=${fileInfo.filePath + "/t_" + fileInfo.fileName}`;-->
+<!--            console.log(ths[i].src)-->
+<!--            downloads[i].href = `/file/download?fileName=${fileInfo.filePath + "/" + fileInfo.fileName}`;-->
+<!--        });-->
+<!--    });-->
 
-</script>
-</html>
+<!--</script>-->
+<!--</html>-->

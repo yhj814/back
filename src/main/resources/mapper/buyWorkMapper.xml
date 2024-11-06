@@ -1,11 +1,67 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.app.ggumteo.mapper.buy.BuyWorkMapper">
+<mapper namespace="com.app.ggumteo.mapper.funding.BuyFundingProductMapper">
+    <select id="selectByFundingPostId" resultType="buyFundingProductDTO">
+        select bfp.id, bfp.funding_product_id, bfp.funding_send_status, fp.product_name
+             , fp.product_price, fp.funding_id, bfp_mp.profile_name, bfp_mp.profile_email
+        from
+            tbl_buy_funding_product bfp
+                join tbl_funding_product fp on bfp.funding_product_id = fp.id
+                join tbl_funding f on fp.funding_id = f.id and f.id = #{fundingPostId}
+                join tbl_post p on f.id = p.id
+                join tbl_member_profile mp on p.member_profile_id = mp.id
+                join tbl_member m on mp.member_id = m.id
+                join tbl_member_profile bfp_mp on bfp.member_profile_id = bfp_mp.id
+        order by f.id desc
+        limit #{settingTablePagination.startRow}, #{settingTablePagination.rowCount};
+    </select>
 
-    <insert id="insertPurchase">
-        insert into tbl_buy_work (member_profile_id, work_id, work_send_status)
-        values (#{memberProfileId}, #{workId}, #{workSendStatus})
-    </insert>
+    <select id="selectCount">
+        select count(*) from
+            tbl_buy_funding_product bfp
+                join tbl_funding_product fp on bfp.funding_product_id = fp.id
+                join tbl_funding f on fp.funding_id = f.id
+                join tbl_post p on f.id = p.id and f.id = #{fundingPostId}
+                join tbl_member_profile mp on p.member_profile_id = mp.id
+                join tbl_member m on mp.member_id = m.id
+                join tbl_member_profile bfp_mp on bfp.member_profile_id = bfp_mp.id
+    </select>
 
+    <update id="updateFundingSendStatus">
+        update tbl_buy_funding_product
+        set funding_send_status = #{fundingSendStatus}
+        where id = #{id}
+    </update>
 
+    <select id="selectBuyFundingListByMember">
+        select bfp_mp.member_id, fp.funding_id, p.post_title, f.genre_type, p.created_date, p.post_content,
+               m.profile_img_url, mp.profile_nickname,fp.product_name, fp.product_price,
+               fl.file_name, fl.file_size, fl.file_type, fl.file_path from
+            tbl_buy_funding_product bfp
+                join tbl_funding_product fp on bfp.funding_product_id = fp.id
+                join tbl_funding f on fp.funding_id = f.id
+                join tbl_post p on f.id = p.id and p.post_type = #{postType}
+                join tbl_member_profile mp on p.member_profile_id = mp.id
+                join tbl_member m on mp.member_id = m.id
+                join tbl_member_profile bfp_mp on bfp.member_profile_id = bfp_mp.id
+                join tbl_member bfp_m on bfp_mp.member_id = bfp_m.id and bfp_m.id = #{memberId}
+                join tbl_post_file pfl on p.id = pfl.post_id
+                join tbl_file fl on pfl.id = fl.id
+        order by f.id desc
+            limit #{workAndFundingPagination.startRow}, #{workAndFundingPagination.rowCount};
+    </select>
+
+    <select id="selectCountBuyFundingListByMember">
+        select count(*) from
+            tbl_buy_funding_product bfp
+                join tbl_funding_product fp on bfp.funding_product_id = fp.id
+                join tbl_funding f on fp.funding_id = f.id
+                join tbl_post p on f.id = p.id and p.post_type = #{postType}
+                join tbl_member_profile mp on p.member_profile_id = mp.id
+                join tbl_member m on mp.member_id = m.id
+                join tbl_member_profile bfp_mp on bfp.member_profile_id = bfp_mp.id
+                join tbl_member bfp_m on bfp_mp.member_id = bfp_m.id and bfp_m.id = #{memberId}
+                join tbl_post_file pfl on p.id = pfl.post_id
+                join tbl_file fl on pfl.id = fl.id;
+    </select>
 </mapper>
