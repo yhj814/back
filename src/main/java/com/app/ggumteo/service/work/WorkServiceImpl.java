@@ -33,7 +33,7 @@ public class WorkServiceImpl implements WorkService {
     private final WorkDAO workDAO;
     private final PostDAO postDAO;
     private final PostFileService postFileService;  // 파일 저장 서비스 주입
-    private final BuyFundingProductDAO buyFundingProductDAO;
+
 
     @Override
     public void write(WorkDTO workDTO, MultipartFile[] workFiles, MultipartFile thumbnailFile) {
@@ -188,17 +188,6 @@ public class WorkServiceImpl implements WorkService {
         return workDAO.findThreeByAuthor(memberProfileId, workId, postType);
     }
 
-    @Override
-    public void buyFundingProduct(Long memberId, Long productId, int amount) {
-        // 상품 수량 감소
-        buyFundingProductDAO.decrementProductAmount(productId);
-
-        // 펀딩 금액 증가 (기존 productId로 fundingId를 추적하는 부분 제거)
-        buyFundingProductDAO.updateConvergePrice(productId, amount);  // productId를 fundingId로 변경해 사용
-
-        // 구매 내역 삽입
-        buyFundingProductDAO.insertBuyFundingProduct(memberId, productId);
-    }
 
 
 

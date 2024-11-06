@@ -30,8 +30,9 @@ public class BuyFundingProductDTO {
     private String fileSize; // 파일 사이즈
     private String fileType; // 파일 타입
     private String filePath; // 파일 경로
+    private Long productId;
 
     public BuyFundingProductVO toVO() {
-        return new BuyFundingProductVO(id, memberProfileId, fundingProductId, fundingSendStatus, createdDate);
+        return new BuyFundingProductVO(id, memberProfileId, fundingProductId, fundingSendStatus, createdDate, memberId, productId);
     }
 }

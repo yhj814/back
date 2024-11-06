@@ -99,7 +99,7 @@
     <!-- 펀딩 상품 정보 조회 -->
     <select id="selectFundingProductsByFundingId" resultType="fundingProductVO">
         select
-            id as product_id, product_name, product_price, product_amount, funding_id
+            id, product_name, product_price, product_amount, funding_id
         from tbl_funding_product
         where funding_id = #{fundingId}
     </select>

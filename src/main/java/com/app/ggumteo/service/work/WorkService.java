@@ -32,6 +32,6 @@ public interface WorkService {
 
     List<WorkDTO> getThreeWorksByAuthor(Long memberProfileId, Long workId, String postType);
 
-    void buyFundingProduct(Long productId, Long memberId, int amount);
+
 
 }
