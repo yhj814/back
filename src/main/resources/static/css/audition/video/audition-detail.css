@@ -54,6 +54,10 @@ body {
     min-height: 70%;
 }
 
+.main{
+    margin-top: 90px;
+}
+
 .detail-detail-view {
     margin-top: 20px;
 }
@@ -114,7 +118,7 @@ a {
 }
 
 .detail-detail-view .detail-content-layer {
-    padding: 24px 32px 32px;
+    padding: 24px 32px 10px;
     background-color: #fff;
     border-radius: 8px;
     box-shadow: 0 2px 8px 0 rgba(0, 0, 0, .16);
@@ -849,4 +853,23 @@ textarea {
 
 .file-content{
     margin-bottom: 20px;
+}
+
+.btn-create-div {
+    height: 10px;
+    padding: 4px;
+}
+
+.btn-create-div .btn-create-comment {
+    font-size: 14px;
+    font-weight: normal;
+    padding: 8px 30px 5px;
+    line-height: 16px;
+    background-color: #ebfff9;
+    border-radius: 8px;
+    border: none;
+    color: #2099bb;
+    width: 90px;
+    height: 32px;
+    float: right;
 }

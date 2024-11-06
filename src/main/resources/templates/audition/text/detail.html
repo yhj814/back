@@ -19,7 +19,7 @@
     <th:block th:if="${!isLoggedIn}">
         <div th:replace="~{header-logout :: header}"></div>
     </th:block>
-        <main>
+    <main class="main">
             <div class="gaia">
                 <div class="detail-detail-view">
                     <div class="container">
@@ -303,16 +303,24 @@
                                         <div class="upload-media" th:each="file : ${postFiles}">
                                             <!-- 이미지 파일일 경우 -->
                                             <div class="media-wrapper" th:if="${#strings.endsWith(file.filePath, '.jpg') or #strings.endsWith(file.filePath, '.jpeg') or #strings.endsWith(file.filePath, '.png') or #strings.endsWith(file.filePath, '.gif')}">
-                                                <img th:src="@{'/audition/video/display?fileName=' + ${file.filePath}}" alt="첨부 이미지" class="center-media" />
+                                                <img th:src="@{'/audition/text/display?fileName=' + ${file.filePath}}" alt="첨부 이미지" class="center-media" />
                                             </div>
 
                                             <!-- 동영상 파일일 경우 -->
                                             <div class="media-wrapper" th:if="${#strings.endsWith(file.filePath, '.mp4') or #strings.endsWith(file.filePath, '.avi') or #strings.endsWith(file.filePath, '.mov') or #strings.endsWith(file.filePath, '.wmv')}">
                                                 <video controls class="center-media">
-                                                    <source th:src="@{'/audition/video/display?fileName=' + ${file.filePath}}" type="video/mp4">
+                                                    <source th:src="@{'/audition/text/display?fileName=' + ${file.filePath}}" type="video/mp4">
                                                     동영상 형식을 지원하지 않는 브라우저입니다.
                                                 </video>
                                             </div>
+                                        </div>
+                                        <div class="layer-divider mt40mb32"
+                                             style="margin-bottom: 6px"></div>
+                                        <div class="btn-create-div">
+                                            <a class="btn-create-comment cursor"
+                                               th:href="@{/audition/text/list}"
+                                            >목록
+                                            </a>
                                         </div>
                                     </div>
                                 </div>
@@ -347,8 +355,8 @@
                                         <div class="detail-popularity-info">
                                             <div class="client-account-info">
                                                 <img
-                                                    class="client-account-info-img"
-                                                    src="/static/images/audition/profile.png"
+                                                        class="client-account-info-img"
+                                                        th:src="@{${audition.profileImgUrl}}"
                                                 />
                                                 <div>
                                                     <div

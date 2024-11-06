@@ -44,6 +44,10 @@ body {
     font-smoothing: antialiased;
 }
 
+.main{
+    margin-top: 90px;
+}
+
 .gaia {
     min-width: 1080px;
     height: auto;
@@ -110,7 +114,7 @@ a {
 }
 
 .detail-detail-view .detail-content-layer {
-    padding: 24px 32px 32px;
+    padding: 24px 32px 10px;
     background-color: #fff;
     border-radius: 8px;
     box-shadow: 0 2px 8px 0 rgba(0, 0, 0, .16);
@@ -490,7 +494,7 @@ a {
     display: inline-block;
     width: 256px;
     position: sticky;
-    top: 20px;
+    top: 77px;
 }
 
 .detail-section .client-section-wrap .client-section .action-layer {
@@ -840,3 +844,21 @@ textarea {
     height: auto;
 }
 
+.btn-create-div {
+    height: 10px;
+    padding: 4px;
+}
+
+.btn-create-div .btn-create-comment {
+    font-size: 14px;
+    font-weight: normal;
+    padding: 8px 30px 5px;
+    line-height: 16px;
+    background-color: #ebfff9;
+    border-radius: 8px;
+    border: none;
+    color: #009c6f;
+    width: 90px;
+    height: 32px;
+    float: right;
+}
