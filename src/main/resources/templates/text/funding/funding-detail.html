@@ -3,6 +3,7 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <script src="https://js.bootpay.co.kr/bootpay-5.0.1.min.js" type="application/javascript"></script>
         <title>글 펀딩 상세페이지</title>
         <link rel="stylesheet" href="/css/text/funding-detail.css" />
     </head>
@@ -16,30 +17,30 @@
                             <div class="header">
                                 <div class="funding-status-div">
                                     <div style="display: flex">
-                                        <div class="funding-status">펀딩중</div>
-                                    </div>
-                                    <div style="display: flex">
-                                        <div class="funding-status-end">
+                                        <div th:if="${funding.fundingStatus == '펀딩 중'}" class="funding-status">
+                                            펀딩중
+                                        </div>
+                                        <div th:if="${funding.fundingStatus == '펀딩 완료'}" class="funding-status-end">
                                             펀딩완료
                                         </div>
                                     </div>
                                 </div>
-                                <div class="header-title">
+                                <div class="header-title" th:text="${funding.postTitle}">
                                     펀딩글 타이틀
                                     <button class="btn report">
                                         <div class="report-img">
                                             <img
-                                                src="/static/images/video/report.jpg"
+                                                src="/images/video/report.jpg"
                                             />
                                         </div>
                                         <div class="report-div">신고하기</div>
                                     </button>
                                 </div>
-                                <div class="funding-category">드라마</div>
+                                <div class="funding-category" th:text="${funding.genreType}"></div>
                                 <div class="header-subtitle">
                                     <div class="header-subtitle-content">
-                                        <span class="funding-persent">50</span
-                                        >%진행중
+                                        <span class="funding-persent" th:text="${funding.fundingPercentage + ' %'}"></span>
+                                        진행중
                                     </div>
                                 </div>
                             </div>
@@ -47,17 +48,13 @@
                                 <!-- 펀딩내용 -->
                                 <div class="content-title">펀딩작품 설명</div>
                                 <!-- 펀딩내용설명 -->
-                                <div class="funding-content">
-                                    설명글!!!!!!!!!!!!
-                                </div>
+                                <div class="funding-content" th:text="${funding.postContent}"></div>
                                 <!-- 펀딩내용 이미지 -->
-                                <div class="funding-img">
-                                    <img
-                                        src="https://cdn.wishket.com/portfolio/images/codelab_wk_%EC%9E%90%EB%8F%99%EC%B0%A8%EA%B4%91%EA%B3%A0_%EC%A4%91%EA%B0%9C_%ED%94%8C%EB%9E%AB%ED%8F%BC_5364a92ce0415760fbac.jpg"
-                                    />
+                                <div class="funding-img" th:each="file : ${postFiles}" th:if="${file.filePath != funding.thumbnailFilePath}">
+                                    <img th:src="@{'/text/funding/display?fileName=' + ${file.filePath}}" />
                                 </div>
                                 <!-- 이미지설명 -->
-                                <div class="funding-img-content">
+                                <div class="funding-img-content" th:text="${funding.fileContent}">
                                     글 작성할때 이미지 첨부하면 쓸
                                     설명글!!!!!!!!!
                                 </div>
@@ -82,19 +79,15 @@
                                         <div class="process-content">
                                             <div class="process-bar"></div>
                                             <div class="process-content-detail">
-                                                <div class="funding-intro">
+                                                <div class="funding-intro" th:text="${funding.fundingContent}">
                                                     펀딩 소개글(입력해야함)
                                                 </div>
                                                 <div
                                                     class="funding-intro-detail"
                                                 >
-                                                    <div
-                                                        class="funding-start-date"
-                                                    >
+                                                    <div class="funding-start-date">
                                                         펀딩시작 날짜
-                                                        <span class="start-date"
-                                                            >2024.10.29</span
-                                                        >
+                                                        <span class="start-date" th:text="${funding.createdDate.substring(0, 10)}"></span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -112,11 +105,8 @@
                                             <div class="process-bar"></div>
                                             <div class="process-content-detail">
                                                 <div class="funding-investor">
-                                                    투자자수 :
-                                                    <span
-                                                        class="investor-number"
-                                                        >10명(받아오기)</span
-                                                    >
+                                                    목표 투자자수 :
+                                                    <span class="investor-number" th:text="${funding.investorNumber + '명'}"></span>
                                                 </div>
                                                 <div
                                                     class="funding-intro-detail"
@@ -125,10 +115,7 @@
                                                         class="funding-end-date"
                                                     >
                                                         펀딩마감 날짜
-                                                        <span class="end-date"
-                                                            >2024.11.29(한달로
-                                                            고정)</span
-                                                        >
+                                                        <span class="end-date" th:text="${funding.endDate.substring(0, 10)}"></span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -149,6 +136,7 @@
                                                     목표금액 :
                                                     <span
                                                         class="investor-number"
+                                                        th:text="${funding.targetPrice}"
                                                         >1,000,000(입력)</span
                                                     >원
                                                 </div>
@@ -161,6 +149,7 @@
                                                         현재까지 금액 :
                                                         <span
                                                             class="today-money"
+                                                            th:text="${funding.convergePrice}"
                                                             >500,000</span
                                                         >원
                                                     </div>
@@ -169,11 +158,8 @@
                                                     class="funding-persent-div"
                                                 >
                                                     <!-- 타이틀아래에 있는 퍼센트와 같아야함 -->
-                                                    <span
-                                                        class="funding-persent"
-                                                        >50</span
-                                                    >
-                                                    <span>%진행중</span>
+                                                    <span class="funding-persent" th:text="${funding.fundingPercentage + ' %'}"></span>
+                                                    <span>진행중</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -191,8 +177,7 @@
                                             <div class="process-content-detail">
                                                 <div class="funding-writer">
                                                     <div class="writer-profile">
-                                                        <img
-                                                            src="https://www.wishket.com/static/img/default_avatar_c.png"
+                                                        <img th:src="${funding.profileImgUrl}"
                                                             class="profile-img"
                                                         />
                                                     </div>
@@ -201,11 +186,13 @@
                                                     >
                                                         <div
                                                             class="profile-name"
+                                                            th:text="${funding.profileNickname}"
                                                         >
                                                             작성자이름
                                                         </div>
                                                         <div
                                                             class="write-intro"
+                                                            th:text="${funding.profileEtc}"
                                                         >
                                                             <span
                                                                 >작성자 소개
@@ -221,6 +208,7 @@
                                                                 >연락할경로 :
                                                             </span>
                                                             <span class="email"
+                                                                  th:text="${funding.profileEmail}"
                                                                 >test1234@gmail.com</span
                                                             >
                                                         </div>
@@ -232,99 +220,26 @@
                                 </div>
                                 <!-- 펀딩가격별 상품들 -->
                                 <div class="funding-product-container">
-                                    <div class="funding-product">
+                                    <div th:each="product : ${funding.fundingProducts}" class="funding-product">
                                         <div class="product-header-title">
                                             가격별 상품소개
                                         </div>
                                         <div class="product-info">
                                             <div>
                                                 <div class="product-name">
-                                                    상품명
+                                                    상품명: <span th:text="${product.productName}">상품명</span>
                                                 </div>
                                                 <div class="product-price">
-                                                    <span class="price"
-                                                        >10,000</span
-                                                    >원
+                                                    <span class="price" th:text="${product.productPrice}">10,000</span>원
                                                 </div>
                                                 <div class="product-number">
-                                                    남은 수량 :
-                                                    <span class="number"
-                                                        >100</span
-                                                    >개
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="funding-product">
-                                        <div class="product-header-title">
-                                            가격별 상품소개
-                                        </div>
-                                        <div class="product-info">
-                                            <div>
-                                                <div class="product-name">
-                                                    상품명
-                                                </div>
-                                                <div class="product-price">
-                                                    <span class="price"
-                                                        >10,000</span
-                                                    >원
-                                                </div>
-                                                <div class="product-number">
-                                                    남은 수량 :
-                                                    <span class="number"
-                                                        >100</span
-                                                    >개
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="funding-product">
-                                        <div class="product-header-title">
-                                            가격별 상품소개
-                                        </div>
-                                        <div class="product-info">
-                                            <div>
-                                                <div class="product-name">
-                                                    상품명
-                                                </div>
-                                                <div class="product-price">
-                                                    <span class="price"
-                                                        >10,000</span
-                                                    >원
-                                                </div>
-                                                <div class="product-number">
-                                                    남은 수량 :
-                                                    <span class="number"
-                                                        >100</span
-                                                    >개
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="funding-product">
-                                        <div class="product-header-title">
-                                            가격별 상품소개
-                                        </div>
-                                        <div class="product-info">
-                                            <div>
-                                                <div class="product-name">
-                                                    상품명
-                                                </div>
-                                                <div class="product-price">
-                                                    <span class="price"
-                                                        >10,000</span
-                                                    >원
-                                                </div>
-                                                <div class="product-number">
-                                                    남은 수량 :
-                                                    <span class="number"
-                                                        >100</span
-                                                    >개
+                                                    남은 수량: <span class="number" th:text="${product.productAmount}">100</span>개
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+
                             </div>
                         </div>
                     </div>
@@ -338,68 +253,15 @@
                                     같은 장르에 다른 펀딩목록들
                                 </div>
                             </div>
-                            <div class="content-list">
-                                <a href="" class="similar-link">
+                            <div class="content-list" th:each="relatedFunding : ${relatedFundings}">
+                                <a th:href="@{'/text/funding/detail/' + ${relatedFunding.id}}" class="similar-link">
                                     <div class="link-box">
                                         <div class="img-box">
-                                            <img
-                                                src="/static/images/video/ex-image.jpg"
-                                                class="similar-thumbnail-image"
-                                            />
+                                            <img th:src="@{'/text/funding/display?fileName=' + ${relatedFunding.thumbnailFilePath}}"
+                                                 class="similar-thumbnail-image"
+                                                 alt="유사한 펀딩 썸네일"/>
                                         </div>
-                                        <div class="similar-thumbnail-title">
-                                            유사한 펀딩 목록 제목
-                                        </div>
-                                    </div>
-                                </a>
-                                <a href="" class="similar-link">
-                                    <div class="link-box">
-                                        <div class="img-box">
-                                            <img
-                                                src="/static/images/video/ex-image.jpg"
-                                                class="similar-thumbnail-image"
-                                            />
-                                        </div>
-                                        <div class="similar-thumbnail-title">
-                                            유사한 펀딩 목록 제목
-                                        </div>
-                                    </div>
-                                </a>
-                                <a href="" class="similar-link">
-                                    <div class="link-box">
-                                        <div class="img-box">
-                                            <img
-                                                src="/static/images/video/ex-image.jpg"
-                                                class="similar-thumbnail-image"
-                                            />
-                                        </div>
-                                        <div class="similar-thumbnail-title">
-                                            유사한 펀딩 목록 제목
-                                        </div>
-                                    </div>
-                                </a>
-                                <a href="" class="similar-link">
-                                    <div class="link-box">
-                                        <div class="img-box">
-                                            <img
-                                                src="/static/images/video/ex-image.jpg"
-                                                class="similar-thumbnail-image"
-                                            />
-                                        </div>
-                                        <div class="similar-thumbnail-title">
-                                            유사한 펀딩 목록 제목
-                                        </div>
-                                    </div>
-                                </a>
-                                <a href="" class="similar-link">
-                                    <div class="link-box">
-                                        <div class="img-box">
-                                            <img
-                                                src="/static/images/video/ex-image.jpg"
-                                                class="similar-thumbnail-image"
-                                            />
-                                        </div>
-                                        <div class="similar-thumbnail-title">
+                                        <div class="similar-thumbnail-title" th:text="${relatedFunding.postTitle}">
                                             유사한 펀딩 목록 제목
                                         </div>
                                     </div>
@@ -437,4 +299,5 @@
         </div>
     </body>
     <script src="/js/text/funding-detail.js"></script>
+<script src="/js/text/funding-detail-pay.js"></script>
 </html>

@@ -1,5 +1,6 @@
 package com.app.ggumteo.mapper.funding;
 
+import com.app.ggumteo.domain.file.PostFileDTO;
 import com.app.ggumteo.domain.funding.BuyFundingProductDTO;
 import com.app.ggumteo.domain.funding.FundingDTO;
 import com.app.ggumteo.domain.funding.FundingProductVO;
@@ -29,6 +30,9 @@ public interface FundingMapper {
 
 
 
+
+
+
     // 펀딩 삽입
     public void insert(FundingDTO fundingDTO);
     // 펀딩 상품 저장
@@ -37,6 +41,15 @@ public interface FundingMapper {
     // 작품 목록 조회 및 썸네일 불러오기 (검색 및 필터링 추가)
     List<FundingDTO> selectFundingList(@Param("search") Search search, @Param("pagination") Pagination pagination);
 
+    // 펀딩 상세 조회 메소드
+    List<FundingDTO> selectFundingById(@Param("id") Long id);
+
+    // 펀딩 상품 정보 조회
+    List<FundingProductVO> selectFundingProductsByFundingId(@Param("fundingId") Long fundingId);
+
+    // 상세보기에서 다중 파일 조회
+    List<PostFileDTO> selectFilesByPostId(@Param("postId") Long postId);
+
     // 검색 조건이 포함된 총 펀딩 수 조회
     int selectTotalWithSearchAndType(@Param("search") Search search);
 
@@ -44,5 +57,10 @@ public interface FundingMapper {
     void updateFunding(FundingDTO fundingDTO);
 
     public void updateFundingStatusToEnded();
+
+
+        // 같은 장르의 펀딩 게시글 조회 
+        List<FundingDTO> selectRelatedFundingByGenre(@Param("genreType") String genreType, @Param("fundingId") Long fundingId);
+
 
 }
