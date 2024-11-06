@@ -127,7 +127,7 @@ public class MemberRestController {
     public void goToWriteForm() {;}
 
     //    가져오기
-    @GetMapping("/member/video/file/display")
+    @GetMapping("/member/video/my/work/display")
     @ResponseBody
     public byte[] display(@RequestParam("fileName") String fileName) throws IOException {
         File file = new File("C:/upload", fileName);
