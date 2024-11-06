@@ -1,11 +1,13 @@
 package com.app.ggumteo.repository.work;
 
+import com.app.ggumteo.domain.funding.FundingDTO;
 import com.app.ggumteo.domain.post.PostDTO;
 import com.app.ggumteo.domain.work.WorkDTO;
 import com.app.ggumteo.domain.work.WorkVO;
 import com.app.ggumteo.domain.file.PostFileDTO;
 import com.app.ggumteo.mapper.work.WorkMapper;
 import com.app.ggumteo.pagination.Pagination;
+import com.app.ggumteo.pagination.WorkAndFundingPagination;
 import com.app.ggumteo.search.Search;
 import lombok.RequiredArgsConstructor;
 import org.apache.ibatis.annotations.Param;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
@@ -94,4 +97,19 @@ public class WorkDAO {
     public void updateThumbnailFileId(Long workId, Long thumbnailFileId) {
         workMapper.updateThumbnailFileId(workId, thumbnailFileId);
     }
+
+    // 내 작품 게시물 전체 조회
+    public List<WorkDTO> findByMemberId(WorkAndFundingPagination workAndFundingPagination, Long memberId, String postType) {
+        return workMapper.selectByMemberId(workAndFundingPagination, memberId, postType);
+    }
+
+    // 내 작품 게시물 전체 갯수
+    public int getTotal(Long memberId, String postType){
+        return workMapper.selectCount(memberId, postType);
+    }
+
+    // 작품 정보 조회
+    public Optional<WorkDTO> findByIdAndPostType(Long id, String postType) {
+        return workMapper.selectByIdAndPostType(id, postType);
+    };
 }

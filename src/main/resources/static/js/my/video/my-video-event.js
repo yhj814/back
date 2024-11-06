@@ -1,3 +1,15 @@
+// 내 작품
+myPageService.getMyVideoWorkList(1, memberId, showMyWorkList);
+
+myWorkListPaging.addEventListener("click", (e)=>{
+    e.preventDefault();
+    if(e.target.tagName === "A") {
+        globalThis.myWorkPage = e.target.getAttribute("href");
+        myPageService.getMyVideoWorkList(globalThis.myWorkPage, memberId, showMyWorkList);
+    }
+});
+
+// 내 펀딩
 myPageService.getMyFundingList(globalThis.myFundingPage, memberId, showMyFundingList);
 
 myFundingListPaging.addEventListener("click", (e)=>{
@@ -55,6 +67,7 @@ myFundingListLayout.addEventListener('click', async (e) => {
 
 });
 
+// 결제한 펀딩
 myPageService.getMyBuyFundingList(globalThis.myBuyFundingPage, memberId, showMyBuyFundingList);
 
 myBuyFundingListPaging.addEventListener("click", (e)=>{
@@ -65,6 +78,7 @@ myBuyFundingListPaging.addEventListener("click", (e)=>{
     }
 });
 
+// 문의 내역
 myPageService.getMyInquiryHistoryList(globalThis.myInquiryHistoryPage, memberId, showMyInquiryHistoryList);
 
 myInquiryHistoryListPaging.addEventListener("click", (e)=>{

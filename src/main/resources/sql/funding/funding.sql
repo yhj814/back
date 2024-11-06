@@ -6,8 +6,12 @@ create table tbl_funding (
     converge_price int not null, -- 모인 금액
     funding_status varchar(255) default 'YES', -- 펀딩 상태 (펀딩 중/종료)
     file_content varchar(255),
+    thumbnail_file_id bigint unsigned,
+    funding_content varchar(255),
     constraint fk_funding_post foreign key (id)
-    references tbl_post(id)
+    references tbl_post(id),
+    constraint fk_funding_thumbnail_file foreign key (thumbnail_file_id)
+    references tbl_file(id)
 );
 
 select * from tbl_member;
@@ -112,6 +116,6 @@ from tbl_funding f
          join tbl_member_profile mp on p.member_profile_id = mp.id
          join tbl_member m on mp.member_id = m.id
          join tbl_post_file pfl on p.id = pfl.post_id
-         join tbl_file fl on pfl.id = fl.id and f.thumbnail_file_id = f.id
+         join tbl_file fl on pfl.id = fl.id and f.thumbnail_file_id = fl.id
 order by f.id desc
     );

@@ -98,10 +98,8 @@ function showStatusEditModal(sectionId) {
         });
         // 선택된 항목이 있으면 모달창이 닫힌다.
         if (anyChoiseSelected) {
-            alert("저장합니다.");
             modal.style.display = "none";
         } else {
-            alert("선택해주세요.");
         }
     });
 }
@@ -316,10 +314,8 @@ function showReporProcessingtModal(sectionId) {
         });
         // 선택된 항목이 있으면 모달창이 닫힌다.
         if (anyChoiseSelected) {
-            alert("저장합니다.");
             modalVideo.style.display = "none";
         } else {
-            alert("선택해주세요.");
         }
     });
 
@@ -373,10 +369,8 @@ function showReporProcessingtModal(sectionId) {
         });
         // 선택된 항목이 있으면 모달창이 닫힌다.
         if (anyChoiseSelected) {
-            alert("저장합니다.");
             modalText.style.display = "none";
         } else {
-            alert("선택해주세요.");
         }
     });
 }
@@ -630,10 +624,8 @@ function showStatusRefund(sectionId) {
         });
         // 선택된 항목이 있으면 모달창이 닫힌다.
         if (anyChoiseSelected) {
-            alert("변경합니다.");
             modal.style.display = "none";
         } else {
-            alert("선택해주세요.");
         }
     });
 }

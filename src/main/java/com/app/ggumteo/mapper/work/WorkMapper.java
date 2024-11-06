@@ -1,15 +1,18 @@
 package com.app.ggumteo.mapper.work;
 
+import com.app.ggumteo.domain.funding.FundingDTO;
 import com.app.ggumteo.domain.post.PostDTO;
 import com.app.ggumteo.domain.work.WorkDTO;
 import com.app.ggumteo.domain.work.WorkVO;
 import com.app.ggumteo.domain.file.PostFileDTO;
 import com.app.ggumteo.pagination.Pagination;
+import com.app.ggumteo.pagination.WorkAndFundingPagination;
 import com.app.ggumteo.search.Search;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 @Mapper
 public interface WorkMapper {
@@ -63,4 +66,14 @@ public interface WorkMapper {
 
     // 썸네일 파일 ID 업데이트 메소드
     void updateThumbnailFileId(@Param("workId") Long workId, @Param("thumbnailFileId") Long thumbnailFileId);
+
+    // 내 작품 게시물 전체 조회
+    public List<WorkDTO> selectByMemberId(@Param("workAndFundingPagination") WorkAndFundingPagination workAndFundingPagination
+            , @Param("memberId") Long memberId, @Param("postType") String postType);
+
+    // 내 작품 게시물 전체 갯수
+    public int selectCount(@Param("memberId") Long memberId, @Param("postType") String postType);
+
+    // 작품 정보 조회
+    public Optional<WorkDTO> selectByIdAndPostType(@Param("id") Long id, @Param("postType") String postType);
 }

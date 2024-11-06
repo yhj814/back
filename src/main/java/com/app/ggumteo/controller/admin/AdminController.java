@@ -274,6 +274,23 @@ public class AdminController {
 
         return response;
     }
+
+    // 영상 신고 상태 업데이트
+    @PostMapping("/videoReports/status")
+    @ResponseBody
+    public ResponseEntity<String> updateVideoReportStatus(@RequestBody Map<String, Object> requestData) {
+        Long workId = Long.valueOf(requestData.get("workId").toString());
+        String status = requestData.get("reportStatus").toString();
+
+        try {
+            workReportService.updateReportStatus(workId, status);
+            log.info("영상 신고 ID {}의 상태가 {}로 변경되었습니다.", workId, status);
+            return ResponseEntity.ok("영상 신고 상태가 성공적으로 변경되었습니다.");
+        } catch (Exception e) {
+            log.error("영상 신고 상태 변경 중 오류 발생 - 신고 ID: {}", workId, e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("영상 신고 상태 변경에 실패했습니다.");
+        }
+    }
 }
 
 

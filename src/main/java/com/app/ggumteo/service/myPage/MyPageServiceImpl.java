@@ -1,21 +1,21 @@
 package com.app.ggumteo.service.myPage;
 
-import com.app.ggumteo.aspect.annotation.MyBuyFundingListLogStatus;
-import com.app.ggumteo.aspect.annotation.MyFundingBuyerListLogStatus;
-import com.app.ggumteo.aspect.annotation.MyFundingListLogStatus;
-import com.app.ggumteo.aspect.annotation.MyInquiryHistoryListLogStatus;
+import com.app.ggumteo.aspect.annotation.*;
 import com.app.ggumteo.constant.PostType;
 import com.app.ggumteo.domain.admin.AdminAnswerDTO;
 import com.app.ggumteo.domain.funding.*;
 import com.app.ggumteo.domain.inquiry.InquiryDTO;
 import com.app.ggumteo.domain.inquiry.MyInquiryHistoryListDTO;
 import com.app.ggumteo.domain.member.MemberVO;
+import com.app.ggumteo.domain.work.MyWorkListDTO;
+import com.app.ggumteo.domain.work.WorkDTO;
 import com.app.ggumteo.pagination.SettingTablePagination;
 import com.app.ggumteo.pagination.WorkAndFundingPagination;
 import com.app.ggumteo.repository.funding.BuyFundingProductDAO;
 import com.app.ggumteo.repository.funding.FundingDAO;
 import com.app.ggumteo.repository.inquiry.InquiryDAO;
 import com.app.ggumteo.repository.member.MemberDAO;
+import com.app.ggumteo.repository.work.WorkDAO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
@@ -27,16 +27,44 @@ import java.util.Optional;
 @Slf4j
 public class MyPageServiceImpl implements MyPageService {
     private final MemberDAO memberDAO;
+    private final WorkDAO workDAO;
     private final FundingDAO fundingDAO;
     private final BuyFundingProductDAO buyFundingProductDAO;
     private final InquiryDAO inquiryDAO;
 
+    //    회원 정보 조회
     @Override
     public Optional<MemberVO> getMember(Long id) {
         return memberDAO.findById(id);
     }
 
-    //    내 펀딩 게시물 전체 조회
+    //    내 작품 게시물 전체 조회 - 영상
+    @Override
+    @MyWorkListLogStatus
+    public MyWorkListDTO getMyVideoWorkList(int page, WorkAndFundingPagination workAndFundingPagination, Long memberId, String postType) {
+        MyWorkListDTO myWorkPosts = new MyWorkListDTO();
+        workAndFundingPagination.setPage(page);
+        workAndFundingPagination.setTotal(workDAO.getTotal(memberId, PostType.VIDEO.name()));
+        workAndFundingPagination.progress();
+        myWorkPosts.setWorkAndFundingPagination(workAndFundingPagination);
+        myWorkPosts.setMyWorkPosts(workDAO.findByMemberId(workAndFundingPagination, memberId, PostType.VIDEO.name()));
+
+        return myWorkPosts;
+    }
+
+    //    내 작품 게시물 전체 개수
+    @Override
+    public int getMyVideoWorkPostsTotal(Long memberId, String postType) {
+        return workDAO.getTotal(memberId, postType);
+    }
+
+    //    작품 정보 조회
+    @Override
+    public Optional<WorkDTO> getWork(Long id, String postType) {
+        return workDAO.findByIdAndPostType(id, postType);
+    }
+
+    //    내 펀딩 게시물 전체 조회 - 영상
     @Override
     @MyFundingListLogStatus
     public MyFundingListDTO getMyVideoFundingList(int page , WorkAndFundingPagination workAndFundingPagination, Long memberId, String postType) {
@@ -88,7 +116,7 @@ public class MyPageServiceImpl implements MyPageService {
         buyFundingProductDAO.updateFundingSendStatus(buyFundingProductVO);
     }
 
-    //   내가 결제한 펀딩 목록 조회
+    //   내가 결제한 펀딩 목록 조회 - 영상
     @Override
     @MyBuyFundingListLogStatus
     public MyBuyFundingListDTO getMyBuyFundingList(int page, WorkAndFundingPagination workAndFundingPagination
