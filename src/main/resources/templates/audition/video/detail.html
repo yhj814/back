@@ -20,7 +20,7 @@
     <th:block th:if="${!isLoggedIn}">
         <div th:replace="~{header-logout :: header}"></div>
     </th:block>
-        <main>
+        <main class="main">
             <div class="gaia">
                 <div class="detail-detail-view">
                     <div class="container">
@@ -316,8 +316,14 @@
                                                 </video>
                                             </div>
                                         </div>
-
-
+                                    </div>
+                                    <div class="layer-divider mt40mb32"
+                                    style="margin-bottom: 6px"></div>
+                                    <div class="btn-create-div">
+                                        <a class="btn-create-comment cursor"
+                                           th:href="@{/audition/video/list}"
+                                        >목록
+                                        </a>
                                     </div>
                                 </div>
                             </div>

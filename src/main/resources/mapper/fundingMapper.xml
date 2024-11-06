@@ -1,6 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.app.ggumteo.mapper.funding.FundingMapper">
+
+    <sql id="search">
+        <if test="search.keyword != null and search.keyword != ''">
+            and (
+            p.post_title like concat('%', #{search.keyword}, '%')
+            or p.post_content like concat('%', #{search.keyword}, '%')
+            or mp.profile_nickname like concat('%', #{search.keyword}, '%')
+            )
+        </if>
+        <if test="search.genreType != null and search.genreType != ''">
+            and f.genre_type = #{search.genreType}
+        </if>
+        <if test="search.postType != null and search.postType != ''">
+            and UPPER(p.post_type) = UPPER(#{search.postType})
+        </if>
+    </sql>
+
     <select id="selectByMemberId" resultType="fundingDTO">
         select "id", "genre_type", "post_title", "post_content", "post_type", "member_profile_id", "created_date", "updated_date", "profile_nickname", "member_id", "profile_img_url", "thumbnail_file_name", "thumbnail_file_path", "thumbnail_file_id"
         from view_my_funding
@@ -21,6 +38,17 @@
         on f.id = p.id and f.id = #{id} and p.post_type = #{postType}
     </select>
 
+
+
+
+
+
+
+
+
+
+
+
     <!-- 펀딩 삽입 -->
     <insert id="insert" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
         insert into tbl_funding (id, genre_type, investor_number, target_price, converge_price, file_content, funding_content, funding_status)
@@ -32,6 +60,58 @@
         insert into tbl_funding_product (product_name, product_price, product_amount, funding_id)
         values (#{productName}, #{productPrice}, #{productAmount}, #{fundingId})
     </insert>
+
+    <!-- 펀딩 목록 조회 -->
+    <select id="selectFundingList" resultType="fundingDTO">
+        select
+        f.id, f.genre_type, f.target_price, f.converge_price, f.funding_status,
+        p.post_title, p.post_content, p.member_profile_id, p.created_date, p.updated_date,
+        mp.profile_nickname, m.profile_img_url as profileImgUrl,
+        fl.file_name as thumbnail_file_name, fl.file_path as thumbnail_file_path,
+        if(f.target_price > 0, round((f.converge_price / f.target_price) * 100, 1), 0) as funding_percentage
+        from tbl_funding f
+        join tbl_post p on f.id = p.id
+        join tbl_member_profile mp on p.member_profile_id = mp.id
+        join tbl_member m on mp.member_id = m.id
+        left join tbl_file fl on f.thumbnail_file_id = fl.id
+        where 1 = 1
+        <include refid="search"/>
+        group by f.id
+        order by f.id desc
+        limit #{pagination.startRow}, #{pagination.rowCount}
+    </select>
+
+    <!-- 펀딩 상세 조회 -->
+    <select id="selectFundingById" resultType="fundingDTO">
+        select f.id, f.genre_type, f.target_price, f.converge_price, f.funding_status, f.investor_number, f.funding_content, f.file_content,
+               p.post_title, p.post_content, p.member_profile_id, p.created_date, p.updated_date,
+               mp.profile_nickname, mp.profile_img_url,
+               fp.id as product_id, fp.product_name, fp.product_price, fp.product_amount
+        from tbl_funding f
+                 join tbl_post p on f.id = p.id
+                 join tbl_member_profile mp on p.member_profile_id = mp.id
+                 left join tbl_funding_product fp on f.id = fp.funding_id
+        where f.id = #{id}
+    </select>
+
+
+
+
+
+    <!-- 검색 조건이 포함된 총 펀딩 수 조회 -->
+    <select id="selectTotalWithSearchAndType" parameterType="map" resultType="int">
+        select count(*)
+        from tbl_funding f
+        join tbl_post p on f.id = p.id
+        join tbl_member_profile mp on p.member_profile_id = mp.id
+        where f.id is not null
+        <include refid="search"/>
+    </select>
+
+
+
+
+
 
     <!-- 펀딩 정보 수정 (썸네일 파일 ID 포함) -->
     <update id="updateFunding">

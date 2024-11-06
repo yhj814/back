@@ -41,6 +41,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 const selectedContent = document.getElementById(contentId);
                 if (selectedContent) {
                     selectedContent.classList.add("active");
+                    globalThis.myWorkPage = 1;
+                    myPageService.getMyVideoWorkList(globalThis.myWorkPage, memberId, showMyWorkList);
+
                     globalThis.myFundingPage = 1;
                     myPageService.getMyFundingList(globalThis.myFundingPage, memberId, showMyFundingList);
 

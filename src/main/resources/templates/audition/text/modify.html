@@ -24,7 +24,7 @@
                 <div class="profile-box write">
                     <form
                             method="post"
-                            th:action="@{/audition/video/modify}"
+                            th:action="@{/audition/text/modify}"
                             id="write-form"
                             enctype="multipart/form-data">
                         <div th:if="${audition != null}">
@@ -479,11 +479,11 @@
                                             <div class="img-content-box">
                                                 <!-- 이미지 파일일 경우 img 태그 사용 -->
                                                 <div th:if="${#strings.endsWith(file.filePath, '.jpg') or #strings.endsWith(file.filePath, '.jpeg') or #strings.endsWith(file.filePath, '.png') or #strings.endsWith(file.filePath, '.gif')}">
-                                                    <img th:src="@{'/audition/video/display?fileName=' + ${file.filePath}}" alt="Uploaded Image" />
+                                                    <img th:src="@{'/audition/text/display?fileName=' + ${file.filePath}}" alt="Uploaded Image" />
                                                 </div>
                                                 <!-- 비디오 파일일 경우 video 태그 사용 -->
                                                 <div th:if="${#strings.endsWith(file.filePath, '.mp4') or #strings.endsWith(file.filePath, '.mov') or #strings.endsWith(file.filePath, '.avi')}">
-                                                    <video controls th:src="@{'/audition/video/display?fileName=' + ${file.filePath}}" alt="Uploaded Video"></video>
+                                                    <video controls th:src="@{'/audition/text/display?fileName=' + ${file.filePath}}" alt="Uploaded Video"></video>
                                                 </div>
                                             </div>
                                         </div>
@@ -538,7 +538,10 @@
                         </div>
                         <div class="write-footer">
                             <div class="button-box">
-                                <button class="btn btn-back">
+                                <button class="btn btn-back"
+                                        type="button"
+                                        onclick="window.history.back();"
+                                    >
                                     취소</button
                                 >
                                 <button

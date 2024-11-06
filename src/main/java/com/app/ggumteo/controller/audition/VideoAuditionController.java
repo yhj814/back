@@ -127,6 +127,8 @@ public class VideoAuditionController {
             log.info("수정 요청 - 삭제할 파일 ID 목록: {}", deletedFileIds);
 
             AuditionDTO currentAudition = auditionService.findAuditionById(auditionDTO.getId());
+            auditionDTO.setPostType(PostType.VIDEO.name());
+            auditionDTO.setAuditionStatus("모집중");
             if (currentAudition != null) {
                 log.info("게시글 id:{}", currentAudition.getId());
             }

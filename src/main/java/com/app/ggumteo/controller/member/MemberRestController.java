@@ -8,6 +8,7 @@ import com.app.ggumteo.domain.funding.MyFundingBuyerListDTO;
 import com.app.ggumteo.domain.funding.MyFundingListDTO;
 import com.app.ggumteo.domain.inquiry.MyInquiryHistoryListDTO;
 import com.app.ggumteo.domain.member.MemberVO;
+import com.app.ggumteo.domain.work.MyWorkListDTO;
 import com.app.ggumteo.pagination.SettingTablePagination;
 import com.app.ggumteo.pagination.WorkAndFundingPagination;
 import com.app.ggumteo.service.file.PostFileService;
@@ -47,7 +48,16 @@ public class MemberRestController {
         MemberVO memberDTO = myPageService.getMember(id).orElseThrow();
         model.addAttribute("member", memberDTO);
     }
-//    http://localhost:10000/member/video/my-page?id=1
+//    http://localhost:10000/member/video/my-page?id=15
+
+    // SELECT
+    @ResponseBody
+    @GetMapping("/members/{memberId}/video/my/work/{page}")
+    public MyWorkListDTO getMyVideoWorkList(@PathVariable("memberId") Long memberId
+            , @PathVariable("page") int page, WorkAndFundingPagination workAndFundingPagination, String postType) {
+
+        return myPageService.getMyVideoWorkList(page, workAndFundingPagination, memberId, postType);
+    }
 
     // SELECT
     @ResponseBody

@@ -6,6 +6,9 @@ import com.app.ggumteo.domain.file.PostFileDTO;
 import com.app.ggumteo.domain.funding.FundingDTO;
 import com.app.ggumteo.domain.member.MemberProfileVO;
 import com.app.ggumteo.domain.member.MemberVO;
+import com.app.ggumteo.domain.work.WorkDTO;
+import com.app.ggumteo.pagination.Pagination;
+import com.app.ggumteo.search.Search;
 import com.app.ggumteo.service.file.PostFileService;
 import com.app.ggumteo.service.funding.FundingService;
 import jakarta.servlet.http.HttpSession;
@@ -13,9 +16,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
@@ -67,6 +74,15 @@ public class TextFundingController {
             }
             fundingDTO.setPostType(PostType.TEXT.name());
             fundingDTO.setMemberProfileId(member.getId());
+            log.info("Received FundingDTO: {}", fundingDTO);
+            log.info("Received Funding Products: {}", fundingDTO.getFundingProducts());
+            // 썸네일 파일 정보 로그 출력
+            if (thumbnailFile != null && !thumbnailFile.isEmpty()) {
+                log.info("Received Thumbnail File: Name - {}, Size - {}, ContentType - {}",
+                        thumbnailFile.getOriginalFilename(), thumbnailFile.getSize(), thumbnailFile.getContentType());
+            } else {
+                log.warn("Thumbnail file is either null or empty");
+            }
 
             // Work 저장, 파일은 서비스에서 처리
             fundingService.write(fundingDTO, fundingFiles, thumbnailFile);
@@ -77,5 +93,50 @@ public class TextFundingController {
             return ResponseEntity.status(500).body(Collections.singletonMap("error", "저장 중 오류가 발생했습니다."));
         }
     }
+
+    @GetMapping("list")
+    public String list(
+            @ModelAttribute Search search,
+            @RequestParam(value = "page", defaultValue = "1") int page,
+            Model model) {
+
+
+        search.setPostType(PostType.TEXT.name());
+        log.info("Received Search Parameters: {}", search);
+        log.info("Received page: {}", page);
+
+        Pagination pagination = new Pagination();
+        pagination.setPage(page);
+
+        int totalWorks = fundingService.findTotalWithSearchAndType(search);
+        pagination.setTotal(totalWorks);
+        pagination.progress2();
+
+        log.info("Pagination - Page: {}", pagination.getPage());
+        log.info("Pagination - Total: {}", pagination.getTotal());
+        log.info("Pagination - Start Row: {}", pagination.getStartRow());
+        log.info("Pagination - Row Count: {}", pagination.getRowCount());
+
+        List<FundingDTO> fundings = fundingService.findFundingList(search, pagination);
+        log.info("Retrieved works list: {}", fundings);
+
+        model.addAttribute("fundings", fundings);
+        model.addAttribute("pagination", pagination);
+        model.addAttribute("search", search);
+
+        return "text/funding/funding-list";
+    }
+    @GetMapping("display")
+    @ResponseBody
+    public byte[] display(@RequestParam("fileName") String fileName) throws IOException {
+        File file = new File("C:/upload", fileName);
+
+        if (!file.exists()) {
+            throw new FileNotFoundException("파일을 찾을 수 없습니다: " + fileName);
+        }
+
+        return FileCopyUtils.copyToByteArray(file);
+    }
+
 
 }

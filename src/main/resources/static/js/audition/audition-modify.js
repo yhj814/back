@@ -56,6 +56,118 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
+    // 파일 미리보기 함수 (파일 선택 시 이미지 및 비디오 미리보기)
+    function previewFile(fileInput, previewSelector, videoPreviewSelector) {
+        const file = fileInput.files[0];
+        const preview = document.querySelector(previewSelector);
+        const videoPreview = document.querySelector(videoPreviewSelector);
+        const imgBox = preview.closest(".img-box-list");
+        const title = imgBox.querySelector(".img-box-title");
+        const text = imgBox.querySelector(".img-box-text");
+        const help = imgBox.querySelector(".img-box-help");
+        const imgCaptionBox = imgBox.querySelector(".img-caption-box");
+        const imgEditBox = imgBox.querySelector(".img-edit-box");
+
+        const reader = new FileReader();
+
+        reader.addEventListener("load", function () {
+            if (file) {
+                if (file.type.startsWith("image/")) {
+                    preview.src = reader.result;
+                    preview.style.display = "block";
+                    videoPreview.style.display = "none";
+                    title.style.display = "none";
+                    text.style.display = "none";
+                    help.style.display = "none";
+                    imgCaptionBox.style.display = "block";
+                    imgEditBox.style.display = "block"; // img-edit-box를 block으로 설정
+                } else if (file.type.startsWith("video/")) {
+                    videoPreview.src = reader.result;
+                    videoPreview.style.display = "block";
+                    videoPreview.style.width = "100%";
+                    preview.style.display = "none";
+                    title.style.display = "none";
+                    text.style.display = "none";
+                    help.style.display = "none";
+                    imgCaptionBox.style.display = "block";
+                    imgEditBox.style.display = "block"; // img-edit-box를 block으로 설정
+                }
+            }
+        });
+
+        if (file) {
+            reader.readAsDataURL(file);
+        }
+    }
+
+    // 파일 첨부 및 미리보기 이벤트 리스너 설정 함수
+    function setupEventListeners(imgBox) {
+        const defaultImg = imgBox.querySelector(".default-img");
+        const fileUpload = imgBox.querySelector('input[type="file"]');
+        const preview = imgBox.querySelector("img");
+        const videoPreview = imgBox.querySelector("video");
+
+        defaultImg.addEventListener("click", function () {
+            fileUpload.click();
+        });
+
+        fileUpload.addEventListener("change", function () {
+            previewFile(fileUpload, `#${preview.id}`, `#${videoPreview.id}`);
+        });
+
+        const btnChangeImage = imgBox.querySelector(".btn-edit-item:nth-child(1)");
+        btnChangeImage.addEventListener("click", function () {
+            fileUpload.click();
+        });
+
+        const btnDeleteImage = imgBox.querySelector(".btn-edit-item:nth-child(2)");
+        btnDeleteImage.addEventListener("click", function () {
+            preview.src = "https://www.wishket.com/static/renewal/img/partner/profile/icon_btn_add_portfolio_image.png";
+            videoPreview.src = "";
+            videoPreview.style.display = "none";
+            const imgCaptionBox = imgBox.querySelector(".img-caption-box");
+            const title = imgBox.querySelector(".img-box-title");
+            const text = imgBox.querySelector(".img-box-text");
+            const help = imgBox.querySelector(".img-box-help");
+
+            imgCaptionBox.style.display = "none";
+            title.style.display = "block";
+            text.style.display = "block";
+            help.style.display = "block";
+
+            imgBox.style.display = "none";
+            fileUpload.value = "";
+        });
+    }
+
+    const fileUploadInputs = document.querySelectorAll('input[type="file"]');
+    fileUploadInputs.forEach((fileInput) => {
+        fileInput.addEventListener("change", function () {
+            const file = fileInput.files[0];
+            if (file) {
+                const formData = new FormData();
+                formData.append("file", file);
+
+                // 파일 서버로 업로드
+                fetch("/audition/video/upload", {
+                    method: "POST",
+                    body: formData,
+                })
+                    .then((response) => response.json())
+                    .then((data) => {
+                        if (data.fileName && data.filePath) {
+                            console.log("파일이 성공적으로 업로드되었습니다.");
+                        } else {
+                            console.error("파일 업로드 중 오류가 발생했습니다.");
+                        }
+                    })
+                    .catch((error) => {
+                        console.error("Error:", error);
+                    });
+            }
+        });
+    });
+
     // 폼 제출 시 삭제할 파일 정보 포함
     writeForm.addEventListener("submit", function (event) {
         const idInput = writeForm.querySelector("input[name='id']");

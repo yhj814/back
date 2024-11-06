@@ -19,7 +19,7 @@
     <th:block th:if="${!isLoggedIn}">
         <div th:replace="~{header-logout :: header}"></div>
     </th:block>
-        <main>
+    <main class="main">
             <div class="main-header">
                 <div class="container">
                     <a class="sub-navigation" href="">
@@ -64,6 +64,12 @@
                             <div class="header">
                                 <h2 class="tit-section">모집정보</h2>
                                 <span class="cnt-result">총 <span th:text="${totalSearchAudition}"></span>건</span>
+                                <div class="btn-create-div">
+                                    <a class="btn-create-comment cursor"
+                                       th:href="@{/audition/video/write}"
+                                    >작성하기
+                                    </a>
+                                </div>
                             </div>
                             <div id="recruit-info-list" main-search="">
                                 <div class="content" >
