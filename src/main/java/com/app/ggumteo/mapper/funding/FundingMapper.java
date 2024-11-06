@@ -8,6 +8,7 @@ import com.app.ggumteo.pagination.MyPagePagination;
 import com.app.ggumteo.pagination.Pagination;
 import com.app.ggumteo.pagination.SettingTablePagination;
 import com.app.ggumteo.pagination.WorkAndFundingPagination;
+import com.app.ggumteo.search.Search;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -32,6 +33,12 @@ public interface FundingMapper {
     public void insert(FundingDTO fundingDTO);
     // 펀딩 상품 저장
     void insertFundingProduct(FundingProductVO fundingProductVO);
+
+    // 작품 목록 조회 및 썸네일 불러오기 (검색 및 필터링 추가)
+    List<FundingDTO> selectFundingList(@Param("search") Search search, @Param("pagination") Pagination pagination);
+
+    // 검색 조건이 포함된 총 펀딩 수 조회
+    int selectTotalWithSearchAndType(@Param("search") Search search);
 
     // 펀딩 정보 수정 (tbl_funding 및 tbl_post 업데이트)
     void updateFunding(FundingDTO fundingDTO);

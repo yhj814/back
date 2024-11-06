@@ -4,9 +4,11 @@ import com.app.ggumteo.domain.file.FileVO;
 import com.app.ggumteo.domain.funding.FundingDTO;
 import com.app.ggumteo.domain.funding.FundingProductVO;
 import com.app.ggumteo.domain.post.PostVO;
+import com.app.ggumteo.pagination.Pagination;
 import com.app.ggumteo.repository.funding.FundingDAO;
 import com.app.ggumteo.repository.post.PostDAO;
 import com.app.ggumteo.repository.work.WorkDAO;
+import com.app.ggumteo.search.Search;
 import com.app.ggumteo.service.file.PostFileService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -73,9 +75,21 @@ public class FundingServiceImpl implements FundingService{
         if (thumbnailFile != null && !thumbnailFile.isEmpty()) {
             FileVO thumbnailFileVO = postFileService.saveFile(thumbnailFile, fundingDTO.getId());
             fundingDTO.setThumbnailFileId(thumbnailFileVO.getId()); // FileVO의 ID를 사용하여 설정
+            log.info("Saving ThumbnailFile: {}", thumbnailFileVO);
             fundingDAO.updateFunding(fundingDTO); // 썸네일 ID 업데이트
         }
     }
+    @Override
+    public List<FundingDTO> findFundingList(Search search, Pagination pagination) {
+        pagination.progress2();
+        return fundingDAO.findAllFundingList(search, pagination);
+    }
+
+    @Override
+    public int findTotalWithSearchAndType(Search search) {
+        return fundingDAO.findTotalWithSearchAndType(search);
+    }
+
 
     @Override
     public void updateFundingStatusToEnded() {

@@ -114,32 +114,29 @@
                                     </a>
                                 </li>
                             </div>
-
-
                             <div class="center-text pagination-box">
                                 <ul class="pagination theme-ggumteo">
                                     <!-- 이전 버튼 -->
                                     <li th:classappend="${!pagination.prev} ? 'disabled'">
                                         <a class="page-link" th:if="${pagination.prev}"
-                                           th:href="@{/text/list(page=${pagination.startPage - 5}, genreType=${genreType}, keyword=${keyword}, postType=${postType})}">이전</a>
+                                           th:href="@{/text/list(page=${pagination.startPage - 1}, genreType=${param.genreType}, postType=${param.postType}, keyword=${param.keyword})}">이전</a>
                                         <span th:unless="${pagination.prev}"></span>
                                     </li>
 
                                     <!-- 페이지 번호 -->
                                     <li th:each="i : ${#numbers.sequence(pagination.startPage, pagination.endPage)}"
                                         th:class="${pagination.page == i} ? 'page-item active' : 'page-item'">
-                                        <a class="page-link" th:href="@{/text/list(page=${i}, genreType=${genreType}, keyword=${keyword}, postType=${postType})}" th:text="${i}"></a>
+                                        <a class="page-link" th:href="@{/text/list(page=${i}, genreType=${param.genreType}, postType=${param.postType}, keyword=${param.keyword})}" th:text="${i}"></a>
                                     </li>
 
                                     <!-- 다음 버튼 -->
                                     <li th:classappend="${!pagination.next} ? 'disabled'">
                                         <a class="page-link" th:if="${pagination.next}"
-                                           th:href="@{/text/list(page=${pagination.endPage + 5}, genreType=${genreType}, keyword=${keyword}, postType=${postType})}">다음</a>
+                                           th:href="@{/text/list(page=${pagination.endPage + 1}, genreType=${param.genreType}, postType=${param.postType}, keyword=${param.keyword})}">다음</a>
                                         <span th:unless="${pagination.next}"></span>
                                     </li>
                                 </ul>
                             </div>
-
                         </div>
                     </div>
                 </div>

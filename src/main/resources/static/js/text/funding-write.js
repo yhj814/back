@@ -106,9 +106,13 @@ document.addEventListener("DOMContentLoaded", function () {
             const file = fileInput.files[0];
             if (file) {
                 const formData = new FormData();
-                formData.append("file", file);
 
-                // 파일 서버로 업로드
+                if (fileInput.id === "thumbnailFile") {
+                    formData.append("thumbnailFile", file);
+                } else {
+                    formData.append("fundingFile", file);
+                }
+
                 fetch("/text/funding/upload", {
                     method: "POST",
                     body: formData,
@@ -127,6 +131,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
     });
+
 
     const form = document.querySelector("#write-form");
     const submitButton = document.querySelector(".btn-submit");
@@ -164,7 +169,7 @@ document.addEventListener("DOMContentLoaded", function () {
             .then((response) => response.json())
             .then((data) => {
                 if (data.success) {
-                    window.location.href = "/text/list"; // 성공 시 리스트 페이지로 이동
+                    window.location.href = "/text/funding/list"; // 성공 시 리스트 페이지로 이동
                 } else {
                     alert("저장 중 오류가 발생했습니다.");
                 }
