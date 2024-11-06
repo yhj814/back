@@ -1,6 +1,5 @@
-package com.app.ggumteo.domain.work;
+package com.app.ggumteo.domain.buy;
 
-import com.app.ggumteo.domain.funding.BuyFundingProductDTO;
 import com.app.ggumteo.pagination.SettingTablePagination;
 import lombok.Getter;
 import lombok.Setter;
