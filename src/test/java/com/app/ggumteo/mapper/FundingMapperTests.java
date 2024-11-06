@@ -9,7 +9,9 @@ import com.app.ggumteo.mapper.funding.BuyFundingProductMapper;
 import com.app.ggumteo.mapper.funding.FundingMapper;
 import com.app.ggumteo.mapper.post.PostMapper;
 import com.app.ggumteo.pagination.MyPagePagination;
+import com.app.ggumteo.pagination.Pagination;
 import com.app.ggumteo.pagination.SettingTablePagination;
+import com.app.ggumteo.search.Search;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +49,7 @@ public class FundingMapperTests {
         settingTablePagination.setTotal(buyFundingProductMapper.selectCount(fundingDTO.getId()));
         settingTablePagination.progress();
         buyFundingProductMapper.selectByFundingPostId(
-                settingTablePagination, fundingDTO.getId()).stream()
+                        settingTablePagination, fundingDTO.getId()).stream()
                 .map(BuyFundingProductDTO::toString).forEach(log::info);
     }
 
@@ -99,30 +101,33 @@ public class FundingMapperTests {
 
         log.info("펀딩 및 펀딩 상품이 성공적으로 삽입되었습니다.");
     }
+    @Test
+    public void testSelectFundingList() {
+        // 검색 및 페이지네이션 설정
+        Search search = new Search();
+        search.setKeyword(""); // 검색 키워드를 설정 (예: "테스트" 등). 검색 키워드가 없으면 전체 조회.
+        search.setGenreType(""); // 장르 필터를 설정 (예: "comedy"). 필터가 없으면 전체 조회.
+        search.setPostType("TEXT"); // 포스트 타입 설정 (예: "TEXT", "VIDEO")
 
-//    @Test
-//    public void testUpdateFunding() {
-//        // 기존 펀딩 정보를 조회
-//        Long fundingId = 1L; // 수정할 펀딩 ID 설정
-//        FundingDTO fundingDTO = fundingMapper.selectById(fundingId);
-//
-//        if (fundingDTO == null) {
-//            log.info("펀딩 정보를 찾을 수 없습니다. ID: {}", fundingId);
-//            return;
-//        }
-//
-//        // 수정할 내용 설정
-//        fundingDTO.setGenreType("action");
-//        fundingDTO.setInvestorNumber(150);
-//        fundingDTO.setTargetPrice(600000);
-//        fundingDTO.setConvergePrice(300000);
-//        fundingDTO.setFundingContent("수정된 펀딩 상세 설명");
-//        fundingDTO.setFundingStatus("펀딩 완료");
-//
-//        // Mapper를 통해 업데이트
-//        fundingMapper.updateFunding(fundingDTO);
-//
-//        log.info("펀딩 정보가 성공적으로 수정되었습니다. ID: {}", fundingId);
-//    }
+        Pagination pagination = new Pagination();
+        pagination.setPage(1); // 첫 번째 페이지
+        pagination.progress2(); // 페이지네이션 계산을 위한 progress2 호출
+
+        // FundingMapper를 통해 목록 조회
+        List<FundingDTO> fundingList = fundingMapper.selectFundingList(search, pagination);
+
+        // 조회된 펀딩 목록 출력
+        if (fundingList.isEmpty()) {
+            log.info("조회된 펀딩 목록이 없습니다.");
+        } else {
+            fundingList.stream()
+                    .map(FundingDTO::toString)
+                    .forEach(log::info);
+        }
+    }
+
+
+
+
 }
 

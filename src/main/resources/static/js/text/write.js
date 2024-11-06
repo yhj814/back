@@ -165,14 +165,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // 버튼 활성화 확인 함수
     function checkFormCompletion() {
-        // 파일 업로드가 완료되었는지 확인
-        const allFilesUploaded = Array.from(fileInputs).every(
+        // 파일 업로드가 하나라도 완료되었는지 확인
+        const isAnyFileUploaded = Array.from(fileInputs).some(
             (fileInput) => fileInput.files.length > 0
         );
+
         // 텍스트 필드가 비어있지 않은지 확인
         const isInputValid = inputElement && inputElement.value.trim() !== "";
         const isTextareaValid =
             textareaElement && textareaElement.value.trim() !== "";
+
         // 라디오 버튼이 선택되었는지 확인
         const isRadioSelected = Array.from(radioButtons).some(
             (radio) => radio.checked
@@ -180,7 +182,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // 모든 조건을 만족하면 버튼 활성화, 그렇지 않으면 비활성화
         if (
-            allFilesUploaded &&
+            isAnyFileUploaded &&
             isInputValid &&
             isTextareaValid &&
             isRadioSelected
@@ -233,26 +235,8 @@ function setupEventListeners(imgBox) {
 
     const btnDeleteImage = imgBox.querySelector(".btn-edit-item:nth-child(2)");
     btnDeleteImage.addEventListener("click", function () {
-        // 미리보기 이미지 및 관련 요소 초기화
-        preview.src =
-            "https://www.wishket.com/static/renewal/img/partner/profile/icon_btn_add_portfolio_image.png"; // 기본 이미지
-        videoPreview.src = ""; // 비디오 미리보기 초기화
-        videoPreview.style.display = "none"; // 비디오 미리보기 숨기기
-        const imgCaptionBox = imgBox.querySelector(".img-caption-box");
-        const title = imgBox.querySelector(".img-box-title");
-        const text = imgBox.querySelector(".img-box-text");
-        const help = imgBox.querySelector(".img-box-help");
-
-        imgCaptionBox.style.display = "none"; // 캡션 입력 박스 숨기기
-        title.style.display = "block"; // 제목 다시 보이기
-        text.style.display = "block"; // 설명 다시 보이기
-        help.style.display = "block"; // 도움말 다시 보이기
-
-        // 삭제버튼 누를 시 div 전체 삭제
-        imgBox.style.display = "none";
-
-        // 파일 입력 필드 초기화
-        fileUpload.value = ""; // 파일 입력 필드 초기화
+        // img-box-list 전체 삭제
+        imgBox.remove();
     });
 }
 
@@ -287,11 +271,6 @@ document.querySelector(".img-add").addEventListener("click", function () {
                     <input id="file-upload-${timestamp}" type="file" name="workFile" accept="image/*,video/*" style="display: none;" />
                 </div>
             </div>
-<!--            <div class="img-caption-box" style="display: none;">-->
-<!--                <div class="default-input-partner">-->
-<!--                    <input type="text" class="img-caption-box-content" placeholder="올린 파일에 대한 설명을 입력해주세요." />-->
-<!--                </div>-->
-<!--            </div>-->
         </div>
     `;
 

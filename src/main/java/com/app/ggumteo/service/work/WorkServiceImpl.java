@@ -61,13 +61,21 @@ public class WorkServiceImpl implements WorkService {
                 }
             }
         }
+
         // 썸네일 파일 처리
         if (thumbnailFile != null && !thumbnailFile.isEmpty()) {
+            // 사용자가 업로드한 썸네일이 있는 경우 처리
             FileVO thumbnailFileVO = postFileService.saveFile(thumbnailFile, workDTO.getId());
             workDTO.setThumbnailFileId(thumbnailFileVO.getId()); // FileVO의 ID를 사용하여 설정
             workDAO.updateWork(workDTO); // 썸네일 ID 업데이트
+        } else {
+            // 썸네일 파일이 없는 경우 기본 이미지 설정
+            String defaultThumbnailPath = "https://www.wishket.com/static/renewal/img/partner/profile/icon_btn_add_portfolio_image.png";
+            workDTO.setThumbnailFilePath(defaultThumbnailPath); // 기본 썸네일 경로 설정
+            workDAO.updateWork(workDTO); // 기본 썸네일 경로 업데이트
         }
     }
+
 
 
     @Override
