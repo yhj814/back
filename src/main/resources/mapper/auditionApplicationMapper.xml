@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.app.ggumteo.mapper.audition.AuditionApplicationMapper">
+
+    <!-- 신청 정보 삽입 -->
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO tbl_audition_application (member_profile_id, apply_etc, audition_id, confirm_status)
+        VALUES (#{memberProfileId}, #{applyEtc}, #{auditionId}, #{confirmStatus})
+    </insert>
+</mapper>
