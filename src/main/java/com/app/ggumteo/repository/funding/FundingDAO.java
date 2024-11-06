@@ -1,5 +1,6 @@
 package com.app.ggumteo.repository.funding;
 
+import com.app.ggumteo.domain.file.PostFileDTO;
 import com.app.ggumteo.domain.funding.FundingDTO;
 import com.app.ggumteo.domain.funding.FundingProductVO;
 import com.app.ggumteo.mapper.funding.FundingMapper;
@@ -34,15 +35,15 @@ public class FundingDAO {
         return fundingMapper.selectById(id, postType);
     }
 
+
+
     // 펀딩 삽입 메서드
     public void save(FundingDTO fundingDTO) {
         if (fundingDTO.getFundingStatus() == null) {
             fundingDTO.setFundingStatus("펀딩 중");
         }
-
         fundingMapper.insert(fundingDTO);
     }
-
 
     // 펀딩 상품 삽입 메서드
     public void saveFundingProduct(FundingProductVO fundingProductVO) {
@@ -54,6 +55,7 @@ public class FundingDAO {
         return fundingMapper.selectFundingList(search, pagination);
     }
 
+    // 검색 조건이 포함된 총 펀딩 수 조회
     public int findTotalWithSearchAndType(Search search) {
         return fundingMapper.selectTotalWithSearchAndType(search);
     }
@@ -62,9 +64,32 @@ public class FundingDAO {
     public void updateFunding(FundingDTO fundingDTO) {
         fundingMapper.updateFunding(fundingDTO);
     }
+
     // 펀딩 상태 갱신 (펀딩 중 -> 펀딩 종료)
     public void updateFundingStatusToEnded() {
         fundingMapper.updateFundingStatusToEnded();
+    }
+    // 펀딩 상세보기
+    public List<FundingDTO> findByFundingId(Long id) {
+        return fundingMapper.selectFundingById(id);
+    }
+
+    // 다중 파일 조회 (작품 상세보기)
+    public List<PostFileDTO> findFilesByPostId(Long postId) {
+        return fundingMapper.selectFilesByPostId(postId);
+    }
+
+    // 펀딩 상품 정보 조회
+    public List<FundingProductVO> findFundingProductsByFundingId(Long fundingId) {
+        List<FundingProductVO> fundingProducts = fundingMapper.selectFundingProductsByFundingId(fundingId);
+        log.info("Found products for Funding ID {}: {}", fundingId, fundingProducts);
+        return fundingProducts;
+    }
+
+
+    // 같은 장르의 펀딩 게시글 조회
+    public List<FundingDTO> findRelatedFundingByGenre(String genreType, Long fundingId) {
+        return fundingMapper.selectRelatedFundingByGenre(genreType, fundingId);
     }
 }
 
