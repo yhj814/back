@@ -622,7 +622,7 @@ img {
     opacity: 0.6;
     border-radius: 4px;
     background-color: #000;
-    display: none;
+    display: block;
 }
 .btn-edit-item {
     display: inline-block;

@@ -276,18 +276,18 @@ function showReporProcessingtModal(sectionId) {
     const backgroundOverlayVideo = document.querySelector(
         `${sectionId} .video.report-management-modal .background-overlay`
     );
-    // 신고 버튼 클릭했을 때
-    btnsVideo.forEach((btns) => {
-        btns.addEventListener("click", () => {
-            // 모달창 나옴.
-            modalVideo.style.display = "flex";
-        });
-    });
+    // // 신고 버튼 클릭했을 때
+    // btnsVideo.forEach((btns) => {
+    //     btns.addEventListener("click", () => {
+    //         // 모달창 나옴.
+    //         modalVideo.style.display = "flex";
+    //     });
+    // });
     // 백그라운드 클릭했을 때
-    backgroundOverlayVideo.addEventListener("click", () => {
-        // 모달창 사라짐.
-        modalVideo.style.display = "none";
-    });
+    // backgroundOverlayVideo.addEventListener("click", () => {
+    //     // 모달창 사라짐.
+    //     modalVideo.style.display = "none";
+    // });
     // 신고 처리 선택 및 저장
     const choiceBtnsVideo = document.querySelectorAll(
         `${sectionId} .video.report-management-modal .choice-container > input[type=button]`
@@ -331,18 +331,18 @@ function showReporProcessingtModal(sectionId) {
     const backgroundOverlayText = document.querySelector(
         `${sectionId} .text.report-management-modal .background-overlay`
     );
-    // 신고관리 버튼 클릭했을 때
-    btnsText.forEach((btns) => {
-        btns.addEventListener("click", () => {
-            // 모달창 나옴.
-            modalText.style.display = "flex";
-        });
-    });
+    // // 신고관리 버튼 클릭했을 때
+    // btnsText.forEach((btns) => {
+    //     btns.addEventListener("click", () => {
+    //         // 모달창 나옴.
+    //         modalText.style.display = "flex";
+    //     });
+    // });
     // 백그라운드 클릭했을 때
-    backgroundOverlayText.addEventListener("click", () => {
-        // 모달창 사라짐.
-        modalText.style.display = "none";
-    });
+    // backgroundOverlayText.addEventListener("click", () => {
+    //     // 모달창 사라짐.
+    //     modalText.style.display = "none";
+    // });
     // 신고 처리 선택 및 저장
     const choiceBtnsText = document.querySelectorAll(
         `${sectionId} .text.report-management-modal .choice-container > input[type=button]`
@@ -395,22 +395,22 @@ function showReportDetailsModal(sectionId) {
     );
 
     // 신고 사유 버튼 클릭했을 때
-    btnsVideo.forEach((btn) => {
-        btn.addEventListener("click", () => {
-            // 모달창 나옴.
-            modalVideo.style.display = "flex";
-        });
-    });
+    // btnsVideo.forEach((btn) => {
+    //     btn.addEventListener("click", () => {
+    //         // 모달창 나옴.
+    //         modalVideo.style.display = "flex";
+    //     });
+    // });
     // 닫기 버튼 클릭했을 때
-    closeBtnsVideo.addEventListener("click", () => {
-        // 모달창 사라짐.
-        modalVideo.style.display = "none";
-    });
-    // 백그라운드 클릭했을 때
-    backgroundOverlayVideo.addEventListener("click", () => {
-        // 모달창 사라짐.
-        modalVideo.style.display = "none";
-    });
+    // closeBtnsVideo.addEventListener("click", () => {
+    //     // 모달창 사라짐.
+    //     modalVideo.style.display = "none";
+    // });
+    // // 백그라운드 클릭했을 때
+    // backgroundOverlayVideo.addEventListener("click", () => {
+    //     // 모달창 사라짐.
+    //     modalVideo.style.display = "none";
+    // });
 
     const btnsText = document.querySelectorAll(
         `${sectionId} .text-wrapper .reasons-report-btn`
@@ -421,27 +421,27 @@ function showReportDetailsModal(sectionId) {
     const closeBtnsText = document.querySelector(
         `${sectionId} .text.reasons-report-modal .close-btn`
     );
-    const backgroundOverlayText = document.querySelector(
-        `${sectionId} .text.reasons-report-modal .background-overlay`
-    );
+    // const backgroundOverlayText = document.querySelector(
+    //     `${sectionId} .text.reasons-report-modal .background-overlay`
+    // );
 
     // 신고 사유 버튼 클릭했을 때
-    btnsText.forEach((btn) => {
-        btn.addEventListener("click", () => {
-            // 모달창 나옴.
-            modalText.style.display = "flex";
-        });
-    });
+    // btnsText.forEach((btn) => {
+    //     btn.addEventListener("click", () => {
+    //         // 모달창 나옴.
+    //         modalText.style.display = "flex";
+    //     });
+    // });
     // 닫기 버튼 클릭했을 때
     closeBtnsText.addEventListener("click", () => {
         // 모달창 사라짐.
         modalText.style.display = "none";
     });
-    // 백그라운드 클릭했을 때
-    backgroundOverlayText.addEventListener("click", () => {
-        // 모달창 사라짐.
-        modalText.style.display = "none";
-    });
+    // // 백그라운드 클릭했을 때
+    // backgroundOverlayText.addEventListener("click", () => {
+    //     // 모달창 사라짐.
+    //     modalText.style.display = "none";
+    // });
 }
 showReportDetailsModal("#work-section");
 showReportDetailsModal("#funding-section");
@@ -460,18 +460,18 @@ function showReviewDetailModal(sectionId) {
         `${sectionId} .video.review-detail-modal .background-overlay`
     );
 
-    // 신고 사유 버튼 클릭했을 때
-    btnsVideo.forEach((btn) => {
-        btn.addEventListener("click", () => {
-            // 모달창 나옴.
-            modalVideo.style.display = "flex";
-        });
-    });
+    // // 신고 사유 버튼 클릭했을 때
+    // btnsVideo.forEach((btn) => {
+    //     btn.addEventListener("click", () => {
+    //         // 모달창 나옴.
+    //         modalVideo.style.display = "flex";
+    //     });
+    // });
     // 백그라운드 클릭했을 때
-    backgroundOverlayVideo.addEventListener("click", () => {
-        // 모달창 사라짐.
-        modalVideo.style.display = "none";
-    });
+    // backgroundOverlayVideo.addEventListener("click", () => {
+    //     // 모달창 사라짐.
+    //     modalVideo.style.display = "none";
+    // });
 
     const btnsText = document.querySelectorAll(
         `${sectionId} .text-wrapper .apply-table-cell.detail`
@@ -483,18 +483,18 @@ function showReviewDetailModal(sectionId) {
         `${sectionId} .text.review-detail-modal .background-overlay`
     );
 
-    // 신고 사유 버튼 클릭했을 때
-    btnsText.forEach((btn) => {
-        btn.addEventListener("click", () => {
-            // 모달창 나옴.
-            modalText.style.display = "flex";
-        });
-    });
+    // // 신고 사유 버튼 클릭했을 때
+    // btnsText.forEach((btn) => {
+    //     btn.addEventListener("click", () => {
+    //         // 모달창 나옴.
+    //         modalText.style.display = "flex";
+    //     });
+    // });
     // 백그라운드 클릭했을 때
-    backgroundOverlayText.addEventListener("click", () => {
-        // 모달창 사라짐.
-        modalText.style.display = "none";
-    });
+    // backgroundOverlayText.addEventListener("click", () => {
+    //     // 모달창 사라짐.
+    //     modalText.style.display = "none";
+    // });
 }
 showReviewDetailModal("#review-section");
 

@@ -48,6 +48,10 @@ body {
     font-smoothing: antialiased;
 }
 
+.main{
+    margin-top: 72px;
+}
+
 .gaia {
     min-width: 1080px;
     height: auto;
@@ -230,14 +234,14 @@ body {
     margin-right: 10px;
     color: #222;
     font-size: 20px;
-    line-height: 27px;
+    line-height: 34px;
 }
 
 .section-search > .header .cnt-result {
     float: left;
     margin-top: 8px;
     color: #949494;
-    line-height: 17px;
+    line-height: 23px;
 }
 
 .section-search > .header:after {
@@ -474,7 +478,6 @@ a {
     min-height: 20px;
     border-top: 1px solid #e6e6e6;
     text-align: center;
-    margin: 40px auto 50px;
 }
 
 .pagination {
@@ -855,4 +858,23 @@ a {
     width: 52px;
     border: 1px solid gray;
     color: gray;
+}
+
+.btn-create-div {
+    height: 10px;
+    padding: 0px;
+}
+
+.btn-create-div .btn-create-comment {
+    font-size: 14px;
+    font-weight: 400;
+    padding: 7px 10px 5px 12px;
+    line-height: 16px;
+    background-color: #2099bb;
+    border-radius: 8px;
+    border: none;
+    color: #ffffff;
+    width: 80px;
+    height: 29px;
+    float: right;
 }

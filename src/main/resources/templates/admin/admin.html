@@ -753,23 +753,23 @@
 
                         <!-- 2. 글 -->
                         <div>
-                            <div class="text-wrapper">
+                            <div class="text-wrapper" id="text-report">
                                 <!-- body_layout -->
                                 <div class="common-layout-container">
                                     <div class="filter-wrap">
-                                        <div class="sort-filter-options">
-                                                    <span class="sort-filter-option"
+                                        <div class="sort-filter-options" id="text-report-filter">
+                                                    <span class="sort-filter-option selected text"
                                                     >작성일 순</span
                                                     >
-                                            <span class="sort-filter-option"
+                                            <span class="sort-filter-option text"
                                             >조회수 순</span
                                             >
-                                            <span class="sort-filter-option"
+                                            <span class="sort-filter-option text"
                                             >평점수 순</span
                                             >
                                             <!-- 신고관리 defalt  -->
                                             <span
-                                                    class="sort-filter-option selected"
+                                                    class="sort-filter-option text"
                                             >신고관리</span
                                             >
                                         </div>
@@ -778,6 +778,7 @@
                                             <input
                                                     type="text"
                                                     class="filter-search-input"
+                                                    id="text-report-search"
                                                     placeholder="통합검색"
                                             />
                                             <div class="btn-wrapper">
@@ -798,6 +799,7 @@
                                         >
                                             <div
                                                     class="apply-table-cell apply-header-cell select-all-cell"
+                                                    id="text-report-selectAll"
                                             >
                                                 <input
                                                         type="checkbox"
@@ -858,242 +860,14 @@
                                         </div>
 
                                         <!-- Example row (Initial data) -->
-                                        <div class="apply-table-row">
-                                            <div class="apply-table-cell">
-                                                <input
-                                                        type="checkbox"
-                                                        class="apply-checkbox"
-                                                />
-                                            </div>
-                                            <div class="apply-table-cell">1</div>
-                                            <div class="apply-table-cell">
-                                                홍길동
-                                            </div>
-                                            <div class="apply-table-cell">
-                                                2024-01-01
-                                            </div>
-
-                                            <div class="apply-table-cell">
-                                                드라마
-                                            </div>
-                                            <div
-                                                    class="apply-table-cell post-title"
-                                            >
-                                                <a href=""
-                                                >글 작품 테스트 제목입니다.</a
-                                                >
-                                            </div>
-                                            <div class="apply-table-cell">30</div>
-                                            <div class="apply-table-cell">4.5</div>
-                                            <div class="apply-table-cell">
-                                                10,000원
-                                            </div>
-                                            <div class="apply-table-cell">
-                                                <button
-                                                        class="report-management-btn status hold"
-                                                >
-                                                    보류
-                                                </button>
-                                            </div>
-                                            <div class="apply-table-cell">
-                                                <button class="reasons-report-btn">
-                                                    보기
-                                                </button>
-                                            </div>
-                                        </div>
-                                        <div class="apply-table-row">
-                                            <div class="apply-table-cell">
-                                                <input
-                                                        type="checkbox"
-                                                        class="apply-checkbox"
-                                                />
-                                            </div>
-                                            <div class="apply-table-cell">2</div>
-                                            <div class="apply-table-cell">
-                                                홍길동
-                                            </div>
-                                            <div class="apply-table-cell">
-                                                2024-01-01
-                                            </div>
-
-                                            <div class="apply-table-cell">
-                                                코미디
-                                            </div>
-                                            <div
-                                                    class="apply-table-cell post-title"
-                                            >
-                                                <a href=""
-                                                >글 작품 테스트 제목입니다.</a
-                                                >
-                                            </div>
-                                            <div class="apply-table-cell">100</div>
-                                            <div class="apply-table-cell">4.9</div>
-                                            <div class="apply-table-cell">-</div>
-                                            <div class="apply-table-cell">-</div>
-                                            <div class="apply-table-cell edit">
-                                                -
-                                            </div>
-                                        </div>
-                                        <div class="apply-table-row">
-                                            <div class="apply-table-cell">
-                                                <input
-                                                        type="checkbox"
-                                                        class="apply-checkbox"
-                                                />
-                                            </div>
-                                            <div class="apply-table-cell">3</div>
-                                            <div class="apply-table-cell">
-                                                홍길동
-                                            </div>
-                                            <div class="apply-table-cell">
-                                                2024-01-01
-                                            </div>
-
-                                            <div class="apply-table-cell">액션</div>
-                                            <div
-                                                    class="apply-table-cell post-title"
-                                            >
-                                                <a href=""
-                                                >글 작품 테스트 제목입니다.</a
-                                                >
-                                            </div>
-                                            <div class="apply-table-cell">0</div>
-                                            <div class="apply-table-cell">-</div>
-                                            <div class="apply-table-cell">-</div>
-                                            <div class="apply-table-cell">
-                                                <button
-                                                        class="report-management-btn status report"
-                                                >
-                                                    신고
-                                                </button>
-                                            </div>
-                                            <div class="apply-table-cell edit">
-                                                <button class="reasons-report-btn">
-                                                    보기
-                                                </button>
-                                            </div>
-                                        </div>
-                                        <div class="apply-table-row">
-                                            <div class="apply-table-cell">
-                                                <input
-                                                        type="checkbox"
-                                                        class="apply-checkbox"
-                                                />
-                                            </div>
-                                            <div class="apply-table-cell">4</div>
-                                            <div class="apply-table-cell">
-                                                홍길동
-                                            </div>
-                                            <div class="apply-table-cell">
-                                                2024-01-01
-                                            </div>
-
-                                            <div class="apply-table-cell">액션</div>
-                                            <div
-                                                    class="apply-table-cell post-title"
-                                            >
-                                                <a href=""
-                                                >글 작품 테스트 제목입니다.</a
-                                                >
-                                            </div>
-                                            <div class="apply-table-cell">1</div>
-                                            <div class="apply-table-cell">3.0</div>
-                                            <div class="apply-table-cell">
-                                                30,000원
-                                            </div>
-                                            <div class="apply-table-cell">
-                                                <button
-                                                        class="status delete-processing"
-                                                >
-                                                    삭제 처리
-                                                </button>
-                                            </div>
-                                            <div class="apply-table-cell">
-                                                <button class="reasons-report-btn">
-                                                    보기
-                                                </button>
-                                            </div>
-                                        </div>
-                                        <div class="apply-table-row">
-                                            <div class="apply-table-cell">
-                                                <input
-                                                        type="checkbox"
-                                                        class="apply-checkbox"
-                                                />
-                                            </div>
-                                            <div class="apply-table-cell">5</div>
-                                            <div class="apply-table-cell">
-                                                홍길동
-                                            </div>
-                                            <div class="apply-table-cell">
-                                                2024-01-01
-                                            </div>
-
-                                            <div class="apply-table-cell">액션</div>
-                                            <div
-                                                    class="apply-table-cell post-title"
-                                            >
-                                                <a href=""
-                                                >글 작품 테스트 제목입니다.</a
-                                                >
-                                            </div>
-                                            <div class="apply-table-cell">1</div>
-                                            <div class="apply-table-cell">3.0</div>
-                                            <div class="apply-table-cell">
-                                                30,000원
-                                            </div>
-                                            <div class="apply-table-cell">
-                                                <button
-                                                        class="status no-issue"
-                                                >
-                                                    이상 없음
-                                                </button>
-                                            </div>
-                                            <div class="apply-table-cell">
-                                                <button class="reasons-report-btn">
-                                                    보기
-                                                </button>
-                                            </div>
+                                        <div id="work-text-report-list">
+                                            <!-- js로 삽입-->
                                         </div>
                                     </div>
                                 </div>
                                 <nav class="pagination">
-                                    <ul class="pagination-list">
-                                        <!-- 이전 페이지로 이동하는 버튼 -->
-                                        <li class="pagination-prev">
-                                            <a
-                                                    href="#"
-                                                    class="pagination-prev-link"
-                                                    rel="prev nofollow"
-                                            >
-                                                        <span
-                                                                class="pagination-prev-icon"
-                                                                aria-hidden="true"
-                                                        >‹</span
-                                                        >
-                                            </a>
-                                        </li>
-                                        <!-- 페이지 번호 버튼 -->
-                                        <li class="pagination-page active">
-                                            <a href="#" class="pagination-page-link"
-                                            >1</a
-                                            >
-                                        </li>
-
-                                        <!-- 다음 페이지로 이동하는 버튼 -->
-                                        <li class="pagination-next">
-                                            <a
-                                                    href="#"
-                                                    class="pagination-next-link"
-                                                    rel="next nofollow"
-                                            >
-                                                        <span
-                                                                class="pagination-next-icon"
-                                                                aria-hidden="true"
-                                                        >›</span
-                                                        >
-                                            </a>
-                                        </li>
+                                    <ul class="pagination-list" id="pagination-text-report">
+                                        <!--  js로 삽입-->
                                     </ul>
                                 </nav>
                             </div>
@@ -1107,7 +881,7 @@
                                                     문자 내용을 입력해주세요.
                                                 </div>
                                                 <textarea
-                                                        name="reason"
+                                                        name="reasonText"
                                                         rows="4"
                                                         cols="50"
                                                 ></textarea>
@@ -1115,7 +889,7 @@
                                         </form>
                                     </div>
                                     <div class="save">
-                                        <button type="button" class="save-button">
+                                        <button type="button" class="save-button text">
                                             발송하기
                                         </button>
                                     </div>
@@ -1123,24 +897,27 @@
                                 <div class="background-overlay"></div>
                             </div>
                             <!-- 신고관리 모달창 -->
-                            <div class="report-management-modal text">
+                            <div class="report-management-modal text" id="text-report-modal" >
                                 <div class="background-overlay"></div>
                                 <div class="modal-content">
                                     <div class="choice-container">
                                         <input
                                                 class="btn-delete-processing"
                                                 type="button"
-                                                value="삭제 처리"
+                                                value="DELETE"
+                                                data-status="DELETE"
                                         />
                                         <input
                                                 class="btn-hold"
                                                 type="button"
-                                                value="보류"
+                                                value="HOLD"
+                                                data-status="HOLD"
                                         />
                                         <input
                                                 class="btn-no-issue"
                                                 type="button"
-                                                value="이상 없음"
+                                                value="NOPROBLEM"
+                                                data-status="NOPROBLEM"
                                         />
                                     </div>
                                     <div class="button-container">
@@ -1150,7 +927,7 @@
                             </div>
                             <!-- 여기까지(신고관리 모달창)!! -->
                             <!-- 신고내역 모달창 -->
-                            <div class="reasons-report-modal text">
+                            <div class="reasons-report-modal text" id="text-report-modal-content">
                                 <div class="modal-content">
                                     <div class="reasons-report-header">
                                         <div class="header-title-wrapper">
@@ -1176,7 +953,7 @@
                                                     >
                                                         <strong>이름 :</strong>
                                                         <span class="name">
-                                                                    정지수
+                                                                    신고자이름
                                                                 </span>
                                                     </p>
                                                     <p
@@ -1184,7 +961,7 @@
                                                     >
                                                         <strong>이메일 : </strong>
                                                         <span class="email"
-                                                        >000jisoo@naver.com</span
+                                                        >신고자 이메일</span
                                                         >
                                                     </p>
                                                     <p
@@ -1194,7 +971,7 @@
                                                         >신고 시간 :
                                                         </strong>
                                                         <span class="time"
-                                                        >2024-10-19 15:00</span
+                                                        >신고한시간</span
                                                         >
                                                     </p>
                                                 </div>
@@ -1209,7 +986,7 @@
                                                         name="reason"
                                                         rows="4"
                                                         cols="50"
-                                                >글 내용이 부적절합니다!</textarea
+                                                >신고내용</textarea
                                                 >
                                             </div>
                                         </form>
