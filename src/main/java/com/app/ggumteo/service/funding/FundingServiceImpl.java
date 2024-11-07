@@ -123,15 +123,17 @@ public List<FundingDTO> findFundingById(Long id) {
         return fundingDAO.findRelatedFundingByGenre(genreType, fundingId);
     }
     @Override
-    public void buyFundingProduct(Long memberId, Long productId, int amount) {
-        // 상품 수량 감소
-        buyFundingProductDAO.decrementProductAmount(productId);
+    public void buyFundingProduct(Long memberId, Long fundingId, Long fundingProductId, int productPrice) {
+        log.info("Updating convergePrice for fundingId: {}, fundingProductId: {}, with productPrice: {}", fundingId, fundingProductId, productPrice);
 
-        // 펀딩 금액 증가 (기존 productId로 fundingId를 추적하는 부분 제거)
-        buyFundingProductDAO.updateConvergePrice(productId, amount);  // productId를 fundingId로 변경해 사용
+        // 상품 수량 감소 (fundingProductId 사용)
+        buyFundingProductDAO.decrementProductAmount(fundingProductId);
 
-        // 구매 내역 삽입
-        buyFundingProductDAO.insertBuyFundingProduct(memberId, productId);
+        // 펀딩 금액 증가 (fundingId 사용)
+        buyFundingProductDAO.updateConvergePrice(fundingId, productPrice);
+
+        // 구매 내역 삽입 (memberId와 fundingProductId 사용)
+        buyFundingProductDAO.insertBuyFundingProduct(memberId, fundingProductId);
     }
 
 }

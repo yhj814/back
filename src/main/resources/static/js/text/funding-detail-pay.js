@@ -22,29 +22,15 @@ document.addEventListener("DOMContentLoaded", function() {
             const productName = productElement.querySelector(".product-name span").innerText;
             const productPrice = parseInt(productElement.querySelector(".product-price .price").innerText.replace(',', ''), 10);
             const productAmount = parseInt(productElement.querySelector(".product-number .number").innerText, 10);
-            const productId = productElement.getAttribute("data-product-id"); // 변경된 부분: dataset 대신 getAttribute 사용
+            const fundingProductId = productElement.getAttribute("data-product-id");
 
-            console.log("Product ID:", productId);
+            console.log("Funding Product ID:", fundingProductId);
             console.log("Product Name:", productName);
             console.log("Product Price:", productPrice);
             console.log("Product Amount:", productAmount);
 
             // 데이터 누락 체크
-            if (!fundingId) {
-                console.error("Funding ID is missing.");
-            }
-            if (!memberProfileId) {
-                console.error("Member Profile ID is missing.");
-            }
-            if (!productId) {
-                console.error("Product ID is missing.");
-            }
-            if (isNaN(productAmount)) {
-                console.error("Product Amount is missing or invalid.");
-            }
-
-            // 결제에 필요한 정보가 모두 존재하는지 확인
-            if (!fundingId || !memberProfileId || !productId || isNaN(productAmount)) {
+            if (!fundingId || !memberProfileId || !fundingProductId || isNaN(productAmount)) {
                 alert("결제에 필요한 정보가 누락되었습니다. 다시 확인해 주세요.");
                 return;
             }
@@ -54,7 +40,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 application_id: "66c6a759a3175898bd6e499c",
                 price: productPrice,
                 order_name: productName,
-                order_id: "funding_" + new Date().getTime(),  // 고유 주문 번호
+                order_id: "funding_" + new Date().getTime(),
                 pg: "카카오페이",
                 method: "간편",
                 tax_free: 0,
@@ -66,7 +52,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 },
                 items: [
                     {
-                        id: productId,  // 상품 ID로 구분
+                        id: fundingProductId,
                         name: productName,
                         qty: 1,
                         price: productPrice
@@ -79,11 +65,11 @@ document.addEventListener("DOMContentLoaded", function() {
                 }
             })
                 .then(async (response) => {
-                    console.log("결제 응답:", response); // 결제 성공 응답 로그 출력
+                    console.log("결제 응답:", response);
                     // 결제 성공 시 서버에 데이터 전송
-                    await completePayment(fundingId, memberProfileId, productId, productAmount);
+                    await completePayment(fundingId, memberProfileId, fundingProductId, productPrice, productAmount);
                     alert("결제가 성공적으로 완료되었습니다.");
-                    window.location.href = `/funding/detail/${fundingId}`; // 성공 후 상세 페이지로 리다이렉트
+                    window.location.href = `/text/funding/detail/${fundingId}`;
                 })
                 .catch((error) => {
                     console.error("결제 요청 중 오류 발생:", error.message);
@@ -93,9 +79,8 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 });
 
-
 // 결제 완료 시 서버로 데이터 전송 함수
-async function completePayment(fundingId, memberProfileId, productId, amount) {
+async function completePayment(fundingId, memberProfileId, fundingProductId, productPrice, amount) {
     try {
         const response = await fetch("/text/funding/order", {
             method: "POST",
@@ -103,7 +88,8 @@ async function completePayment(fundingId, memberProfileId, productId, amount) {
             body: JSON.stringify({
                 fundingId: fundingId,
                 memberProfileId: memberProfileId,
-                productId: productId,
+                productId: fundingProductId,
+                productPrice: productPrice,
                 amount: amount
             })
         });
