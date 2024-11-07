@@ -10,12 +10,11 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 public interface WorkService {
-    void write(WorkDTO workDTO, MultipartFile[] workFiles, MultipartFile thumbnailFile);
+    void write(WorkDTO workDTO, List<MultipartFile> workFiles, MultipartFile thumbnailFile); // thumbnailFile 타입 수정
 
     WorkDTO findWorkById(Long id);
 
     void updateWork(WorkDTO workDTO, List<MultipartFile> newFiles, List<Long> deletedFileIds, MultipartFile newThumbnailFile);
-
 
     void deleteWorkById(Long id);
 
@@ -27,11 +26,9 @@ public interface WorkService {
 
     List<WorkDTO> findAllWithThumbnailAndSearchAndType(Search search, Pagination pagination);
 
-
     List<WorkDTO> getThreeWorksByGenre(String genreType, Long workId, String postType);
 
     List<WorkDTO> getThreeWorksByAuthor(Long memberProfileId, Long workId, String postType);
-
-
-
 }
+
+

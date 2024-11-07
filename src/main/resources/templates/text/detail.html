@@ -417,8 +417,8 @@
                                             <!-- 작성자 -->
                                             <div class="author-info flex-box">
                                                 <img
-                                                    src="https://cdn.wishket.com/news_profiles/278363_20240116_5c2efa336003f792.png"
-                                                    class="author-image"
+                                                        th:src="${work.profileImgUrl}"
+                                                        class="author-image"
                                                 />
                                                 <p class="author-name"
                                                    th:text="${work.profileNickName}">

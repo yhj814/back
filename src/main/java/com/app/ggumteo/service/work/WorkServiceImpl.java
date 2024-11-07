@@ -34,9 +34,8 @@ public class WorkServiceImpl implements WorkService {
     private final PostDAO postDAO;
     private final PostFileService postFileService;  // 파일 저장 서비스 주입
 
-
     @Override
-    public void write(WorkDTO workDTO, MultipartFile[] workFiles, MultipartFile thumbnailFile) {
+    public void write(WorkDTO workDTO, List<MultipartFile> workFiles, MultipartFile thumbnailFile) {
         PostVO postVO = new PostVO();
         postVO.setPostTitle(workDTO.getPostTitle());
         postVO.setPostContent(workDTO.getPostContent());
@@ -52,33 +51,28 @@ public class WorkServiceImpl implements WorkService {
         workVO.setGenreType(workDTO.getGenreType());
         workVO.setReadCount(0);
         workVO.setFileContent(workDTO.getFileContent());
-
         workDAO.save(workVO);
         workDTO.setId(postId);
 
-        // 파일 저장 처리
-        if (workFiles != null && workFiles.length > 0) {
-            for (MultipartFile file : workFiles) {
-                if (!file.isEmpty()) {
-                    postFileService.saveFile(file, workDTO.getId());
-                }
+        // workFiles가 비어 있지 않은 경우 파일 처리
+        if (workFiles != null && !workFiles.isEmpty()) {
+            for (MultipartFile workFile : workFiles) {  // 각 MultipartFile을 처리
+                FileVO fileVO = postFileService.saveFile(workFile, workDTO.getId());
+                // 필요에 따라 fileVO의 정보를 workDTO나 다른 객체에 추가적으로 저장할 수 있음
             }
         }
 
-        // 썸네일 파일 처리
-        if (thumbnailFile != null && !thumbnailFile.isEmpty()) {
-            // 사용자가 업로드한 썸네일이 있는 경우 처리
-            FileVO thumbnailFileVO = postFileService.saveFile(thumbnailFile, workDTO.getId());
-            workDTO.setThumbnailFileId(thumbnailFileVO.getId()); // FileVO의 ID를 사용하여 설정
-            workDAO.updateWork(workDTO); // 썸네일 ID 업데이트
+        // 썸네일 파일이 있는 경우 처리
+        if (thumbnailFile != null && !thumbnailFile.isEmpty()) { // MultipartFile 체크
+            FileVO thumbnailFileVO = postFileService.saveFile(thumbnailFile, workDTO.getId()); // 저장
+            workDTO.setThumbnailFileId(thumbnailFileVO.getId());
+            workDAO.updateWork(workDTO);
         } else {
-            // 썸네일 파일이 없는 경우 기본 이미지 설정
             String defaultThumbnailPath = "https://www.wishket.com/static/renewal/img/partner/profile/icon_btn_add_portfolio_image.png";
-            workDTO.setThumbnailFilePath(defaultThumbnailPath); // 기본 썸네일 경로 설정
-            workDAO.updateWork(workDTO); // 기본 썸네일 경로 업데이트
+            workDTO.setThumbnailFilePath(defaultThumbnailPath);
+            workDAO.updateWork(workDTO);
         }
     }
-
 
 
     @Override

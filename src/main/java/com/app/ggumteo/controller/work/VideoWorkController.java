@@ -7,6 +7,7 @@ import com.app.ggumteo.domain.buy.BuyWorkDTO;
 import com.app.ggumteo.domain.file.FileVO;
 import com.app.ggumteo.domain.file.PostFileDTO;
 import com.app.ggumteo.domain.file.PostFileVO;
+import com.app.ggumteo.domain.member.MemberProfileDTO;
 import com.app.ggumteo.domain.member.MemberProfileVO;
 import com.app.ggumteo.domain.member.MemberVO;
 import com.app.ggumteo.domain.post.PostVO;
@@ -55,12 +56,19 @@ public class VideoWorkController {
     private final BuyWorkService buyWorkService;
 
     @ModelAttribute
-    public void setTestMember(HttpSession session) {
-        if (session.getAttribute("member") == null) {
-            session.setAttribute("member", new MemberVO(3L, "", "", "", "", ""));
-        }
-        if (session.getAttribute("memberProfile") == null) {
-            session.setAttribute("memberProfile", new MemberProfileVO(3L, "", "", "", 99, "", "", "", 3L, "", ""));
+    public void setMemberInfo(HttpSession session, Model model) {
+        MemberVO member = (MemberVO) session.getAttribute("member");
+        MemberProfileDTO memberProfile = (MemberProfileDTO) session.getAttribute("memberProfile");
+
+        boolean isLoggedIn = member != null;
+        model.addAttribute("isLoggedIn", isLoggedIn);
+
+        if (isLoggedIn) {
+            model.addAttribute("member", member);
+            model.addAttribute("memberProfile", memberProfile);
+            log.info("로그인 상태 - 사용자 ID: {}, 프로필 ID: {}", member.getId(), memberProfile != null ? memberProfile.getId() : "null");
+        } else {
+            log.info("비로그인 상태입니다.");
         }
     }
 
@@ -68,7 +76,7 @@ public class VideoWorkController {
     @ResponseBody
     public List<PostFileDTO> upload(@RequestParam("file") List<MultipartFile> files) {
         try {
-            return postFileService.uploadFile(files);  // 서비스의 uploadFile 메서드 호출
+            return postFileService.uploadFiles(files);  // 서비스의 uploadFiles 메서드 호출
         } catch (IOException e) {
             log.error("파일 업로드 중 오류 발생: ", e);
             return Collections.emptyList();  // 오류 발생 시 빈 리스트 반환
@@ -83,7 +91,7 @@ public class VideoWorkController {
     }
 
     @PostMapping("write")
-    public ResponseEntity<?> write(WorkDTO workDTO, @RequestParam("workFile") MultipartFile[] workFiles,
+    public ResponseEntity<?> write(WorkDTO workDTO, @RequestParam("workFile") List<MultipartFile> workFiles,
                                    @RequestParam("thumbnailFile") MultipartFile thumbnailFile) {
         try {
             MemberVO member = (MemberVO) session.getAttribute("member");
@@ -257,7 +265,8 @@ public class VideoWorkController {
             Long workId = Long.parseLong(paymentData.get("workId").toString());
             Long memberProfileId = Long.parseLong(paymentData.get("memberProfileId").toString());
 
-            MemberProfileVO memberProfile = (MemberProfileVO) session.getAttribute("memberProfile");
+            // 세션에서 MemberProfileDTO를 가져옵니다.
+            MemberProfileDTO memberProfile = (MemberProfileDTO) session.getAttribute("memberProfile");
             if (memberProfile == null) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("세션에 멤버 프로필 정보가 없습니다.");
             }

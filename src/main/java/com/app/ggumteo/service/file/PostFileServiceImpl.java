@@ -28,6 +28,7 @@ public class PostFileServiceImpl implements PostFileService {
 
     private final FileDAO fileDAO;
     private final PostFileDAO postFileDAO;
+    private final String rootPath = "C:/upload/";
 
     @Override
     public void savePostFile(PostFileVO postFileVO) {
@@ -36,36 +37,47 @@ public class PostFileServiceImpl implements PostFileService {
 
     @Override
     public FileVO saveFile(MultipartFile file, Long postId) {
-        String relativePath = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
+        String relativePath = getPath() + "/" + UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
 
         FileVO fileVO = new FileVO();
         fileVO.setFileName(relativePath);
         fileVO.setFileSize(String.valueOf(file.getSize()));
         fileVO.setFileType(file.getContentType());
-
         fileVO.setFilePath(getPath());
 
-        String rootPath = "C:/upload/";
+        // 파일 저장 경로 설정
         File saveLocation = new File(rootPath + relativePath);
         try {
             if (!saveLocation.getParentFile().exists()) {
                 saveLocation.getParentFile().mkdirs();
             }
-            file.transferTo(saveLocation);
+            file.transferTo(saveLocation);  // 파일 실제 저장
         } catch (IOException e) {
             throw new RuntimeException("파일 저장 실패", e);
         }
 
+        // DB에 파일 정보 저장
         fileDAO.save(fileVO);
-        PostFileVO postFileVO = new PostFileVO(fileVO.getId(), postId);
-        postFileDAO.insertPostFile(postFileVO);
+        postFileDAO.insertPostFile(new PostFileVO(fileVO.getId(), postId));
+
+        return fileVO;
+    }
+
+
+    @Override
+    public FileVO saveFileRecord(String fileName, Long postId) {
+        FileVO fileVO = new FileVO();
+        fileVO.setFileName(fileName);
+        fileVO.setFilePath(getPath());
+
+        fileDAO.save(fileVO);
+        postFileDAO.insertPostFile(new PostFileVO(fileVO.getId(), postId));
 
         return fileVO;
     }
 
     @Override
     public byte[] getFileData(String fileName) {
-        String rootPath = "C:/upload/";
         File file = new File(rootPath + fileName);
         try {
             if (file.exists()) {
@@ -78,11 +90,11 @@ public class PostFileServiceImpl implements PostFileService {
     }
 
     @Override
-    public List<PostFileDTO> uploadFile(List<MultipartFile> files) throws IOException {
+    public List<PostFileDTO> uploadFiles(List<MultipartFile> files) throws IOException {
         List<PostFileDTO> fileDTOs = new ArrayList<>();
+        String directoryPath = rootPath + getPath();
+        File directory = new File(directoryPath);
 
-        String rootPath = "C:/upload/" + getPath();
-        File directory = new File(rootPath);
         if (!directory.exists()) {
             directory.mkdirs();
         }
@@ -90,33 +102,30 @@ public class PostFileServiceImpl implements PostFileService {
         for (MultipartFile file : files) {
             UUID uuid = UUID.randomUUID();
             String uniqueFileName = uuid.toString() + "_" + file.getOriginalFilename();
-            String relativePath = getPath() + "/" + uniqueFileName;
+            File saveLocation = new File(directoryPath, uniqueFileName);
+            file.transferTo(saveLocation);
+
+            if (file.getContentType() != null && file.getContentType().startsWith("image")) {
+                try (FileOutputStream thumbnail = new FileOutputStream(new File(directoryPath, "t_" + uniqueFileName))) {
+                    Thumbnailator.createThumbnail(file.getInputStream(), thumbnail, 100, 100);
+                }
+            }
 
             PostFileDTO postFileDTO = new PostFileDTO();
             postFileDTO.setFileName(uniqueFileName);
             postFileDTO.setFilePath(getPath());
             postFileDTO.setFileType(file.getContentType());
             postFileDTO.setFileSize(String.valueOf(file.getSize()));
-
-            File saveLocation = new File(rootPath, uniqueFileName);
-            file.transferTo(saveLocation);
-
-            if (file.getContentType() != null && file.getContentType().startsWith("image")) {
-                try (FileOutputStream thumbnail = new FileOutputStream(new File(rootPath, "t_" + uniqueFileName))) {
-                    Thumbnailator.createThumbnail(file.getInputStream(), thumbnail, 100, 100);
-                }
-            }
             fileDTOs.add(postFileDTO);
         }
-
         return fileDTOs;
     }
 
     @Override
     public void deleteFilesByIds(List<Long> fileIds) {
         fileIds.forEach(fileId -> {
-            postFileDAO.deletePostFileByFileId(fileId); // 관계 삭제
-            fileDAO.deleteFile(fileId); // 파일 삭제
+            postFileDAO.deletePostFileByFileId(fileId);
+            fileDAO.deleteFile(fileId);
         });
     }
 
@@ -134,7 +143,6 @@ public class PostFileServiceImpl implements PostFileService {
             postFileDTO.setFileSize(fileVO.getFileSize());
             postFileDTOList.add(postFileDTO);
         }
-
         return postFileDTOList;
     }
 

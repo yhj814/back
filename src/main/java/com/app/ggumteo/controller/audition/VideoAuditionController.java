@@ -66,10 +66,10 @@ public class VideoAuditionController {
     @ResponseBody
     public List<PostFileDTO> upload(@RequestParam("file") List<MultipartFile> files) {
         try {
-            return postFileService.uploadFile(files);
+            return postFileService.uploadFiles(files);  // 서비스의 uploadFiles 메서드 호출
         } catch (IOException e) {
             log.error("파일 업로드 중 오류 발생: ", e);
-            return Collections.emptyList();
+            return Collections.emptyList();  // 오류 발생 시 빈 리스트 반환
         }
     }
 
