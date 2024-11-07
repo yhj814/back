@@ -48,5 +48,10 @@ public class AuditionApplicationServiceImpl implements AuditionApplicationServic
             auditionApplicationFileService.saveAuditionApplicationFile(applicationfile, auditionApplicationId);
         }
     }
+
+    @Override
+    public int countApplicantsByAuditionId(Long auditionId) {
+        return auditionApplicationDAO.countApplicantsByAuditionId(auditionId);
+    }
 }
 

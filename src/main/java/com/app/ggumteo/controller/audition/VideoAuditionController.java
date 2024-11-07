@@ -7,6 +7,8 @@ import com.app.ggumteo.domain.member.MemberProfileDTO;
 import com.app.ggumteo.domain.member.MemberVO;
 import com.app.ggumteo.pagination.AuditionPagination;
 import com.app.ggumteo.search.Search;
+import com.app.ggumteo.service.audition.AuditionApplicationService;
+import com.app.ggumteo.service.audition.AuditionApplicationServiceImpl;
 import com.app.ggumteo.service.audition.AuditionService;
 import com.app.ggumteo.service.file.PostFileService;
 import jakarta.servlet.http.HttpSession;
@@ -31,8 +33,10 @@ import java.util.List;
 public class VideoAuditionController {
 
     private final AuditionService auditionService;
+    private final AuditionApplicationService auditionApplicationService;
     private final HttpSession session;
     private final PostFileService postFileService;
+    private final AuditionApplicationServiceImpl auditionApplicationServiceImpl;
 
     @ModelAttribute
     public void setMemberInfo(HttpSession session, Model model) {
@@ -196,13 +200,19 @@ public class VideoAuditionController {
         AuditionDTO audition = auditionService.findAuditionById(id);
         List<PostFileDTO> postFiles = auditionService.findAllPostFiles(id);
 
+        int applicantCount = auditionApplicationService.countApplicantsByAuditionId(id);
+        log.info("지원자 수 - 모집글 ID: {}, 지원자 수: {}", id, applicantCount);
+
         model.addAttribute("audition", audition);
         model.addAttribute("postFiles", postFiles);
+        model.addAttribute("applicantCount", applicantCount);
 
         return "/audition/video/detail";
     }
 
 //    @GetMapping("/application/{id}")
-//    public String application(@PathVariable(), Model model) {}
+//    public String application(@PathVariable("id") Long id, Model model) {
+//
+//    }
 
 }
