@@ -18,8 +18,10 @@ import com.app.ggumteo.repository.funding.FundingDAO;
 import com.app.ggumteo.repository.inquiry.InquiryDAO;
 import com.app.ggumteo.repository.member.MemberDAO;
 import com.app.ggumteo.repository.work.WorkDAO;
+import com.app.ggumteo.service.file.PostFileService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
@@ -27,6 +29,7 @@ import java.util.Optional;
 @Repository
 @RequiredArgsConstructor
 @Slf4j
+@Primary
 public class MyPageServiceImpl implements MyPageService {
     private final MemberDAO memberDAO;
     private final WorkDAO workDAO;
@@ -34,6 +37,7 @@ public class MyPageServiceImpl implements MyPageService {
     private final FundingDAO fundingDAO;
     private final BuyFundingProductDAO buyFundingProductDAO;
     private final InquiryDAO inquiryDAO;
+    private final PostFileService postFileService;  // 파일 저장 서비스 주입
 
     //    회원 정보 조회
     @Override
@@ -51,6 +55,9 @@ public class MyPageServiceImpl implements MyPageService {
         workAndFundingPagination.progress();
         myWorkPosts.setWorkAndFundingPagination(workAndFundingPagination);
         myWorkPosts.setMyWorkPosts(workDAO.findByMemberId(workAndFundingPagination, memberId, PostType.WORKVIDEO.name()));
+
+        log.info("myWorkPosts.getMyWorkPosts().toString()={}", myWorkPosts.getMyWorkPosts().toString());
+        log.info("myWorkPosts.getMyWorkPosts().get(1).getThumbnailFilePath()={}", myWorkPosts.getMyWorkPosts().get(1).getThumbnailFilePath());
 
         return myWorkPosts;
     }
@@ -100,10 +107,10 @@ public class MyPageServiceImpl implements MyPageService {
     public MyFundingListDTO getMyVideoFundingList(int page , WorkAndFundingPagination workAndFundingPagination, Long memberId, String postType) {
         MyFundingListDTO myFundingPosts = new MyFundingListDTO();
         workAndFundingPagination.setPage(page);
-        workAndFundingPagination.setTotal(fundingDAO.getTotal(memberId, PostType.VIDEO.name()));
+        workAndFundingPagination.setTotal(fundingDAO.getTotal(memberId, PostType.FUNDINGVIDEO.name()));
         workAndFundingPagination.progress();
         myFundingPosts.setWorkAndFundingPagination(workAndFundingPagination);
-        myFundingPosts.setMyFundingPosts(fundingDAO.findByMemberId(workAndFundingPagination, memberId, PostType.VIDEO.name()));
+        myFundingPosts.setMyFundingPosts(fundingDAO.findByMemberId(workAndFundingPagination, memberId, PostType.FUNDINGVIDEO.name()));
 
         return myFundingPosts;
     }
@@ -153,11 +160,11 @@ public class MyPageServiceImpl implements MyPageService {
             , Long memberId, String postType) {
         MyBuyFundingListDTO fundingPostsPaidByMember = new MyBuyFundingListDTO();
         workAndFundingPagination.setPage(page);
-        workAndFundingPagination.setTotal(buyFundingProductDAO.getMyBuyFundingListTotal(memberId, PostType.VIDEO.name()));
+        workAndFundingPagination.setTotal(buyFundingProductDAO.getMyBuyFundingListTotal(memberId, PostType.FUNDINGVIDEO.name()));
         workAndFundingPagination.progress();
         fundingPostsPaidByMember.setWorkAndFundingPagination(workAndFundingPagination);
         fundingPostsPaidByMember.setMyBuyFundingPosts(buyFundingProductDAO
-                .findMyBuyFundingList(workAndFundingPagination, memberId, PostType.VIDEO.name()));
+                .findMyBuyFundingList(workAndFundingPagination, memberId, PostType.FUNDINGVIDEO.name()));
 
         return fundingPostsPaidByMember;
     }
