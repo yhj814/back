@@ -28,4 +28,28 @@ public interface BuyFundingProductMapper {
 
 //  내가 결제한 펀딩 목록 전체 갯수
     public int selectCountBuyFundingListByMember(@Param("memberId") Long memberId, @Param("postType") String postType);
+
+
+
+
+
+
+
+
+
+
+
+
+    // 펀딩 금액 업데이트
+    void updateConvergePrice(
+            @Param("fundingId") Long fundingId,
+            @Param("amount") int amount);
+
+    // 상품 수량 감소
+    void decrementProductAmount(@Param("productId") Long productId);
+
+    // 구매 정보 삽입
+    void insertBuyFundingProduct(
+            @Param("memberId") Long memberId,
+            @Param("productId") Long productId);
 }
