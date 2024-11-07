@@ -93,8 +93,7 @@ const showMyWorkList = ({myWorkPosts, workAndFundingPagination}) => {
                         <div class="btn products-image">
                             <a 
                                 ><img 
-                                    src="/member/video/my/work/display?fileName=${myWorkPost.thumbnailFilePath}"
-<!--                                    썸네일이 올라가지 않음 : 집에 돌아가서 살펴보아야 함.-->
+                                    src="/member/video/my/work/display?fileName=${myWorkPost.thumbnailFilePath}/t_${myWorkPost.thumbnailFileName}"
                             </a>
                         </div>
                     </div>

@@ -36,13 +36,14 @@ public class PostFileServiceImpl implements PostFileService {
 
     @Override
     public FileVO saveFile(MultipartFile file, Long postId) {
+        String relativePath = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
+
         FileVO fileVO = new FileVO();
-        fileVO.setFileName(file.getOriginalFilename());
+        fileVO.setFileName(relativePath);
         fileVO.setFileSize(String.valueOf(file.getSize()));
         fileVO.setFileType(file.getContentType());
 
-        String relativePath = "uploads/" + UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
-        fileVO.setFilePath(relativePath);
+        fileVO.setFilePath(getPath());
 
         String rootPath = "C:/upload/";
         File saveLocation = new File(rootPath + relativePath);
@@ -93,7 +94,7 @@ public class PostFileServiceImpl implements PostFileService {
 
             PostFileDTO postFileDTO = new PostFileDTO();
             postFileDTO.setFileName(uniqueFileName);
-            postFileDTO.setFilePath(relativePath);
+            postFileDTO.setFilePath(getPath());
             postFileDTO.setFileType(file.getContentType());
             postFileDTO.setFileSize(String.valueOf(file.getSize()));
 
