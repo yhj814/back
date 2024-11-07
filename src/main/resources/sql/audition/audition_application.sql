@@ -10,3 +10,5 @@ create table tbl_audition_application (
     constraint fk_audition_application_audition foreign key (audition_id)
     references tbl_audition(id)
 );
+
+select *from tbl_audition_application;
