@@ -18,6 +18,11 @@ document.addEventListener("DOMContentLoaded", function() {
 
     productElements.forEach((productElement) => {
 
+        // 요소가 존재하는지 확인하고 남은 수량을 가져옵니다. 요소가 없으면 기본값 0 설정
+        const productAmountElement = productElement.querySelector(".product-number .number");
+        const productAmount = productAmountElement ? parseInt(productAmountElement.innerText, 10) : 0;
+
+
         // 수량이 0인 경우 클릭 막기
         if (productAmount === 0) {
             productElement.classList.add("disabled"); // 비활성화 스타일 적용
