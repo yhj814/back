@@ -80,7 +80,7 @@ public class VideoAuditionController {
                 return "/error";
             }
 
-            auditionDTO.setPostType(PostType.VIDEO.name());
+            auditionDTO.setPostType(PostType.AUDITIONVIDEO.name());
             auditionDTO.setAuditionStatus("모집중");
             auditionDTO.setMemberProfileId(memberProfile.getId());
             auditionDTO.setMemberId(member.getId());
@@ -127,7 +127,7 @@ public class VideoAuditionController {
             log.info("수정 요청 - 삭제할 파일 ID 목록: {}", deletedFileIds);
 
             AuditionDTO currentAudition = auditionService.findAuditionById(auditionDTO.getId());
-            auditionDTO.setPostType(PostType.VIDEO.name());
+            auditionDTO.setPostType(PostType.AUDITIONVIDEO.name());
             auditionDTO.setAuditionStatus("모집중");
             if (currentAudition != null) {
                 log.info("게시글 id:{}", currentAudition.getId());
@@ -160,11 +160,11 @@ public class VideoAuditionController {
         AuditionPagination pagination = new AuditionPagination();
         pagination.setPage(page);
 
-        int totalSearchAudition = auditionService.findTotalAuditionsSearch(PostType.VIDEO, search);
+        int totalSearchAudition = auditionService.findTotalAuditionsSearch(PostType.AUDITIONVIDEO, search);
         pagination.setTotal(totalSearchAudition);
         pagination.progress();
 
-        List<AuditionDTO> auditions = auditionService.findAllAuditions(PostType.VIDEO, search, pagination);
+        List<AuditionDTO> auditions = auditionService.findAllAuditions(PostType.AUDITIONVIDEO, search, pagination);
 
         model.addAttribute("auditions", auditions);
         model.addAttribute("search", search);

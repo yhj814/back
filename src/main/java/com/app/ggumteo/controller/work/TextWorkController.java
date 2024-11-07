@@ -92,7 +92,7 @@ public class TextWorkController {
                 log.error("세션에 멤버 정보가 없습니다.");
                 return ResponseEntity.status(400).body(Collections.singletonMap("error", "세션에 멤버 정보가 없습니다."));
             }
-            workDTO.setPostType(PostType.TEXT.name());
+            workDTO.setPostType(PostType.WORKTEXT.name());
             workDTO.setMemberProfileId(member.getId());
 
             // Work 저장, 파일은 서비스에서 처리
@@ -144,7 +144,7 @@ public class TextWorkController {
             // 서비스에서 작품 업데이트 로직 실행
             workService.updateWork(workDTO, newFiles, deletedFileIds, newThumbnailFile); // 서비스로 전달
             // 수정 후 바로 리스트 페이지로 이동하여 데이터 전달
-            search.setPostType(PostType.TEXT.name());
+            search.setPostType(PostType.WORKTEXT.name());
             log.info("Received Search Parameters: {}", search);
             log.info("Received page: {}", page);
 
@@ -178,7 +178,7 @@ public class TextWorkController {
             Model model) {
 
 
-        search.setPostType(PostType.TEXT.name());
+        search.setPostType(PostType.WORKTEXT.name());
         log.info("Received Search Parameters: {}", search);
         log.info("Received page: {}", page);
 
@@ -226,8 +226,8 @@ public class TextWorkController {
         workService.incrementReadCount(id);
 
         List<PostFileDTO> postFiles = workService.findFilesByPostId(id);
-        List<WorkDTO> threeWorks = workService.getThreeWorksByGenre(work.getGenreType(), work.getId(), PostType.TEXT.name());
-        List<WorkDTO> threeAuthorWorks = workService.getThreeWorksByAuthor(work.getMemberProfileId(), work.getId(), PostType.TEXT.name());
+        List<WorkDTO> threeWorks = workService.getThreeWorksByGenre(work.getGenreType(), work.getId(), PostType.WORKTEXT.name());
+        List<WorkDTO> threeAuthorWorks = workService.getThreeWorksByAuthor(work.getMemberProfileId(), work.getId(), PostType.WORKTEXT.name());
 
         model.addAttribute("work", work);
         model.addAttribute("postFiles", postFiles);
