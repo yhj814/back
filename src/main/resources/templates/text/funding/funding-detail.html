@@ -7,7 +7,10 @@
         <title>글 펀딩 상세페이지</title>
         <link rel="stylesheet" href="/css/text/funding-detail.css" />
     </head>
-    <body class="ggumteo-funding">
+    <body class="ggumteo-funding" th:attr="data-work-id=${funding.id},data-member-id=${session.memberProfile.id},
+               data-profile-name=${session.memberProfile.profileName},
+               data-profile-phone=${session.memberProfile.profilePhone},
+               data-profile-email=${session.memberProfile.profileEmail}">
         <div class="funding-detail-page">
             <div class="container">
                 <div class="content-wrapper">
@@ -220,7 +223,7 @@
                                 </div>
                                 <!-- 펀딩가격별 상품들 -->
                                 <div class="funding-product-container">
-                                    <div th:each="product : ${funding.fundingProducts}" class="funding-product">
+                                    <div th:each="product : ${funding.fundingProducts}" class="funding-product" th:attr="data-product-id=${product.id}">
                                         <div class="product-header-title">
                                             가격별 상품소개
                                         </div>
@@ -239,7 +242,6 @@
                                         </div>
                                     </div>
                                 </div>
-
                             </div>
                         </div>
                     </div>
