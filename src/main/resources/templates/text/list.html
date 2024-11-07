@@ -81,7 +81,7 @@
                             <div class="list-box-wrapper">
                                 <li th:each="work : ${works}" style="width: 213px">
                                     <a th:href="@{/text/detail/{id}(id=${work.id})}"  class="box">
-                                        <img id="thumbnail-image" th:src="@{/text/display(fileName=${work.thumbnailFilePath})}" class="thumbnail" alt="썸네일 이미지" />
+                                        <img id="thumbnail-image" th:src="@{/text/display(fileName=${work.thumbnailFileName})}" class="thumbnail" alt="썸네일 이미지" />
                                         <div class="title" style="width: 180px" th:text="${work.postTitle}"></div>
                                         <div class="detail">
                                             <span th:text="${work.genreType}"></span>

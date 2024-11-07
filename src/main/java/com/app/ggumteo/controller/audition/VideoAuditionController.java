@@ -46,9 +46,6 @@ public class VideoAuditionController {
     private final PostFileService postFileService;
     private final AuditionApplicationFileService auditionApplicationFileService;
     private final AuditionDTO auditionDTO;
-    private final AuditionApplicationDTO auditionApplicationDTO;
-    private final AuditionApplicationVO auditionApplicationVO;
-    private final AuditionApplicationFileDAO auditionApplicationFileDAO;
 
 
     @ModelAttribute

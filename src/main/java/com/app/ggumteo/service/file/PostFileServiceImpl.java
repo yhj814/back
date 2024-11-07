@@ -94,7 +94,7 @@ public class PostFileServiceImpl implements PostFileService {
 
             PostFileDTO postFileDTO = new PostFileDTO();
             postFileDTO.setFileName(uniqueFileName);
-            postFileDTO.setFilePath(relativePath);
+            postFileDTO.setFilePath(getPath());
             postFileDTO.setFileType(file.getContentType());
             postFileDTO.setFileSize(String.valueOf(file.getSize()));
 

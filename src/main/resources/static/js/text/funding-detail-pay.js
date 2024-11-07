@@ -17,6 +17,19 @@ document.addEventListener("DOMContentLoaded", function() {
     const productElements = document.querySelectorAll(".funding-product");
 
     productElements.forEach((productElement) => {
+
+        // 요소가 존재하는지 확인하고 남은 수량을 가져옵니다. 요소가 없으면 기본값 0 설정
+        const productAmountElement = productElement.querySelector(".product-number .number");
+        const productAmount = productAmountElement ? parseInt(productAmountElement.innerText, 10) : 0;
+
+
+        // 수량이 0인 경우 클릭 막기
+        if (productAmount === 0) {
+            productElement.classList.add("disabled"); // 비활성화 스타일 적용
+            productElement.style.pointerEvents = "none"; // 클릭 이벤트 차단
+            productElement.querySelector(".product-name span").innerText += " (품절)"; // '품절' 표시 추가
+            return; // 수량이 0인 상품은 클릭 이벤트를 추가하지 않음
+        }
         productElement.addEventListener("click", function() {
             // 상품 정보를 데이터 속성으로 저장하고 이를 통해 가져옵니다.
             const productName = productElement.querySelector(".product-name span").innerText;

@@ -41,19 +41,19 @@ public class TextFundingController {
     @ModelAttribute
     public void setTestMember(HttpSession session) {
         if (session.getAttribute("member") == null) {
-            session.setAttribute("member", new MemberVO(1L, "testEmail@test.com", "모집중", "profileImageUrl", "", ""));
+            session.setAttribute("member", new MemberVO(3L, "testEmail@test.com", "모집중", "profileImageUrl", "", ""));
         }
         if (session.getAttribute("memberProfile") == null) {
             session.setAttribute("memberProfile", new MemberProfileVO(
-                    1L,
+                    3L,
                     "홍길동",               // profileName
                     "010-1234-5678",       // profilePhone
                     "testEmail@test.com",  // profileEmail
                     99,
                     "testEmail@test.com",
-                    "010-1234-5678",
+                    "소개",
                     "기타",
-                    1L,
+                    3L,
                     "",
                     ""
             ));

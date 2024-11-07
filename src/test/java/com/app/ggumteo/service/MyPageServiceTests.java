@@ -43,11 +43,11 @@ public class MyPageServiceTests {
     public void testGetMyVideoWorkList() {
         MemberVO memberVO = null;
         WorkAndFundingPagination workAndFundingPagination = new WorkAndFundingPagination();
-        memberVO = myPageService.getMember(15L).get();
-        workAndFundingPagination.setTotal(myPageService.getMyVideoWorkPostsTotal(memberVO.getId(), PostType.VIDEO.name()));
+        memberVO = myPageService.getMember(2L).get();
+        workAndFundingPagination.setTotal(myPageService.getMyVideoWorkPostsTotal(memberVO.getId(), PostType.WORKVIDEO.name()));
         workAndFundingPagination.progress();
         MyWorkListDTO myWorkPosts = myPageService.getMyVideoWorkList
-                (1, workAndFundingPagination, memberVO.getId(), PostType.VIDEO.name());
+                (1, workAndFundingPagination, memberVO.getId(), PostType.WORKVIDEO.name());
 
         log.info(" myWorkPosts.toString()-test={}", myWorkPosts.toString());
     }
@@ -56,7 +56,7 @@ public class MyPageServiceTests {
     public void testGetMyVideoWorkBuyerList() {
         WorkDTO workDTO = null;
         SettingTablePagination settingTablePagination = new SettingTablePagination();
-        workDTO = myPageService.getWork(38L, PostType.VIDEO.name()).get();
+        workDTO = myPageService.getWork(5L, PostType.WORKVIDEO.name()).get();
         settingTablePagination.setTotal(myPageService.getMyVideoWorkBuyersTotal(workDTO.getId()));
         settingTablePagination.progress();
         MyWorkBuyerListDTO myWorkBuyers = myPageService.getMyVideoWorkBuyerList(1, settingTablePagination, workDTO.getId());
@@ -78,9 +78,9 @@ public class MyPageServiceTests {
         MemberVO memberVO = null;
         WorkAndFundingPagination workAndFundingPagination = new WorkAndFundingPagination();
         memberVO = myPageService.getMember(1L).get();
-        workAndFundingPagination.setTotal(myPageService.getMyFundingPostsTotal(memberVO.getId(), PostType.VIDEO.name()));
+        workAndFundingPagination.setTotal(myPageService.getMyFundingPostsTotal(memberVO.getId(), PostType.FUNDINGVIDEO.name()));
         workAndFundingPagination.progress();
-        MyFundingListDTO myFundingPosts = myPageService.getMyVideoFundingList(1, workAndFundingPagination, memberVO.getId(), PostType.VIDEO.name());
+        MyFundingListDTO myFundingPosts = myPageService.getMyVideoFundingList(1, workAndFundingPagination, memberVO.getId(), PostType.FUNDINGVIDEO.name());
 
         log.info("GetMyFundingPosts-test={}", myFundingPosts.toString());
     }
@@ -89,7 +89,7 @@ public class MyPageServiceTests {
     public void testGetMyFundingBuyerList() {
         FundingDTO fundingDTO = null;
         SettingTablePagination settingTablePagination = new SettingTablePagination();
-        fundingDTO = myPageService.getFunding(9L, PostType.VIDEO.name()).get();
+        fundingDTO = myPageService.getFunding(9L, PostType.FUNDINGVIDEO.name()).get();
         settingTablePagination.setTotal(myPageService.getMyFundingPostBuyersTotal(fundingDTO.getId()));
         settingTablePagination.progress();
         MyFundingBuyerListDTO myFundingBuyers = myPageService.getMyFundingBuyerList(1, settingTablePagination, fundingDTO.getId());
@@ -111,10 +111,10 @@ public class MyPageServiceTests {
         MemberVO memberVO = null;
         WorkAndFundingPagination workAndFundingPagination = new WorkAndFundingPagination();
         memberVO = myPageService.getMember(1L).get();
-        workAndFundingPagination.setTotal(myPageService.getMyBuyFundingListTotal(memberVO.getId(), PostType.VIDEO.name()));
+        workAndFundingPagination.setTotal(myPageService.getMyBuyFundingListTotal(memberVO.getId(), PostType.FUNDINGVIDEO.name()));
         workAndFundingPagination.progress();
         MyBuyFundingListDTO fundingPostsPaidByMember = myPageService
-                .getMyBuyFundingList(1, workAndFundingPagination, memberVO.getId(), PostType.VIDEO.name());
+                .getMyBuyFundingList(1, workAndFundingPagination, memberVO.getId(), PostType.FUNDINGVIDEO.name());
 
         log.info(fundingPostsPaidByMember.toString());
     }

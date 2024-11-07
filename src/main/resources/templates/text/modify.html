@@ -205,14 +205,14 @@
                                             </div>
                                             <div id="existing-files-container">
 <!--                                                썸네일 파일은 안가져옴 아래에 가져옴-->
-                                                <div th:each="file : ${existingFiles}" th:if="${file.filePath != work.thumbnailFilePath}" class="img-box-list existing-file">
+                                                <div th:each="file : ${existingFiles}" th:if="${file.fileName != work.thumbnailFileName}" class="img-box-list existing-file">
                                                         <div class="img-edit-box" style="margin-top: 10px;width: 88px;margin-left: 635px;display: block;">
                                                             <div type="button" class="btn-edit-item" id="btn-delete-image-1730446634855" th:attr="data-file-id=${file.id}">
                                                                 이미지 삭제
                                                             </div>
                                                         </div>
                                                     <div class="img-content-box">
-                                                        <img th:src="@{'/text/display?fileName=' + ${file.filePath}}" alt="Uploaded Image" />
+                                                        <img th:src="@{'/text/display?fileName=' + ${file.fileName}}" alt="Uploaded Image" />
                                                     </div>
                                                 </div>
                                                 <div class="img-caption-box" style="display: block;">
@@ -385,7 +385,7 @@
                                                             >
                                                                 <img style="height: 240px"
 
-                                                                    th:src="@{/text/display?fileName={thumbnailFilePath}(thumbnailFilePath=${work.thumbnailFilePath})}" alt="Thumbnail Image" />
+                                                                    th:src="@{/text/display?fileName={thumbnailFileName}(thumbnailFileName=${work.thumbnailFileName})}" alt="Thumbnail Image" />
                                                             </div>
                                                             <div
                                                                 class="preview"

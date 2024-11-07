@@ -31,6 +31,7 @@ public class FundingDTO {
     private String profileNickname; // 프로필 닉네임
     private Long memberId; // 회원 ID
     private String profileImgUrl; // 카카오톡 프로필 이미지 url
+    private String thumbnailFileName; // 썸네일 파일 경로
     private String thumbnailFilePath; // 썸네일 파일 경로
     private Long thumbnailFileId; // 썸네일 파일 ID (추가된 필드)
     private List<Long> ids; // 삭제할 파일 id 목록
