@@ -35,8 +35,11 @@ public class MemberRestController {
         MemberVO memberDTO = myPageService.getMember(id).orElseThrow();
         model.addAttribute("member", memberDTO);
     }
-//    http://localhost:10000/member/video/my-page?id=15
+    //    http://localhost:10000/member/video/my-page?id=15
 
+//************************************************************************************************
+
+    // 내 영상 작품 게시글 목록
     // SELECT
     @ResponseBody
     @GetMapping("/members/{memberId}/video/my/work/{page}")
@@ -46,6 +49,7 @@ public class MemberRestController {
         return myPageService.getMyVideoWorkList(page, workAndFundingPagination, memberId, postType);
     }
 
+    // 내 영상 작품 구매자 목록
     // SELECT
     @ResponseBody
     @GetMapping("/members/video/my/work/{workPostId}/buyers/{page}")
@@ -56,6 +60,7 @@ public class MemberRestController {
         return myPageService.getMyVideoWorkBuyerList(page, settingTablePagination, workPostId);
     }
 
+    // 내 영상 작품 발송 여부
     // UPDATE
     @ResponseBody
     @PutMapping("/members/video/my/work/buyers/sendStatus/update")
@@ -63,6 +68,19 @@ public class MemberRestController {
         myPageService.updateWorkSendStatus(buyWorkDTO.toVO());
     }
 
+    // 내가 구매한 영상 작품 게시글 목록
+    // SELECT
+    @ResponseBody
+    @GetMapping("/members/{memberId}/video/my/buy/work/{page}")
+    public MyBuyWorkListDTO getMyBuyVideoWorkList(@PathVariable("memberId") Long memberId
+            , @PathVariable("page") int page, WorkAndFundingPagination workAndFundingPagination, String postType) {
+
+        return myPageService.getMyBuyVideoWorkList(page, workAndFundingPagination, memberId, postType);
+    }
+
+//************************************************************************************************
+
+    // 내 영상 펀딩 게시글 목록
     // SELECT
     @ResponseBody
     @GetMapping("/members/{memberId}/video/my/funding/{page}")
@@ -73,6 +91,7 @@ public class MemberRestController {
         return myPageService.getMyVideoFundingList(page, workAndFundingPagination, memberId, postType);
     }
 
+    // 내 영상 펀딩 구매자 목록
     // SELECT
     @ResponseBody
     @GetMapping("/members/video/my/funding/{fundingPostId}/buyers/{page}")
@@ -83,6 +102,7 @@ public class MemberRestController {
         return myPageService.getMyFundingBuyerList(page, settingTablePagination, fundingPostId);
     }
 
+    // 내 영상 펀딩 상품 발송 여부
     // UPDATE
     @ResponseBody
     @PutMapping("/members/video/my/funding/buyers/sendStatus/update")
@@ -90,6 +110,7 @@ public class MemberRestController {
         myPageService.updateFundingSendStatus(buyFundingProductDTO.toVO());
     }
 
+    // 내가 결제한 펀딩 게시글 목록
     // SELECT
     @ResponseBody
     @GetMapping("/members/{memberId}/video/my/buy/funding/{page}")
@@ -99,6 +120,9 @@ public class MemberRestController {
         return myPageService.getMyBuyFundingList(page, workAndFundingPagination, memberId, postType);
     }
 
+//************************************************************************************************
+
+    // 내 문의내역 목록
     // SELECT
     @ResponseBody
     @GetMapping("/members/{memberId}/inquiry/{page}")
@@ -108,6 +132,7 @@ public class MemberRestController {
         return myPageService.getMyInquiryHistoryList(page, workAndFundingPagination, memberId);
     }
 
+    // 내 문의 답변 조회
     // SELECT
     @ResponseBody
     @GetMapping("/members/inquiry/{inquiryId}/admin-answer")
@@ -115,7 +140,9 @@ public class MemberRestController {
         return myPageService.getAdminAnswerByInquiryId(inquiryId);
     }
 
-    //    가져오기
+//************************************************************************************************
+
+    // 파일 가져오기
     @GetMapping("/member/video/my/work/display")
     @ResponseBody
     public byte[] display(@RequestParam("fileName") String fileName) throws IOException {
