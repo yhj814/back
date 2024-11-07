@@ -68,7 +68,7 @@
                         </div>
                         <div class="thumbnail">
                             <img
-                                    th:src="@{'/video/display?fileName=' + ${work.thumbnailFilePath}}" alt="Thumbnail"
+                                    th:src="@{'/video/display?fileName=' + ${work.thumbnailFileName}}" alt="Thumbnail"
                             />
                         </div>
                     </div>
@@ -80,12 +80,12 @@
                     <!-- 띄어쓰기용 -->
                     <p>&nbsp;</p>
                 </div>
-                <div class="upload-img" th:each="file : ${postFiles}" th:if="${file.filePath != null and file.filePath != work.thumbnailFilePath}">
-                    <div th:if="${file.filePath.endsWith('.mp4') or file.filePath.endsWith('.avi') or file.filePath.endsWith('.mkv')}">
-                        <video th:src="@{'/video/display?fileName=' + ${file.filePath}}" controls class="thumbnail" alt="Uploaded Video"></video>
+                <div class="upload-img" th:each="file : ${postFiles}" th:if="${file.fileName != null and file.fileName != work.thumbnailFileName}">
+                    <div th:if="${file.fileName.endsWith('.mp4') or file.fileName.endsWith('.avi') or file.fileName.endsWith('.mkv')}">
+                        <video th:src="@{'/video/display?fileName=' + ${file.fileName}}" controls class="thumbnail" alt="Uploaded Video"></video>
                     </div>
-                    <div th:if="${!file.filePath.endsWith('.mp4') and !file.filePath.endsWith('.avi') and !file.filePath.endsWith('.mkv')}">
-                        <img th:src="@{'/video/display?fileName=' + ${file.filePath}}" class="thumbnail" alt="Uploaded Image" />
+                    <div th:if="${!file.fileName.endsWith('.mp4') and !file.fileName.endsWith('.avi') and !file.fileName.endsWith('.mkv')}">
+                        <img th:src="@{'/video/display?fileName=' + ${file.fileName}}" class="thumbnail" alt="Uploaded Image" />
                     </div>
                 </div>
 
@@ -302,7 +302,7 @@
                         <div th:each="work : ${threeAuthorWorks}" class="side-card-list-2">
                             <a th:href="@{'/video/detail/' + ${work.id}}">
                                 <img
-                                        th:src="@{'/video/display?fileName=' + ${work.thumbnailFilePath}}"
+                                        th:src="@{'/video/display?fileName=' + ${work.thumbnailFileName}}"
                                         class="thumbnail-other-image"
                                 />
                             </a>
@@ -359,7 +359,7 @@
                             <div class="list-item card-grid">
                                 <div class="list-item-thumbnail">
                                     <img
-                                            th:src="@{'/video/display?fileName=' + ${work.thumbnailFilePath}}"
+                                            th:src="@{'/video/display?fileName=' + ${work.thumbnailFileName}}"
                                             src="https://yozm.wishket.com/media/news/2767/image__3_.png"
                                             class="thumbnail-image"
                                     />
