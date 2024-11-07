@@ -82,19 +82,19 @@
                     <div class="filter-group-wrapper">
                         <div class="filter-group">
                             <div class="filter-box-group">
-                                <a href="/video/list?genreType=romance&postType=VIDEO" class="filter-box">로맨스</a>
+                                <a href="/video/list?genreType=romance&postType=VIDEOWORK" class="filter-box">로맨스</a>
                             </div>
                             <div class="filter-box-group">
-                                <a href="/video/list?genreType=comedy&postType=VIDEO" class="filter-box">코미디</a>
+                                <a href="/video/list?genreType=comedy&postType=VIDEOWORK" class="filter-box">코미디</a>
                             </div>
                             <div class="filter-box-group">
-                                <a href="/video/list?genreType=horror&postType=VIDEO" class="filter-box">공포</a>
+                                <a href="/video/list?genreType=horror&postType=VIDEOWORK" class="filter-box">공포</a>
                             </div>
                             <div class="filter-box-group">
-                                <a href="/video/list?genreType=action&postType=VIDEO" class="filter-box">액션</a>
+                                <a href="/video/list?genreType=action&postType=VIDEOWORK" class="filter-box">액션</a>
                             </div>
                             <div class="filter-box-group">
-                                <a href="/video/list?genreType=drama&postType=VIDEO" class="filter-box">드라마</a>
+                                <a href="/video/list?genreType=drama&postType=VIDEOWORK" class="filter-box">드라마</a>
                             </div>
                             <div class="box-group">
                                 <div class="write-box">
@@ -108,7 +108,7 @@
                     <div class="list-box-wrapper">
                         <li th:each="work : ${works}" style="width: 213px">
                             <a th:href="@{/video/detail/{id}(id=${work.id})}"  class="box">
-                                <img id="thumbnail-image" th:src="@{/video/display(fileName=${work.thumbnailFilePath})}" class="thumbnail" alt="썸네일 이미지" />
+                                <img id="thumbnail-image" th:src="@{/video/display(fileName=${work.thumbnailFileName})}" class="thumbnail" alt="썸네일 이미지" />
                                 <div class="title" style="width: 180px" th:text="${work.postTitle}"></div>
                                 <div class="detail">
                                     <span th:text="${work.genreType}"></span>
