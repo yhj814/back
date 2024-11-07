@@ -42,18 +42,18 @@ public class BuyFundingProductDAO {
     }
 
     // 펀딩 금액 업데이트
-    public void updateConvergePrice(Long fundingId, int amount) {
-        buyFundingProductMapper.updateConvergePrice(fundingId, amount);
+    public void updateConvergePrice(Long fundingId, int productPrice) {
+        buyFundingProductMapper.updateConvergePrice(fundingId, productPrice);
     }
 
     // 상품 수량 감소
-    public void decrementProductAmount(Long productId) {
-        buyFundingProductMapper.decrementProductAmount(productId);
+    public void decrementProductAmount(Long fundingProductId) {
+        buyFundingProductMapper.decrementProductAmount(fundingProductId);
     }
 
     // 구매 정보 삽입
-    public void insertBuyFundingProduct(Long memberId, Long productId) {
-        buyFundingProductMapper.insertBuyFundingProduct(memberId, productId);
+    public void insertBuyFundingProduct(Long memberId, Long fundingProductId) {
+        buyFundingProductMapper.insertBuyFundingProduct(memberId, fundingProductId);
     }
 
 }
