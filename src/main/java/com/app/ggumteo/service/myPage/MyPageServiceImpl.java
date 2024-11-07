@@ -51,10 +51,10 @@ public class MyPageServiceImpl implements MyPageService {
     public MyWorkListDTO getMyVideoWorkList(int page, WorkAndFundingPagination workAndFundingPagination, Long memberId, String postType) {
         MyWorkListDTO myWorkPosts = new MyWorkListDTO();
         workAndFundingPagination.setPage(page);
-        workAndFundingPagination.setTotal(workDAO.getTotal(memberId, PostType.VIDEO.name()));
+        workAndFundingPagination.setTotal(workDAO.getTotal(memberId, PostType.WORKVIDEO.name()));
         workAndFundingPagination.progress();
         myWorkPosts.setWorkAndFundingPagination(workAndFundingPagination);
-        myWorkPosts.setMyWorkPosts(workDAO.findByMemberId(workAndFundingPagination, memberId, PostType.VIDEO.name()));
+        myWorkPosts.setMyWorkPosts(workDAO.findByMemberId(workAndFundingPagination, memberId, PostType.WORKVIDEO.name()));
 
         log.info("myWorkPosts.getMyWorkPosts().toString()={}", myWorkPosts.getMyWorkPosts().toString());
         log.info("myWorkPosts.getMyWorkPosts().get(1).getThumbnailFilePath()={}", myWorkPosts.getMyWorkPosts().get(1).getThumbnailFilePath());
