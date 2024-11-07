@@ -65,7 +65,7 @@
             order by p.created_date desc
         </if>
         <!-- 페이징 -->
-        LIMIT #{pagination.startRow}, #{pagination.rowCount}
+        limit #{pagination.startRow}, #{pagination.rowCount}
     </select>
 
     <!-- 영상 전체 신고 내역 수 조회 -->
@@ -99,6 +99,7 @@
             )
         </if>
     </select>
+
     <!-- 영상 신고 상태 업데이트 쿼리 -->
     <update id="videoStatusChange">
         update tbl_work_report
@@ -170,7 +171,7 @@
             order by p.created_date desc
         </if>
         <!-- 페이징 -->
-        LIMIT #{pagination.startRow}, #{pagination.rowCount}
+        limit #{pagination.startRow}, #{pagination.rowCount}
     </select>
 
     <!-- 글 전체 신고 내역 수 조회 -->
