@@ -6,7 +6,7 @@
         <title>모집 신청하기</title>
         <link
             rel="stylesheet"
-            href="/static/css/audition/video/application2.css"
+            href="/css/audition/video/application2.css"
         />
     </head>
     <body>
@@ -45,7 +45,7 @@
                         >
                             <img
                                 height="48"
-                                src="/static/images/audition/icon_call.svg"
+                                src="/images/audition/icon_call.svg"
                                 width="48"
                             />
                             <p class="p-medium">
@@ -156,7 +156,7 @@
                                                 id="member-name"
                                                 name="member-name"
                                                 type="text"
-                                                value=""
+                                                th:text="${memberProfile.profileName}"
                                             >
                                                 마이페이지에서 불러온 이름
                                             </div>
@@ -183,7 +183,7 @@
                                                 id="member-gender"
                                                 name="member-gender"
                                                 type="text"
-                                                value=""
+                                                th:text="${memberProfile.profileGender}"
                                             >
                                                 마이페이지에서 불러온 성별
                                             </div>
@@ -208,7 +208,7 @@
                                                 id="member-age"
                                                 name="member-age"
                                                 type="text"
-                                                value=""
+                                                th:text="${memberProfile.profileAge}"
                                             >
                                                 마이페이지에서 불러온 나이
                                             </div>
@@ -230,7 +230,7 @@
                                                 id="member-email"
                                                 name="member-email"
                                                 type="text"
-                                                value=""
+                                                th:text="${memberProfile.profileEmail}"
                                             >
                                                 마이페이지에서 불러온 이메일
                                             </div>
@@ -284,7 +284,7 @@
                                                 id="member-phone"
                                                 name="member-phone"
                                                 type="text"
-                                                value=""
+                                                th:text="${memberProfile.profilePhone}"
                                             >
                                                 마이페이지에서 불러온 전화번호
                                             </div>
@@ -304,6 +304,7 @@
                                             <textarea
                                                 class="form-control form-textarea"
                                                 placeholder="추가로 입력할 내용을 입력하세요."
+                                                name="applyEtc"
                                                 value=""
                                                 style="height: 340px"
                                             ></textarea>
@@ -345,7 +346,7 @@
                                                 <div class="tooltip-group">
                                                     <img
                                                         class="viewer-file-icon"
-                                                        src="/static/images/audition/attachment_file_icon@2x.png"
+                                                        src="/images/audition/attachment_file_icon@2x.png"
                                                         style="width: 15px"
                                                     /><a
                                                         download=""
@@ -357,7 +358,7 @@
                                                     ><img
                                                         class="btn-delete-resume"
                                                         id="btn_delete_resume"
-                                                        src="/static/images/audition/chip_btn_delete_normal@2x.png"
+                                                        src="/images/audition/chip_btn_delete_normal@2x.png"
                                                         style="width: 15px"
                                                     />
                                                 </div>
@@ -368,7 +369,7 @@
                                                 type="button"
                                             >
                                                 <img
-                                                    src="/static/images/audition/btn_icon_add@2x.png"
+                                                    src="/images/audition/btn_icon_add@2x.png"
                                                     style="width: 15px"
                                                 />이력서 선택
                                             </button>
@@ -384,7 +385,7 @@
                                     <button
                                         class="form-btn btn-wishket btn-11-24 btn-block"
                                         id="consulting_apply_button"
-                                        type="button"
+                                        type="submit"
                                     >
                                         모집 신청 하기
                                     </button>
@@ -397,6 +398,6 @@
         </main>
         <footer></footer>
     </body>
-    <script src="/static/js/audition/application2.js"></script>
-    <script src="/static/js/audition/application-date.js"></script>
+    <script src="/js/audition/application2.js"></script>
+    <script src="/js/audition/application-date.js"></script>
 </html>
