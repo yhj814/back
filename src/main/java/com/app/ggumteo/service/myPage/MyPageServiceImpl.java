@@ -107,10 +107,10 @@ public class MyPageServiceImpl implements MyPageService {
     public MyFundingListDTO getMyVideoFundingList(int page , WorkAndFundingPagination workAndFundingPagination, Long memberId, String postType) {
         MyFundingListDTO myFundingPosts = new MyFundingListDTO();
         workAndFundingPagination.setPage(page);
-        workAndFundingPagination.setTotal(fundingDAO.getTotal(memberId, PostType.VIDEO.name()));
+        workAndFundingPagination.setTotal(fundingDAO.getTotal(memberId, PostType.FUNDINGVIDEO.name()));
         workAndFundingPagination.progress();
         myFundingPosts.setWorkAndFundingPagination(workAndFundingPagination);
-        myFundingPosts.setMyFundingPosts(fundingDAO.findByMemberId(workAndFundingPagination, memberId, PostType.VIDEO.name()));
+        myFundingPosts.setMyFundingPosts(fundingDAO.findByMemberId(workAndFundingPagination, memberId, PostType.FUNDINGVIDEO.name()));
 
         return myFundingPosts;
     }
@@ -160,11 +160,11 @@ public class MyPageServiceImpl implements MyPageService {
             , Long memberId, String postType) {
         MyBuyFundingListDTO fundingPostsPaidByMember = new MyBuyFundingListDTO();
         workAndFundingPagination.setPage(page);
-        workAndFundingPagination.setTotal(buyFundingProductDAO.getMyBuyFundingListTotal(memberId, PostType.VIDEO.name()));
+        workAndFundingPagination.setTotal(buyFundingProductDAO.getMyBuyFundingListTotal(memberId, PostType.FUNDINGVIDEO.name()));
         workAndFundingPagination.progress();
         fundingPostsPaidByMember.setWorkAndFundingPagination(workAndFundingPagination);
         fundingPostsPaidByMember.setMyBuyFundingPosts(buyFundingProductDAO
-                .findMyBuyFundingList(workAndFundingPagination, memberId, PostType.VIDEO.name()));
+                .findMyBuyFundingList(workAndFundingPagination, memberId, PostType.FUNDINGVIDEO.name()));
 
         return fundingPostsPaidByMember;
     }
