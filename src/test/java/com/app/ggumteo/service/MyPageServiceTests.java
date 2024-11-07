@@ -43,7 +43,7 @@ public class MyPageServiceTests {
     public void testGetMyVideoWorkList() {
         MemberVO memberVO = null;
         WorkAndFundingPagination workAndFundingPagination = new WorkAndFundingPagination();
-        memberVO = myPageService.getMember(15L).get();
+        memberVO = myPageService.getMember(2L).get();
         workAndFundingPagination.setTotal(myPageService.getMyVideoWorkPostsTotal(memberVO.getId(), PostType.WORKVIDEO.name()));
         workAndFundingPagination.progress();
         MyWorkListDTO myWorkPosts = myPageService.getMyVideoWorkList
@@ -56,7 +56,7 @@ public class MyPageServiceTests {
     public void testGetMyVideoWorkBuyerList() {
         WorkDTO workDTO = null;
         SettingTablePagination settingTablePagination = new SettingTablePagination();
-        workDTO = myPageService.getWork(38L, PostType.WORKVIDEO.name()).get();
+        workDTO = myPageService.getWork(5L, PostType.WORKVIDEO.name()).get();
         settingTablePagination.setTotal(myPageService.getMyVideoWorkBuyersTotal(workDTO.getId()));
         settingTablePagination.progress();
         MyWorkBuyerListDTO myWorkBuyers = myPageService.getMyVideoWorkBuyerList(1, settingTablePagination, workDTO.getId());
