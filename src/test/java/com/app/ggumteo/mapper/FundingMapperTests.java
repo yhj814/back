@@ -84,14 +84,14 @@ public class FundingMapperTests {
         // 펀딩 상품 데이터 삽입
         FundingProductVO product1 = new FundingProductVO();
         product1.setProductName("상품 1");
-        product1.setProductPrice(10000);
-        product1.setProductAmount(50);
+        product1.setProductPrice("10000");
+        product1.setProductAmount("50");
         product1.setFundingId(postId);
 
         FundingProductVO product2 = new FundingProductVO();
         product2.setProductName("상품 2");
-        product2.setProductPrice(20000);
-        product2.setProductAmount(30);
+        product2.setProductPrice("20000");
+        product2.setProductAmount("30");
         product2.setFundingId(postId);
 
         // 상품을 저장하는 Mapper 호출
@@ -106,7 +106,8 @@ public class FundingMapperTests {
         Search search = new Search();
         search.setKeyword(""); // 검색 키워드를 설정 (예: "테스트" 등). 검색 키워드가 없으면 전체 조회.
         search.setGenreType(""); // 장르 필터를 설정 (예: "comedy"). 필터가 없으면 전체 조회.
-        search.setPostType("FUNDINGVIDEO"); //
+        search.setPostType("TEXT"); // 포스트 타입 설정 (예: "TEXT", "VIDEO")
+
         Pagination pagination = new Pagination();
         pagination.setPage(1); // 첫 번째 페이지
         pagination.progress2(); // 페이지네이션 계산을 위한 progress2 호출
@@ -123,5 +124,9 @@ public class FundingMapperTests {
                     .forEach(log::info);
         }
     }
+
+
+
+
 }
 
