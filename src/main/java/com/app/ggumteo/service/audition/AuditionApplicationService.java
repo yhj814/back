@@ -8,4 +8,5 @@ public interface AuditionApplicationService {
 
     void write(AuditionApplicationDTO auditionApplicationDTO, MultipartFile applicationFile);
 
+    int countApplicantsByAuditionId(Long auditionId);
 }

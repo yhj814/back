@@ -2,11 +2,13 @@ package com.app.ggumteo.service.work;
 
 import com.app.ggumteo.domain.file.FileVO;
 import com.app.ggumteo.domain.file.PostFileDTO;
+import com.app.ggumteo.domain.funding.FundingProductVO;
 import com.app.ggumteo.domain.post.PostDTO;
 import com.app.ggumteo.domain.post.PostVO;
 import com.app.ggumteo.domain.work.WorkDTO;
 import com.app.ggumteo.domain.work.WorkVO;
 import com.app.ggumteo.pagination.Pagination;
+import com.app.ggumteo.repository.buy.BuyFundingProductDAO;
 import com.app.ggumteo.repository.post.PostDAO;
 import com.app.ggumteo.repository.work.WorkDAO;
 import com.app.ggumteo.search.Search;
@@ -31,6 +33,7 @@ public class WorkServiceImpl implements WorkService {
     private final WorkDAO workDAO;
     private final PostDAO postDAO;
     private final PostFileService postFileService;  // 파일 저장 서비스 주입
+
 
     @Override
     public void write(WorkDTO workDTO, MultipartFile[] workFiles, MultipartFile thumbnailFile) {

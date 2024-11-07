@@ -15,7 +15,7 @@ insert into tbl_member (member_email, profile_img_url)
 values ( 'john.doe@example.com', 'profile.jpg');
 
 insert into tbl_member (member_email, profile_img_url)
-values ( 'test12@gamail.com', 'profile12.jpg');
+values ( 'test26@gamail.com', 'profile26.jpg');
 
 use gb;
 

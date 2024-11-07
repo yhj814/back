@@ -27,6 +27,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/text/funding/*")
@@ -40,12 +41,25 @@ public class TextFundingController {
     @ModelAttribute
     public void setTestMember(HttpSession session) {
         if (session.getAttribute("member") == null) {
-            session.setAttribute("member", new MemberVO(3L, "", "", "", "", ""));
+            session.setAttribute("member", new MemberVO(1L, "testEmail@test.com", "모집중", "profileImageUrl", "", ""));
         }
         if (session.getAttribute("memberProfile") == null) {
-            session.setAttribute("memberProfile", new MemberProfileVO(3L, "", "", "", 99, "", "", "", 3L, "", ""));
+            session.setAttribute("memberProfile", new MemberProfileVO(
+                    1L,
+                    "홍길동",               // profileName
+                    "010-1234-5678",       // profilePhone
+                    "testEmail@test.com",  // profileEmail
+                    99,
+                    "testEmail@test.com",
+                    "010-1234-5678",
+                    "기타",
+                    1L,
+                    "",
+                    ""
+            ));
         }
     }
+
 
     @PostMapping("upload")
     @ResponseBody
@@ -171,6 +185,39 @@ public class TextFundingController {
             return "redirect:/text/funding/funding-list";
         }
     }
+
+    @PostMapping("order")
+    public ResponseEntity<?> completeOrder(@RequestBody Map<String, Object> orderData) {
+        try {
+            // 필수 파라미터 체크
+            if (!orderData.containsKey("fundingId") || !orderData.containsKey("memberProfileId") ||
+                    !orderData.containsKey("productId") || !orderData.containsKey("amount") || !orderData.containsKey("productPrice")) {
+                return ResponseEntity.status(400).body(Collections.singletonMap("error", "필수 데이터가 누락되었습니다."));
+            }
+
+            Long fundingId = Long.valueOf(orderData.get("fundingId").toString());
+            Long memberProfileId = Long.valueOf(orderData.get("memberProfileId").toString());
+            Long fundingProductId = Long.valueOf(orderData.get("productId").toString());
+            int amount = Integer.parseInt(orderData.get("amount").toString());
+            int productPrice = Integer.parseInt(orderData.get("productPrice").toString());
+
+            log.info("Received Order Data - Funding ID: {}, Member Profile ID: {}, Product ID: {}, Amount: {}, Product Price: {}", fundingId, memberProfileId, fundingProductId, amount, productPrice);
+
+            // 펀딩 주문 처리 로직 실행
+            fundingService.buyFundingProduct(memberProfileId, fundingId, fundingProductId, productPrice);
+
+            log.info("Order processed successfully for Funding ID: {}", fundingId);
+            return ResponseEntity.ok(Collections.singletonMap("success", true));
+        } catch (NumberFormatException e) {
+            log.error("주문 데이터 형식 오류", e);
+            return ResponseEntity.status(400).body(Collections.singletonMap("error", "잘못된 데이터 형식이 포함되어 있습니다."));
+        } catch (Exception e) {
+            log.error("펀딩 주문 처리 중 오류 발생", e);
+            return ResponseEntity.status(500).body(Collections.singletonMap("error", "주문 처리 중 오류가 발생했습니다."));
+        }
+    }
+
+
 
 
 }

@@ -212,6 +212,7 @@
                                                     </p>
                                                 </div>
                                                 <p class="condition-data"
+                                                   th:text="${applicantCount}"
                                                 >
                                                     12명
                                                 </p>
@@ -337,7 +338,8 @@
                                                 data-target="#mandatoryModal"
                                                 data-toggle="modal"
                                             >
-                                                모집 지원하기
+                                                <a class="btn-partner"
+                                                   th:href="@{/audition/video/application/{id}(id=${audition.id})}">모집 지원하기</a>
                                             </button>
                                             <button
                                                 class="btn btn-white btn-block btn-8-16 interest-button interest-off ui-tooltip"
