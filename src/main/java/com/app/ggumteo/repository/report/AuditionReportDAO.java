@@ -27,4 +27,19 @@ public class AuditionReportDAO {
     public void updateVideoAuditionReportStatus(Long auditionId, String reportStatus){
         auditionReportMapper.videoAuditionStatusChange(auditionId,reportStatus);
     }
+
+    //    글 모집글 신고 목록
+    public List<AuditionReportDTO> getTextAuditionReports(String search, String order, AdminPagination pagination) {
+        return auditionReportMapper.selectTextAuditionReports(search, order, pagination);
+    }
+
+    //    글 모집글 신고목록 카운트
+    public int getTextAuditionReportCount(String search, String order) {
+        return auditionReportMapper.countTextAuditionReports(search,order);
+    }
+
+    //    글 모집글 신고상태 변경
+    public void updateTextAuditionReportStatus(Long auditionId, String reportStatus){
+        auditionReportMapper.textAuditionStatusChange(auditionId,reportStatus);
+    }
 }

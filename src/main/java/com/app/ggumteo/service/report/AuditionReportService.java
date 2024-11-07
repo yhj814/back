@@ -15,4 +15,13 @@ public interface AuditionReportService {
 
 //    영상 모집글 신고 상태 업데이트
     void updateVideoAuditionReportStatus(Long auditionId, String reportStatus);
+
+    //    글 모집글 신고 목록
+    List<AuditionReportDTO> getTextAuditionReports(String search, String order, AdminPagination pagination);
+
+    //    글 모집글 신고 목록 카운트
+    int getTextAuditionReportCount(String search, String order);
+
+    //    글 모집글 신고 상태 업데이트
+    void updateTextAuditionReportStatus(Long auditionId, String reportStatus);
 }

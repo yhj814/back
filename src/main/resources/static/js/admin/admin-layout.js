@@ -921,3 +921,127 @@ function renderVideoAuditionReportPagination(pagination) {
     });
     paginationContainer.appendChild(nextButton);
 }
+
+//---------------------------------------------------------------------------------------------------------------
+
+// 글 모집 신고 관리 목록
+function renderTextAuditionReportList(auditionReports) {
+    const container = document.getElementById("text-audition-report-list");
+    container.innerHTML = '';
+
+    if (!auditionReports || auditionReports.length === 0) {
+        container.innerHTML = '<p>조회할 데이터가 없습니다.</p>';
+        return;
+    }
+
+    auditionReports.forEach((auditionReports) => {
+        const row = document.createElement("div");
+        row.className = "apply-table-row";
+
+        let buttonBackgroundColor = "";
+        switch (auditionReports.reportStatus) {
+            case "DELETE": buttonBackgroundColor = "rgba(41, 153, 41, 0.818)"; break;
+            case "HOLD": buttonBackgroundColor = "#ffa600"; break;
+            case "NOPROBLEM": buttonBackgroundColor = "rgb(183, 183, 183)"; break;
+            default: buttonBackgroundColor = "";
+        }
+
+        // 숫자별 분야 화면 업로드
+        let textAuditionFieldText = '';
+        switch (auditionReports.auditionField) {
+            case 1:
+                textAuditionFieldText = '썸네일';
+                break;
+            case 2:
+                textAuditionFieldText = '일러스트';
+                break;
+            case 3:
+                textAuditionFieldText = '웹툰';
+                break;
+            case 4:
+                textAuditionFieldText = '기타';
+                break;
+            default:
+                textAuditionFieldText = '';
+        }
+
+        row.innerHTML = `
+            <div class="apply-table-cell"><input type="checkbox" class="apply-checkbox" data-id="${auditionReports.postId}"/></div>
+            <div class="apply-table-cell">${auditionReports.postId}</div>
+            <div class="apply-table-cell post-title">${auditionReports.profileName || ''}</div>
+            <div class="apply-table-cell">${auditionReports.createdDate || ''}</div>
+            <div class="apply-table-cell">${textAuditionFieldText}</div>
+            <div class="apply-table-cell" style="color: #002fff">
+                 <a href="#">
+                        ${auditionReports.postTitle && auditionReports.postTitle.length > 7
+            ? auditionReports.postTitle.substring(0, 7) + '...'
+            : auditionReports.postTitle || ''}
+                </a>
+            </div>
+            <div class="apply-table-cell">${auditionReports.applicationCount || ''}</div>
+            <div class="apply-table-cell">${auditionReports.auditionDeadline || ''}</div>
+            <div class="apply-table-cell">
+                <button class="report-management-btn status report" 
+                        style="background-color: ${buttonBackgroundColor};"
+                        onclick="openTextAuditionReportModal(event)">
+                    ${auditionReports.reportStatus || '신고'}
+                </button>
+            </div>
+            <div class="apply-table-cell">
+                <button class="reasons-report-btn report-content-look-text-audition" 
+                    data-name="${auditionReports.reportProfileName || ''}" 
+                    data-email="${auditionReports.reportProfileEmail || ''}" 
+                    data-time="${auditionReports.reportCreatedDate || ''}" 
+                    data-content="${auditionReports.reportContents || ''}">
+                    보기
+                </button>
+            </div>
+        `;
+
+        container.appendChild(row);
+    });
+
+    // 체크박스 이벤트
+    textAuditionReportCheckboxEvents();
+
+    // 신고내역 보기 모달 이벤트
+    setupTextAuditionReportDetailsModal();
+
+}
+
+// 페이지네이션
+function renderTextAuditionReportPagination(pagination) {
+    const paginationContainer = document.getElementById("pagination-text-audition-report");
+    paginationContainer.innerHTML = '';
+
+    if (!pagination) return;
+
+    const prevButton = document.createElement("li");
+    prevButton.className = `pagination-prev ${pagination.page > 1 ? '' : 'disabled'}`;
+    prevButton.innerHTML = `<a href="#" class="pagination-prev-link" rel="prev nofollow"><span class="pagination-prev-icon" aria-hidden="true">‹</span></a>`;
+    prevButton.addEventListener("click", (e) => {
+        e.preventDefault();
+        if (pagination.page > 1) changeTextAuditionPage(pagination.page - 1);
+    });
+    paginationContainer.appendChild(prevButton);
+
+    for (let i = pagination.startPage; i <= Math.min(pagination.endPage, pagination.realEnd); i++) {
+        const pageButton = document.createElement("li");
+        pageButton.className = `pagination-page ${i === pagination.page ? 'active' : ''}`;
+        pageButton.innerHTML = `<a href="#" class="pagination-page-link">${i}</a>`;
+        pageButton.addEventListener("click", (e) => {
+            e.preventDefault();
+            changeTextAuditionPage(i);
+        });
+        paginationContainer.appendChild(pageButton);
+    }
+
+    const nextButton = document.createElement("li");
+    nextButton.className = `pagination-next ${pagination.page < pagination.realEnd ? '' : 'disabled'}`;
+    nextButton.innerHTML = `<a href="#" class="pagination-next-link" rel="next nofollow"><span class="pagination-next-icon" aria-hidden="true">›</span></a>`;
+    nextButton.addEventListener("click", (e) => {
+        e.preventDefault();
+        if (pagination.page < pagination.realEnd) changeTextAuditionPage(pagination.page + 1);
+    });
+    paginationContainer.appendChild(nextButton);
+}

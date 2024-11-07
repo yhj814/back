@@ -28,4 +28,23 @@ public interface AuditionReportMapper {
             @Param("auditionId") Long auditionId,
             @Param("reportStatus") String reportStatus
     );
+
+    //    글 모집글 신고 목록
+    List<AuditionReportDTO> selectTextAuditionReports(
+            @Param("search") String search,
+            @Param("order") String order,
+            @Param("pagination") AdminPagination pagination
+    );
+
+    //    글 모집글 신고 목록 카운트
+    int countTextAuditionReports(
+            @Param("search") String search,
+            @Param("order") String order
+    );
+
+    //    글 모집글 신고상태 변경
+    void textAuditionStatusChange(
+            @Param("auditionId") Long auditionId,
+            @Param("reportStatus") String reportStatus
+    );
 }

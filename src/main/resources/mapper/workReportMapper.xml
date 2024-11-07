@@ -33,6 +33,7 @@
         tbl_member_profile rpt on wr.member_profile_id = rpt.id -- 신고한 사람의 프로필 정보
         where
         p.post_type = 'WORKVIDEO'
+
         <!-- 신고 관리 조건 -->
         <if test="order == 'reportStatus'">
             and wr.report_status = 'REPORT'

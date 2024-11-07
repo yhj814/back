@@ -32,4 +32,22 @@ public class AuditionReportServiceImpl implements AuditionReportService {
     public void updateVideoAuditionReportStatus(Long auditionId, String reportStatus){
         auditionReportDAO.updateVideoAuditionReportStatus(auditionId, reportStatus);
     }
+
+    //    글 모집글 신고 목록
+    @Override
+    public List<AuditionReportDTO> getTextAuditionReports(String search, String order, AdminPagination pagination){
+        return auditionReportDAO.getTextAuditionReports(search, order, pagination);
+    }
+
+    //    글 모집글 신고 목록 카운트
+    @Override
+    public int getTextAuditionReportCount(String search, String order){
+        return auditionReportDAO.getTextAuditionReportCount(search, order);
+    }
+
+    //    글 모집글 신고 상태 업데이트
+    @Override
+    public void updateTextAuditionReportStatus(Long auditionId, String reportStatus){
+        auditionReportDAO.updateTextAuditionReportStatus(auditionId, reportStatus);
+    }
 }

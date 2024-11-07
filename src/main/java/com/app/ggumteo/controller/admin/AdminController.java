@@ -451,7 +451,7 @@ public class AdminController {
     public Map<String, Object> getVideoAuditionReports(
             @RequestParam(value = "search", required = false, defaultValue = "") String search,
             @RequestParam(value = "order", required = false, defaultValue = "createdDate") String order,
-            @RequestParam(value = "page", defaultValue = "2") Integer page
+            @RequestParam(value = "page", defaultValue = "1") Integer page
     ) {
         // 페이징 설정
         AdminPagination pagination = new AdminPagination();
@@ -487,10 +487,59 @@ public class AdminController {
         try {
             auditionReportService.updateVideoAuditionReportStatus(auditionId, status);
             log.info("영상 모집 신고 ID {}의 상태가 {}로 변경되었습니다.", auditionId, status);
-            return ResponseEntity.ok("글 댓글 신고 상태가 성공적으로 변경되었습니다.");
+            return ResponseEntity.ok("영상 모집 신고 상태가 성공적으로 변경되었습니다.");
         } catch (Exception e) {
             log.error("영상 모집 신고 상태 변경 중 오류 발생 - 신고 ID: {}", auditionId, e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("글 댓글 신고 상태 변경에 실패했습니다.");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("영상 모집 신고 상태 변경에 실패했습니다.");
+        }
+    }
+
+    // 글 모집 신고 목록
+    @GetMapping("/textAuditionReports")
+    @ResponseBody
+    public Map<String, Object> getTextAuditionReports(
+            @RequestParam(value = "search", required = false, defaultValue = "") String search,
+            @RequestParam(value = "order", required = false, defaultValue = "createdDate") String order,
+            @RequestParam(value = "page", defaultValue = "1") Integer page
+    ) {
+        // 페이징 설정
+        AdminPagination pagination = new AdminPagination();
+        pagination.setPage(page);
+
+        // 총 데이터 개수를 가져와서 페이징 진행
+        pagination.setTotal(auditionReportService.getTextAuditionReportCount(search, order));
+        pagination.progress();
+
+        // 데이터 조회
+        List<AuditionReportDTO> reports = auditionReportService.getTextAuditionReports(search, order, pagination);
+
+        log.info("글 모집 신고 검색어: {}", search);
+        log.info("글 모집 신고 정렬 기준: {}", order);
+        log.info("결과 개수: {}", reports.size());
+
+        // 결과를 Map에 담아 반환
+        Map<String, Object> response = new HashMap<>();
+        response.put("reports", reports);
+        response.put("pagination", pagination);
+
+        return response;
+    }
+
+
+    // 글 모집 신고 상태 업데이트
+    @PostMapping("/textAuditionReports/status")
+    @ResponseBody
+    public ResponseEntity<String> updateTextAuditionReportStatus(@RequestBody Map<String, Object> requestData) {
+        Long auditionId = Long.valueOf(requestData.get("auditionId").toString());
+        String status = requestData.get("reportStatus").toString();
+
+        try {
+            auditionReportService.updateTextAuditionReportStatus(auditionId, status);
+            log.info("글 모집 신고 ID {}의 상태가 {}로 변경되었습니다.", auditionId, status);
+            return ResponseEntity.ok("글 모집 신고 상태가 성공적으로 변경되었습니다.");
+        } catch (Exception e) {
+            log.error("Text 모집 신고 상태 변경 중 오류 발생 - 신고 ID: {}", auditionId, e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("글 모집 신고 상태 변경에 실패했습니다.");
         }
     }
 }
