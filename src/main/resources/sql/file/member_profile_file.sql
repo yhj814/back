@@ -7,3 +7,4 @@ create table tbl_member_profile_file (
     references tbl_member_profile (id)
 );
 
+select *from tbl_member_profile;

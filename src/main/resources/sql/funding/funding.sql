@@ -119,3 +119,5 @@ from tbl_funding f
          join tbl_file fl on pfl.id = fl.id and f.thumbnail_file_id = fl.id
 order by f.id desc
     );
+
+select *from tbl_funding;

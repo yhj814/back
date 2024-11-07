@@ -6,6 +6,7 @@ import com.app.ggumteo.domain.funding.FundingDTO;
 import com.app.ggumteo.domain.funding.FundingProductVO;
 import com.app.ggumteo.domain.post.PostVO;
 import com.app.ggumteo.pagination.Pagination;
+import com.app.ggumteo.repository.buy.BuyFundingProductDAO;
 import com.app.ggumteo.repository.funding.FundingDAO;
 import com.app.ggumteo.repository.post.PostDAO;
 import com.app.ggumteo.repository.work.WorkDAO;
@@ -31,6 +32,7 @@ public class FundingServiceImpl implements FundingService{
     private final FundingDAO fundingDAO;
     private final PostDAO postDAO;
     private final PostFileService postFileService;  // 파일 저장 서비스 주입
+    private final BuyFundingProductDAO buyFundingProductDAO;
 
     @Override
     public void write(FundingDTO fundingDTO, MultipartFile[] fundingFiles, MultipartFile thumbnailFile) {
@@ -120,4 +122,18 @@ public List<FundingDTO> findFundingById(Long id) {
     public List<FundingDTO> findRelatedFundingByGenre(String genreType, Long fundingId) {
         return fundingDAO.findRelatedFundingByGenre(genreType, fundingId);
     }
+    @Override
+    public void buyFundingProduct(Long memberId, Long fundingId, Long fundingProductId, int productPrice) {
+        log.info("Updating convergePrice for fundingId: {}, fundingProductId: {}, with productPrice: {}", fundingId, fundingProductId, productPrice);
+
+        // 상품 수량 감소 (fundingProductId 사용)
+        buyFundingProductDAO.decrementProductAmount(fundingProductId);
+
+        // 펀딩 금액 증가 (fundingId 사용)
+        buyFundingProductDAO.updateConvergePrice(fundingId, productPrice);
+
+        // 구매 내역 삽입 (memberId와 fundingProductId 사용)
+        buyFundingProductDAO.insertBuyFundingProduct(memberId, fundingProductId);
+    }
+
 }

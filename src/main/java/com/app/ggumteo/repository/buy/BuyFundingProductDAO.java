@@ -40,4 +40,20 @@ public class BuyFundingProductDAO {
     public int getMyBuyFundingListTotal(Long memberId, String postType){
         return buyFundingProductMapper.selectCountBuyFundingListByMember(memberId, postType);
     }
+
+    // 펀딩 금액 업데이트
+    public void updateConvergePrice(Long fundingId, int productPrice) {
+        buyFundingProductMapper.updateConvergePrice(fundingId, productPrice);
+    }
+
+    // 상품 수량 감소
+    public void decrementProductAmount(Long fundingProductId) {
+        buyFundingProductMapper.decrementProductAmount(fundingProductId);
+    }
+
+    // 구매 정보 삽입
+    public void insertBuyFundingProduct(Long memberId, Long fundingProductId) {
+        buyFundingProductMapper.insertBuyFundingProduct(memberId, fundingProductId);
+    }
+
 }
