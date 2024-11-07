@@ -453,12 +453,12 @@ function showReviewDetailModal(sectionId) {
     const btnsVideo = document.querySelectorAll(
         `${sectionId} .video-wrapper .apply-table-cell.detail`
     );
-    const modalVideo = document.querySelector(
-        `${sectionId} .video.review-detail-modal`
-    );
-    const backgroundOverlayVideo = document.querySelector(
-        `${sectionId} .video.review-detail-modal .background-overlay`
-    );
+    // const modalVideo = document.querySelector(
+    //     `${sectionId} .video.review-detail-modal`
+    // );
+    // const backgroundOverlayVideo = document.querySelector(
+    //     `${sectionId} .video.review-detail-modal .background-overlay`
+    // );
 
     // // 신고 사유 버튼 클릭했을 때
     // btnsVideo.forEach((btn) => {
@@ -476,12 +476,12 @@ function showReviewDetailModal(sectionId) {
     const btnsText = document.querySelectorAll(
         `${sectionId} .text-wrapper .apply-table-cell.detail`
     );
-    const modalText = document.querySelector(
-        `${sectionId} .text.review-detail-modal`
-    );
-    const backgroundOverlayText = document.querySelector(
-        `${sectionId} .text.review-detail-modal .background-overlay`
-    );
+    // const modalText = document.querySelector(
+    //     `${sectionId} .text.review-detail-modal`
+    // );
+    // const backgroundOverlayText = document.querySelector(
+    //     `${sectionId} .text.review-detail-modal .background-overlay`
+    // );
 
     // // 신고 사유 버튼 클릭했을 때
     // btnsText.forEach((btn) => {
@@ -541,10 +541,10 @@ function showMesaageModal(sectionId) {
         });
     });
     // 백그라운드 클릭했을 때
-    backgroundOverlayText.addEventListener("click", () => {
-        // 모달창 사라짐.
-        modalText.style.display = "none";
-    });
+    // backgroundOverlayText.addEventListener("click", () => {
+    //     // 모달창 사라짐.
+    //     modalText.style.display = "none";
+    // });
 }
 showMesaageModal("#work-section");
 showMesaageModal("#funding-section");
