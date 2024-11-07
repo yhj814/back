@@ -14,4 +14,8 @@ public class AuditionApplicationDAO {
     public void save(AuditionApplicationDTO auditionApplicationDTO) {
         auditionApplicationMapper.insert(auditionApplicationDTO);
     }
+
+    public int countApplicantsByAuditionId(Long auditionId) {
+        return auditionApplicationMapper.countApplicantsByAuditionId(auditionId);
+    }
 }

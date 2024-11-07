@@ -4,7 +4,7 @@
 <mapper namespace="com.app.ggumteo.mapper.notification.ApplyAuditionNotificationMapper">
 
     <!-- 신청 알림 생성 -->
-    <insert id="insert" parameterType="java.lang.Long">
+    <insert id="insert" parameterType="applyAuditionNotificationVO">
         INSERT INTO tbl_apply_audition_notification (audition_application_id)
         VALUES (#{auditionApplicationId})
     </insert>
