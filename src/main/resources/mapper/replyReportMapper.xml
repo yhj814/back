@@ -21,7 +21,7 @@
         join tbl_post p on w.id = p.id
         join tbl_member_profile mp on r.member_profile_id = mp.id
         join tbl_member_profile mpr on rr.member_profile_id = mpr.id
-        where p.post_type = 'VIDEO'
+        where p.post_type = 'WORKVIDEO'
 
         <!-- 신고 관리 조건: reportStatus가 'REPORT'-->
         <if test="order == 'reportStatus'">
@@ -65,7 +65,7 @@
         join tbl_work w on r.work_id = w.id
         join tbl_post p on w.id = p.id
         join tbl_member_profile mp on r.member_profile_id = mp.id
-        where p.post_type = 'VIDEO'
+        where p.post_type = 'WORKVIDEO'
 
         <!-- 신고 관리 조건: reportStatus가 'REPORT'-->
         <if test="order == 'reportStatus'">
@@ -110,7 +110,7 @@
         join tbl_post p on w.id = p.id
         join tbl_member_profile mp on r.member_profile_id = mp.id
         join tbl_member_profile mpr on rr.member_profile_id = mpr.id
-        where p.post_type = 'TEXT'
+        where p.post_type = 'WORKTEXT'
 
         <!-- 신고 관리 조건: reportStatus가 'REPORT'-->
         <if test="order == 'reportStatus'">
@@ -154,7 +154,7 @@
         join tbl_work w on r.work_id = w.id
         join tbl_post p on w.id = p.id
         join tbl_member_profile mp on r.member_profile_id = mp.id
-        where p.post_type = 'TEXT'
+        where p.post_type = 'WORKTEXT'
 
         <!-- 신고 관리 조건: reportStatus가 'REPORT'-->
         <if test="order == 'reportStatus'">

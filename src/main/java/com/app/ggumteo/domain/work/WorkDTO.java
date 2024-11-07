@@ -29,7 +29,8 @@ public class WorkDTO {
     private double star;
     private String createdDate; // 생성 날짜
     private String updatedDate; // 수정 날짜
-    private String thumbnailFilePath; // 썸네일 파일 경로
+    private String thumbnailFileName; // 썸네일 파일 경로
+    private String thumbnailFilePath; // 썸네일 파일 경로(수정 전)
     private Long thumbnailFileId; // 썸네일 파일 ID (추가된 필드)
     private List<Long> ids; // 삭제할 파일 id 목록
     private String profileImgUrl; // 카카오톡 프로필 이미지 url
