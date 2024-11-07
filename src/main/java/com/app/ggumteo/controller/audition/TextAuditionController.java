@@ -80,7 +80,7 @@ public class TextAuditionController {
                 return "/error";
             }
 
-            auditionDTO.setPostType(PostType.TEXT.name());
+            auditionDTO.setPostType(PostType.AUDITIONTEXT.name());
             auditionDTO.setAuditionStatus("모집중");
             auditionDTO.setMemberProfileId(memberProfile.getId());
             auditionDTO.setMemberId(member.getId());
@@ -127,7 +127,7 @@ public class TextAuditionController {
             log.info("수정 요청 - 삭제할 파일 ID 목록: {}", deletedFileIds);
 
             AuditionDTO currentAudition = auditionService.findAuditionById(auditionDTO.getId());
-            auditionDTO.setPostType(PostType.TEXT.name());
+            auditionDTO.setPostType(PostType.AUDITIONTEXT.name());
             auditionDTO.setAuditionStatus("모집중");
             if (currentAudition != null) {
                 log.info("게시글 id:{}", currentAudition.getId());
@@ -160,11 +160,11 @@ public class TextAuditionController {
         AuditionPagination pagination = new AuditionPagination();
         pagination.setPage(page);
 
-        int totalSearchAudition = auditionService.findTotalAuditionsSearch(PostType.TEXT, search);
+        int totalSearchAudition = auditionService.findTotalAuditionsSearch(PostType.AUDITIONTEXT, search);
         pagination.setTotal(totalSearchAudition);
         pagination.progress();
 
-        List<AuditionDTO> auditions = auditionService.findAllAuditions(PostType.TEXT, search, pagination);
+        List<AuditionDTO> auditions = auditionService.findAllAuditions(PostType.AUDITIONTEXT, search, pagination);
 
         model.addAttribute("auditions", auditions);
         model.addAttribute("search", search);

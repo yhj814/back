@@ -91,7 +91,7 @@ public class VideoWorkController {
                 log.error("세션에 멤버 정보가 없습니다.");
                 return ResponseEntity.status(400).body(Collections.singletonMap("error", "세션에 멤버 정보가 없습니다."));
             }
-            workDTO.setPostType(PostType.VIDEO.name());
+            workDTO.setPostType(PostType.WORKVIDEO.name());
             workDTO.setMemberProfileId(member.getId());
 
             // Work 저장, 파일은 서비스에서 처리
@@ -144,7 +144,7 @@ public class VideoWorkController {
             workService.updateWork(workDTO, newFiles, deletedFileIds, newThumbnailFile); // 서비스로 전달
 
             // 수정 후 바로 리스트 페이지로 이동하여 데이터 전달
-            search.setPostType(PostType.VIDEO.name());
+            search.setPostType(PostType.WORKVIDEO.name());
             log.info("Received Search Parameters: {}", search);
             log.info("Received page: {}", page);
 
@@ -177,8 +177,8 @@ public class VideoWorkController {
             @RequestParam(value = "page", defaultValue = "1") int page,
             Model model) {
 
-        // postType을 VIDEO로 설정하여 비디오 작품만 조회
-        search.setPostType(PostType.VIDEO.name());
+        // postType을 WORKVIDEO로 설정하여 비디오 작품만 조회
+        search.setPostType(PostType.WORKVIDEO.name());
         log.info("Received Search Parameters: {}", search);
         log.info("Received page: {}", page);
 
@@ -241,8 +241,8 @@ public class VideoWorkController {
 
 
         List<PostFileDTO> postFiles = workService.findFilesByPostId(id);
-        List<WorkDTO> threeWorks = workService.getThreeWorksByGenre(work.getGenreType(), work.getId(), PostType.VIDEO.name());
-        List<WorkDTO> threeAuthorWorks = workService.getThreeWorksByAuthor(work.getMemberProfileId(), work.getId(), PostType.VIDEO.name());
+        List<WorkDTO> threeWorks = workService.getThreeWorksByGenre(work.getGenreType(), work.getId(), PostType.WORKVIDEO.name());
+        List<WorkDTO> threeAuthorWorks = workService.getThreeWorksByAuthor(work.getMemberProfileId(), work.getId(), PostType.WORKVIDEO.name());
 
         model.addAttribute("work", work);
         model.addAttribute("postFiles", postFiles);
