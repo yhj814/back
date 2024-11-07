@@ -191,19 +191,20 @@ public class TextFundingController {
         try {
             // 필수 파라미터 체크
             if (!orderData.containsKey("fundingId") || !orderData.containsKey("memberProfileId") ||
-                    !orderData.containsKey("productId") || !orderData.containsKey("amount")) {
+                    !orderData.containsKey("productId") || !orderData.containsKey("amount") || !orderData.containsKey("productPrice")) {
                 return ResponseEntity.status(400).body(Collections.singletonMap("error", "필수 데이터가 누락되었습니다."));
             }
 
             Long fundingId = Long.valueOf(orderData.get("fundingId").toString());
             Long memberProfileId = Long.valueOf(orderData.get("memberProfileId").toString());
-            Long productId = Long.valueOf(orderData.get("productId").toString());
+            Long fundingProductId = Long.valueOf(orderData.get("productId").toString());
             int amount = Integer.parseInt(orderData.get("amount").toString());
+            int productPrice = Integer.parseInt(orderData.get("productPrice").toString());
 
-            log.info("Received Order Data - Funding ID: {}, Member Profile ID: {}, Product ID: {}, Amount: {}", fundingId, memberProfileId, productId, amount);
+            log.info("Received Order Data - Funding ID: {}, Member Profile ID: {}, Product ID: {}, Amount: {}, Product Price: {}", fundingId, memberProfileId, fundingProductId, amount, productPrice);
 
             // 펀딩 주문 처리 로직 실행
-            fundingService.buyFundingProduct(memberProfileId, productId, amount);
+            fundingService.buyFundingProduct(memberProfileId, fundingId, fundingProductId, productPrice);
 
             log.info("Order processed successfully for Funding ID: {}", fundingId);
             return ResponseEntity.ok(Collections.singletonMap("success", true));
@@ -215,6 +216,8 @@ public class TextFundingController {
             return ResponseEntity.status(500).body(Collections.singletonMap("error", "주문 처리 중 오류가 발생했습니다."));
         }
     }
+
+
 
 
 }

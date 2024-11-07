@@ -29,5 +29,5 @@ public interface FundingService {
     // 같은 장르의 펀딩 게시글 조회 (최대 5개)
     List<FundingDTO> findRelatedFundingByGenre(String genreType, Long fundingId);
 
-    void buyFundingProduct(Long productId, Long memberId, int amount);
+    void buyFundingProduct(Long fundingProductId, Long memberId, Long fundingId, int productPrice);
 }
