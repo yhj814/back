@@ -41,19 +41,19 @@ public class TextFundingController {
     @ModelAttribute
     public void setTestMember(HttpSession session) {
         if (session.getAttribute("member") == null) {
-            session.setAttribute("member", new MemberVO(1L, "testEmail@test.com", "모집중", "profileImageUrl", "", ""));
+            session.setAttribute("member", new MemberVO(3L, "testEmail@test.com", "모집중", "profileImageUrl", "", ""));
         }
         if (session.getAttribute("memberProfile") == null) {
             session.setAttribute("memberProfile", new MemberProfileVO(
-                    1L,
+                    3L,
                     "홍길동",               // profileName
                     "010-1234-5678",       // profilePhone
                     "testEmail@test.com",  // profileEmail
                     99,
                     "testEmail@test.com",
-                    "010-1234-5678",
+                    "소개",
                     "기타",
-                    1L,
+                    3L,
                     "",
                     ""
             ));
@@ -87,7 +87,7 @@ public class TextFundingController {
                 log.error("세션에 멤버 정보가 없습니다.");
                 return ResponseEntity.status(400).body(Collections.singletonMap("error", "세션에 멤버 정보가 없습니다."));
             }
-            fundingDTO.setPostType(PostType.TEXT.name());
+            fundingDTO.setPostType(PostType.FUNDINGTEXT.name());
             fundingDTO.setMemberProfileId(member.getId());
             log.info("Received FundingDTO: {}", fundingDTO);
             log.info("Received Funding Products: {}", fundingDTO.getFundingProducts());
@@ -116,7 +116,7 @@ public class TextFundingController {
             Model model) {
 
 
-        search.setPostType(PostType.TEXT.name());
+        search.setPostType(PostType.FUNDINGTEXT.name());
         log.info("Received Search Parameters: {}", search);
         log.info("Received page: {}", page);
 
