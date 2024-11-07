@@ -115,21 +115,15 @@ public class MemberRestController {
         return myPageService.getAdminAnswerByInquiryId(inquiryId);
     }
 
-
     //    가져오기
     @GetMapping("/member/video/my/work/display")
     @ResponseBody
     public byte[] display(@RequestParam("fileName") String fileName) throws IOException {
         File file = new File("C:/upload", fileName);
 
-        log.info("fileName???????????={}", fileName);
-        log.info("file???????????={}", file);
-
         if (!file.exists()) {
             throw new FileNotFoundException("파일을 찾을 수 없습니다: " + fileName);
         }
-//
-//        log.info("FileCopyUtils.copyToByteArray(file)???????????={}", FileCopyUtils.copyToByteArray(file));
 
         return FileCopyUtils.copyToByteArray(file);
     }

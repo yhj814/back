@@ -53,8 +53,8 @@
                                 <!-- 펀딩내용설명 -->
                                 <div class="funding-content" th:text="${funding.postContent}"></div>
                                 <!-- 펀딩내용 이미지 -->
-                                <div class="funding-img" th:each="file : ${postFiles}" th:if="${file.filePath != funding.thumbnailFilePath}">
-                                    <img th:src="@{'/text/funding/display?fileName=' + ${file.filePath}}" />
+                                <div class="funding-img" th:each="file : ${postFiles}" th:if="${file.fileName != funding.thumbnailFileName}">
+                                    <img th:src="@{'/text/funding/display?fileName=' + ${file.fileName}}" />
                                 </div>
                                 <!-- 이미지설명 -->
                                 <div class="funding-img-content" th:text="${funding.fileContent}">
@@ -259,7 +259,7 @@
                                 <a th:href="@{'/text/funding/detail/' + ${relatedFunding.id}}" class="similar-link">
                                     <div class="link-box">
                                         <div class="img-box">
-                                            <img th:src="@{'/text/funding/display?fileName=' + ${relatedFunding.thumbnailFilePath}}"
+                                            <img th:src="@{'/text/funding/display?fileName=' + ${relatedFunding.thumbnailFileName}}"
                                                  class="similar-thumbnail-image"
                                                  alt="유사한 펀딩 썸네일"/>
                                         </div>

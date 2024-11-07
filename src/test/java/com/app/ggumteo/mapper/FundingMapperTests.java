@@ -44,7 +44,7 @@ public class FundingMapperTests {
     public void testSelectBuyerByFundingPostId() {
         FundingDTO fundingDTO = null;
         SettingTablePagination settingTablePagination = new SettingTablePagination();
-        fundingDTO = fundingMapper.selectById(9L, PostType.VIDEO.name()).get();
+        fundingDTO = fundingMapper.selectById(9L, PostType.FUNDINGVIDEO.name()).get();
         settingTablePagination.setTotal(buyFundingProductMapper.selectCount(fundingDTO.getId()));
         settingTablePagination.progress();
         buyFundingProductMapper.selectByFundingPostId(

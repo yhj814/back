@@ -31,10 +31,10 @@ public class WorkMapperTests {
         MemberVO memberVO = null;
         WorkAndFundingPagination workAndFundingPagination = new WorkAndFundingPagination();
         memberVO = memberMapper.selectById(15L).get();
-        workAndFundingPagination.setTotal(workMapper.selectCount(memberVO.getId(), PostType.VIDEO.name()));
+        workAndFundingPagination.setTotal(workMapper.selectCount(memberVO.getId(), PostType.WORKVIDEO.name()));
         workAndFundingPagination.progress();
         workMapper.selectByMemberId(
-                        workAndFundingPagination, memberVO.getId(), PostType.VIDEO.name()).stream()
+                        workAndFundingPagination, memberVO.getId(), PostType.WORKVIDEO.name()).stream()
                 .map(WorkDTO::toString).forEach(log::info);
     }
 
@@ -44,7 +44,7 @@ public class WorkMapperTests {
         workDTO.setId(38L);
         log.info("workDTO={}", workDTO);
 
-        Optional<WorkDTO> foundWork = workMapper.selectByIdAndPostType(workDTO.getId(), PostType.VIDEO.name());
+        Optional<WorkDTO> foundWork = workMapper.selectByIdAndPostType(workDTO.getId(), PostType.WORKVIDEO.name());
         foundWork.map(WorkDTO::toString).ifPresent(log::info);
     }
 
@@ -53,7 +53,7 @@ public class WorkMapperTests {
         WorkDTO workDTO = null;
         SettingTablePagination settingTablePagination = new SettingTablePagination();
         log.info("settingTablePagination={}", settingTablePagination);
-        workDTO = workMapper.selectByIdAndPostType(38L, PostType.VIDEO.name()).get();
+        workDTO = workMapper.selectByIdAndPostType(38L, PostType.WORKVIDEO.name()).get();
         log.info("workDTO={}", workDTO);
         settingTablePagination.setTotal(buyWorkMapper.selectCount(workDTO.getId()));
         log.info("settingTablePagination={}", settingTablePagination);
