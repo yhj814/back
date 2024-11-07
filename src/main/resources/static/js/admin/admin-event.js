@@ -865,9 +865,421 @@ document.addEventListener("DOMContentLoaded", () => {
     setupTextReportDetailsModal(); // 모달 이벤트 초기화
 });
 
+//--------------------------------------------------------------------------------------------------------
+// 영상 댓글 신고관리
+
+// 검색 정렬 선언
+let currentVideoReplyOrder = 'replyCreatedDate';
+let currentVideoReplySearch = '';
+
+// 페이지 변경 함수
+async function changeVideoReplyPage(page) {
+    const data = await fetchVideoReplyReports(page, currentVideoReplySearch, currentVideoReplyOrder || 'replyCreatedDate');
+    renderVideoReplyReportList(data.reports);
+    renderVideoReplyReportPagination(data.pagination);
+    setupVideoReplyContentClickEvents(); // 댓글 내용 클릭 이벤트 설정
+}
 
 
+// 신고 상태 업데이트 요청 후 목록 갱신
+async function updateVideoReplyReportStatus(replyId, reportStatus) {
+    const success = await fetchUpdateVideoReplyReportStatus(replyId, reportStatus);
+    if (success) {
+        alert("상태가 업데이트되었습니다."); // 상태 업데이트 알림
+        changeVideoReplyPage(1); // 상태 변경 후 목록 갱신
+        document.getElementById("video-reply-report-modal").style.display = "none"; // 모달 닫기
+    }
+}
 
+// 전체 선택 및 개별 체크박스 이벤트
+function videoReplyReportCheckboxEvents() {
+    const selectAllCheckbox = document.querySelector('#video-reply-report-selectAll .select-all');
+    const videoReplyReportCheckboxes = document.querySelectorAll('.apply-table-row .apply-checkbox');
+
+    // 전체 체크박스
+    selectAllCheckbox.addEventListener('change', (event) => {
+        const isChecked = event.target.checked;
+        videoReplyReportCheckboxes.forEach(checkbox => {
+            checkbox.checked = isChecked;
+        });
+    });
+
+    // 개별 체크박스
+    videoReplyReportCheckboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', () => {
+            const allChecked = Array.from(videoReplyReportCheckboxes).every(cb => cb.checked);
+            selectAllCheckbox.checked = allChecked;
+        });
+    });
+}
+
+// 신고 상태 모달 열기
+function openVideoReplyReportModal(event) {
+    const modal = document.getElementById("video-reply-report-modal");
+    modal.style.display = "flex";
+    selectedReplyId = event.target.closest(".apply-table-row").querySelector(".apply-checkbox").dataset.id;
+}
+
+// 신고 상태 선택 및 저장
+function setupVideoReplyReportModal() {
+    const modal = document.getElementById("video-reply-report-modal");
+    const choiceButtons = modal.querySelectorAll(".choice-container input[type=button]");
+    const saveButton = modal.querySelector(".btn-complete");
+    const overlay = modal.querySelector(".background-overlay");
+
+    choiceButtons.forEach(button => {
+        button.addEventListener("click", () => {
+            choiceButtons.forEach(btn => btn.classList.remove("on"));
+            button.classList.add("on");
+            selectedReportReplyStatus = button.getAttribute("data-status");
+        });
+    });
+
+    // 상태 선택 후 저장
+    saveButton.addEventListener("click", async () => {
+        if (selectedReportReplyStatus) {
+            const success = await updateVideoReplyReportStatus(selectedReplyId, selectedReportReplyStatus);
+            if (success) {
+                modal.style.display = "none";
+                updateVideoReplyReportStatusInView(selectedReplyId, selectedReportReplyStatus);
+            }
+        } else {
+            alert("상태를 선택해주세요.");
+        }
+    });
+
+    overlay.addEventListener("click", () => {
+        modal.style.display = "none";
+    });
+}
+
+// 화면 신고 상태 업데이트
+function updateVideoReplyReportStatusInView(replyId, newStatus) {
+    const statusButton = document.querySelector(`.apply-checkbox[data-id="${replyId}"]`)
+        .closest(".apply-table-row")
+        .querySelector(".report-management-btn.status");
+    statusButton.textContent = newStatus;
+
+    // 신고 상태에 따른 배경색 변경
+    switch (newStatus) {
+        case "DELETE":
+            statusButton.style.backgroundColor = "rgba(41, 153, 41, 0.818)";
+            break;
+        case "HOLD":
+            statusButton.style.backgroundColor = "#ffa600";
+            break;
+        case "NOPROBLEM":
+            statusButton.style.backgroundColor = "rgb(183, 183, 183)";
+            break;
+        default:
+            statusButton.style.backgroundColor = "";
+    }
+}
+
+// 페이지 초기화
+function initVideoReplyPage() {
+    const searchInput = document.getElementById("video-reply-report-search");
+
+    // 검색 입력 이벤트
+    searchInput.addEventListener("keypress", (e) => {
+        if (e.key === "Enter") {
+            currentVideoReplySearch = e.target.value;
+            // 검색어가 입력되면 첫 페이지로 이동
+            changeVideoReplyPage(1);
+        }
+    });
+
+    // 필터 버튼 클릭 이벤트
+    document.querySelectorAll(".sort-filter-option.video-reply").forEach((option) => {
+        option.addEventListener("click", () => {
+            // 현재 클릭한 필터 버튼의 data-order 속성 값을 currentVideoReplyOrder에 설정
+            const selectedOrder = option.getAttribute("data-order");
+            currentVideoReplyOrder = selectedOrder || 'replyCreatedDate'; // 기본값 설정
+
+            document.querySelectorAll(".sort-filter-option.video-reply").forEach(opt => opt.classList.remove("selected"));
+            option.classList.add("selected");
+
+            console.log(`Current Order set to: ${currentVideoReplyOrder}`); // 설정된 정렬 기준 로그
+
+            // 변경된 정렬 기준으로 목록 갱신
+            changeVideoReplyPage(1);
+        });
+    });
+
+    // 페이지 초기 로드
+    changeVideoReplyPage(1);
+}
+
+// 신고 내역보기 모달
+function setupVideoReplyReportDetailsModal() {
+    const modal = document.querySelector(".reasons-report-modal.video-reply"); // 모달 요소
+    const overlay=document.querySelector(".background-overlay");
+    const closeModalButton = modal.querySelector(".close-btn");           // 닫기 버튼
+
+    // 모든 "보기" 버튼에 이벤트 리스너 추가
+    document.querySelectorAll(".report-content-look-video-reply").forEach(button => {
+        button.addEventListener("click", () => {
+            console.log("보기 버튼 클릭"); // 로그 추가
+
+            // 버튼의 데이터 속성에서 정보를 읽어옴
+            const name = button.getAttribute("data-name") || ' ';
+            const email = button.getAttribute("data-email") || ' ';
+            const time = button.getAttribute("data-time") || ' ';
+            const content = button.getAttribute("data-content") || 'No content provided';
+
+            // 모달 내부에 데이터를 설정
+            modal.querySelector(".name").textContent = name;
+            modal.querySelector(".email").textContent = email;
+            modal.querySelector(".time").textContent = time;
+            modal.querySelector("textarea[name='reason']").textContent = content;
+
+            modal.style.display = "block"; // 모달 표시
+            overlay.style.display="none";
+        });
+    });
+
+    // 닫기 버튼 클릭 시 모달 닫기
+    closeModalButton.addEventListener("click", () => {
+        modal.style.display = "none";
+    });
+}
+
+// 댓글 내용 클릭 이벤트 설정
+function setupVideoReplyContentClickEvents() {
+    document.querySelectorAll(".apply-table-row .apply-table-cell:nth-child(4)").forEach(cell => {
+        cell.addEventListener("click", (e) => {
+            const replyContent = e.target.textContent.trim();
+            openVideoReplyModal(replyContent);
+        });
+    });
+}
+
+// 댓글 모달 열기 함수
+function openVideoReplyModal(replyContent) {
+    const replyModal = document.getElementById("reply-video-detail-modal");
+    const replyContentTextarea = document.getElementById("reply-video-content-textarea");
+    replyContentTextarea.value = replyContent;
+    replyModal.style.display = "flex";
+}
+
+// 모달 외부 클릭 시 닫기
+document.getElementById("modal-video-reply-overlay").addEventListener("click", () => {
+    document.getElementById("reply-video-detail-modal").style.display = "none";
+});
+
+// 페이지 로드
+document.addEventListener("DOMContentLoaded", () => {
+    initVideoReplyPage();
+    setupVideoReplyReportModal();
+});
+
+//--------------------------------------------------------------------------------------------------------
+// 글 댓글 신고관리
+
+// 검색 정렬 선언
+let currentTextReplyOrder = 'replyCreatedDate';
+let currentTextReplySearch = '';
+
+// 페이지 변경 함수
+async function changeTextReplyPage(page) {
+    const data = await fetchTextReplyReports(page, currentTextReplySearch, currentTextReplyOrder || 'replyCreatedDate');
+    renderTextReplyReportList(data.reports);
+    renderTextReplyReportPagination(data.pagination);
+    setupTextReplyContentClickEvents(); // 댓글 내용 클릭 이벤트 설정
+}
+
+
+// 신고 상태 업데이트 요청 후 목록 갱신
+async function updateTextReplyReportStatus(replyId, reportStatus) {
+    const success = await fetchUpdateTextReplyReportStatus(replyId, reportStatus);
+    if (success) {
+        alert("상태가 업데이트되었습니다."); // 상태 업데이트 알림
+        changeTextReplyPage(1); // 상태 변경 후 목록 갱신
+        document.getElementById("text-reply-report-modal").style.display = "none"; // 모달 닫기
+    }
+}
+
+// 전체 선택 및 개별 체크박스 이벤트
+function textReplyReportCheckboxEvents() {
+    const selectAllCheckbox = document.querySelector('#text-reply-report-selectAll .select-all');
+    const textReplyReportCheckboxes = document.querySelectorAll('.apply-table-row .apply-checkbox');
+
+    // 전체 체크박스
+    selectAllCheckbox.addEventListener('change', (event) => {
+        const isChecked = event.target.checked;
+        textReplyReportCheckboxes.forEach(checkbox => {
+            checkbox.checked = isChecked;
+        });
+    });
+
+    // 개별 체크박스
+    textReplyReportCheckboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', () => {
+            const allChecked = Array.from(textReplyReportCheckboxes).every(cb => cb.checked);
+            selectAllCheckbox.checked = allChecked;
+        });
+    });
+}
+
+// 신고 상태 모달 열기
+function openTextReplyReportModal(event) {
+    const modal = document.getElementById("text-reply-report-modal");
+    modal.style.display = "flex";
+    selectedReplyId = event.target.closest(".apply-table-row").querySelector(".apply-checkbox").dataset.id;
+}
+
+// 신고 상태 선택 및 저장
+function setupTextReplyReportModal() {
+    const modal = document.getElementById("text-reply-report-modal");
+    const choiceButtons = modal.querySelectorAll(".choice-container input[type=button]");
+    const saveButton = modal.querySelector(".btn-complete");
+    const overlay = modal.querySelector(".background-overlay");
+
+    choiceButtons.forEach(button => {
+        button.addEventListener("click", () => {
+            choiceButtons.forEach(btn => btn.classList.remove("on"));
+            button.classList.add("on");
+            selectedReportReplyStatus = button.getAttribute("data-status");
+        });
+    });
+
+    // 상태 선택 후 저장
+    saveButton.addEventListener("click", async () => {
+        if (selectedReportReplyStatus) {
+            const success = await updateTextReplyReportStatus(selectedReplyId, selectedReportReplyStatus);
+            if (success) {
+                modal.style.display = "none";
+                updateTextReplyReportStatusInView(selectedReplyId, selectedReportReplyStatus);
+            }
+        } else {
+            alert("상태를 선택해주세요.");
+        }
+    });
+
+    overlay.addEventListener("click", () => {
+        modal.style.display = "none";
+    });
+}
+
+// 화면 신고 상태 업데이트
+function updateTextReplyReportStatusInView(replyId, newStatus) {
+    const statusButton = document.querySelector(`.apply-checkbox[data-id="${replyId}"]`)
+        .closest(".apply-table-row")
+        .querySelector(".report-management-btn.status");
+    statusButton.textContent = newStatus;
+
+    // 신고 상태에 따른 배경색 변경
+    switch (newStatus) {
+        case "DELETE":
+            statusButton.style.backgroundColor = "rgba(41, 153, 41, 0.818)";
+            break;
+        case "HOLD":
+            statusButton.style.backgroundColor = "#ffa600";
+            break;
+        case "NOPROBLEM":
+            statusButton.style.backgroundColor = "rgb(183, 183, 183)";
+            break;
+        default:
+            statusButton.style.backgroundColor = "";
+    }
+}
+
+// 페이지 초기화
+function initTextReplyPage() {
+    const searchInput = document.getElementById("text-reply-report-search");
+
+    // 검색 입력 이벤트
+    searchInput.addEventListener("keypress", (e) => {
+        if (e.key === "Enter") {
+            currentTextReplySearch = e.target.value;
+            // 검색어가 입력되면 첫 페이지로 이동
+            changeTextReplyPage(1);
+        }
+    });
+
+    // 필터 버튼 클릭 이벤트
+    document.querySelectorAll(".sort-filter-option.text-reply").forEach((option) => {
+        option.addEventListener("click", () => {
+            // 현재 클릭한 필터 버튼의 data-order 속성 값을 currentTextReplyOrder에 설정
+            const selectedOrder = option.getAttribute("data-order");
+            currentTextReplyOrder = selectedOrder || 'replyCreatedDate'; // 기본값 설정
+
+            document.querySelectorAll(".sort-filter-option.text-reply").forEach(opt => opt.classList.remove("selected"));
+            option.classList.add("selected");
+
+            console.log(`Current Order set to: ${currentTextReplyOrder}`); // 설정된 정렬 기준 로그
+
+            // 변경된 정렬 기준으로 목록 갱신
+            changeTextReplyPage(1);
+        });
+    });
+
+    // 페이지 초기 로드
+    changeTextReplyPage(1);
+}
+
+// 신고 내역보기 모달
+function setupTextReplyReportDetailsModal() {
+    const modal = document.querySelector(".reasons-report-modal.text-reply"); // 모달 요소
+    const overlay=document.querySelector(".background-overlay");
+    const closeModalButton = modal.querySelector(".close-btn");           // 닫기 버튼
+
+    // 모든 "보기" 버튼에 이벤트 리스너 추가
+    document.querySelectorAll(".report-content-look-text-reply").forEach(button => {
+        button.addEventListener("click", () => {
+            console.log("보기 버튼 클릭"); // 로그 추가
+
+            // 버튼의 데이터 속성에서 정보를 읽어옴
+            const name = button.getAttribute("data-name") || ' ';
+            const email = button.getAttribute("data-email") || ' ';
+            const time = button.getAttribute("data-time") || ' ';
+            const content = button.getAttribute("data-content") || 'No content provided';
+
+            // 모달 내부에 데이터를 설정
+            modal.querySelector(".name").textContent = name;
+            modal.querySelector(".email").textContent = email;
+            modal.querySelector(".time").textContent = time;
+            modal.querySelector("textarea[name='reason']").textContent = content;
+
+            modal.style.display = "block"; // 모달 표시
+            overlay.style.display="none";
+        });
+    });
+
+    // 닫기 버튼 클릭 시 모달 닫기
+    closeModalButton.addEventListener("click", () => {
+        modal.style.display = "none";
+    });
+}
+
+// 댓글 내용 클릭 이벤트 설정
+function setupTextReplyContentClickEvents() {
+    document.querySelectorAll(".apply-table-row .apply-table-cell:nth-child(4)").forEach(cell => {
+        cell.addEventListener("click", (e) => {
+            const replyContent = e.target.textContent.trim();
+            openTextReplyModal(replyContent);
+        });
+    });
+}
+
+// 댓글 모달 열기 함수
+function openTextReplyModal(replyContent) {
+    const replyModal = document.getElementById("reply-text-detail-modal");
+    const replyContentTextarea = document.getElementById("reply-text-content-textarea");
+    replyContentTextarea.value = replyContent;
+    replyModal.style.display = "flex";
+}
+
+// 모달 외부 클릭 시 닫기
+document.getElementById("modal-text-reply-overlay").addEventListener("click", () => {
+    document.getElementById("reply-text-detail-modal").style.display = "none";
+});
+
+// 페이지 로드
+document.addEventListener("DOMContentLoaded", () => {
+    initTextReplyPage();
+    setupTextReplyReportModal();
+});
 
 
 

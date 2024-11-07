@@ -304,20 +304,20 @@ function showReporProcessingtModal(sectionId) {
             console.log(choiceBtnsVideo[clickedIndex].classList.contains("on"));
         });
     });
-    btnCompleteVideo.addEventListener("click", () => {
-        let anyChoiseSelected = false;
-        // choiceBtnsVideo "on" 클래스를 가진 항목이 있는지 확인
-        choiceBtnsVideo.forEach((choice) => {
-            if (choice.classList.contains("on")) {
-                anyChoiseSelected = true;
-            }
-        });
-        // 선택된 항목이 있으면 모달창이 닫힌다.
-        if (anyChoiseSelected) {
-            modalVideo.style.display = "none";
-        } else {
-        }
-    });
+    // btnCompleteVideo.addEventListener("click", () => {
+    //     let anyChoiseSelected = false;
+    //     // choiceBtnsVideo "on" 클래스를 가진 항목이 있는지 확인
+    //     choiceBtnsVideo.forEach((choice) => {
+    //         if (choice.classList.contains("on")) {
+    //             anyChoiseSelected = true;
+    //         }
+    //     });
+    //     // 선택된 항목이 있으면 모달창이 닫힌다.
+    //     if (anyChoiseSelected) {
+    //         modalVideo.style.display = "none";
+    //     } else {
+    //     }
+    // });
 
     const btnsText = document.querySelectorAll(
         `${sectionId} .text-wrapper .report-management-btn.status`
@@ -359,20 +359,20 @@ function showReporProcessingtModal(sectionId) {
             console.log(choiceBtnsText[clickedIndex].classList.contains("on"));
         });
     });
-    btnCompleteText.addEventListener("click", () => {
-        let anyChoiseSelected = false;
-        // choiceBtnsText "on" 클래스를 가진 항목이 있는지 확인
-        choiceBtnsText.forEach((choice) => {
-            if (choice.classList.contains("on")) {
-                anyChoiseSelected = true;
-            }
-        });
-        // 선택된 항목이 있으면 모달창이 닫힌다.
-        if (anyChoiseSelected) {
-            modalText.style.display = "none";
-        } else {
-        }
-    });
+    // btnCompleteText.addEventListener("click", () => {
+    //     let anyChoiseSelected = false;
+    //     // choiceBtnsText "on" 클래스를 가진 항목이 있는지 확인
+    //     choiceBtnsText.forEach((choice) => {
+    //         if (choice.classList.contains("on")) {
+    //             anyChoiseSelected = true;
+    //         }
+    //     });
+    //     // 선택된 항목이 있으면 모달창이 닫힌다.
+    //     if (anyChoiseSelected) {
+    //         modalText.style.display = "none";
+    //     } else {
+    //     }
+    // });
 }
 showReporProcessingtModal("#work-section");
 showReporProcessingtModal("#funding-section");
@@ -433,10 +433,10 @@ function showReportDetailsModal(sectionId) {
     //     });
     // });
     // 닫기 버튼 클릭했을 때
-    closeBtnsText.addEventListener("click", () => {
-        // 모달창 사라짐.
-        modalText.style.display = "none";
-    });
+    // closeBtnsText.addEventListener("click", () => {
+    //     // 모달창 사라짐.
+    //     modalText.style.display = "none";
+    // });
     // // 백그라운드 클릭했을 때
     // backgroundOverlayText.addEventListener("click", () => {
     //     // 모달창 사라짐.

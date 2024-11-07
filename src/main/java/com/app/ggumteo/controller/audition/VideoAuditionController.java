@@ -201,4 +201,8 @@ public class VideoAuditionController {
 
         return "/audition/video/detail";
     }
+
+//    @GetMapping("/application/{id}")
+//    public String application(@PathVariable(), Model model) {}
+
 }

@@ -15,8 +15,8 @@ import java.util.Map;
 @RequestMapping("/report/messages")
 public class MessageController {
 
-    private final String apiKey = "NCSMTBEIAH0QQQ6R";       // 실제 API 키
-    private final String apiSecret = "MNNFMHB9PJEUIGRDHAKKP6XFKPR7VZAX"; // 실제 API 비밀키
+    private final String apiKey = "";       // 실제 API 키
+    private final String apiSecret = ""; // 실제 API 비밀키
 
     @PostMapping("/send")
     public Map<String, Object> sendMessage(@RequestBody Map<String, String> requestData) {

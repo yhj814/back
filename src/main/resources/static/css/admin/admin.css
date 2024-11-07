@@ -1367,19 +1367,19 @@ h1.common-header-description {
 /* 체크박스 열 */
 #review-section .apply-header-cell:nth-child(1),
 #review-section .apply-table-cell:nth-child(1) {
-    width: 4%;
+    width: 2%;
 }
 
 /* 첫번째 열 */
 #review-section .apply-header-cell:nth-child(2),
 #review-section .apply-table-cell:nth-child(2) {
-    width: 4%;
+    width: 9%;
 }
 
 /* 두번째 열 */
 #review-section .apply-header-cell:nth-child(3),
 #review-section .apply-table-cell:nth-child(3) {
-    width: 22%;
+    width: 14%;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -1388,7 +1388,7 @@ h1.common-header-description {
 /* 세번째 열 */
 #review-section .apply-header-cell:nth-child(4),
 #review-section .apply-table-cell:nth-child(4) {
-    width: 30%;
+    width: 18%;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -1409,7 +1409,7 @@ h1.common-header-description {
 /* 여섯번째 열 */
 #review-section .apply-header-cell:nth-child(7),
 #review-section .apply-table-cell:nth-child(7) {
-    width: 8%;
+    width: 11%;
 }
 
 /* 일곱 열 */
@@ -1486,7 +1486,7 @@ h1.common-header-description {
 /* 체크박스 열 */
 #payment-section .apply-header-cell:nth-child(1),
 #payment-section .apply-table-cell:nth-child(1) {
-    width: 4%;
+    width: 2%;
 }
 
 /* 첫번째 열 */
@@ -1498,19 +1498,19 @@ h1.common-header-description {
 /* 두번째 열 */
 #payment-section .apply-header-cell:nth-child(3),
 #payment-section .apply-table-cell:nth-child(3) {
-    width: 10%;
+    width: 7%;
 }
 
 /* 세번째 열 */
 #payment-section .apply-header-cell:nth-child(4),
 #payment-section .apply-table-cell:nth-child(4) {
-    width: 5%;
+    width: 6%;
 }
 
 /* 네번째 열 */
 #payment-section .apply-header-cell:nth-child(5),
 #payment-section .apply-table-cell:nth-child(5) {
-    width: 15%;
+    width: 13%;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -1532,24 +1532,12 @@ h1.common-header-description {
 /* 일곱 열 */
 #payment-section .apply-header-cell:nth-child(8),
 #payment-section .apply-table-cell:nth-child(8) {
-    width: 15%;
+    width: 11%;
 }
 
 /* 여덟 열 */
 #payment-section .apply-header-cell:nth-child(9),
 #payment-section .apply-table-cell:nth-child(9) {
-    width: 8%;
-}
-
-/* 아홉 열 */
-#payment-section .apply-header-cell:nth-child(10),
-#payment-section .apply-table-cell:nth-child(10) {
-    width: 8%;
-}
-
-/* 마지막 열 */
-#payment-section .apply-header-cell:nth-child(11),
-#payment-section .apply-table-cell:nth-child(11) {
     width: 8%;
 }
 

@@ -4,7 +4,7 @@ import lombok.*;
 import org.springframework.stereotype.Component;
 
 @Component
-@Getter
+@Getter @Setter
 @ToString
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @NoArgsConstructor
@@ -13,4 +13,7 @@ public class ApplyAuditionNotificationVO {
     @EqualsAndHashCode.Include
     private Long id;
     private Long auditionApplicationId;
+
+    public ApplyAuditionNotificationVO(Long auditionApplicationId) {
+    }
 }
