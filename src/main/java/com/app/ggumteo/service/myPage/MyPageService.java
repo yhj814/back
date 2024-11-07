@@ -5,6 +5,7 @@ import com.app.ggumteo.domain.buy.*;
 import com.app.ggumteo.domain.funding.*;
 import com.app.ggumteo.domain.inquiry.InquiryDTO;
 import com.app.ggumteo.domain.inquiry.MyInquiryHistoryListDTO;
+import com.app.ggumteo.domain.member.MemberProfileVO;
 import com.app.ggumteo.domain.member.MemberVO;
 import com.app.ggumteo.domain.work.MyWorkListDTO;
 import com.app.ggumteo.domain.work.WorkDTO;
@@ -89,4 +90,15 @@ public interface MyPageService {
 
     // 마이페이지 - 문의 내역 관리자 답변
     public Optional<AdminAnswerDTO> getAdminAnswerByInquiryId(Long inquiryId);
+
+//====내 정보 ====================================================
+
+    // 마이페이지 - 내 정보 조회
+    public Optional<MemberProfileVO> getMemberProfile(Long memberId);
+
+    // 마이페이지 - 내 정보 수정
+    public void updateMemberProfile(MemberProfileVO memberProfileVO);
 }
+
+
+
