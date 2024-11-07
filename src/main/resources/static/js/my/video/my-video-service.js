@@ -91,14 +91,14 @@ const myPageService = (() => {
         }
     }
 
-    // const upload = async (formDate) => {
-    //     const response = await fetch("/member/video/file/upload", {
-    //         method: "post",
-    //         body: formDate
-    //     });
-    //     const fileName = await response.json();
-    //     return fileName;
-    // }
+    const upload = async (formDate) => {
+        const response = await fetch("/member/video/file/upload", {
+            method: "post",
+            body: formDate
+        });
+        const fileName = await response.json();
+        return fileName;
+    }
 
     return {
         getMyVideoWorkList: getMyVideoWorkList,
