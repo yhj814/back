@@ -81,18 +81,45 @@
         limit #{pagination.startRow}, #{pagination.rowCount}
     </select>
 
-    <!-- 펀딩 상세 조회 -->
+    <!-- 펀딩 상세 기본 정보 조회 -->
     <select id="selectFundingById" resultType="fundingDTO">
-        select f.id, f.genre_type, f.target_price, f.converge_price, f.funding_status, f.investor_number, f.funding_content, f.file_content,
-               p.post_title, p.post_content, p.member_profile_id, p.created_date, p.updated_date,
-               mp.profile_nickname, mp.profile_img_url,
-               fp.id as product_id, fp.product_name, fp.product_price, fp.product_amount
+        select
+            f.id, f.genre_type, f.target_price, f.converge_price, f.funding_status, f.investor_number, f.funding_content, f.file_content,
+            p.post_title, p.post_content, p.member_profile_id, p.created_date, p.updated_date,
+            mp.profile_nickname, mp.profile_email, mp.profile_etc, m.profile_img_url as profileImgUrl,
+            if(f.target_price > 0, round((f.converge_price / f.target_price) * 100, 1), 0) as funding_percentage,
+            date_add(p.created_date, interval 1 month) as endDate
         from tbl_funding f
                  join tbl_post p on f.id = p.id
                  join tbl_member_profile mp on p.member_profile_id = mp.id
-                 left join tbl_funding_product fp on f.id = fp.funding_id
+                 join tbl_member m on mp.member_id = m.id
         where f.id = #{id}
     </select>
+
+    <!-- 펀딩 상품 정보 조회 -->
+    <select id="selectFundingProductsByFundingId" resultType="fundingProductVO">
+        select
+            id as product_id, product_name, product_price, product_amount, funding_id
+        from tbl_funding_product
+        where funding_id = #{fundingId}
+    </select>
+
+
+
+
+
+    <!-- 상세보기에서 다중 파일 조회 -->
+    <select id="selectFilesByPostId" resultType="postFileDTO">
+        select
+            f.id as fileId, f.file_name, f.file_path, f.file_size, f.file_type
+        from
+            tbl_post_file pf
+                join tbl_file f on pf.id = f.id
+        where pf.post_id = #{postId}
+        order by pf.id
+    </select>
+
+
 
 
 
@@ -135,6 +162,22 @@
         set funding_status = '펀딩 종료'
         where funding_status = '펀딩 중'
     </update>
+
+
+    <!-- 같은 장르의 펀딩 게시글 조회 -->
+    <select id="selectRelatedFundingByGenre" resultType="fundingDTO">
+        select
+        f.id, f.genre_type, p.post_title,
+        fl.file_path as thumbnailFilePath
+        from
+        tbl_funding f
+        join tbl_post p on f.id = p.id
+        left join tbl_file fl on f.thumbnail_file_id = fl.id
+        where f.genre_type = #{genreType} and f.id != #{fundingId} <!-- 현재 조회 중인 게시글 제외 -->
+        order by
+        p.created_date desc
+        limit 5
+    </select>
 
 
 </mapper>

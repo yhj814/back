@@ -4,11 +4,13 @@ import com.app.ggumteo.domain.admin.AdminDTO;
 import com.app.ggumteo.domain.admin.AnnouncementVO;
 import com.app.ggumteo.domain.inquiry.InquiryDTO;
 import com.app.ggumteo.domain.member.MemberProfileDTO;
+import com.app.ggumteo.domain.report.ReplyReportDTO;
 import com.app.ggumteo.domain.report.WorkReportDTO;
 import com.app.ggumteo.pagination.AdminPagination;
 import com.app.ggumteo.service.admin.AdminService;
 import com.app.ggumteo.service.admin.AnnouncementService;
 import com.app.ggumteo.service.inquiry.InquiryService;
+import com.app.ggumteo.service.report.ReplyReportService;
 import com.app.ggumteo.service.report.WorkReportService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,6 +33,7 @@ public class AdminController {
     private final InquiryService inquiryService;
     private final AnnouncementService announcementService;
     private final WorkReportService workReportService;
+    private final ReplyReportService replyReportService;
 
     // 인증번호 입력 페이지
     @GetMapping("/verify")
@@ -195,10 +198,10 @@ public class AdminController {
         List<MemberProfileDTO> members = adminService.getMembers(search, order, pagination);
 
         // 로그 정보 출력
-        log.info("검색어: {}", search);
-        log.info("정렬 기준: {}", order);
+        log.info("회원관리 검색어: {}", search);
+        log.info("회원관리 정렬 기준: {}", order);
         log.info("페이지네이션 정보: {}", pagination);
-        log.info("회원 정보 조회 완료: 총 {}명", members.size());
+        log.info("회원 정보 조회 완료: {}명", members.size());
 
         // 결과를 반환할 맵 생성
         Map<String, Object> result = new HashMap<>();
@@ -263,8 +266,9 @@ public class AdminController {
         // 데이터 조회
         List<WorkReportDTO> reports = workReportService.getVideoReports(search, order, pagination);
 
-        log.info("{}",search);
-        log.info("{}",order);
+        log.info("영상 신고 검색어: {}", search);
+        log.info("영상 신고 기준: {}", order);
+        log.info("페이지: {}", pagination);
         log.info("{}",reports.size());
 
         // 결과를 Map에 담아 반환
@@ -311,8 +315,8 @@ public class AdminController {
         // 데이터 조회
         List<WorkReportDTO> reports = workReportService.getTextReports(search, order, pagination);
 
-        log.info("{}",search);
-        log.info("{}",order);
+        log.info("글 신고 검색어: {}", search);
+        log.info("글 신고 정렬 기준: {}", order);
         log.info("{}",reports.size());
 
         // 결과를 Map에 담아 반환
@@ -332,11 +336,109 @@ public class AdminController {
 
         try {
             workReportService.updateTextReportStatus(workId, status);
-            log.info("영상 신고 ID {}의 상태가 {}로 변경되었습니다.", workId, status);
-            return ResponseEntity.ok("영상 신고 상태가 성공적으로 변경되었습니다.");
+            log.info("글 신고 ID {}의 상태가 {}로 변경되었습니다.", workId, status);
+            return ResponseEntity.ok("글 신고 상태가 성공적으로 변경되었습니다.");
         } catch (Exception e) {
-            log.error("영상 신고 상태 변경 중 오류 발생 - 신고 ID: {}", workId, e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("영상 신고 상태 변경에 실패했습니다.");
+            log.error("글 신고 상태 변경 중 오류 발생 - 신고 ID: {}", workId, e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("글 신고 상태 변경에 실패했습니다.");
+        }
+    }
+
+    // 영상 댓글 신고 목록
+    @GetMapping("/videoReplyReports")
+    @ResponseBody
+    public Map<String, Object> getVideoReplyReports(
+            @RequestParam(value = "search", required = false, defaultValue = "") String search,
+            @RequestParam(value = "order", required = false, defaultValue = "replyCreatedDate") String order,
+            @RequestParam(value = "page", defaultValue = "1") Integer page
+    ) {
+        // 페이징 설정
+        AdminPagination pagination = new AdminPagination();
+        pagination.setPage(page);
+
+        // 총 데이터 개수를 가져와서 페이징 진행
+        pagination.setTotal(replyReportService.getVideoReplyReportsCount(search, order));
+        pagination.progress();
+
+        // 데이터 조회
+        List<ReplyReportDTO> replyReports = replyReportService.getVideoReplyReports(search, order, pagination);
+
+        log.info("영상 댓글 신고 검색어: {}", search);
+        log.info("영상 댓글 신고 정렬 기준: {}", order);
+        log.info("결과 개수: {}", replyReports.size());
+
+        // 결과를 Map에 담아 반환
+        Map<String, Object> response = new HashMap<>();
+        response.put("reports", replyReports);
+        response.put("pagination", pagination);
+
+        return response;
+    }
+
+
+    // 영상 댓글 신고 상태 업데이트
+    @PostMapping("/videoReplyReports/status")
+    @ResponseBody
+    public ResponseEntity<String> updateVideoReplyReportStatus(@RequestBody Map<String, Object> requestData) {
+        Long replyId = Long.valueOf(requestData.get("replyId").toString());
+        String status = requestData.get("reportStatus").toString();
+
+        try {
+            replyReportService.updateReplyReportStatus(replyId, status);
+            log.info("영상 댓글 신고 ID {}의 상태가 {}로 변경되었습니다.", replyId, status);
+            return ResponseEntity.ok("영상 댓글 신고 상태가 성공적으로 변경되었습니다.");
+        } catch (Exception e) {
+            log.error("영상 댓글 신고 상태 변경 중 오류 발생 - 신고 ID: {}", replyId, e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("영상 댓글 신고 상태 변경에 실패했습니다.");
+        }
+    }
+
+    // 글 댓글 신고 목록
+    @GetMapping("/textReplyReports")
+    @ResponseBody
+    public Map<String, Object> getTextReplyReports(
+            @RequestParam(value = "search", required = false, defaultValue = "") String search,
+            @RequestParam(value = "order", required = false, defaultValue = "replyCreatedDate") String order,
+            @RequestParam(value = "page", defaultValue = "1") Integer page
+    ) {
+        // 페이징 설정
+        AdminPagination pagination = new AdminPagination();
+        pagination.setPage(page);
+
+        // 총 데이터 개수를 가져와서 페이징 진행
+        pagination.setTotal(replyReportService.getTextReplyReportsCount(search, order));
+        pagination.progress();
+
+        // 데이터 조회
+        List<ReplyReportDTO> replyReports = replyReportService.getTextReplyReports(search, order, pagination);
+
+        log.info("글 댓글 신고 검색어: {}", search);
+        log.info("글 댓글 신고 정렬 기준: {}", order);
+        log.info("결과 개수: {}", replyReports.size());
+
+        // 결과를 Map에 담아 반환
+        Map<String, Object> response = new HashMap<>();
+        response.put("reports", replyReports);
+        response.put("pagination", pagination);
+
+        return response;
+    }
+
+
+    // 글 댓글 신고 상태 업데이트
+    @PostMapping("/textReplyReports/status")
+    @ResponseBody
+    public ResponseEntity<String> updateTextReplyReportStatus(@RequestBody Map<String, Object> requestData) {
+        Long replyId = Long.valueOf(requestData.get("replyId").toString());
+        String status = requestData.get("reportStatus").toString();
+
+        try {
+            replyReportService.updateTextReplyReportStatus(replyId, status);
+            log.info("글 댓글 신고 ID {}의 상태가 {}로 변경되었습니다.", replyId, status);
+            return ResponseEntity.ok("글 댓글 신고 상태가 성공적으로 변경되었습니다.");
+        } catch (Exception e) {
+            log.error("글 댓글 신고 상태 변경 중 오류 발생 - 신고 ID: {}", replyId, e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("글 댓글 신고 상태 변경에 실패했습니다.");
         }
     }
 }

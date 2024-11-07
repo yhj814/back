@@ -1,6 +1,7 @@
 package com.app.ggumteo.service.funding;
 
 import com.app.ggumteo.domain.file.FileVO;
+import com.app.ggumteo.domain.file.PostFileDTO;
 import com.app.ggumteo.domain.funding.FundingDTO;
 import com.app.ggumteo.domain.funding.FundingProductVO;
 import com.app.ggumteo.domain.post.PostVO;
@@ -91,8 +92,32 @@ public class FundingServiceImpl implements FundingService{
     }
 
 
+@Override
+public List<FundingDTO> findFundingById(Long id) {
+    return fundingDAO.findByFundingId(id);
+}
+    @Override
+    public List<PostFileDTO> findFilesByPostId(Long postId) {
+        return fundingDAO.findFilesByPostId(postId);
+    }
+
+    @Override
+    public List<FundingProductVO> findFundingProductsByFundingId(Long fundingId) {
+        List<FundingProductVO> fundingProducts = fundingDAO.findFundingProductsByFundingId(fundingId);
+        if (fundingProducts != null && !fundingProducts.isEmpty()) {
+            log.info("Funding products found for Funding ID {}: {}", fundingId, fundingProducts);
+        } else {
+            log.warn("No funding products found for Funding ID {}", fundingId);
+        }
+        return fundingProducts;
+    }
+
     @Override
     public void updateFundingStatusToEnded() {
         fundingDAO.updateFundingStatusToEnded();
+    }
+    @Override
+    public List<FundingDTO> findRelatedFundingByGenre(String genreType, Long fundingId) {
+        return fundingDAO.findRelatedFundingByGenre(genreType, fundingId);
     }
 }

@@ -36,6 +36,9 @@ public class FundingDTO {
     private List<Long> ids; // 삭제할 파일 id 목록
     private List<FundingProductVO> fundingProducts; // 펀딩 상품 목록
     private double fundingPercentage;
+    private String endDate; // created_date에서 한 달 더한 값
+    private String profileEmail;
+    private String profileEtc;
 
 
 

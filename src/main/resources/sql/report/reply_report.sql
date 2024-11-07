@@ -10,3 +10,10 @@ create table tbl_reply_report (
     constraint fk_reply_report_member_profile foreign key (member_profile_id)
     references tbl_member_profile(id)
 );
+
+select * from tbl_reply_report;
+
+insert into tbl_reply_report
+values (19,'댓글신고19',21,now(),default,11);
+
+select * from tbl_reply;

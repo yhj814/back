@@ -4,6 +4,7 @@ package com.app.ggumteo.controller.funding;
 import com.app.ggumteo.constant.PostType;
 import com.app.ggumteo.domain.file.PostFileDTO;
 import com.app.ggumteo.domain.funding.FundingDTO;
+import com.app.ggumteo.domain.funding.FundingProductVO;
 import com.app.ggumteo.domain.member.MemberProfileVO;
 import com.app.ggumteo.domain.member.MemberVO;
 import com.app.ggumteo.domain.work.WorkDTO;
@@ -60,7 +61,7 @@ public class TextFundingController {
 
     @GetMapping("write")
     public String goToWriteForm() {
-        return "text/funding/funding-write";  // 컨트롤러에서 경로 리턴 대신 뷰 이름만
+        return "text/funding/funding-write";
     }
 
     @PostMapping("write")
@@ -126,6 +127,7 @@ public class TextFundingController {
 
         return "text/funding/funding-list";
     }
+
     @GetMapping("display")
     @ResponseBody
     public byte[] display(@RequestParam("fileName") String fileName) throws IOException {
@@ -136,6 +138,38 @@ public class TextFundingController {
         }
 
         return FileCopyUtils.copyToByteArray(file);
+    }
+
+    @GetMapping("detail/{id}")
+    public String detail(@PathVariable("id") Long id, Model model) {
+        try {
+            // 펀딩 상세 정보 조회 (기본 정보 포함)
+            List<FundingDTO> fundingDTOList = fundingService.findFundingById(id);
+            List<PostFileDTO> postFiles = fundingService.findFilesByPostId(id);
+
+            if (fundingDTOList.isEmpty()) {
+                log.warn("No funding found for ID: {}", id);
+                return "redirect:/text/funding/funding-list";
+            }
+
+            FundingDTO fundingDTO = fundingDTOList.get(0);
+            log.info("Retrieved FundingDTO: {}", fundingDTO);
+
+            // 펀딩 상품 정보 조회 추가
+            List<FundingProductVO> fundingProducts = fundingService.findFundingProductsByFundingId(id);
+            fundingDTO.setFundingProducts(fundingProducts); // 상품 목록을 FundingDTO에 설정
+            String genreType = fundingDTO.getGenreType();
+            List<FundingDTO> relatedFundings = fundingService.findRelatedFundingByGenre(genreType, id);
+
+            model.addAttribute("funding", fundingDTO);
+            model.addAttribute("postFiles", postFiles);
+            model.addAttribute("relatedFundings", relatedFundings);
+
+            return "text/funding/funding-detail";  // 상세 페이지 뷰로 이동
+        } catch (Exception e) {
+            log.error("펀딩 상세 조회 중 오류 발생", e);
+            return "redirect:/text/funding/funding-list";
+        }
     }
 
 
