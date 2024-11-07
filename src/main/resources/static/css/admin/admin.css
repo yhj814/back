@@ -1296,7 +1296,7 @@ h1.common-header-description {
 /* 체크박스 열 */
 #audition-section .apply-header-cell:nth-child(1),
 #audition-section .apply-table-cell:nth-child(1) {
-    width: 4%;
+    width: 2%;
 }
 
 /* 첫번째 열 */
@@ -1314,7 +1314,7 @@ h1.common-header-description {
 /* 세번째 열 */
 #audition-section .apply-header-cell:nth-child(4),
 #audition-section .apply-table-cell:nth-child(4) {
-    width: 9%;
+    width: 14%;
 
 }
 
@@ -1327,7 +1327,7 @@ h1.common-header-description {
 /* 다섯번째 열 */
 #audition-section .apply-header-cell:nth-child(6),
 #audition-section .apply-table-cell:nth-child(6) {
-    width: 15%;
+    width: 16%;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
