@@ -10,5 +10,6 @@ import org.springframework.stereotype.Repository;
 public class ApplyAuditionNotificationDAO {
     private final ApplyAuditionNotificationMapper applyAuditionNotificationMapper;
 
-    public void save(Long auditionApplicationId) {applyAuditionNotificationMapper.insert(auditionApplicationId);}
+    public void save(ApplyAuditionNotificationVO applyAuditionNotificationVO) {
+        applyAuditionNotificationMapper.insert(applyAuditionNotificationVO);}
 }

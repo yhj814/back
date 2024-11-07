@@ -8,4 +8,13 @@
         INSERT INTO tbl_audition_application (member_profile_id, apply_etc, audition_id, confirm_status)
         VALUES (#{memberProfileId}, #{applyEtc}, #{auditionId}, #{confirmStatus})
     </insert>
+
+    <!-- 각 모집글(audition_id)별 지원자 수 조회 -->
+    <select id="countApplicantsByAuditionId" resultType="int" parameterType="long">
+        SELECT COUNT(*) AS application_count
+        FROM tbl_audition_application
+        WHERE audition_id = #{auditionId}
+    </select>
+
+
 </mapper>

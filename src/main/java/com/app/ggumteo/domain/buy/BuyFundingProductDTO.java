@@ -31,6 +31,7 @@ public class BuyFundingProductDTO {
     private String fileType; // 파일 타입
     private String filePath; // 파일 경로
 
+
     public BuyFundingProductVO toVO() {
         return new BuyFundingProductVO(id, memberProfileId, fundingProductId, fundingSendStatus, createdDate);
     }

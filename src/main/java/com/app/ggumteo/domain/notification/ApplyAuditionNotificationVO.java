@@ -13,7 +13,4 @@ public class ApplyAuditionNotificationVO {
     @EqualsAndHashCode.Include
     private Long id;
     private Long auditionApplicationId;
-
-    public ApplyAuditionNotificationVO(Long auditionApplicationId) {
-    }
 }

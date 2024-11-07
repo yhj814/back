@@ -212,9 +212,17 @@ public class VideoWorkController {
     @GetMapping("display")
     @ResponseBody
     public byte[] display(@RequestParam("fileName") String fileName) throws IOException {
+        if (fileName == null || fileName.trim().isEmpty()) {
+            log.error("Received null or empty fileName in display method");
+            throw new FileNotFoundException("파일 이름이 null이거나 비어 있습니다.");
+        }
+
+        log.info("Requested fileName: {}", fileName);
+
         File file = new File("C:/upload", fileName);
 
         if (!file.exists()) {
+            log.error("파일을 찾을 수 없습니다: {}", fileName);
             throw new FileNotFoundException("파일을 찾을 수 없습니다: " + fileName);
         }
 
@@ -222,10 +230,15 @@ public class VideoWorkController {
     }
 
 
+
+
+
+
     @GetMapping("/detail/{id}")
     public String detail(@PathVariable("id") Long id, Model model) {
         WorkDTO work = workService.findWorkById(id);
         workService.incrementReadCount(id);
+
 
         List<PostFileDTO> postFiles = workService.findFilesByPostId(id);
         List<WorkDTO> threeWorks = workService.getThreeWorksByGenre(work.getGenreType(), work.getId(), PostType.VIDEO.name());
