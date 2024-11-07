@@ -1,14 +1,20 @@
 package com.app.ggumteo.controller.audition;
 
 import com.app.ggumteo.constant.PostType;
+import com.app.ggumteo.domain.audition.AuditionApplicationDTO;
 import com.app.ggumteo.domain.audition.AuditionDTO;
+import com.app.ggumteo.domain.file.AuditionApplicationFileDTO;
 import com.app.ggumteo.domain.file.PostFileDTO;
 import com.app.ggumteo.domain.member.MemberProfileDTO;
 import com.app.ggumteo.domain.member.MemberVO;
 import com.app.ggumteo.pagination.AuditionPagination;
 import com.app.ggumteo.search.Search;
+import com.app.ggumteo.service.audition.AuditionApplicationService;
+import com.app.ggumteo.service.audition.AuditionApplicationServiceImpl;
 import com.app.ggumteo.service.audition.AuditionService;
+import com.app.ggumteo.service.file.AuditionApplicationFileService;
 import com.app.ggumteo.service.file.PostFileService;
+import com.app.ggumteo.service.member.MemberService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +29,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @Slf4j
@@ -31,8 +38,12 @@ import java.util.List;
 public class VideoAuditionController {
 
     private final AuditionService auditionService;
+    private final AuditionApplicationService auditionApplicationService;
     private final HttpSession session;
     private final PostFileService postFileService;
+    private final AuditionApplicationFileService auditionApplicationFileService;
+    private final AuditionDTO auditionDTO;
+
 
     @ModelAttribute
     public void setMemberInfo(HttpSession session, Model model) {
@@ -196,13 +207,84 @@ public class VideoAuditionController {
         AuditionDTO audition = auditionService.findAuditionById(id);
         List<PostFileDTO> postFiles = auditionService.findAllPostFiles(id);
 
+        int applicantCount = auditionApplicationService.countApplicantsByAuditionId(id);
+        log.info("지원자 수 - 모집글 ID: {}, 지원자 수: {}", id, applicantCount);
+
         model.addAttribute("audition", audition);
         model.addAttribute("postFiles", postFiles);
+        model.addAttribute("applicantCount", applicantCount);
 
         return "/audition/video/detail";
     }
 
-//    @GetMapping("/application/{id}")
-//    public String application(@PathVariable(), Model model) {}
+    @GetMapping("/application/{id}")
+    public String application(@PathVariable("id") Long id, Model model) {
+        // 세션에서 member 정보를 가져옵니다.
+        MemberVO member = (MemberVO) session.getAttribute("member");
+        MemberProfileDTO memberProfile = (MemberProfileDTO) session.getAttribute("memberProfile");
+
+        log.info("application 메서드 - 사용자 ID: {}, 프로필 ID: {}, 프로필 이름: {}", member != null ? member.getId() : "null",
+                memberProfile != null ? memberProfile.getId() : "null",
+                memberProfile != null ? memberProfile.getProfileName() : "null");
+
+        if (member != null && memberProfile != null) {
+            // MemberProfile 정보가 세션에 있는 경우 모델에 추가하여 뷰에 전달합니다.
+            model.addAttribute("memberProfile", memberProfile);
+        } else {
+            // 세션에 member 정보가 없을 경우 적절한 예외 처리
+            model.addAttribute("error", "로그인이 필요합니다.");
+            return "redirect:/login"; // 로그인 페이지로 리다이렉트
+        }
+
+        model.addAttribute("id", id); // 오디션 ID도 모델에 추가
+
+        return "audition/video/application"; // 신청서 작성 페이지로 이동
+    }
+
+//    @PostMapping("/application")
+//    public String submitApplication(
+//            @RequestParam("auditionId") Long auditionId,
+//            @RequestParam("additionalInfo") String additionalInfo,
+//            @RequestParam("resume") MultipartFile resumeFile,
+//            Model model) {
+//
+//        // 세션에서 member 정보를 가져옵니다.
+//        MemberVO member = (MemberVO) session.getAttribute("member");
+//        MemberProfileDTO memberProfile = (MemberProfileDTO) session.getAttribute("memberProfile");
+//
+//        if (member == null || memberProfile == null) {
+//            model.addAttribute("error", "로그인이 필요합니다.");
+//            return "redirect:/login"; // 로그인 페이지로 리다이렉트
+//        }
+//
+//        log.info("submitApplication 메서드 - 사용자 ID: {}, 프로필 ID: {}", member.getId(), memberProfile.getId());
+//
+//        // 신청 데이터 생성
+//        AuditionApplicationDTO applicationDTO = new AuditionApplicationDTO();
+//        applicationDTO.setAuditionId(auditionId);
+//        applicationDTO.setMemberProfileId(memberProfile.getId());
+//        applicationDTO.setApplyEtc(additionalInfo);
+//
+//        try {
+//            // 이력서 파일이 첨부된 경우 처리
+//            if (!resumeFile.isEmpty()) {
+//                AuditionApplicationFileDTO savedFile = auditionApplicationFileService.saveAuditionApplicationFile(resumeFile, memberProfile.getId());
+//                applicationDTO.setResumeFile(savedFile); // DTO에 저장된 파일 정보 설정
+//            } else {
+//                log.info("첨부파일 없음. 파일 저장 과정 생략");
+//            }
+//
+//            // 신청 데이터를 서비스에 저장
+//            auditionApplicationService.saveApplication(applicationDTO);
+//
+//        } catch (Exception e) {
+//            log.error("신청 중 오류 발생: ", e);
+//            model.addAttribute("error", "신청 처리 중 오류가 발생했습니다.");
+//            return "/audition/video/application";
+//        }
+//
+//        return "redirect:/audition/video/detail/" + auditionId; // 신청 성공 후 상세 페이지로 이동
+//    }
+
 
 }

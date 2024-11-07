@@ -87,7 +87,7 @@ public class TextFundingController {
                 log.error("세션에 멤버 정보가 없습니다.");
                 return ResponseEntity.status(400).body(Collections.singletonMap("error", "세션에 멤버 정보가 없습니다."));
             }
-            fundingDTO.setPostType(PostType.FUNDINGTEXT.name());
+            fundingDTO.setPostType(PostType.TEXT.name());
             fundingDTO.setMemberProfileId(member.getId());
             log.info("Received FundingDTO: {}", fundingDTO);
             log.info("Received Funding Products: {}", fundingDTO.getFundingProducts());
@@ -116,7 +116,7 @@ public class TextFundingController {
             Model model) {
 
 
-        search.setPostType(PostType.FUNDINGTEXT.name());
+        search.setPostType(PostType.TEXT.name());
         log.info("Received Search Parameters: {}", search);
         log.info("Received page: {}", page);
 
