@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.app.ggumteo.mapper.report.AuditionReportMapper">
+<!-- 영상 모집글 신고 조회  -->
+    <select id="selectVideoAuditionReports" resultType="AuditionReportDTO">
+        SELECT
+        p.id AS postId,
+        mp.profile_name AS profileName,
+        p.created_date AS createdDate,
+        p.post_type AS postType,
+        a.audition_field AS auditionField,
+        p.post_title AS postTitle,
+        (
+        SELECT COUNT(*)
+        FROM tbl_audition_application aa
+        WHERE aa.audition_id = a.id
+        ) AS applicationCount,
+        DATE_FORMAT(a.audition_deadline, '%Y-%m-%d') AS auditionDeadline,
+
+        rp.profile_name AS reportProfileName,
+        rp.profile_email AS reportProfileEmail,
+        ar.report_status AS reportStatus,
+        ar.created_date AS reportCreatedDate,
+        ar.report_contents AS reportContents
+
+        FROM tbl_post p
+        JOIN tbl_member_profile mp ON p.member_profile_id = mp.id
+        JOIN tbl_audition a ON a.id = p.id
+        LEFT JOIN tbl_audition_report ar ON ar.audition_id = a.id
+        LEFT JOIN tbl_member_profile rp ON ar.member_profile_id = rp.id
+
+        WHERE p.post_type = 'AUDITIONVIDEO'
+
+        <!-- 신고 관리 조건: reportStatus가 'REPORT'일 때만 필터링 -->
+        <if test="order == '신고관리'">
+            AND ar.report_status = 'REPORT'
+        </if>
+
+        <!-- 검색 조건 추가 -->
+        <if test="search != null and search != ''">
+            AND (
+            mp.profile_name LIKE CONCAT('%', #{search}, '%')
+            OR p.post_title LIKE CONCAT('%', #{search}, '%')
+            OR a.audition_field LIKE CONCAT('%', #{search}, '%')
+            )
+        </if>
+
+        GROUP BY p.id, mp.profile_name, p.created_date, p.post_type, a.audition_field, p.post_title,
+                 DATE_FORMAT(a.audition_deadline, '%Y-%m-%d'), rp.profile_name,
+                 rp.profile_email, ar.report_status, ar.created_date, ar.report_contents
+
+        <!-- 정렬 조건 추가 -->
+        <choose>
+            <when test="order == '작성순'">
+                ORDER BY p.created_date DESC
+            </when>
+            <when test="order == '지원자순'">
+                ORDER BY applicationCount DESC
+            </when>
+            <when test="order == '신고관리'">
+                ORDER BY p.created_date DESC
+            </when>
+            <otherwise>
+                ORDER BY p.created_date DESC
+            </otherwise>
+        </choose>
+
+        <!-- 페이지네이션 처리 -->
+        LIMIT #{pagination.startRow}, #{pagination.rowCount}
+    </select>
+
+    <!-- 전체 영상 모집글 신고 목록 카운트-->
+    <select id="countVideoAuditionReports" resultType="int">
+        SELECT COUNT(*)
+        FROM tbl_post p
+        JOIN tbl_member_profile mp ON p.member_profile_id = mp.id
+        JOIN tbl_audition a ON a.id = p.id
+        LEFT JOIN tbl_audition_report ar ON ar.audition_id = a.id
+        LEFT JOIN tbl_member_profile rp ON ar.member_profile_id = rp.id
+        WHERE p.post_type = 'AUDITIONVIDEO'
+
+
+        <!-- 검색 조건 추가 -->
+        <if test="search != null and search != ''">
+            AND (
+            mp.profile_name LIKE CONCAT('%', #{search}, '%')
+            OR p.post_title LIKE CONCAT('%', #{search}, '%')
+            OR a.audition_field LIKE CONCAT('%', #{search}, '%')
+            )
+        </if>
+    </select>
+
+    <!-- 영상모집 신고 상태 업데이트 쿼리 -->
+    <update id="videoAuditionStatusChange">
+        UPDATE tbl_audition_report
+        SET report_status = #{reportStatus}
+        WHERE audition_id = #{auditionId}
+    </update>
+
+</mapper>

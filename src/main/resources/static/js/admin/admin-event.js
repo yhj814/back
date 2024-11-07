@@ -1046,7 +1046,7 @@ function setupVideoReplyReportDetailsModal() {
 
 // 댓글 내용 클릭 이벤트 설정
 function setupVideoReplyContentClickEvents() {
-    document.querySelectorAll(".apply-table-row .apply-table-cell:nth-child(4)").forEach(cell => {
+    document.querySelectorAll(".apply-table-row .video-reply-content").forEach(cell => {
         cell.addEventListener("click", (e) => {
             const replyContent = e.target.textContent.trim();
             openVideoReplyModal(replyContent);
@@ -1054,12 +1054,14 @@ function setupVideoReplyContentClickEvents() {
     });
 }
 
+
 // 댓글 모달 열기 함수
-function openVideoReplyModal(replyContent) {
-    const replyModal = document.getElementById("reply-video-detail-modal");
+function openVideoReplyModal(element) {
+    const videoReplyModal = document.getElementById("reply-video-detail-modal");
     const replyContentTextarea = document.getElementById("reply-video-content-textarea");
+    const replyContent = element.getAttribute("data-content"); // 원본 내용 가져오기
     replyContentTextarea.value = replyContent;
-    replyModal.style.display = "flex";
+    videoReplyModal.style.display = "flex";
 }
 
 // 모달 외부 클릭 시 닫기
@@ -1254,7 +1256,7 @@ function setupTextReplyReportDetailsModal() {
 
 // 댓글 내용 클릭 이벤트 설정
 function setupTextReplyContentClickEvents() {
-    document.querySelectorAll(".apply-table-row .apply-table-cell:nth-child(4)").forEach(cell => {
+    document.querySelectorAll(".apply-table-row .text-reply-content").forEach(cell => {
         cell.addEventListener("click", (e) => {
             const replyContent = e.target.textContent.trim();
             openTextReplyModal(replyContent);
@@ -1263,12 +1265,14 @@ function setupTextReplyContentClickEvents() {
 }
 
 // 댓글 모달 열기 함수
-function openTextReplyModal(replyContent) {
-    const replyModal = document.getElementById("reply-text-detail-modal");
+function openTextReplyModal(element) {
+    const textReplyModal = document.getElementById("reply-text-detail-modal");
     const replyContentTextarea = document.getElementById("reply-text-content-textarea");
+    const replyContent = element.getAttribute("data-content"); // 원본 내용 가져오기
     replyContentTextarea.value = replyContent;
-    replyModal.style.display = "flex";
+    textReplyModal.style.display = "flex";
 }
+
 
 // 모달 외부 클릭 시 닫기
 document.getElementById("modal-text-reply-overlay").addEventListener("click", () => {
@@ -1281,7 +1285,222 @@ document.addEventListener("DOMContentLoaded", () => {
     setupTextReplyReportModal();
 });
 
+//--------------------------------------------------------------------------------------------------------
+// 영상 모집 신고관리
 
+// 검색 정렬 선언
+let currentVideoAuditionOrder = 'createdDate';
+let currentVideoAuditionSearch = '';
+
+// 페이지 변경 함수
+async function changeVideoAuditionPage(page) {
+    const data = await fetchVideoAuditionReports(page, currentVideoAuditionSearch, currentVideoAuditionOrder || 'createdDate');
+    renderVideoAuditionReportList(data.reports);
+    renderVideoAuditionReportPagination(data.pagination);
+}
+
+
+// 신고 상태 업데이트 요청 후 목록 갱신
+async function updateVideoAuditionReportStatus(auditionId, reportStatus) {
+    const success = await fetchUpdateVideoAuditionReportStatus(auditionId, reportStatus);
+    if (success) {
+        alert("상태가 업데이트되었습니다."); // 상태 업데이트 알림
+        changeVideoAuditionPage(1); // 상태 변경 후 목록 갱신
+        document.getElementById("video-audition-report-modal").style.display = "none"; // 모달 닫기
+    }
+}
+
+// 전체 선택 및 개별 체크박스 이벤트
+function videoAuditionReportCheckboxEvents() {
+    const selectAllCheckbox = document.querySelector('#video-audition-report-selectAll .select-all');
+    const videoAuditionReportCheckboxes = document.querySelectorAll('.apply-table-row .apply-checkbox');
+
+    // 전체 체크박스
+    selectAllCheckbox.addEventListener('change', (event) => {
+        const isChecked = event.target.checked;
+        videoAuditionReportCheckboxes.forEach(checkbox => {
+            checkbox.checked = isChecked;
+        });
+    });
+
+    // 개별 체크박스
+    videoAuditionReportCheckboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', () => {
+            const allChecked = Array.from(videoAuditionReportCheckboxes).every(cb => cb.checked);
+            selectAllCheckbox.checked = allChecked;
+        });
+    });
+}
+
+// 신고 상태 모달 열기
+function openVideoAuditionReportModal(event) {
+    const modal = document.getElementById("video-audition-report-modal");
+    modal.style.display = "flex";
+    selectedAuditionId = event.target.closest(".apply-table-row").querySelector(".apply-checkbox").dataset.id;
+}
+
+// 신고 상태 선택 및 저장
+function setupVideoAuditionReportModal() {
+    const modal = document.getElementById("video-audition-report-modal");
+    const choiceButtons = modal.querySelectorAll(".choice-container input[type=button]");
+    const saveButton = modal.querySelector(".btn-complete");
+    const overlay = modal.querySelector(".background-overlay");
+
+    choiceButtons.forEach(button => {
+        button.addEventListener("click", () => {
+            choiceButtons.forEach(btn => btn.classList.remove("on"));
+            button.classList.add("on");
+            selectedReportAuditionStatus = button.getAttribute("data-status");
+        });
+    });
+
+    // 상태 선택 후 저장
+    saveButton.addEventListener("click", async () => {
+        if (selectedReportAuditionStatus) {
+            const success = await updateVideoAuditionReportStatus(selectedAuditionId, selectedReportAuditionStatus);
+            if (success) {
+                modal.style.display = "none";
+                updateVideoAuditionReportStatusInView(selectedAuditionId, selectedReportAuditionStatus);
+            }
+        } else {
+            alert("상태를 선택해주세요.");
+        }
+    });
+
+    overlay.addEventListener("click", () => {
+        modal.style.display = "none";
+    });
+}
+
+// 화면 신고 상태 업데이트
+function updateVideoAuditionReportStatusInView(replyId, newStatus) {
+    const statusButton = document.querySelector(`.apply-checkbox[data-id="${replyId}"]`)
+        .closest(".apply-table-row")
+        .querySelector(".report-management-btn.status");
+    statusButton.textContent = newStatus;
+
+    // 신고 상태에 따른 배경색 변경
+    switch (newStatus) {
+        case "DELETE":
+            statusButton.style.backgroundColor = "rgba(41, 153, 41, 0.818)";
+            break;
+        case "HOLD":
+            statusButton.style.backgroundColor = "#ffa600";
+            break;
+        case "NOPROBLEM":
+            statusButton.style.backgroundColor = "rgb(183, 183, 183)";
+            break;
+        default:
+            statusButton.style.backgroundColor = "";
+    }
+}
+
+// 페이지 초기화
+function initVideoAuditionPage() {
+    const searchInput = document.getElementById("video-audition-report-search");
+
+    // 검색 입력 이벤트
+    searchInput.addEventListener("keypress", (e) => {
+        if (e.key === "Enter") {
+            let searchValue = e.target.value.trim();
+
+            // 검색어를 숫자 코드로 변환
+            switch (searchValue) {
+                case "배우":
+                    currentVideoAuditionSearch = 1;
+                    break;
+                case "스텝":
+                    currentVideoAuditionSearch = 2;
+                    break;
+                case "감독":
+                    currentVideoAuditionSearch = 3;
+                    break;
+                case "기타":
+                    currentVideoAuditionSearch = 4;
+                    break;
+                default:
+                    currentVideoAuditionSearch = searchValue; // 숫자가 아닌 경우 그대로 사용
+                    break;
+            }
+
+            // 검색어가 입력되면 첫 페이지로 이동
+            changeVideoAuditionPage(1);
+        }
+    });
+
+    // 필터 버튼 클릭 이벤트
+    document.querySelectorAll(".sort-filter-option.video-audition").forEach((option) => {
+        option.addEventListener("click", () => {
+            // 현재 클릭한 필터 버튼의 data-order 속성 값을 currentVideoAuditionOrder에 설정
+            const selectedOrder = option.getAttribute("data-order");
+
+            // 선택한 정렬 기준에 따라 currentVideoAuditionOrder를 설정
+            if (selectedOrder === "createdDate") {
+                currentVideoAuditionOrder = "작성순";
+            } else if (selectedOrder === "video-application-count") {
+                currentVideoAuditionOrder = "지원자순";
+            } else if (selectedOrder === "reportStatus") {
+                currentVideoAuditionOrder = "신고관리";
+            } else {
+                currentVideoAuditionOrder = "작성순"; // 기본값
+            }
+
+            // 모든 필터 버튼의 'selected' 클래스 제거 후 현재 선택한 옵션에 추가
+            document.querySelectorAll(".sort-filter-option.video-audition").forEach(opt => opt.classList.remove("selected"));
+            option.classList.add("selected");
+
+            console.log(`Current Order set to: ${currentVideoAuditionOrder}`); // 설정된 정렬 기준 로그
+
+            // 변경된 정렬 기준으로 목록 갱신
+            changeVideoAuditionPage(1);
+        });
+    });
+
+
+    // 페이지 초기 로드
+    changeVideoAuditionPage(1);
+}
+
+// 신고 내역보기 모달
+function setupVideoAuditionReportDetailsModal() {
+    const modal = document.querySelector(".reasons-report-modal.video-audition"); // 모달 요소
+    const overlay=document.querySelector(".background-overlay");
+    const closeModalButton = modal.querySelector(".close-btn");           // 닫기 버튼
+
+    // 모든 "보기" 버튼에 이벤트 리스너 추가
+    document.querySelectorAll(".report-content-look-video-audition").forEach(button => {
+        button.addEventListener("click", () => {
+            console.log("보기 버튼 클릭"); // 로그 추가
+
+            // 버튼의 데이터 속성에서 정보를 읽어옴
+            const name = button.getAttribute("data-name") || ' ';
+            const email = button.getAttribute("data-email") || ' ';
+            const time = button.getAttribute("data-time") || ' ';
+            const content = button.getAttribute("data-content") || 'No content provided';
+
+            // 모달 내부에 데이터를 설정
+            modal.querySelector(".name").textContent = name;
+            modal.querySelector(".email").textContent = email;
+            modal.querySelector(".time").textContent = time;
+            modal.querySelector("textarea[name='reason']").textContent = content;
+
+            modal.style.display = "block"; // 모달 표시
+            overlay.style.display="none";
+        });
+    });
+
+    // 닫기 버튼 클릭 시 모달 닫기
+    closeModalButton.addEventListener("click", () => {
+        modal.style.display = "none";
+    });
+}
+
+
+// 페이지 로드
+document.addEventListener("DOMContentLoaded", () => {
+    initVideoAuditionPage();
+    setupVideoAuditionReportModal();
+});
 
 
 

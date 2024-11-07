@@ -1230,9 +1230,7 @@
                                             <div class="apply-table-cell end">
                                                 종료
                                             </div>
-                                            <div class="apply-table-cell">
-                                                3,000원
-                                            </div>
+
                                             <div class="apply-table-cell">-</div>
                                             <div class="apply-table-cell edit">
                                                 -
@@ -1321,9 +1319,6 @@
                                             <div class="apply-table-cell">10</div>
                                             <div class="apply-table-cell end">
                                                 종료
-                                            </div>
-                                            <div class="apply-table-cell">
-                                                3,000원
                                             </div>
                                             <div class="apply-table-cell">
                                                 <button
@@ -2092,6 +2087,7 @@
                                 <!-- 여기까지(신고내역 모달창)!! -->
                             </div>
                             <!-- 여기까지 !!글!! -->
+                        </div>
                     </section>
 
                     <!-- section5: 모집 관리 -->
@@ -2124,20 +2120,24 @@
 
                         <!-- 1. 영상 -->
                         <div>
-                            <div class="video-wrapper">
+                            <div class="video-wrapper" id="video-audition-report">
                                 <!-- body_layout -->
                                 <div class="common-layout-container">
                                     <div class="filter-wrap">
-                                        <div class="sort-filter-options">
-                                                    <span class="sort-filter-option selected"
+                                        <div class="sort-filter-options" id="video-audition-report-filter"
+                                             data-order="createdDate">
+                                                    <span class="sort-filter-option selected video-audition"
+
                                                     >작성일 순</span
                                                     >
-                                            <span class="sort-filter-option"
+                                            <span class="sort-filter-option video-audition"
+                                                  data-order="video-application-count"
                                             >지원자수 순</span
                                             >
                                             <!-- 신고관리 defalt  -->
                                             <span
-                                                    class="sort-filter-option"
+                                                    class="sort-filter-option video-audition"
+                                                    data-order="reportStatus"
                                             >신고관리</span
                                             >
                                         </div>
@@ -2147,6 +2147,7 @@
                                                     type="text"
                                                     class="filter-search-input"
                                                     placeholder="통합검색"
+                                                    id="video-audition-report-search"
                                             />
                                             <button class="selected-btn" style="display: none">
                                                 게시글 삭제
@@ -2160,6 +2161,7 @@
                                         >
                                             <div
                                                     class="apply-table-cell apply-header-cell select-all-cell"
+                                                    id="video-audition-report-selectAll"
                                             >
                                                 <input
                                                         type="checkbox"
@@ -2213,111 +2215,39 @@
                                                 신고내역
                                             </div>
                                         </div>
-
-                                        <!-- Example row (Initial data) -->
-                                        <div class="apply-table-row">
-                                            <div class="apply-table-cell">
-                                                <input
-                                                        type="checkbox"
-                                                        class="apply-checkbox"
-                                                />
-                                            </div>
-                                            <div class="apply-table-cell">1</div>
-                                            <div class="apply-table-cell">
-                                                홍길동
-                                            </div>
-                                            <div class="apply-table-cell">
-                                                2024-01-01 10:22:05
-                                            </div>
-
-                                            <div class="apply-table-cell">
-                                                감독
-                                            </div>
-                                            <div
-                                                    class="apply-table-cell post-title"
-                                            >
-                                                <a href=""
-                                                >영상 모집 테스트 제목입니다.</a
-                                                >
-                                            </div>
-                                            <div class="apply-table-cell">3</div>
-                                            <div class="apply-table-cell">
-                                                2024.10.01
-                                            </div>
-                                            <div class="apply-table-cell">
-                                                <button
-                                                        class="report-management-btn status hold"
-                                                >
-                                                    보류
-                                                </button>
-                                            </div>
-                                            <div class="apply-table-cell">
-                                                <button class="reasons-report-btn">
-                                                    보기
-                                                </button>
-                                            </div>
+                                        <div id="video-audition-report-list">
+                                            <!--js로 삽입-->
                                         </div>
                                     </div>
                                 </div>
                                 <nav class="pagination">
-                                    <ul class="pagination-list">
-                                        <!-- 이전 페이지로 이동하는 버튼 -->
-                                        <li class="pagination-prev">
-                                            <a
-                                                    href="#"
-                                                    class="pagination-prev-link"
-                                                    rel="prev nofollow"
-                                            >
-                                                        <span
-                                                                class="pagination-prev-icon"
-                                                                aria-hidden="true"
-                                                        >‹</span
-                                                        >
-                                            </a>
-                                        </li>
-                                        <!-- 페이지 번호 버튼 -->
-                                        <li class="pagination-page active">
-                                            <a href="#" class="pagination-page-link"
-                                            >1</a
-                                            >
-                                        </li>
-
-                                        <!-- 다음 페이지로 이동하는 버튼 -->
-                                        <li class="pagination-next">
-                                            <a
-                                                    href="#"
-                                                    class="pagination-next-link"
-                                                    rel="next nofollow"
-                                            >
-                                                        <span
-                                                                class="pagination-next-icon"
-                                                                aria-hidden="true"
-                                                        >›</span
-                                                        >
-                                            </a>
-                                        </li>
+                                    <ul class="pagination-list" id="pagination-video-audition-report">
+                                        <!--  js로 삽입-->
                                     </ul>
                                 </nav>
                             </div>
                             <!-- 신고관리 모달창 -->
-                            <div class="report-management-modal video">
+                            <div class="report-management-modal video-audition" id="video-audition-report-modal">
                                 <div class="background-overlay"></div>
                                 <div class="modal-content">
                                     <div class="choice-container">
                                         <input
                                                 class="btn-delete-processing"
                                                 type="button"
-                                                value="삭제 처리"
+                                                value="DELETE"
+                                                data-status="DELETE"
                                         />
                                         <input
                                                 class="btn-hold"
                                                 type="button"
-                                                value="보류"
+                                                value="HOLD"
+                                                data-status="HOLD"
                                         />
                                         <input
                                                 class="btn-no-issue"
                                                 type="button"
-                                                value="이상 없음"
+                                                value="NOPROBLEM"
+                                                data-status="NOPROBLEM"
                                         />
                                     </div>
                                     <div class="button-container">
@@ -2326,7 +2256,7 @@
                                 </div>
                             </div>
                             <!-- 신고내역 모달창 -->
-                            <div class="reasons-report-modal video">
+                            <div class="reasons-report-modal video-audition" id="video-audition-report-modal-content">
                                 <div class="modal-content">
                                     <div class="reasons-report-header">
                                         <div class="header-title-wrapper">
@@ -2352,7 +2282,7 @@
                                                     >
                                                         <strong>이름 :</strong>
                                                         <span class="name">
-                                                                    정지수
+                                                                    신고자이름
                                                                 </span>
                                                     </p>
                                                     <p
@@ -2360,7 +2290,7 @@
                                                     >
                                                         <strong>이메일 : </strong>
                                                         <span class="email"
-                                                        >000jisoo@naver.com</span
+                                                        >신고자 이메일</span
                                                         >
                                                     </p>
                                                     <p
@@ -2370,7 +2300,7 @@
                                                         >신고 시간 :
                                                         </strong>
                                                         <span class="time"
-                                                        >2024-10-19 15:00</span
+                                                        >신고한시간</span
                                                         >
                                                     </p>
                                                 </div>
@@ -2385,10 +2315,8 @@
                                                         name="reason"
                                                         rows="4"
                                                         cols="50"
-                                                        readonly
-                                                >
-                            작품 결제를 했는데, 작품 영상 링크를 아직까지 안 보냈습니다. 메일로 연락해도 답이 없습니다.....ㅠㅠ</textarea
-                                                >
+                                                        readonly>
+                                                신고내용</textarea>
                                             </div>
                                         </form>
                                     </div>
@@ -2523,9 +2451,9 @@
                                             </div>
                                             <div class="apply-table-cell">
                                                 <button
-                                                        class="report-management-btn status hold"
+                                                        class="report-management-btn status report"
                                                 >
-                                                    보류
+                                                    신고
                                                 </button>
                                             </div>
                                             <div class="apply-table-cell">

@@ -11,4 +11,9 @@ create table tbl_audition_application (
     references tbl_audition(id)
 );
 
+
+select *from tbl_member_profile;
 select *from tbl_audition_application;
+
+insert into tbl_audition_application
+values (34,1,'.',57,now(),default);

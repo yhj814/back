@@ -10,7 +10,7 @@ create table tbl_audition (
     audition_background varchar(255),
     audition_category varchar(255),
     file_content varchar(255),
-    audition_status varchar(255) default 0,
+    audition_status varchar(255),
     constraint fk_audition_post foreign key (id)
     references tbl_post(id)
 );
@@ -18,4 +18,5 @@ create table tbl_audition (
 select * from tbl_audition;
 
 insert into tbl_audition
-values (30,'감독','.',',','10일시작','2024.10.1',)
+values (59,'2','.',',','10일시작','2024.08.14',
+        '.','서울','.','.','.','모집중');

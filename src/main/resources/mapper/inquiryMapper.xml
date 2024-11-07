@@ -65,7 +65,7 @@
 
     <!-- 총 문의사항 개수 조회 -->
     <select id="countTotal" resultType="int">
-        select count(*)
+        select count(distinct p.id)
         from tbl_post p
         join tbl_inquiry i on p.id = i.id
         where p.post_type = 'INQUIRY'
@@ -84,6 +84,7 @@
             or p.post_content like CONCAT('%', #{searchKeyword}, '%'))
         </if>
     </select>
+
 
 
     <!-- 문의사항 상태 업데이트 -->
