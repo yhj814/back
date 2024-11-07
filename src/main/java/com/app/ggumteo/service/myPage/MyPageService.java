@@ -39,6 +39,13 @@ public interface MyPageService {
     // 작품 발송 여부 체크
     public void updateWorkSendStatus(BuyWorkVO buyWorkVO);
 
+    // 내가 구매한 작품 목록 조회
+    public MyBuyWorkListDTO getMyBuyVideoWorkList(
+            int page, WorkAndFundingPagination workAndFundingPagination, Long memberId, String postType);
+
+    // 내가 구매한 작품 목록 전체 갯수
+    public int getMyBuyWorkListTotal(Long memberId, String postType);
+
 //====펀딩 ====================================================
 
     // 내 펀딩 게시물 전체 조회

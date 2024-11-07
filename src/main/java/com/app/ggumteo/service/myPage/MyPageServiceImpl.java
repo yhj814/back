@@ -56,9 +56,6 @@ public class MyPageServiceImpl implements MyPageService {
         myWorkPosts.setWorkAndFundingPagination(workAndFundingPagination);
         myWorkPosts.setMyWorkPosts(workDAO.findByMemberId(workAndFundingPagination, memberId, PostType.WORKVIDEO.name()));
 
-        log.info("myWorkPosts.getMyWorkPosts().toString()={}", myWorkPosts.getMyWorkPosts().toString());
-        log.info("myWorkPosts.getMyWorkPosts().get(1).getThumbnailFilePath()={}", myWorkPosts.getMyWorkPosts().get(1).getThumbnailFilePath());
-
         return myWorkPosts;
     }
 
@@ -99,6 +96,26 @@ public class MyPageServiceImpl implements MyPageService {
     @Override
     public void updateWorkSendStatus(BuyWorkVO buyWorkVO) {
         buyWorkDAO.updateWorkSendStatus(buyWorkVO);
+    }
+
+    //    내가 구매한 작품 목록 조회 - 영상
+    @Override
+    public MyBuyWorkListDTO getMyBuyVideoWorkList(int page, WorkAndFundingPagination workAndFundingPagination, Long memberId, String postType) {
+        MyBuyWorkListDTO myBuyWorkPosts = new MyBuyWorkListDTO();
+        workAndFundingPagination.setPage(page);
+        workAndFundingPagination.setTotal(buyWorkDAO.getMyBuyWorkListTotal(memberId, PostType.WORKVIDEO.name()));
+        workAndFundingPagination.progress();
+        myBuyWorkPosts.setWorkAndFundingPagination(workAndFundingPagination);
+        myBuyWorkPosts.setMyBuyWorkPosts(buyWorkDAO
+                .findMyBuyWorkList(workAndFundingPagination, memberId, PostType.WORKVIDEO.name()));
+
+        return myBuyWorkPosts;
+    }
+
+    //    내가 구매한 작품 목록 전체 갯수
+    @Override
+    public int getMyBuyWorkListTotal(Long memberId, String postType) {
+        return buyWorkDAO.getMyBuyWorkListTotal(memberId, postType);
     }
 
     //    내 펀딩 게시물 전체 조회 - 영상

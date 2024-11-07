@@ -33,7 +33,7 @@ public class MyPageServiceTests {
     @Test
     public void testGetMember() {
         MemberDTO memberDTO = new MemberDTO();
-        memberDTO.setId(1L);
+        memberDTO.setId(2L);
 
         Optional<MemberVO> foundMemberInfo = myPageService.getMember(memberDTO.getId());
         foundMemberInfo.map(MemberVO::toString).ifPresent(log::info);
