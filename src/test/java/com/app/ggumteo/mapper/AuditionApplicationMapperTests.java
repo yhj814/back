@@ -1,7 +1,10 @@
 package com.app.ggumteo.mapper;
 
 import com.app.ggumteo.domain.audition.AuditionApplicationDTO;
+import com.app.ggumteo.domain.notification.ApplyAuditionNotificationVO;
 import com.app.ggumteo.mapper.audition.AuditionApplicationMapper;
+import com.app.ggumteo.mapper.notification.ApplyAuditionNotificationMapper;
+import com.app.ggumteo.service.audition.AuditionApplicationService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -15,6 +18,12 @@ public class AuditionApplicationMapperTests {
 
     @Autowired
     private AuditionApplicationMapper auditionApplicationMapper;
+    @Autowired
+    private AuditionApplicationService auditionApplicationService;
+    @Autowired
+    private ApplyAuditionNotificationMapper applyAuditionNotificationMapper;
+    @Autowired
+    private ApplyAuditionNotificationVO applyAuditionNotificationVO;
 
     @Test
     public void testInsertAuditionApplication() {
@@ -29,11 +38,12 @@ public class AuditionApplicationMapperTests {
         auditionApplicationDTO.setAuditionId(existingAuditionId); // 존재하는 audition ID 사용
         auditionApplicationDTO.setConfirmStatus("NO");
 
-        // When: auditionApplication 데이터 삽입
-        auditionApplicationMapper.insert(auditionApplicationDTO);
+        // When: Service를 통해 AuditionApplication과 Notification 삽입
+        auditionApplicationService.write(auditionApplicationDTO, null);
 
         // Then: ID가 자동 생성되었는지 검증
         Assertions.assertNotNull(auditionApplicationDTO.getId());
         log.info("삽입된 AuditionApplication ID: {}", auditionApplicationDTO.getId());
+
     }
 }
