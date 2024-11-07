@@ -241,50 +241,50 @@ public class VideoAuditionController {
         return "audition/video/application"; // 신청서 작성 페이지로 이동
     }
 
-//    @PostMapping("/application")
-//    public String submitApplication(
-//            @RequestParam("auditionId") Long auditionId,
-//            @RequestParam("additionalInfo") String additionalInfo,
-//            @RequestParam("resume") MultipartFile resumeFile,
-//            Model model) {
-//
-//        // 세션에서 member 정보를 가져옵니다.
-//        MemberVO member = (MemberVO) session.getAttribute("member");
-//        MemberProfileDTO memberProfile = (MemberProfileDTO) session.getAttribute("memberProfile");
-//
-//        if (member == null || memberProfile == null) {
-//            model.addAttribute("error", "로그인이 필요합니다.");
-//            return "redirect:/login"; // 로그인 페이지로 리다이렉트
-//        }
-//
-//        log.info("submitApplication 메서드 - 사용자 ID: {}, 프로필 ID: {}", member.getId(), memberProfile.getId());
-//
-//        // 신청 데이터 생성
-//        AuditionApplicationDTO applicationDTO = new AuditionApplicationDTO();
-//        applicationDTO.setAuditionId(auditionId);
-//        applicationDTO.setMemberProfileId(memberProfile.getId());
-//        applicationDTO.setApplyEtc(additionalInfo);
-//
-//        try {
-//            // 이력서 파일이 첨부된 경우 처리
-//            if (!resumeFile.isEmpty()) {
-//                AuditionApplicationFileDTO savedFile = auditionApplicationFileService.saveAuditionApplicationFile(resumeFile, memberProfile.getId());
-//                applicationDTO.setResumeFile(savedFile); // DTO에 저장된 파일 정보 설정
-//            } else {
-//                log.info("첨부파일 없음. 파일 저장 과정 생략");
-//            }
-//
-//            // 신청 데이터를 서비스에 저장
-//            auditionApplicationService.saveApplication(applicationDTO);
-//
-//        } catch (Exception e) {
-//            log.error("신청 중 오류 발생: ", e);
-//            model.addAttribute("error", "신청 처리 중 오류가 발생했습니다.");
-//            return "/audition/video/application";
-//        }
-//
-//        return "redirect:/audition/video/detail/" + auditionId; // 신청 성공 후 상세 페이지로 이동
-//    }
+    @PostMapping("/application")
+    public String submitApplication(
+            @RequestParam("auditionId") Long auditionId,
+            @RequestParam("additionalInfo") String additionalInfo,
+            @RequestParam("resume") MultipartFile resumeFile,
+            Model model) {
+
+        // 세션에서 member 정보를 가져옵니다.
+        MemberVO member = (MemberVO) session.getAttribute("member");
+        MemberProfileDTO memberProfile = (MemberProfileDTO) session.getAttribute("memberProfile");
+
+        if (member == null || memberProfile == null) {
+            model.addAttribute("error", "로그인이 필요합니다.");
+            return "redirect:/login"; // 로그인 페이지로 리다이렉트
+        }
+
+        log.info("submitApplication 메서드 - 사용자 ID: {}, 프로필 ID: {}", member.getId(), memberProfile.getId());
+
+        // 신청 데이터 생성
+        AuditionApplicationDTO applicationDTO = new AuditionApplicationDTO();
+        applicationDTO.setAuditionId(auditionId);
+        applicationDTO.setMemberProfileId(memberProfile.getId());
+        applicationDTO.setApplyEtc(additionalInfo);
+
+        try {
+            // 이력서 파일이 첨부된 경우 처리
+            if (!resumeFile.isEmpty()) {
+                AuditionApplicationFileDTO savedFile = auditionApplicationFileService.saveAuditionApplicationFile(resumeFile, memberProfile.getId());
+                applicationDTO.setResumeFile(savedFile); // DTO에 저장된 파일 정보 설정
+            } else {
+                log.info("첨부파일 없음. 파일 저장 과정 생략");
+            }
+
+            // 신청 데이터를 서비스에 저장
+            auditionApplicationService.saveApplication(applicationDTO);
+
+        } catch (Exception e) {
+            log.error("신청 중 오류 발생: ", e);
+            model.addAttribute("error", "신청 처리 중 오류가 발생했습니다.");
+            return "/audition/video/application";
+        }
+
+        return "redirect:/audition/video/detail/" + auditionId; // 신청 성공 후 상세 페이지로 이동
+    }
 
 
 }
