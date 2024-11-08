@@ -258,7 +258,7 @@ async function fetchVideoReports(page = 1, search = '', order = 'postCreatedDate
     const orderParam = encodeURIComponent(order);
 
     try {
-        const response = await fetch(`/admin/videoReports?page=${page}&search=${search}&order=${order}`);
+        const response = await fetch(`/admin/videoReports?page=${page}&search=${searchParam}&order=${orderParam}`);
         if (!response.ok) {
             throw new Error("서버 응답 오류");
         }
@@ -303,7 +303,7 @@ async function fetchTextReports(page = 1, search = '', order = 'postCreatedDate'
     const orderParam = encodeURIComponent(order);
 
     try {
-        const response = await fetch(`/admin/textReports?page=${page}&search=${search}&order=${order}`);
+        const response = await fetch(`/admin/textReports?page=${page}&search=${searchParam}&order=${orderParam}`);
         if (!response.ok) {
             throw new Error("서버 응답 오류");
         }
@@ -419,4 +419,78 @@ async function fetchUpdateTextReplyReportStatus(replyId, reportStatus) {
     }
 }
 
+//---------------------------------------------------------------------------------------------------
+// 영상 모집 신고 관리
 
+// 영상 모집 목록 가져오기
+async function fetchVideoAuditionReports(page = 1, search = '', order = 'createdDate') {
+    const searchParam = encodeURIComponent(search);
+    const orderParam = encodeURIComponent(order);
+
+    try {
+        const response = await fetch(`/admin/videoAuditionReports?page=${page}&search=${searchParam}&order=${orderParam}`);
+        if (!response.ok) throw new Error("서버 응답 오류");
+
+        const { reports, pagination } = await response.json();
+        return { reports, pagination };
+    } catch (error) {
+        console.error("영상 모집 신고 데이터를 가져오는 중 오류 발생:", error);
+        return { reports: [], pagination: null };
+    }
+}
+
+// 영상 신고 댓글 상태 업데이트 요청 함수
+async function fetchUpdateVideoAuditionReportStatus(auditionId, reportStatus) {
+    try {
+        const response = await fetch(`/admin/videoAuditionReports/status`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ auditionId, reportStatus }),
+        });
+        if (!response.ok) throw new Error("모집 신고 상태 업데이트 실패");
+
+        console.log("모집 신고 상태가 성공적으로 업데이트되었습니다.");
+        return true;
+    } catch (error) {
+        console.error("모집 신고 상태 업데이트 중 오류 발생:", error);
+        return false;
+    }
+}
+
+//---------------------------------------------------------------------------------------------------
+// 글 모집 신고 관리
+
+// 글 모집 목록 가져오기
+async function fetchTextAuditionReports(page = 1, search = '', order = 'createdDate') {
+    const searchParam = encodeURIComponent(search);
+    const orderParam = encodeURIComponent(order);
+
+    try {
+        const response = await fetch(`/admin/textAuditionReports?page=${page}&search=${searchParam}&order=${orderParam}`);
+        if (!response.ok) throw new Error("서버 응답 오류");
+
+        const { reports, pagination } = await response.json();
+        return { reports, pagination };
+    } catch (error) {
+        console.error("글 모집 신고 데이터를 가져오는 중 오류 발생:", error);
+        return { reports: [], pagination: null };
+    }
+}
+
+// 글 신고 댓글 상태 업데이트 요청 함수
+async function fetchUpdateTextAuditionReportStatus(auditionId, reportStatus) {
+    try {
+        const response = await fetch(`/admin/textAuditionReports/status`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ auditionId, reportStatus }),
+        });
+        if (!response.ok) throw new Error("모집 신고 상태 업데이트 실패");
+
+        console.log("모집 신고 상태가 성공적으로 업데이트되었습니다.");
+        return true;
+    } catch (error) {
+        console.error("모집 신고 상태 업데이트 중 오류 발생:", error);
+        return false;
+    }
+}

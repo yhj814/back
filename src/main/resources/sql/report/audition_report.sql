@@ -12,4 +12,8 @@ create table tbl_audition_report (
 );
 
 
+select *from tbl_audition_report;
+
+insert into tbl_audition_report
+values (26,'글모집ㄴㅁㅇㄴㅁㄴㅇㅇㅁㅁㅁㄴ',58,now(),default,11);
 

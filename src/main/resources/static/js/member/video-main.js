@@ -44,6 +44,9 @@ document.addEventListener("DOMContentLoaded", function () {
                     globalThis.myWorkPage = 1;
                     myPageService.getMyVideoWorkList(globalThis.myWorkPage, memberId, showMyWorkList);
 
+                    globalThis.myBuyWorkPage = 1
+                    myPageService.getMyBuyVideoWorkList(globalThis.myBuyWorkPage, memberId, showMyBuyWorkList);
+
                     globalThis.myFundingPage = 1;
                     myPageService.getMyFundingList(globalThis.myFundingPage, memberId, showMyFundingList);
 

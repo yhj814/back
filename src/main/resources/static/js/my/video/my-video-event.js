@@ -10,25 +10,49 @@ myWorkListPaging.addEventListener("click", (e)=>{
 });
 
 myWorkListLayout.addEventListener('click', async (e) => {
+    // 클릭한 타겟이 '구매한 사람들' 버튼이라면
     if(e.target.id === "my-work-buyer-btn" ) {
+
+        console.log("1번째 : ", globalThis.myWorkBuyerPage);
+
+        // 해당 버튼의 2번째 class 이름을 myWorkPostId 변수에 담아라
+        // 즉, DB에 저장된 workId(=postId)번호를 변수에 담아라
         const myWorkPostId = e.target.classList[1];
+        // 해당 workId의 구매자 테이블을 변수에 담아라
         const workBuyerTable = document.querySelector(`.work-buyer-${myWorkPostId}`);
+
+
+        console.log("1번째 workBuyerTable.innerHTML", workBuyerTable.innerHTML);
 
         if (// 작품 구매자 테이블이 화면에서 숨어있다면
             workBuyerTable.style.display === "none"
-        ) {     // 1. 작품 구매자 테이블의 자식요소[배열]의 길이가 0이라면 (=목록이 안 불러졌다면)
-            // 2. 작품 구매자 테이블의 자식요소[배열]의 길이가 0이 아니라면 (=목록이 불러진 상태라면)
-            console.log("펀딩구매자테이블의 자식요소 길이 : ",workBuyerTable.children.length)
-            if(workBuyerTable.children.length == 0) {
-                // 1. 펀딩 구매자 테이블 html 에 목록을 추가해라.
-                globalThis.myWorkBuyerPage = 1;
-                workBuyerTable.innerHTML += await myPageService.getMyVideoWorkBuyerList(globalThis.myWorkBuyerPage, myWorkPostId, showMyWorkBuyerList);
+        ) {  // 1. 작품 구매자 테이블의 자식요소[배열]의 길이가 0이라면 (=목록이 안 불러졌다면)
 
+            console.log("2 : ", globalThis.myWorkBuyerPage);
+
+
+            if(workBuyerTable.children.length == 0) {
+                // 1. 작품 구매자 테이블 html 에 목록을 추가해라.
+                // 시작페이지는 1 page 이다.
+                globalThis.myWorkBuyerPage = 1;
+                // 작품 구매자 테이블의 html(기존의 빈 테이블 안에)에 추가하라. fetch 한 myPageService의 getList( 1페이지, workId, 레이아웃 ) 내용을.???????
+                workBuyerTable.innerHTML = await myPageService.getMyVideoWorkBuyerList(globalThis.myWorkBuyerPage, myWorkPostId, showMyWorkBuyerList);
+
+                console.log("3 : ", globalThis.myWorkBuyerPage);
+
+                // 구매자 테이블을 클릭했을 때
                 workBuyerTable.addEventListener('click', async (e) => {
                     e.preventDefault();
+                    console.log("4 : ", globalThis.myWorkBuyerPage);
+
+                    // 만약 a 태그를 클릭한다면
                     if(e.target.tagName === 'A') {
+                        // 클릭한 링크(의 번호)를 페이지 변수?에 담아라
                         globalThis.myWorkBuyerPage = e.target.getAttribute("href");
+                        // 구매자 테이블 html 을
                         workBuyerTable.innerHTML = await myPageService.getMyVideoWorkBuyerList(globalThis.myWorkBuyerPage, myWorkPostId, showMyWorkBuyerList);
+
+                        console.log("5 : ", globalThis.myWorkBuyerPage);
                     }
 
                     if(e.target.classList[1] === "btn-public") {
@@ -45,14 +69,30 @@ myWorkListLayout.addEventListener('click', async (e) => {
                     }
                 });
             }
-            // 2. 펀딩 구매자 테이블에 목록을 추가하지 말고 펀딩 구매자 테이블을 화면에 보여줘라.
-            // 펀딩 구매자 테이블을 화면에서 보여줘라.
+            // 2. 작품 구매자 테이블의 자식요소[배열]의 길이가 0이 아니라면 (=목록이 불러진 상태라면)
+            // 작품 구매자 테이블에 목록을 추가하지 말고 작품 구매자 테이블을 화면에 보여줘라.
             workBuyerTable.style.display = "block";
-        } else {
+
+            console.log("8 : ", globalThis.myWorkBuyerPage);
+        } else {// 작품 구매자 테이블이 화면에 나타나있다면
+                // 작품 구매자 테이블을 화면에서 숨겨라
             workBuyerTable.style.display = "none";
+
+            console.log("9 : ", globalThis.myWorkBuyerPage);
         }
     }
 
+});
+
+// 구매한 작품
+myPageService.getMyBuyVideoWorkList(globalThis.myBuyWorkPage, memberId, showMyBuyWorkList);
+
+myBuyWorkListPaging.addEventListener("click", (e)=>{
+    e.preventDefault();
+    if(e.target.tagName === "A") {
+        globalThis.myBuyWorkPage = e.target.getAttribute("href");
+        myPageService.getMyBuyVideoWorkList(globalThis.myBuyWorkPage, memberId, showMyBuyWorkList);
+    }
 });
 
 // 내 펀딩

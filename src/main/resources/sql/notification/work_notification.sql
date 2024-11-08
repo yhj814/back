@@ -8,3 +8,9 @@ create table tbl_work_notification (
                                        constraint fk_work_notification_buy_work foreign key (work_id)
                                            references tbl_work (id)
 );
+
+
+select id, member_id, work_id from
+tbl_work_notification;
+
+

@@ -294,6 +294,144 @@ const showMyWorkBuyerList = ({myWorkBuyers, settingTablePagination}) => {
     return text;
 }
 
+// 구매한 작품 목록, 페이징
+const myBuyWorkListLayout = document.getElementById("my-buy-work-list");
+const myBuyWorkListPaging = document.getElementById("my-buy-work-list-paging");
+
+
+const showMyBuyWorkList = ({myBuyWorkPosts, workAndFundingPagination}) => {
+    let text = ``;
+    let pagingText = ``;
+
+    myBuyWorkPosts.forEach((myBuyWorkPost) => {
+        text += ` <div class="list-item">
+                    <div class="products-list">
+                        <div class="flex-box">
+                            <div class="products-text">
+                                <a
+                                    ><p
+                                        class="my-products-title"
+                                    >
+                                        ${myBuyWorkPost.postTitle}
+                                    </p></a
+                                >
+                                <div
+                                    class="my-products-info"
+                                >
+                                    <a
+                                        ><p
+                                            class="btn smooth my-products-category"
+                                        >
+                                           ${myBuyWorkPost.genreType}
+                                        </p></a
+                                    >
+                                    <div
+                                        class="divider"
+                                    ></div>
+                                    <div class="flex-box">
+                                        <img
+                                            class="time"
+                                            src="/images/member/clock.png"
+                                        />
+                                        <div
+                                            class="timeandcontent smooth"
+                                        >
+                                             ${timeForToday(myBuyWorkPost.createdDate)}
+                                        </div>
+                                    </div>
+                                </div>
+                                <a
+                                    ><p
+                                        class="timeandcontent content products-description"
+                                    >
+                                         ${myBuyWorkPost.postContent}
+                                    </p></a
+                                >
+                            </div>
+                            <div class="btn products-image">
+                                <a
+                                    ><img
+                                        src="/images/member/thumnail.png"
+                                /></a>
+                            </div>
+                        </div>
+                        <div
+                            class="flex-box products-author-box"
+                        >
+                            <div
+                                class="author-info flex-box"
+                            >
+                                <img
+                                    class="author-image"
+                                    src=${myBuyWorkPost.profileImgUrl}
+                                />
+                                <p class="author-name">
+                                     ${myBuyWorkPost.profileNickName}
+                                </p>
+                                <div
+                                    class="divider"
+                                    style="
+                                        margin-left: 10px;
+                                        margin-right: 10px;
+                                    "
+                                ></div>
+    
+                                <div
+                                    class="timeandcontent smooth"
+                                >
+                                    ${myBuyWorkPost.workPrice}
+                                </div>
+                            </div>
+                            <div class="flex-box">
+                                <div class="btn-wrapper">
+                                    <button
+                                        class="btn btn-action icon-delete-read-products"
+                                        type="button"
+                                    >
+                                        <div
+                                            class="icon-my-delete"
+                                        ></div>
+                                        <p
+                                            class="action-tooltip bottom-action"
+                                        >
+                                            구매내역 삭제
+                                        </p>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>`
+    });
+
+    myBuyWorkListLayout.innerHTML = text;
+
+    if(workAndFundingPagination.prev){
+        pagingText += `
+            <li class="page-item">
+                <a href="${workAndFundingPagination.startPage - 1}" class="page-link back"></a>
+            </li>
+        `
+    }
+    for(let i=workAndFundingPagination.startPage; i<=workAndFundingPagination.endPage; i++){
+        if(workAndFundingPagination.page === i){
+            pagingText += `<li class="page-item"><div class="page-link active">${i}</div></li>`
+        }else{
+            pagingText += `<li class="page-item"><a href="${i}" class="page-link">${i}</a></li>`
+        }
+    }
+
+    if(workAndFundingPagination.next) {
+        pagingText += `
+            <li class="page-item">
+                <a href="${workAndFundingPagination.endPage + 1}" class="page-link next"></a>
+            </li>
+        `
+    }
+
+    myBuyWorkListPaging.innerHTML = pagingText;
+}
+
 // 나의 펀딩 목록, 페이징
 const myFundingListLayout = document.getElementById("my-funding-list");
 const myFundingListPaging = document.getElementById("my-funding-list-paging");

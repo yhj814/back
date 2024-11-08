@@ -40,4 +40,8 @@ public class MemberProfileVO implements Serializable {
         dto.setUpdatedDate(this.updatedDate);
         return dto;
     }
+
+    public MemberProfileVO toVO() {
+        return new MemberProfileVO(id, profileName, profileNickName, profileGender, profileAge, profileEmail, profilePhone, profileEtc, memberId, createdDate, updatedDate);
+    }
 }
