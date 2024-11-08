@@ -1147,7 +1147,7 @@ h1.common-header-description {
 /* 두번째 열 */
 #work-section .apply-header-cell:nth-child(3),
 #work-section .apply-table-cell:nth-child(3) {
-    width: 5%;
+    width: 7%;
 }
 
 /* 세번째 열 */

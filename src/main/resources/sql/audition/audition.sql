@@ -18,4 +18,5 @@ create table tbl_audition (
 select * from tbl_audition;
 
 insert into tbl_audition
-values (30,'감독','.',',','10일시작','2024.10.1',)
+values (59,'2','.',',','10일시작','2024.08.14',
+        '.','서울','.','.','.','모집중');

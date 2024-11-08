@@ -14,6 +14,6 @@ create table tbl_reply_report (
 select * from tbl_reply_report;
 
 insert into tbl_reply_report
-values (19,'댓글신고19',21,now(),default,11);
+values (22,'댓글신고20',25,now(),default,12);
 
 select * from tbl_reply;
