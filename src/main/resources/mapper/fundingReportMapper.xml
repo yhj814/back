@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.app.ggumteo.mapper.report.FundingReportMapper">
+    <!-- 영상 펀딩 신고글 조회 -->
+    <select id="selectFundingVideoReports" resultType="FundingReportDTO">
+        select
+        p.id as postId,
+        mp.profile_name as profileName,
+        p.created_date as createdDate,
+        DATE_ADD(p.created_date, INTERVAL 30 DAY) as endDate,
+        f.genre_type as genreType,
+        p.post_title as postTitle,
+        p.post_type as postType,
+        f.converge_price as convergePrice,
+        f.target_price as targetPrice,
+        f.investor_number as investorNumber,
+        rp.profile_name as reportProfileName,
+        rp.profile_email as reportProfileEmail,
+        fr.report_status as reportStatus,
+        fr.created_date as reportCreatedDate,
+        fr.report_contents as reportContents
+        from
+        tbl_post p
+        join tbl_member_profile mp on p.member_profile_id = mp.id
+        join tbl_funding f on f.id = p.id
+        left join tbl_funding_report fr on fr.funding_id = f.id
+        left join tbl_member_profile rp on fr.member_profile_id = rp.id
+        where
+        p.post_type = 'FUNDINGVIDEO'
+
+        <!-- 신고 관리 조건 -->
+        <if test="order == '신고관리'">
+            and fr.report_status = 'REPORT'
+        </if>
+
+        <!-- 통합 검색 조건 -->
+        <if test="search != null and search != ''">
+            and (
+            p.post_title like concat('%', #{search}, '%')
+            or f.genre_type like concat('%', #{search}, '%')
+            or mp.profile_name like concat('%', #{search}, '%')
+            )
+        </if>
+
+        group by p.id, mp.profile_name, p.created_date, DATE_ADD(p.created_date, INTERVAL 30 DAY),
+                 f.genre_type, p.post_title, p.post_type,
+                 f.converge_price, f.target_price, f.investor_number, rp.profile_name,
+                 rp.profile_email, fr.report_status, fr.created_date, fr.report_contents
+
+        <!-- 정렬 조건 -->
+        <choose>
+            <when test="order == '작성일순'">order by p.created_date desc</when>
+            <when test="order == '현재모인금액순'">order by f.converge_price desc</when>
+            <when test="order == '투자자수순'">order by f.investor_number desc</when>
+            <when test="order == '신고관리'">order by p.created_date desc</when>
+            <otherwise>order by p.created_date desc</otherwise> <!-- 기본 정렬 조건 -->
+        </choose>
+
+        <!-- 페이징 -->
+        limit #{pagination.startRow}, #{pagination.rowCount}
+    </select>
+
+    <!-- 모든 영상 펀딩 신고글 개수 조회 -->
+    <select id="fundingVideoReportCounts" resultType="int">
+        select
+        count(*)
+        from
+        tbl_post p
+        join tbl_member_profile mp on p.member_profile_id = mp.id
+        join tbl_funding f on f.id = p.id
+        left join tbl_funding_report fr on fr.funding_id = f.id
+        where
+        p.post_type = 'FUNDINGVIDEO'
+
+        <!-- 신고 관리 조건 -->
+        <if test="order == '신고관리'">
+            and fr.report_status = 'REPORT'
+        </if>
+
+        <!-- 통합 검색 조건 -->
+        <if test="search != null and search != ''">
+            and (
+            p.post_title like concat('%', #{search}, '%')
+            or f.genre_type like concat('%', #{search}, '%')
+            or mp.profile_name like concat('%', #{search}, '%')
+            )
+        </if>
+    </select>
+
+    <!-- 펀딩 영상 신고 상태 업데이트 -->
+    <update id="fundingVideoStatusChange">
+        update tbl_funding_report
+        set report_status = #{reportStatus}
+        where funding_id = #{fundingId}
+    </update>
+</mapper>

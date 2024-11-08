@@ -10,3 +10,10 @@ create table tbl_funding_report (
     constraint fk_funding_report_member_profile foreign key (member_profile_id)
     references tbl_member_profile(id)
 );
+
+select  *from tbl_funding_report;
+
+insert into tbl_funding_report
+values (11,'펀딩신고11',60,now(),default,21);
+
+select*from tbl_member_profile;

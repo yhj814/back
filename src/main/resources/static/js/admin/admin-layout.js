@@ -1045,3 +1045,133 @@ function renderTextAuditionReportPagination(pagination) {
     });
     paginationContainer.appendChild(nextButton);
 }
+
+
+//---------------------------------------------------------------------------------------------------------------
+
+// 영상 펀딩 신고 관리 목록
+function renderVideoFundingReportList(fundingReports) {
+    const container = document.getElementById("video-funding-report-list");
+    container.innerHTML = '';
+
+    if (!fundingReports || fundingReports.length === 0) {
+        container.innerHTML = '<p>조회할 데이터가 없습니다.</p>';
+        return;
+    }
+
+    fundingReports.forEach((fundingReports) => {
+        const row = document.createElement("div");
+        row.className = "apply-table-row";
+
+        let buttonBackgroundColor = "";
+        switch (fundingReports.reportStatus) {
+            case "DELETE": buttonBackgroundColor = "rgba(41, 153, 41, 0.818)"; break;
+            case "HOLD": buttonBackgroundColor = "#ffa600"; break;
+            case "NOPROBLEM": buttonBackgroundColor = "rgb(183, 183, 183)"; break;
+            default: buttonBackgroundColor = "";
+        }
+
+        // 장르 화면 업로드
+        let videoFundingFieldText = '';
+        switch (fundingReports.genreType) {
+            case "horror":
+                videoFundingFieldText = '공포';
+                break;
+            case "action":
+                videoFundingFieldText = '액션';
+                break;
+            case "drama":
+                videoFundingFieldText = '드라마';
+                break;
+            case "romance":
+                videoFundingFieldText = '로맨스';
+                break;
+            case "comedy":
+                videoFundingFieldText = '코미디';
+                break;
+            default:
+                videoFundingFieldText = '';
+        }
+
+        row.innerHTML = `
+            <div class="apply-table-cell"><input type="checkbox" class="apply-checkbox" data-id="${fundingReports.postId}"/></div>
+            <div class="apply-table-cell">${fundingReports.postId}</div>
+            <div class="apply-table-cell post-title">${fundingReports.profileName || ''}</div>
+            <div class="apply-table-cell">${fundingReports.createdDate || ''}</div>
+            <div class="apply-table-cell">${fundingReports.endDate || ''}</div>
+            <div class="apply-table-cell">${videoFundingFieldText}</div>
+            <div class="apply-table-cell" style="color: #002fff">
+                 <a href="#">
+                        ${fundingReports.postTitle && fundingReports.postTitle.length > 7
+            ? fundingReports.postTitle.substring(0, 7) + '...'
+            : fundingReports.postTitle || ''}
+                </a>
+            </div>
+            <div class="apply-table-cell">${fundingReports.convergePrice || '0'} 원</div>
+            <div class="apply-table-cell">${fundingReports.targetPrice || ''} 원</div>
+            <div class="apply-table-cell">${fundingReports.investorNumber || '0'} 명</div>
+            <div class="apply-table-cell">
+                <button class="report-management-btn status report" 
+                        style="background-color: ${buttonBackgroundColor};"
+                        onclick="openVideoFundingReportModal(event)">
+                    ${fundingReports.reportStatus || '신고'}
+                </button>
+            </div>
+            <div class="apply-table-cell">
+                <button class="reasons-report-btn report-content-look-video-funding" 
+                    data-name="${fundingReports.reportProfileName || ''}" 
+                    data-email="${fundingReports.reportProfileEmail || ''}" 
+                    data-time="${fundingReports.reportCreatedDate || ''}" 
+                    data-content="${fundingReports.reportContents || ''}">
+                    보기
+                </button>
+            </div>
+        `;
+
+        container.appendChild(row);
+    });
+
+    // 체크박스 이벤트
+    videoFundingReportCheckboxEvents();
+
+    // 신고내역 보기 모달 이벤트
+    setupVideoFundingReportDetailsModal();
+
+}
+
+// 페이지네이션
+function renderVideoFundingReportPagination(pagination) {
+    const paginationContainer = document.getElementById("pagination-funding-audition-report");
+    paginationContainer.innerHTML = '';
+
+    if (!pagination) return;
+
+    const prevButton = document.createElement("li");
+    prevButton.className = `pagination-prev ${pagination.page > 1 ? '' : 'disabled'}`;
+    prevButton.innerHTML = `<a href="#" class="pagination-prev-link" rel="prev nofollow"><span class="pagination-prev-icon" aria-hidden="true">‹</span></a>`;
+    prevButton.addEventListener("click", (e) => {
+        e.preventDefault();
+        if (pagination.page > 1) changeVideoFundingPage(pagination.page - 1);
+    });
+    paginationContainer.appendChild(prevButton);
+
+    for (let i = pagination.startPage; i <= Math.min(pagination.endPage, pagination.realEnd); i++) {
+        const pageButton = document.createElement("li");
+        pageButton.className = `pagination-page ${i === pagination.page ? 'active' : ''}`;
+        pageButton.innerHTML = `<a href="#" class="pagination-page-link">${i}</a>`;
+        pageButton.addEventListener("click", (e) => {
+            e.preventDefault();
+            changeVideoFundingPage(i);
+        });
+        paginationContainer.appendChild(pageButton);
+    }
+
+    const nextButton = document.createElement("li");
+    nextButton.className = `pagination-next ${pagination.page < pagination.realEnd ? '' : 'disabled'}`;
+    nextButton.innerHTML = `<a href="#" class="pagination-next-link" rel="next nofollow"><span class="pagination-next-icon" aria-hidden="true">›</span></a>`;
+    nextButton.addEventListener("click", (e) => {
+        e.preventDefault();
+        if (pagination.page < pagination.realEnd) changeVideoFundingPage(pagination.page + 1);
+    });
+    paginationContainer.appendChild(nextButton);
+}
