@@ -33,22 +33,20 @@
                                             <div
                                                 class="detail-status-label recruiting-status"
                                             >
-                                                <div style="display: flex"
-                                                     th:if="${audition.auditionStatus == '모집중'}"
-                                                >
+                                                <div style="display: flex">
+                                                    <!-- 모집 중 상태 -->
                                                     <div
-                                                        class="status-mark recruiting-mark"
-                                                        th:text="${audition.auditionStatus}"
+                                                            class="status-mark recruiting-mark"
+                                                            th:if="${audition.auditionStatus == 'YES'}"
+                                                            th:text="'모집중'"
                                                     >
                                                         모집 중
                                                     </div>
-                                                </div>
-                                                <div style="display: flex"
-                                                     th:if="${audition.auditionStatus == '모집완료'}"
-                                                >
+                                                    <!-- 모집 완료 상태 -->
                                                     <div
-                                                        class="status-mark recruiting-mark-end"
-                                                        th:text="${audition.auditionStatus}"
+                                                            class="status-mark recruiting-mark-end"
+                                                            th:if="${audition.auditionStatus == 'NO'}"
+                                                            th:text="'모집완료'"
                                                     >
                                                         모집 완료
                                                     </div>

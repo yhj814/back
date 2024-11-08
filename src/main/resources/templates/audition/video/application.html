@@ -135,7 +135,7 @@
                                 </div>
                                 <form
                                     method="post"
-                                    th:action="@{/audition/video/application/${id}}"
+                                    th:action="@{/audition/video/application/{id}(id=${audition.id})}"
                                     class="form-horizontal has-validation-callback"
                                     id="base-edit-form"
                                     style="
@@ -146,7 +146,7 @@
                                     "
                                     enctype="multipart/form-data"
                                 >
-                                    <input type="hidden" name="id" value="${audition.id}">
+                                    <input type="hidden" name="id" th:value="${audition.id}">
                                     <div class="form-group">
                                         <label
                                             class="control-label required"
