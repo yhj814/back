@@ -19,10 +19,11 @@
         </if>
     </sql>
     <!-- 작품 삽입 -->
-    <insert id="insert" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
-        insert into tbl_work (id, work_price, file_content, read_count, genre_type)
-        values (#{id}, #{workPrice}, #{fileContent}, #{readCount}, #{genreType})
+    <insert id="insert" parameterType="com.app.ggumteo.domain.work.WorkVO">
+        INSERT INTO tbl_work (id, work_price, genre_type, read_count, file_content, thumbnail_file_id)
+        VALUES (#{id}, #{workPrice}, #{genreType}, #{readCount}, #{fileContent}, #{thumbnailFileId})
     </insert>
+
 
     <!-- 작품 id로 작품 조회 (썸네일 파일 ID 포함) -->
     <select id="selectById" resultType="workDTO">

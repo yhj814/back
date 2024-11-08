@@ -3,9 +3,11 @@ package com.app.ggumteo.service.file;
 import com.app.ggumteo.domain.file.FileVO;
 import com.app.ggumteo.domain.file.PostFileDTO;
 import com.app.ggumteo.domain.file.PostFileVO;
+import com.app.ggumteo.domain.work.WorkDTO;
 import com.app.ggumteo.repository.file.FileDAO;
 import com.app.ggumteo.repository.file.PostFileDAO;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import net.coobird.thumbnailator.Thumbnailator;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,11 +26,12 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 @Transactional(rollbackFor = Exception.class)
+@Slf4j
 public class PostFileServiceImpl implements PostFileService {
 
     private final FileDAO fileDAO;
     private final PostFileDAO postFileDAO;
-    private final String rootPath = "C:/upload/";
+    private final WorkDTO workDTO;
 
     @Override
     public void savePostFile(PostFileVO postFileVO) {
@@ -37,47 +40,42 @@ public class PostFileServiceImpl implements PostFileService {
 
     @Override
     public FileVO saveFile(MultipartFile file, Long postId) {
-        String relativePath = getPath() + "/" + UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
+        String relativePath = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
 
         FileVO fileVO = new FileVO();
         fileVO.setFileName(relativePath);
         fileVO.setFileSize(String.valueOf(file.getSize()));
         fileVO.setFileType(file.getContentType());
+
         fileVO.setFilePath(getPath());
 
-        // 파일 저장 경로 설정
+        String rootPath = "C:/upload/";
         File saveLocation = new File(rootPath + relativePath);
         try {
             if (!saveLocation.getParentFile().exists()) {
                 saveLocation.getParentFile().mkdirs();
             }
-            file.transferTo(saveLocation);  // 파일 실제 저장
+            file.transferTo(saveLocation);
         } catch (IOException e) {
             throw new RuntimeException("파일 저장 실패", e);
         }
 
-        // DB에 파일 정보 저장
+        // 파일 저장
         fileDAO.save(fileVO);
-        postFileDAO.insertPostFile(new PostFileVO(fileVO.getId(), postId));
+        Long fileId = fileVO.getId();
+        log.info("Generated File ID: {}", fileId);
+        // 파일 ID 가져오기
+        if (fileId == null || postId == null) {
+            throw new RuntimeException("파일 ID 또는 게시글 ID가 null입니다.");
+        }
 
         return fileVO;
     }
 
-
-    @Override
-    public FileVO saveFileRecord(String fileName, Long postId) {
-        FileVO fileVO = new FileVO();
-        fileVO.setFileName(fileName);
-        fileVO.setFilePath(getPath());
-
-        fileDAO.save(fileVO);
-        postFileDAO.insertPostFile(new PostFileVO(fileVO.getId(), postId));
-
-        return fileVO;
-    }
 
     @Override
     public byte[] getFileData(String fileName) {
+        String rootPath = "C:/upload/";
         File file = new File(rootPath + fileName);
         try {
             if (file.exists()) {
@@ -90,11 +88,11 @@ public class PostFileServiceImpl implements PostFileService {
     }
 
     @Override
-    public List<PostFileDTO> uploadFiles(List<MultipartFile> files) throws IOException {
+    public List<PostFileDTO> uploadFile(List<MultipartFile> files) throws IOException {
         List<PostFileDTO> fileDTOs = new ArrayList<>();
-        String directoryPath = rootPath + getPath();
-        File directory = new File(directoryPath);
 
+        String rootPath = "C:/upload/" + getPath();
+        File directory = new File(rootPath);
         if (!directory.exists()) {
             directory.mkdirs();
         }
@@ -102,30 +100,33 @@ public class PostFileServiceImpl implements PostFileService {
         for (MultipartFile file : files) {
             UUID uuid = UUID.randomUUID();
             String uniqueFileName = uuid.toString() + "_" + file.getOriginalFilename();
-            File saveLocation = new File(directoryPath, uniqueFileName);
-            file.transferTo(saveLocation);
-
-            if (file.getContentType() != null && file.getContentType().startsWith("image")) {
-                try (FileOutputStream thumbnail = new FileOutputStream(new File(directoryPath, "t_" + uniqueFileName))) {
-                    Thumbnailator.createThumbnail(file.getInputStream(), thumbnail, 100, 100);
-                }
-            }
+            String relativePath = getPath() + "/" + uniqueFileName;
 
             PostFileDTO postFileDTO = new PostFileDTO();
             postFileDTO.setFileName(uniqueFileName);
             postFileDTO.setFilePath(getPath());
             postFileDTO.setFileType(file.getContentType());
             postFileDTO.setFileSize(String.valueOf(file.getSize()));
+
+            File saveLocation = new File(rootPath, uniqueFileName);
+            file.transferTo(saveLocation);
+
+            if (file.getContentType() != null && file.getContentType().startsWith("image")) {
+                try (FileOutputStream thumbnail = new FileOutputStream(new File(rootPath, "t_" + uniqueFileName))) {
+                    Thumbnailator.createThumbnail(file.getInputStream(), thumbnail, 100, 100);
+                }
+            }
             fileDTOs.add(postFileDTO);
         }
+
         return fileDTOs;
     }
 
     @Override
     public void deleteFilesByIds(List<Long> fileIds) {
         fileIds.forEach(fileId -> {
-            postFileDAO.deletePostFileByFileId(fileId);
-            fileDAO.deleteFile(fileId);
+            postFileDAO.deletePostFileByFileId(fileId); // 관계 삭제
+            fileDAO.deleteFile(fileId); // 파일 삭제
         });
     }
 
@@ -143,6 +144,7 @@ public class PostFileServiceImpl implements PostFileService {
             postFileDTO.setFileSize(fileVO.getFileSize());
             postFileDTOList.add(postFileDTO);
         }
+
         return postFileDTOList;
     }
 

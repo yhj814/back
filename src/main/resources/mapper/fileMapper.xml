@@ -3,7 +3,7 @@
 <mapper namespace="com.app.ggumteo.mapper.file.FileMapper">
 
     <!-- 파일 데이터 삽입 -->
-    <insert id="insert" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+    <insert id="insert" parameterType="com.app.ggumteo.domain.file.FileVO" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
         insert into tbl_file (file_name, file_size, file_type, file_path)
         values (#{fileName}, #{fileSize}, #{fileType}, #{filePath})
     </insert>
@@ -12,7 +12,7 @@
     <select id="selectFileByPostId" resultType="com.app.ggumteo.domain.file.FileVO">
         select f.*
         from tbl_file f
-                 join tbl_post_file pf on f.id = pf.id
+                 join tbl_post_file pf on f.id = pf.file_id
         where pf.post_id = #{postId}
     </select>
 

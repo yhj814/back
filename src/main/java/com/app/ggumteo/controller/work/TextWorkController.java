@@ -77,7 +77,7 @@ public class TextWorkController {
     @ResponseBody
     public List<PostFileDTO> upload(@RequestParam("file") List<MultipartFile> files) {
         try {
-            return postFileService.uploadFiles(files);  // 서비스의 uploadFiles 메서드 호출
+            return postFileService.uploadFile(files);  // 파일 업로드 후 파일 정보 반환
         } catch (IOException e) {
             log.error("파일 업로드 중 오류 발생: ", e);
             return Collections.emptyList();  // 오류 발생 시 빈 리스트 반환
@@ -92,8 +92,10 @@ public class TextWorkController {
     }
 
     @PostMapping("write")
-    public ResponseEntity<?> write(WorkDTO workDTO, @RequestParam("workFile") List<MultipartFile> workFiles,
-                                   @RequestParam("thumbnailFile") MultipartFile thumbnailFile) {
+    public ResponseEntity<?> write(@ModelAttribute WorkDTO workDTO,
+                                   @RequestParam("thumbnailFile") MultipartFile thumbnailFile,
+                                   @RequestParam("Files") List<MultipartFile> files,
+                                   HttpSession session) {
         try {
             MemberVO member = (MemberVO) session.getAttribute("member");
             if (member == null) {
@@ -102,9 +104,11 @@ public class TextWorkController {
             }
             workDTO.setPostType(PostType.WORKTEXT.name());
             workDTO.setMemberProfileId(member.getId());
+            workDTO.setThumbnailFile(thumbnailFile);
+            workDTO.setFiles(files);
 
-            // Work 저장, 파일은 서비스에서 처리
-            workService.write(workDTO, workFiles, thumbnailFile);
+            // 파일 정보는 workDTO에 포함되어 있다고 가정
+            workService.write(workDTO);
 
             return ResponseEntity.ok(Collections.singletonMap("success", true));
         } catch (Exception e) {

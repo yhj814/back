@@ -2,6 +2,7 @@ package com.app.ggumteo.service.work;
 
 import com.app.ggumteo.domain.file.FileVO;
 import com.app.ggumteo.domain.file.PostFileDTO;
+import com.app.ggumteo.domain.file.PostFileVO;
 import com.app.ggumteo.domain.funding.FundingProductVO;
 import com.app.ggumteo.domain.post.PostDTO;
 import com.app.ggumteo.domain.post.PostVO;
@@ -9,6 +10,7 @@ import com.app.ggumteo.domain.work.WorkDTO;
 import com.app.ggumteo.domain.work.WorkVO;
 import com.app.ggumteo.pagination.Pagination;
 import com.app.ggumteo.repository.buy.BuyFundingProductDAO;
+import com.app.ggumteo.repository.file.PostFileDAO;
 import com.app.ggumteo.repository.post.PostDAO;
 import com.app.ggumteo.repository.work.WorkDAO;
 import com.app.ggumteo.search.Search;
@@ -20,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -32,10 +35,13 @@ public class WorkServiceImpl implements WorkService {
 
     private final WorkDAO workDAO;
     private final PostDAO postDAO;
+    private final PostFileDAO postFileDAO;
     private final PostFileService postFileService;  // 파일 저장 서비스 주입
 
+
     @Override
-    public void write(WorkDTO workDTO, List<MultipartFile> workFiles, MultipartFile thumbnailFile) {
+    public void write(WorkDTO workDTO) {
+        // 게시글 저장
         PostVO postVO = new PostVO();
         postVO.setPostTitle(workDTO.getPostTitle());
         postVO.setPostContent(workDTO.getPostContent());
@@ -44,35 +50,57 @@ public class WorkServiceImpl implements WorkService {
 
         postDAO.save(postVO);
         Long postId = postVO.getId();
+        if (postId == null) {
+            throw new RuntimeException("게시글 ID 생성 실패");
+        }
 
+        // 작품 저장
         WorkVO workVO = new WorkVO();
-        workVO.setId(postId);
+        workVO.setId(postId); // 게시글 ID와 동일하게 설정
         workVO.setWorkPrice(workDTO.getWorkPrice());
         workVO.setGenreType(workDTO.getGenreType());
         workVO.setReadCount(0);
         workVO.setFileContent(workDTO.getFileContent());
+
+        // 썸네일 파일 처리
+        MultipartFile thumbnailFile = workDTO.getThumbnailFile();
+        if (thumbnailFile != null && !thumbnailFile.isEmpty()) {
+            // 썸네일 파일 저장
+            FileVO savedThumbnailFile = postFileService.saveFile(thumbnailFile,postId);
+            Long thumbnailFileId = savedThumbnailFile.getId();
+
+            // 썸네일 파일과 게시글의 연관 관계 설정
+            PostFileVO postFileVO = new PostFileVO(postId, thumbnailFileId);
+            postFileDAO.insertPostFile(postFileVO);
+
+            // 작품 정보에 썸네일 파일 ID 설정
+            workVO.setThumbnailFileId(thumbnailFileId);
+        } else {
+            // 썸네일 파일이 없을 경우 처리 로직
+            workVO.setThumbnailFileId(null);
+        }
+
+        // 작품 저장
         workDAO.save(workVO);
         workDTO.setId(postId);
 
-        // workFiles가 비어 있지 않은 경우 파일 처리
-        if (workFiles != null && !workFiles.isEmpty()) {
-            for (MultipartFile workFile : workFiles) {  // 각 MultipartFile을 처리
-                FileVO fileVO = postFileService.saveFile(workFile, workDTO.getId());
-                // 필요에 따라 fileVO의 정보를 workDTO나 다른 객체에 추가적으로 저장할 수 있음
+        // 일반 파일들 처리
+        List<MultipartFile> files = workDTO.getFiles();
+        if (files != null && !files.isEmpty()) {
+            for (MultipartFile file : files) {
+                if (!file.isEmpty()) {
+                    FileVO savedFile = postFileService.saveFile(file,postId);
+                    Long fileId = savedFile.getId();
+
+                    // 파일과 게시글의 연관 관계 설정
+                    PostFileVO postFileVO = new PostFileVO(postId, fileId);
+                    postFileDAO.insertPostFile(postFileVO);
+                }
             }
         }
-
-        // 썸네일 파일이 있는 경우 처리
-        if (thumbnailFile != null && !thumbnailFile.isEmpty()) { // MultipartFile 체크
-            FileVO thumbnailFileVO = postFileService.saveFile(thumbnailFile, workDTO.getId()); // 저장
-            workDTO.setThumbnailFileId(thumbnailFileVO.getId());
-            workDAO.updateWork(workDTO);
-        } else {
-            String defaultThumbnailPath = "https://www.wishket.com/static/renewal/img/partner/profile/icon_btn_add_portfolio_image.png";
-            workDTO.setThumbnailFilePath(defaultThumbnailPath);
-            workDAO.updateWork(workDTO);
-        }
     }
+
+
 
 
     @Override

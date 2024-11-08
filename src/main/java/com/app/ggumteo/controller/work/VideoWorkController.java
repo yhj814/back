@@ -76,7 +76,7 @@ public class VideoWorkController {
     @ResponseBody
     public List<PostFileDTO> upload(@RequestParam("file") List<MultipartFile> files) {
         try {
-            return postFileService.uploadFiles(files);  // 서비스의 uploadFiles 메서드 호출
+            return postFileService.uploadFile(files);  // 서비스의 uploadFile 메서드 호출
         } catch (IOException e) {
             log.error("파일 업로드 중 오류 발생: ", e);
             return Collections.emptyList();  // 오류 발생 시 빈 리스트 반환
@@ -91,8 +91,7 @@ public class VideoWorkController {
     }
 
     @PostMapping("write")
-    public ResponseEntity<?> write(WorkDTO workDTO, @RequestParam("workFile") List<MultipartFile> workFiles,
-                                   @RequestParam("thumbnailFile") MultipartFile thumbnailFile) {
+    public ResponseEntity<?> write(@RequestBody WorkDTO workDTO, HttpSession session) {
         try {
             MemberVO member = (MemberVO) session.getAttribute("member");
             if (member == null) {
@@ -102,8 +101,8 @@ public class VideoWorkController {
             workDTO.setPostType(PostType.WORKVIDEO.name());
             workDTO.setMemberProfileId(member.getId());
 
-            // Work 저장, 파일은 서비스에서 처리
-            workService.write(workDTO, workFiles, thumbnailFile);
+            // 파일 정보는 workDTO에 포함되어 있다고 가정
+            workService.write(workDTO);
 
             return ResponseEntity.ok(Collections.singletonMap("success", true));
         } catch (Exception e) {
