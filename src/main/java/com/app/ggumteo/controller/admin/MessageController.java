@@ -95,6 +95,32 @@ public class MessageController {
         }
         return response;
     }
+
+    // 글 펀딩신고 관리 문자발송
+    @PostMapping("/textFunding/send")
+    public Map<String, Object> sendTextFundingMessage(@RequestBody Map<String, String> requestData) {
+        String to = requestData.get("to");     // 수신자 번호
+        String text = requestData.get("text"); // 발송할 메시지 내용
+        Message coolsms = new Message(apiKey, apiSecret);
+
+        HashMap<String, String> params = new HashMap<>();
+        params.put("to", to);
+        params.put("from", "01090837645"); // 발신자 번호 (인증된 번호 사용)
+        params.put("type", "SMS");
+        params.put("text", text);
+        params.put("app_version", "test app 1.2");
+
+        Map<String, Object> response = new HashMap<>();
+        try {
+            JSONObject result = (JSONObject) coolsms.send(params);
+            response.put("success", true);
+            response.put("result", result);
+        } catch (CoolsmsException e) {
+            response.put("success", false);
+            response.put("error", e.getMessage());
+        }
+        return response;
+    }
 }
 
 

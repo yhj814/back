@@ -595,6 +595,55 @@ public class AdminController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("영상 펀딩 신고 상태 변경에 실패했습니다.");
         }
     }
+
+    // 글 펀딩 신고 목록
+    @GetMapping("/textFundingReports")
+    @ResponseBody
+    public Map<String, Object> getTextFundingReports(
+            @RequestParam(value = "search", required = false, defaultValue = "") String search,
+            @RequestParam(value = "order", required = false, defaultValue = "createdDate") String order,
+            @RequestParam(value = "page", defaultValue = "1") Integer page
+    ) {
+        // 페이징 설정
+        AdminPagination pagination = new AdminPagination();
+        pagination.setPage(page);
+
+        // 총 데이터 개수를 가져와서 페이징 진행
+        pagination.setTotal(fundingReportService.getFundingTextReportsCount(search, order));
+        pagination.progress();
+
+        // 데이터 조회
+        List<FundingReportDTO> reports = fundingReportService.getFundingTextReports(search, order, pagination);
+
+        log.info("글 펀딩 신고 검색어: {}", search);
+        log.info("글 펀딩 신고 정렬 기준: {}", order);
+        log.info("결과 개수: {}", reports.size());
+
+        // 결과를 Map에 담아 반환
+        Map<String, Object> response = new HashMap<>();
+        response.put("reports", reports);
+        response.put("pagination", pagination);
+
+        return response;
+    }
+
+
+    // 글 펀딩 신고 상태 업데이트
+    @PostMapping("/textFundingReports/status")
+    @ResponseBody
+    public ResponseEntity<String> updateTextFundingReportStatus(@RequestBody Map<String, Object> requestData) {
+        Long fundingId = Long.valueOf(requestData.get("fundingId").toString());
+        String status = requestData.get("reportStatus").toString();
+
+        try {
+            fundingReportService.updateTextFundingReportStatus(fundingId, status);
+            log.info("글 펀딩 신고 ID {}의 상태가 {}로 변경되었습니다.", fundingId, status);
+            return ResponseEntity.ok("글 펀딩 신고 상태가 성공적으로 변경되었습니다.");
+        } catch (Exception e) {
+            log.error("글 펀딩 신고 상태 변경 중 오류 발생 - 신고 ID: {}", fundingId, e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("글 펀딩 신고 상태 변경에 실패했습니다.");
+        }
+    }
 }
 
 

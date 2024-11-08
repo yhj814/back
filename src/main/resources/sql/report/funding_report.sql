@@ -14,6 +14,6 @@ create table tbl_funding_report (
 select  *from tbl_funding_report;
 
 insert into tbl_funding_report
-values (11,'펀딩신고11',60,now(),default,21);
+values (30,'펀딩신고27',75,now(),default,1);
 
 select*from tbl_member_profile;

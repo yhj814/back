@@ -27,9 +27,27 @@ public class FundingReportServiceImpl implements FundingReportService {
         return fundingReportDAO.getFundingVideoReportsCount(search, order);
     }
 
-//    신고 상태 업데이트
+//    영상 신고 상태 업데이트
     @Override
     public void updateVideoFundingReportStatus(Long fundingId, String reportStatus){
         fundingReportDAO.updateVideoFundingReportStatus(fundingId, reportStatus);
+    }
+
+    //    글 펀딩 신고 목록조회
+    @Override
+    public List<FundingReportDTO> getFundingTextReports(String search, String order, AdminPagination pagination){
+        return fundingReportDAO.getFundingTextReports(search, order, pagination);
+    }
+
+    //    글 펀딩 신고 전체조회
+    @Override
+    public int getFundingTextReportsCount(String search, String order){
+        return fundingReportDAO.getFundingTextReportsCount(search, order);
+    }
+
+    //    글 신고 상태 업데이트
+    @Override
+    public void updateTextFundingReportStatus(Long fundingId, String reportStatus){
+        fundingReportDAO.updateTextFundingReportStatus(fundingId, reportStatus);
     }
 }

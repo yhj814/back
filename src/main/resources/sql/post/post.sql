@@ -17,5 +17,5 @@ SELECT * FROM tbl_post WHERE post_type = 'INQUIRY';
 SELECT * FROM tbl_post WHERE post_type = 'VIDEO';
 
 insert into tbl_post
-values(68,'비디오펀딩제목9','비디오펀딩내용9','FUNDINGVIDEO',22,
+values(76,'글펀딩제목7asdsadsadsdasdasdasdsadsa','글펀딩내용7','FUNDINGTEXT',12,
        now(),now());

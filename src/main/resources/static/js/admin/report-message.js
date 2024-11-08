@@ -41,6 +41,18 @@ function showMesaageModal(sectionId) {
         // 모달창 나옴.
         modalFundingVideo.style.display = "flex";
     });
+
+    //글 펀딩 문자 이벤트
+    const btnsFundingText = document.querySelector("#text-funding-report .selected-btn.message");
+    const modalFundingText = document.querySelector(
+        `${sectionId} .text-funding.message-modal`
+    );
+    // 문자발송 버튼 클릭했을 때
+    btnsFundingText.addEventListener("click", () => {
+        // 모달창 나옴.
+        modalFundingText.style.display = "flex";
+    });
+
 }
 
 showMesaageModal("#work-section");
@@ -194,4 +206,56 @@ function setupMessageVideoFundingModal() {
 document.addEventListener("DOMContentLoaded", () => {
     setupMessageModal();
     setupMessageVideoFundingModal();
+});
+
+//----------------------------------------------------------------------------------------------------
+// 글 펀딩 신고 문자전송 모달창과 버튼 이벤트
+function setupMessageTextFundingModal() {
+    const modal = document.querySelector(".message-modal.text-funding");
+    const overlay = modal.querySelector(".background-overlay");
+    const saveButton = modal.querySelector(".save-button");
+    const textarea = modal.querySelector("textarea[name='reason']");
+
+    // 발송 버튼 클릭 시
+    saveButton.addEventListener("click", async () => {
+        const messageContent = textarea.value.trim();
+        const recipientNumber = "01090837645"; // 수신자 번호
+
+        if (!messageContent) {
+            alert("문자 내용을 입력하세요.");
+            return;
+        }
+
+        try {
+            // 서버에 문자 발송 요청
+            const response = await fetch("/report/messages/textFunding/send", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ to: recipientNumber, text: messageContent })
+            });
+
+            const result = await response.json();
+            if (result.success) {
+                alert("문자가 성공적으로 발송되었습니다.");
+                modal.style.display = "none"; // 모달창 닫기
+                textarea.value = "";          // 입력 내용 초기화
+            } else {
+                alert("문자 발송에 실패했습니다: " + result.error);
+            }
+        } catch (error) {
+            console.error("문자 발송 중 오류 발생:", error);
+            alert("문자 발송에 실패했습니다. 다시 시도해주세요.");
+        }
+    });
+
+    // 배경 클릭 시 모달 닫기
+    overlay.addEventListener("click", () => {
+        modal.style.display = "none";
+    });
+}
+
+// 페이지가 로드되면 모달 초기화 함수 실행
+document.addEventListener("DOMContentLoaded", () => {
+    setupMessageModal();
+    setupMessageTextFundingModal();
 });

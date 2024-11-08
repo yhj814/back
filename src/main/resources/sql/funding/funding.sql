@@ -17,5 +17,5 @@ create table tbl_funding (
 select * from tbl_funding;
 
 insert into tbl_funding
-values (69,'drama',44,110000,28390,default,'파일1',
+values (76,'horror',170,12200000,1900000,default,'파일1',
         1,'펀딩내용');

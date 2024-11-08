@@ -1148,7 +1148,7 @@
                                     </div>
                                 </div>
                                 <nav class="pagination">
-                                    <ul class="pagination-list" id="pagination-funding-audition-report">
+                                    <ul class="pagination-list" id="pagination-funding-video-report">
                                         <!--  js로 삽입-->
                                     </ul>
                                 </nav>
@@ -1281,23 +1281,27 @@
 
                             <!-- 2. 글 -->
                             <div>
-                                <div class="text-wrapper">
+                                <div class="text-wrapper" id="text-funding-report">
                                     <!-- body_layout -->
                                     <div class="common-layout-container">
                                         <div class="filter-wrap">
-                                            <div class="sort-filter-options">
-                                                    <span class="sort-filter-option selected"
+                                            <div class="sort-filter-options" id="text-funding-report-filter"
+                                                data-order="createdDate">
+                                                    <span class="sort-filter-option selected text-funding"
                                                     >작성일 순</span
                                                     >
-                                                <span class="sort-filter-option"
+                                                <span class="sort-filter-option text-funding"
+                                                      data-order="text-funding-converge-price"
                                                 >현재모인금액 순</span
                                                 >
-                                                <span class="sort-filter-option"
+                                                <span class="sort-filter-option text-funding"
+                                                      data-order="text-funding-investor-number"
                                                 >투자자수 순</span
                                                 >
                                                 <!-- 신고관리 defalt  -->
                                                 <span
-                                                        class="sort-filter-option"
+                                                        class="sort-filter-option text-funding"
+                                                        data-order="reportStatus"
                                                 >신고관리</span
                                                 >
                                             </div>
@@ -1307,6 +1311,7 @@
                                                         type="text"
                                                         class="filter-search-input"
                                                         placeholder="통합검색"
+                                                        id="text-funding-report-search"
                                                 />
                                                 <div class="btn-wrapper">
                                                     <p class="caption">펀딩에 대한 추가적인 안내 또는 전달사항이 있는 경우</p>
@@ -1326,6 +1331,7 @@
                                             >
                                                 <div
                                                         class="apply-table-cell apply-header-cell select-all-cell"
+                                                        id="text-funding-report-selectAll"
                                                 >
                                                     <input
                                                             type="checkbox"
@@ -1388,99 +1394,20 @@
                                                     신고내역
                                                 </div>
                                             </div>
-
-                                            <!-- Example row (Initial data) -->
-                                            <div class="apply-table-row">
-                                                <div class="apply-table-cell">
-                                                    <input
-                                                            type="checkbox"
-                                                            class="apply-checkbox"
-                                                    />
-                                                </div>
-                                                <div class="apply-table-cell">1</div>
-                                                <div class="apply-table-cell">
-                                                    홍길동
-                                                </div>
-                                                <div class="apply-table-cell">
-                                                    2024-01-01
-                                                </div>
-                                                <div class="apply-table-cell">
-                                                    2024-02-02
-                                                </div>
-                                                <div class="apply-table-cell">
-                                                    드라마
-                                                </div>
-                                                <div
-                                                        class="apply-table-cell post-title"
-                                                >
-                                                    <a href=""
-                                                    >글 펀딩 테스트 제목입니다.</a
-                                                    >
-                                                </div>
-                                                <div class="apply-table-cell">
-                                                    30,000
-                                                </div>
-                                                <div class="apply-table-cell">
-                                                    1,000,000
-                                                </div>
-                                                <div class="apply-table-cell">1</div>
-                                                <div class="apply-table-cell">
-                                                    <button
-                                                            class="report-management-btn status report"
-                                                    >
-                                                        신고
-                                                    </button>
-                                                </div>
-                                                <div class="apply-table-cell">
-                                                    <button class="reasons-report-btn">
-                                                        보기
-                                                    </button>
-                                                </div>
+                                            <div id="text-funding-report-list">
+                                                <!--js로 삽입-->
                                             </div>
                                         </div>
                                     </div>
                                     <nav class="pagination">
-                                        <ul class="pagination-list">
-                                            <!-- 이전 페이지로 이동하는 버튼 -->
-                                            <li class="pagination-prev">
-                                                <a
-                                                        href="#"
-                                                        class="pagination-prev-link"
-                                                        rel="prev nofollow"
-                                                >
-                                                        <span
-                                                                class="pagination-prev-icon"
-                                                                aria-hidden="true"
-                                                        >‹</span
-                                                        >
-                                                </a>
-                                            </li>
-                                            <!-- 페이지 번호 버튼 -->
-                                            <li class="pagination-page active">
-                                                <a href="#" class="pagination-page-link"
-                                                >1</a
-                                                >
-                                            </li>
-
-                                            <!-- 다음 페이지로 이동하는 버튼 -->
-                                            <li class="pagination-next">
-                                                <a
-                                                        href="#"
-                                                        class="pagination-next-link"
-                                                        rel="next nofollow"
-                                                >
-                                                        <span
-                                                                class="pagination-next-icon"
-                                                                aria-hidden="true"
-                                                        >›</span
-                                                        >
-                                                </a>
-                                            </li>
+                                        <ul class="pagination-list" id="pagination-funding-text-report">
+                                            <!--  js로 삽입-->
                                         </ul>
                                     </nav>
+
                                 </div>
                                 <!-- 문자 발송 모달창 -->
-                                <div class="message-modal text">
+                                <div class="message-modal text-funding">
                                     <div class="modal-content">
                                         <div class="message-modal-contents">
                                             <form>
@@ -1505,24 +1432,27 @@
                                     <div class="background-overlay"></div>
                                 </div>
                                 <!-- 신고관리 모달창 -->
-                                <div class="report-management-modal text">
+                                <div class="report-management-modal text-funding" id="text-funding-report-modal">
                                     <div class="background-overlay"></div>
                                     <div class="modal-content">
                                         <div class="choice-container">
                                             <input
                                                     class="btn-delete-processing"
                                                     type="button"
-                                                    value="삭제 처리"
+                                                    value="DELETE"
+                                                    data-status="DELETE"
                                             />
                                             <input
                                                     class="btn-hold"
                                                     type="button"
-                                                    value="보류"
+                                                    value="HOLD"
+                                                    data-status="HOLD"
                                             />
                                             <input
                                                     class="btn-no-issue"
                                                     type="button"
-                                                    value="이상 없음"
+                                                    value="NOPROBLEM"
+                                                    data-status="NOPROBLEM"
                                             />
                                         </div>
                                         <div class="button-container">
@@ -1532,7 +1462,7 @@
                                 </div>
                                 <!-- 여기까지(신고관리 모달창)!! -->
                                 <!-- 신고내역 모달창 -->
-                                <div class="reasons-report-modal text">
+                                <div class="reasons-report-modal text-funding" id="text-funding-report-modal-content">
                                     <div class="modal-content">
                                         <div class="reasons-report-header">
                                             <div class="header-title-wrapper">
@@ -1558,7 +1488,7 @@
                                                         >
                                                             <strong>이름 :</strong>
                                                             <span class="name">
-                                                                    정지수
+                                                                    신고자이름
                                                                 </span>
                                                         </p>
                                                         <p
@@ -1566,7 +1496,7 @@
                                                         >
                                                             <strong>이메일 : </strong>
                                                             <span class="email"
-                                                            >000jisoo@naver.com</span
+                                                            >신고자 이메일</span
                                                             >
                                                         </p>
                                                         <p
@@ -1576,7 +1506,7 @@
                                                             >신고 시간 :
                                                             </strong>
                                                             <span class="time"
-                                                            >2024-10-19 15:00</span
+                                                            >신고한시간</span
                                                             >
                                                         </p>
                                                     </div>
@@ -1591,9 +1521,7 @@
                                                             name="reason"
                                                             rows="4"
                                                             cols="50"
-                                                    >
-            작품 결제를 했는데, 작품 영상 링크를 아직까지 안 보냈습니다. 메일로 연락해도 답이 없습니다.....ㅠㅠ</textarea
-                                                    >
+                                                    >신고내용</textarea>
                                                 </div>
                                             </form>
                                         </div>

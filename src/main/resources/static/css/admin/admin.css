@@ -683,7 +683,7 @@ video {
 .choice-container .btn-no-issue.on,
 .choice-container .btn-terminated-member.on,
 .choice-container .btn-cancel.not-allowed.on {
-    background-color: rgb(183, 183, 183);
+    background-color: red;
 }
 /* (모달창 아님.) 신고상태 버튼, 문의 처리 상태 버튼 */
 .status{

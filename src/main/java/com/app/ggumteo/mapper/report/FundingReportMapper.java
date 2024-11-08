@@ -27,4 +27,23 @@ public interface FundingReportMapper {
             @Param("fundingId") Long fundingId,
             @Param("reportStatus") String reportStatus
     );
+
+    //    글 펀딩 신고목록 조회
+    List<FundingReportDTO> selectFundingTextReports(
+            @Param("search") String search,
+            @Param("order") String order,
+            @Param("pagination") AdminPagination pagination
+    );
+
+    //    글 영상 펀딩 신고 목록들
+    int fundingTextReportCounts(
+            @Param("search") String search,
+            @Param("order") String order
+    );
+
+    //    글 펀딩 신고 상태 업데이트
+    void fundingTextStatusChange(
+            @Param("fundingId") Long fundingId,
+            @Param("reportStatus") String reportStatus
+    );
 }
