@@ -633,7 +633,31 @@ async function initPage() {
     const searchInput = document.getElementById("video-report-search");
     searchInput.addEventListener("keypress", (e) => {
         if (e.key === "Enter") {
-            currentSearch = searchInput.value;
+            let searchValue = e.target.value.trim();
+
+            // 검색어 변환 테이블 : 영어 , 화면 : 힌글
+            switch (searchValue) {
+                case "코미디":
+                    currentSearch = 'comedy';
+                    break;
+                case "공포":
+                    currentSearch = 'horror';
+                    break;
+                case "액션":
+                    currentSearch = 'action';
+                    break;
+                case "드라마":
+                    currentSearch = 'drama';
+                    break;
+                case "로맨스":
+                    currentSearch = 'romance';
+                    break;
+                default:
+                    currentSearch = searchValue; // 숫자가 아닌 경우 그대로 사용
+                    break;
+
+            }
+            // 검색어가 입력되면 첫 페이지로 이동
             changePage(1);
         }
     });
@@ -805,7 +829,31 @@ async function initTextPage() {
     const searchInput = document.getElementById("text-report-search");
     searchInput.addEventListener("keypress", (e) => {
         if (e.key === "Enter") {
-            currentTextSearch = searchInput.value;
+            let searchValue = e.target.value.trim();
+
+            // 검색어 변환 테이블 : 영어 , 화면 : 힌글
+            switch (searchValue) {
+                case "코미디":
+                    currentTextSearch = 'comedy';
+                    break;
+                case "공포":
+                    currentTextSearch = 'horror';
+                    break;
+                case "액션":
+                    currentTextSearch = 'action';
+                    break;
+                case "드라마":
+                    currentTextSearch = 'drama';
+                    break;
+                case "로맨스":
+                    currentTextSearch = 'romance';
+                    break;
+                default:
+                    currentTextSearch = searchValue; // 숫자가 아닌 경우 그대로 사용
+                    break;
+
+            }
+            // 검색어가 입력되면 첫 페이지로 이동
             changeTextPage(1);
         }
     });
@@ -1841,7 +1889,7 @@ function initVideoFundingPage() {
         if (e.key === "Enter") {
             let searchValue = e.target.value.trim();
 
-            // 검색어를 숫자 코드로 변환
+            // 검색어 변환 테이블값 :  영어 , 화면에는 한글
             switch (searchValue) {
                 case "코미디":
                     currentVideoFundingSearch = 'comedy';
@@ -2064,7 +2112,7 @@ function initTextFundingPage() {
         if (e.key === "Enter") {
             let searchValue = e.target.value.trim();
 
-            // 검색어를 숫자 코드로 변환
+            // 검색어 변환 테이블값 :  영어 , 화면에는 한글
             switch (searchValue) {
                 case "코미디":
                     currentTextFundingSearch = 'comedy';

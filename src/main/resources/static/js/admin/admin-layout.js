@@ -384,6 +384,28 @@ function renderReportList(reports) {
                 buttonBackgroundColor = "";
         }
 
+        // 장르 화면 업로드
+        let videoFieldText = '';
+        switch (report.genreType) {
+            case "horror":
+                videoFieldText = '공포';
+                break;
+            case "action":
+                videoFieldText = '액션';
+                break;
+            case "drama":
+                videoFieldText = '드라마';
+                break;
+            case "romance":
+                videoFieldText = '로맨스';
+                break;
+            case "comedy":
+                videoFieldText = '코미디';
+                break;
+            default:
+                videoFieldText = '';
+        }
+
         row.innerHTML = `
             <div class="apply-table-cell">
                 <input type="checkbox" class="apply-checkbox" data-id="${report.postId}"/>
@@ -391,7 +413,7 @@ function renderReportList(reports) {
             <div class="apply-table-cell">${report.postId}</div>
             <div class="apply-table-cell">${report.profileName || ''}</div>
             <div class="apply-table-cell">${report.postCreatedDate || ''}</div>
-            <div class="apply-table-cell">${report.genreType || ''}</div>
+            <div class="apply-table-cell">${videoFieldText}</div>
             <div class="apply-table-cell post-title">
                  <a href="#">
                     ${report.postTitle && report.postTitle.length > 7
@@ -506,6 +528,28 @@ function renderTextReportList(reports) {
                 buttonBackgroundColor = "";
         }
 
+        // 장르 화면 업로드
+        let textFieldText = '';
+        switch (report.genreType) {
+            case "horror":
+                textFieldText = '공포';
+                break;
+            case "action":
+                textFieldText = '액션';
+                break;
+            case "drama":
+                textFieldText = '드라마';
+                break;
+            case "romance":
+                textFieldText = '로맨스';
+                break;
+            case "comedy":
+                textFieldText = '코미디';
+                break;
+            default:
+                textFieldText = '';
+        }
+
         row.innerHTML = `
             <div class="apply-table-cell">
                 <input type="checkbox" class="apply-checkbox" data-id="${report.postId}"/>
@@ -513,7 +557,7 @@ function renderTextReportList(reports) {
             <div class="apply-table-cell">${report.postId}</div>
             <div class="apply-table-cell">${report.profileName || ''}</div>
             <div class="apply-table-cell">${report.postCreatedDate || ''}</div>
-            <div class="apply-table-cell">${report.genreType || ''}</div>
+            <div class="apply-table-cell">${textFieldText}</div>
             <div class="apply-table-cell post-title">
                  <a href="#">
                   ${report.postTitle && report.postTitle.length > 7
