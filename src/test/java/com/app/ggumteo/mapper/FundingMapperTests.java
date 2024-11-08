@@ -84,14 +84,14 @@ public class FundingMapperTests {
         // 펀딩 상품 데이터 삽입
         FundingProductVO product1 = new FundingProductVO();
         product1.setProductName("상품 1");
-        product1.setProductPrice("10000");
-        product1.setProductAmount("50");
+        product1.setProductPrice(10000);
+        product1.setProductAmount(50);
         product1.setFundingId(postId);
 
         FundingProductVO product2 = new FundingProductVO();
         product2.setProductName("상품 2");
-        product2.setProductPrice("20000");
-        product2.setProductAmount("30");
+        product2.setProductPrice(20000);
+        product2.setProductAmount(30);
         product2.setFundingId(postId);
 
         // 상품을 저장하는 Mapper 호출

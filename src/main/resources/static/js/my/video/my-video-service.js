@@ -20,6 +20,16 @@ const myPageService = (() => {
         }
     }
 
+    const getMyBuyVideoWorkList = async (page, memberId, callback) => {
+        page = page || 1;
+        const response = await fetch(`/members/${memberId}/video/my/buy/work/${page}`);
+        const myBuyWorkPosts = await response.json();
+
+        if(callback){
+            callback(myBuyWorkPosts);
+        }
+    }
+
     const updateWorkSendStatus = async (buyWork) => {
         await fetch(`/members/video/my/work/buyers/sendStatus/update`, {
             method: "put",
@@ -95,6 +105,7 @@ const myPageService = (() => {
         getMyVideoWorkList: getMyVideoWorkList,
         getMyVideoWorkBuyerList: getMyVideoWorkBuyerList,
         updateWorkSendStatus: updateWorkSendStatus,
+        getMyBuyVideoWorkList: getMyBuyVideoWorkList,
         getMyFundingList: getMyFundingList,
         getFundingBuyerList: getFundingBuyerList,
         updateFundingSendStatus: updateFundingSendStatus,

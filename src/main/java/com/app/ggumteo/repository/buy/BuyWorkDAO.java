@@ -1,9 +1,11 @@
 package com.app.ggumteo.repository.buy;
 
+import com.app.ggumteo.domain.buy.BuyFundingProductDTO;
 import com.app.ggumteo.domain.buy.BuyWorkDTO;
 import com.app.ggumteo.domain.buy.BuyWorkVO;
 import com.app.ggumteo.mapper.buy.BuyWorkMapper;
 import com.app.ggumteo.pagination.SettingTablePagination;
+import com.app.ggumteo.pagination.WorkAndFundingPagination;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.annotations.Param;
@@ -42,5 +44,15 @@ public class BuyWorkDAO {
         buyWorkMapper.updateWorkSendStatus(buyWorkVO);
     };
 
+    //   내가 구매한 작품 목록 조회
+    public List<BuyWorkDTO> findMyBuyWorkList(WorkAndFundingPagination workAndFundingPagination
+            , Long memberId, String postType) {
+        return buyWorkMapper.selectBuyWorkListByMember(workAndFundingPagination, memberId, postType);
+    }
+
+    //  내가 구매한 작품 목록 전체 갯수
+    public int getMyBuyWorkListTotal(Long memberId, String postType){
+        return buyWorkMapper.selectCountBuyWorkListByMember(memberId, postType);
+    }
 
 }

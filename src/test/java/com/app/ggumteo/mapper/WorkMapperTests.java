@@ -30,7 +30,7 @@ public class WorkMapperTests {
     public void testSelectByMemberId() {
         MemberVO memberVO = null;
         WorkAndFundingPagination workAndFundingPagination = new WorkAndFundingPagination();
-        memberVO = memberMapper.selectById(15L).get();
+        memberVO = memberMapper.selectById(2L).get();
         workAndFundingPagination.setTotal(workMapper.selectCount(memberVO.getId(), PostType.WORKVIDEO.name()));
         workAndFundingPagination.progress();
         workMapper.selectByMemberId(
@@ -41,7 +41,7 @@ public class WorkMapperTests {
     @Test
     public void testSelectByIdAndPostType() {
         WorkDTO workDTO = new WorkDTO();
-        workDTO.setId(38L);
+        workDTO.setId(5L);
         log.info("workDTO={}", workDTO);
 
         Optional<WorkDTO> foundWork = workMapper.selectByIdAndPostType(workDTO.getId(), PostType.WORKVIDEO.name());
@@ -53,7 +53,7 @@ public class WorkMapperTests {
         WorkDTO workDTO = null;
         SettingTablePagination settingTablePagination = new SettingTablePagination();
         log.info("settingTablePagination={}", settingTablePagination);
-        workDTO = workMapper.selectByIdAndPostType(38L, PostType.WORKVIDEO.name()).get();
+        workDTO = workMapper.selectByIdAndPostType(5L, PostType.WORKVIDEO.name()).get();
         log.info("workDTO={}", workDTO);
         settingTablePagination.setTotal(buyWorkMapper.selectCount(workDTO.getId()));
         log.info("settingTablePagination={}", settingTablePagination);

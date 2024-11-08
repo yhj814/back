@@ -7,6 +7,8 @@ import com.app.ggumteo.domain.funding.*;
 import com.app.ggumteo.domain.inquiry.InquiryDTO;
 import com.app.ggumteo.domain.inquiry.MyInquiryHistoryListDTO;
 import com.app.ggumteo.domain.member.MemberDTO;
+import com.app.ggumteo.domain.member.MemberProfileDTO;
+import com.app.ggumteo.domain.member.MemberProfileVO;
 import com.app.ggumteo.domain.member.MemberVO;
 import com.app.ggumteo.domain.work.MyWorkListDTO;
 import com.app.ggumteo.domain.work.WorkDTO;
@@ -33,7 +35,7 @@ public class MyPageServiceTests {
     @Test
     public void testGetMember() {
         MemberDTO memberDTO = new MemberDTO();
-        memberDTO.setId(1L);
+        memberDTO.setId(2L);
 
         Optional<MemberVO> foundMemberInfo = myPageService.getMember(memberDTO.getId());
         foundMemberInfo.map(MemberVO::toString).ifPresent(log::info);
@@ -139,5 +141,26 @@ public class MyPageServiceTests {
         myPageService.getAdminAnswerByInquiryId(inquiryDTO.getPostId())
                 .stream().map(AdminAnswerDTO::toString).forEach(log::info);
     }
+
+    @Test
+    public void testGetMemberProfile() {
+        MemberDTO memberDTO = new MemberDTO();
+        memberDTO.setId(2L);
+
+        Optional<MemberProfileVO> foundMemberProfileInfo =
+                myPageService.getMemberProfile(memberDTO.getId());
+        foundMemberProfileInfo.map(MemberProfileVO::toString).ifPresent(log::info);
+    }
+
+//    @Test
+//    public void testUpdateMemberProfile() {
+//        MemberProfileDTO memberProfileDTO = new MemberProfileDTO();
+//        memberProfileDTO.setId(2L);
+//        memberProfileDTO.set
+//
+//        Optional<MemberProfileVO> foundMemberProfileInfo =
+//                myPageService.getMemberProfile(memberDTO.getId());
+//        foundMemberProfileInfo.map(MemberProfileVO::toString).ifPresent(log::info);
+//    }
 
 }

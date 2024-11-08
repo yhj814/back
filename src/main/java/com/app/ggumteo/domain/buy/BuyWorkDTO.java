@@ -18,8 +18,12 @@ public class BuyWorkDTO {
     private String profileName;
     private String profilePhone;
     private String profileEmail;
-    private String createdDate; // 구매 날짜
+    private String createdDate; // 구매 날짜 & 게시글 작성 날짜
     private String workPrice; // 작품 가격
+    private String postTitle; // 게시글 제목
+    private String postContent; // 게시글 내용
+    private String genreType; // 장르 타입
+    private String profileNickName; // 작품 게시글 올린 사람의 프로필 닉네임
 
     public BuyWorkVO toVO(){
         return new BuyWorkVO(id, workId, workSendStatus, memberProfileId, createdDate);
