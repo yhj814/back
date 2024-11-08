@@ -1,5 +1,5 @@
 create table tbl_funding (
-    id bigint unsigned auto_increment primary key,
+    id bigint unsigned primary key,
     genre_type varchar(255) not null, -- 로맨스, 코미디, 공포, 액션, 드라마 / ROMANCE, COMEDY, HORROR, ACTION, DRAMA
     investor_number int not null, -- 투자자수
     target_price int not null, -- 목표 금액

@@ -1,5 +1,5 @@
 create table tbl_audition (
-    id bigint unsigned auto_increment primary key,
+    id bigint unsigned primary key,
     audition_field int not null,
     audition_career varchar(255),                   -- 경력
     expected_amount varchar(255),                   --
@@ -10,7 +10,7 @@ create table tbl_audition (
     audition_background varchar(255),
     audition_category varchar(255),
     file_content varchar(255),
-    audition_status varchar(255),
+    audition_status varchar(255) default 'YES',
     constraint fk_audition_post foreign key (id)
     references tbl_post(id)
 );
