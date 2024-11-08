@@ -250,7 +250,7 @@ public class VideoAuditionController {
             return "redirect:/login"; // 로그인 페이지로 리다이렉트
         }
 
-        model.addAttribute("id", id); // 오디션 ID도 모델에 추가
+        model.addAttribute("audition", auditionDTO); // 오디션 ID도 모델에 추가
         log.info("오디션id:{}",model.addAttribute("id", id));
 
         return "audition/video/application"; // 신청서 작성 페이지로 이동
@@ -261,7 +261,7 @@ public class VideoAuditionController {
             @RequestParam("id") Long id,  // 개별 id 값 가져오기
             AuditionApplicationDTO auditionApplicationDTO,
             Model model) {
-        log.info("받아온 Audition ID: {}", id);
+        log.info("받아온 Audition ID: {}", auditionDTO);
 
 
         // 세션에서 member 정보를 가져옵니다.
