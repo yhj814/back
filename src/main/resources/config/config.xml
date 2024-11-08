@@ -40,6 +40,7 @@
         <typeAlias type="com.app.ggumteo.domain.notification.ApplyAuditionNotificationVO" alias="applyAuditionNotificationVO"/>
         <typeAlias type="com.app.ggumteo.domain.file.AuditionApplicationFileVO" alias="auditionApplicationFileVO"/>
         <typeAlias type="com.app.ggumteo.domain.file.AuditionApplicationFileDTO" alias="auditionApplicationFileDTO"/>
+        <typeAlias type="com.app.ggumteo.domain.report.AuditionReportDTO" alias="auditionReportDTO"/>
     </typeAliases>
 
 </configuration>

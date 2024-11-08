@@ -67,4 +67,10 @@
         where id = #{id};
 -- 내가 구매한 작품 내역 삭제하는 것
     </delete>
+
+<!--    <update id="softDeleteBuyWorkPostByMember">-->
+<!--        update tbl_buy_work-->
+<!--        set status = 0-->
+<!--        where id = #{id}-->
+<!--    </update>-->
 </mapper>

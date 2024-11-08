@@ -10,3 +10,4 @@ create table tbl_funding_report (
     constraint fk_funding_report_member_profile foreign key (member_profile_id)
     references tbl_member_profile(id)
 );
+
