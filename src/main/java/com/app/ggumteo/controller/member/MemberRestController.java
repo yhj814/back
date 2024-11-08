@@ -78,6 +78,14 @@ public class MemberRestController {
         return myPageService.getMyBuyVideoWorkList(page, workAndFundingPagination, memberId, postType);
     }
 
+    // 내가 구매한 영상 작품 결제 내역 삭제
+    // DELETE
+    @ResponseBody
+    @DeleteMapping("/members/video/my/buy/work/{id}")
+    public void deleteBuyWorkPost(@PathVariable("id") Long id) {
+        myPageService.deleteBuyWorkPost(id);
+    }
+
 //************************************************************************************************
 
     // 내 영상 펀딩 게시글 목록

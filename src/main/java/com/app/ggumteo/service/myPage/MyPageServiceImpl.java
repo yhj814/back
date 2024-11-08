@@ -120,6 +120,12 @@ public class MyPageServiceImpl implements MyPageService {
         return buyWorkDAO.getMyBuyWorkListTotal(memberId, postType);
     }
 
+    //    내가 구매한 작품 결제 내역 삭제
+    @Override
+    public void deleteBuyWorkPost(Long id) {
+        buyWorkDAO.deleteBuyWorkPost(id);
+    }
+
     //    내 펀딩 게시물 전체 조회 - 영상
     @Override
     @MyFundingListLogStatus

@@ -55,4 +55,9 @@ public class BuyWorkDAO {
         return buyWorkMapper.selectCountBuyWorkListByMember(memberId, postType);
     }
 
+    // 내가 구매한 작품 결제 내역 삭제
+    public void deleteBuyWorkPost(Long id) {
+        buyWorkMapper.deleteBuyWorkPost(id);
+    }
+
 }

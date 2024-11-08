@@ -31,4 +31,7 @@ public interface BuyWorkMapper {
 
     //  내가 구매한 작품 목록 전체 갯수
     public int selectCountBuyWorkListByMember(@Param("memberId") Long memberId, @Param("postType") String postType);
+
+    // 내가 구매한 작품 결제 내역 삭제
+    public void deleteBuyWorkPost(Long id);
 }

@@ -20,6 +20,16 @@ const myPageService = (() => {
         }
     }
 
+    const updateWorkSendStatus = async (buyWork) => {
+        await fetch(`/members/video/my/work/buyers/sendStatus/update`, {
+            method: "put",
+            body: JSON.stringify(buyWork),
+            headers: {
+                "Content-Type": "application/json; charset=utf-8"
+            }
+        });
+    }
+
     const getMyBuyVideoWorkList = async (page, memberId, callback) => {
         page = page || 1;
         const response = await fetch(`/members/${memberId}/video/my/buy/work/${page}`);
@@ -30,13 +40,9 @@ const myPageService = (() => {
         }
     }
 
-    const updateWorkSendStatus = async (buyWork) => {
-        await fetch(`/members/video/my/work/buyers/sendStatus/update`, {
-            method: "put",
-            body: JSON.stringify(buyWork),
-            headers: {
-                "Content-Type": "application/json; charset=utf-8"
-            }
+    const removeBuyWorkPost = async (id) => {
+        await fetch(`/members/video/my/buy/work/${id}`, {
+            method: "delete"
         });
     }
 
@@ -106,6 +112,7 @@ const myPageService = (() => {
         getMyVideoWorkBuyerList: getMyVideoWorkBuyerList,
         updateWorkSendStatus: updateWorkSendStatus,
         getMyBuyVideoWorkList: getMyBuyVideoWorkList,
+        removeBuyWorkPost: removeBuyWorkPost,
         getMyFundingList: getMyFundingList,
         getFundingBuyerList: getFundingBuyerList,
         updateFundingSendStatus: updateFundingSendStatus,

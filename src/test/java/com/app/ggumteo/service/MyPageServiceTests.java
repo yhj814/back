@@ -76,6 +76,11 @@ public class MyPageServiceTests {
     }
 
     @Test
+    public void testDeleteBuyWorkPost() {
+        myPageService.deleteBuyWorkPost(12L);
+    }
+
+    @Test
     public void testGetMyFundingPosts() {
         MemberVO memberVO = null;
         WorkAndFundingPagination workAndFundingPagination = new WorkAndFundingPagination();

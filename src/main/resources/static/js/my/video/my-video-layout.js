@@ -389,7 +389,8 @@ const showMyBuyWorkList = ({myBuyWorkPosts, workAndFundingPagination}) => {
                                         type="button"
                                     >
                                         <div
-                                            class="icon-my-delete"
+                                            id="buy-work-delete-btn"
+                                            class="icon-my-delete ${myBuyWorkPost.id}"
                                         ></div>
                                         <p
                                             class="action-tooltip bottom-action"

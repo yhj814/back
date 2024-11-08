@@ -38,7 +38,7 @@
     </update>
 
     <select id="selectBuyWorkListByMember">
-        select bw_mp.member_id, bw.work_id, p.post_title, w.genre_type, p.created_date, p.post_content,
+        select bw_mp.member_id, bw.id, bw.work_id, p.post_title, w.genre_type, p.created_date, p.post_content,
                m.profile_img_url, mp.profile_nickname, w.work_price
         from tbl_buy_work bw
                  join tbl_work w on bw.work_id = w.id
@@ -61,16 +61,10 @@
                  join tbl_member bw_m on bw_mp.member_id = bw_m.id and bw_m.id = #{memberId}
     </select>
 
-    <delete id="deleteBuyWorkPostByMember">
+    <delete id="deleteBuyWorkPost">
         delete
         from tbl_buy_work
         where id = #{id};
 -- 내가 구매한 작품 내역 삭제하는 것
     </delete>
-
-<!--    <update id="softDeleteBuyWorkPostByMember">-->
-<!--        update tbl_buy_work-->
-<!--        set status = 0-->
-<!--        where id = #{id}-->
-<!--    </update>-->
 </mapper>
