@@ -30,7 +30,8 @@
         select
         w.id, w.work_price, w.file_content, w.read_count, w.genre_type,
         p.post_title, p.post_content, p.member_profile_id, p.created_date, p.updated_date,
-        f.file_name as thumbnailFileName,  <!-- 변경된 부분 -->
+        f.file_name as thumbnailFileName,
+        f.file_path as thumbnailFilePath,  <!-- 추가된 부분 -->
         w.thumbnail_file_id as thumbnailFileId,
         mp.profile_nickname,
         m.profile_img_url as profileImgUrl
@@ -43,6 +44,7 @@
         where
         w.id = #{id}
     </select>
+
 
 
 
@@ -94,6 +96,7 @@
         w.id, w.work_price, w.read_count, w.genre_type,
         p.post_title, p.post_content, p.member_profile_id, p.created_date, p.updated_date,
         f.file_name as thumbnailFileName,  <!-- 변경된 부분 -->
+        f.file_path as thumbnailFilePath,
         mp.profile_nickname,
         m.profile_img_url as profileImgUrl,
         ifnull(round(avg(r.star), 1), 0) as star
@@ -127,10 +130,10 @@
     <!-- 상세보기에서 다중 파일 조회 -->
     <select id="selectFilesByPostId" resultType="postFileDTO">
         select
-            f.id as fileId, f.file_name, f.file_path, f.file_size, f.file_type
+        f.id as fileId, f.file_name, f.file_path, f.file_size, f.file_type
         from
-            tbl_post_file pf
-                join tbl_file f on pf.id = f.id
+        tbl_post_file pf
+        join tbl_file f on pf.file_id = f.id  <!-- 수정된 부분 -->
         where pf.post_id = #{postId}
         order by pf.id
     </select>

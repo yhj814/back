@@ -9,6 +9,7 @@ import com.app.ggumteo.repository.file.PostFileDAO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.coobird.thumbnailator.Thumbnailator;
+import net.coobird.thumbnailator.Thumbnails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -39,38 +40,44 @@ public class PostFileServiceImpl implements PostFileService {
     }
 
     @Override
-    public FileVO saveFile(MultipartFile file, Long postId) {
-        String relativePath = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
+    public FileVO saveFile(MultipartFile file) {
+        String rootPath = "C:/upload/" + getPath() + "/";
+        File directory = new File(rootPath);
+        if (!directory.exists()) {
+            directory.mkdirs();
+        }
 
-        FileVO fileVO = new FileVO();
-        fileVO.setFileName(relativePath);
-        fileVO.setFileSize(String.valueOf(file.getSize()));
-        fileVO.setFileType(file.getContentType());
+        String uniqueFileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
 
-        fileVO.setFilePath(getPath());
-
-        String rootPath = "C:/upload/";
-        File saveLocation = new File(rootPath + relativePath);
+        File saveLocation = new File(rootPath + uniqueFileName);
         try {
-            if (!saveLocation.getParentFile().exists()) {
-                saveLocation.getParentFile().mkdirs();
-            }
             file.transferTo(saveLocation);
+
+            // 이미지 파일인 경우 썸네일 생성
+            if (file.getContentType() != null && file.getContentType().startsWith("image")) {
+                String thumbnailFileName = "t_" + uniqueFileName;
+                File thumbnailFile = new File(rootPath + thumbnailFileName);
+
+                // 썸네일 이미지 생성 (예: 가로 100px, 세로 비율에 맞게)
+                Thumbnails.of(saveLocation)
+                        .size(100, 100)
+                        .toFile(thumbnailFile);
+            }
         } catch (IOException e) {
             throw new RuntimeException("파일 저장 실패", e);
         }
 
-        // 파일 저장
-        fileDAO.save(fileVO);
-        Long fileId = fileVO.getId();
-        log.info("Generated File ID: {}", fileId);
-        // 파일 ID 가져오기
-        if (fileId == null || postId == null) {
-            throw new RuntimeException("파일 ID 또는 게시글 ID가 null입니다.");
-        }
+        // 파일 정보 객체 생성 (데이터베이스에 저장하지 않음)
+        FileVO fileVO = new FileVO();
+        fileVO.setFileName(uniqueFileName);
+        fileVO.setFileSize(String.valueOf(file.getSize()));
+        fileVO.setFileType(file.getContentType());
+        fileVO.setFilePath(getPath());
 
+        // 데이터베이스에 저장하지 않고 파일 정보만 반환
         return fileVO;
     }
+
 
 
     @Override
@@ -102,25 +109,32 @@ public class PostFileServiceImpl implements PostFileService {
             String uniqueFileName = uuid.toString() + "_" + file.getOriginalFilename();
             String relativePath = getPath() + "/" + uniqueFileName;
 
+            // 파일 정보 객체 생성
             PostFileDTO postFileDTO = new PostFileDTO();
             postFileDTO.setFileName(uniqueFileName);
             postFileDTO.setFilePath(getPath());
             postFileDTO.setFileType(file.getContentType());
             postFileDTO.setFileSize(String.valueOf(file.getSize()));
 
+            // 파일 시스템에 저장
             File saveLocation = new File(rootPath, uniqueFileName);
             file.transferTo(saveLocation);
 
+            // 썸네일 생성 (필요한 경우)
             if (file.getContentType() != null && file.getContentType().startsWith("image")) {
                 try (FileOutputStream thumbnail = new FileOutputStream(new File(rootPath, "t_" + uniqueFileName))) {
                     Thumbnailator.createThumbnail(file.getInputStream(), thumbnail, 100, 100);
                 }
             }
+
+            // 데이터베이스에는 저장하지 않음
+
             fileDTOs.add(postFileDTO);
         }
-
+        log.info("업로드된 파일 정보 목록: {}", fileDTOs);
         return fileDTOs;
     }
+
 
     @Override
     public void deleteFilesByIds(List<Long> fileIds) {

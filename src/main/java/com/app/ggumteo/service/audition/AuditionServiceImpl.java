@@ -67,7 +67,7 @@ public class AuditionServiceImpl implements AuditionService {
         if (auditionFiles != null && auditionFiles.length > 0) {
             for (MultipartFile file : auditionFiles) {
                 if (!file.isEmpty()) {
-                    postFileService.saveFile(file, auditionDTO.getId());
+//                    postFileService.saveFile(file, auditionDTO.getId());
                 }
             }
         }
@@ -105,7 +105,7 @@ public class AuditionServiceImpl implements AuditionService {
             if (newFiles != null && !newFiles.isEmpty()) {
                 for (MultipartFile file : newFiles) {
                     if (!file.isEmpty()) {
-                        postFileService.saveFile(file, auditionDTO.getId());
+//                        postFileService.saveFile(file, auditionDTO.getId());
                     }
                 }
             }

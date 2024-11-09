@@ -75,15 +75,16 @@ public class TextWorkController {
 
     @PostMapping("upload")
     @ResponseBody
-    public List<PostFileDTO> upload(@RequestParam("file") List<MultipartFile> files) {
+    public String upload(@RequestParam("file") MultipartFile file) {
         try {
-            return postFileService.uploadFile(files);  // 파일 업로드 후 파일 정보 반환
-        } catch (IOException e) {
+            FileVO savedFile = postFileService.saveFile(file);  // 파일 저장 후 FileVO 반환
+            String savedFileName = savedFile.getFileName();  // 파일명 추출
+            return savedFileName;  // uuid+파일명 반환
+        } catch (Exception e) {
             log.error("파일 업로드 중 오류 발생: ", e);
-            return Collections.emptyList();  // 오류 발생 시 빈 리스트 반환
+            return "error";  // 오류 발생 시 "error" 문자열 반환
         }
     }
-
 
 
     @GetMapping("write")
@@ -92,22 +93,28 @@ public class TextWorkController {
     }
 
     @PostMapping("write")
-    public ResponseEntity<?> write(@ModelAttribute WorkDTO workDTO,
-                                   @RequestParam("thumbnailFile") MultipartFile thumbnailFile,
-                                   @RequestParam("Files") List<MultipartFile> files,
-                                   HttpSession session) {
+    public ResponseEntity<?> write(
+            @ModelAttribute WorkDTO workDTO,
+            @RequestParam(value = "thumbnailFileName", required = false) String thumbnailFileName,
+            @RequestParam(value = "fileNames", required = false) List<String> fileNames,
+            HttpSession session) {
         try {
             MemberVO member = (MemberVO) session.getAttribute("member");
             if (member == null) {
                 log.error("세션에 멤버 정보가 없습니다.");
                 return ResponseEntity.status(400).body(Collections.singletonMap("error", "세션에 멤버 정보가 없습니다."));
             }
+
             workDTO.setPostType(PostType.WORKTEXT.name());
             workDTO.setMemberProfileId(member.getId());
-            workDTO.setThumbnailFile(thumbnailFile);
-            workDTO.setFiles(files);
 
-            // 파일 정보는 workDTO에 포함되어 있다고 가정
+            // 파일명 리스트를 DTO에 설정
+            workDTO.setFileNames(fileNames);
+
+            // 썸네일 파일명 설정
+            workDTO.setThumbnailFileName(thumbnailFileName);
+
+            // 서비스 계층으로 로직 이동
             workService.write(workDTO);
 
             return ResponseEntity.ok(Collections.singletonMap("success", true));
@@ -116,6 +123,12 @@ public class TextWorkController {
             return ResponseEntity.status(500).body(Collections.singletonMap("error", "저장 중 오류가 발생했습니다."));
         }
     }
+
+
+
+
+
+
     // 작품 수정 폼으로 이동
     @GetMapping("modify/{id}")
     public String updateForm(@PathVariable("id") Long id, Model model) {

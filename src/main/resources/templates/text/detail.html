@@ -68,7 +68,8 @@
                                 </div>
                                 <div class="thumbnail">
                                     <img
-                                            th:src="@{'/text/display?fileName=' + ${work.thumbnailFileName}}" alt="Thumbnail"
+                                            th:src="@{'/text/display?fileName=/' + ${work.thumbnailFilePath} + '/' + ${work.thumbnailFileName}}"
+                                            alt="Thumbnail"
                                     />
                                 </div>
                             </div>
@@ -83,11 +84,11 @@
                         <div class="upload-img" th:each="file : ${postFiles}" th:if="${file.fileName != work.thumbnailFileName}">
                             <!-- 비디오 파일일 경우 -->
                             <div th:if="${file.fileName.endsWith('.mp4') or file.fileName.endsWith('.avi') or file.fileName.endsWith('.mkv')}">
-                                <video th:src="@{'/video/display?fileName=' + ${file.fileName}}" controls class="thumbnail" alt="Uploaded Video"></video>
+                                <video th:src="@{'/text/display?fileName=/' + ${file.filePath} + '/' + ${file.fileName}}" controls class="thumbnail" alt="Uploaded Video"></video>
                             </div>
                             <!-- 이미지 파일일 경우 -->
                             <div th:if="${!file.fileName.endsWith('.mp4') and !file.fileName.endsWith('.avi') and !file.fileName.endsWith('.mkv')}">
-                                <img th:src="@{'/video/display?fileName=' + ${file.fileName}}" class="thumbnail" alt="Uploaded Image" />
+                                <img th:src="@{'/text/display?fileName=/' + ${file.filePath} + '/' + ${file.fileName}}" class="thumbnail" alt="Uploaded Image" />
                             </div>
                         </div>
                         <div class="upload-content">
