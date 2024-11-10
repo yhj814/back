@@ -10,7 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 public interface WorkService {
-    void write(WorkDTO workDTO, MultipartFile[] workFiles, MultipartFile thumbnailFile);
+    void write(WorkDTO workDTO);
 
     WorkDTO findWorkById(Long id);
 

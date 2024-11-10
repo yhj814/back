@@ -1,7 +1,13 @@
 package com.app.ggumteo.service.work;
-
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import com.app.ggumteo.domain.file.FileVO;
 import com.app.ggumteo.domain.file.PostFileDTO;
+import com.app.ggumteo.domain.file.PostFileVO;
 import com.app.ggumteo.domain.funding.FundingProductVO;
 import com.app.ggumteo.domain.post.PostDTO;
 import com.app.ggumteo.domain.post.PostVO;
@@ -9,6 +15,8 @@ import com.app.ggumteo.domain.work.WorkDTO;
 import com.app.ggumteo.domain.work.WorkVO;
 import com.app.ggumteo.pagination.Pagination;
 import com.app.ggumteo.repository.buy.BuyFundingProductDAO;
+import com.app.ggumteo.repository.file.FileDAO;
+import com.app.ggumteo.repository.file.PostFileDAO;
 import com.app.ggumteo.repository.post.PostDAO;
 import com.app.ggumteo.repository.work.WorkDAO;
 import com.app.ggumteo.search.Search;
@@ -20,6 +28,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -32,11 +43,14 @@ public class WorkServiceImpl implements WorkService {
 
     private final WorkDAO workDAO;
     private final PostDAO postDAO;
+    private final FileDAO fileDAO;
+    private final PostFileDAO postFileDAO;
     private final PostFileService postFileService;  // 파일 저장 서비스 주입
 
 
     @Override
-    public void write(WorkDTO workDTO, MultipartFile[] workFiles, MultipartFile thumbnailFile) {
+    public void write(WorkDTO workDTO) {
+        // 게시글 저장
         PostVO postVO = new PostVO();
         postVO.setPostTitle(workDTO.getPostTitle());
         postVO.setPostContent(workDTO.getPostContent());
@@ -45,37 +59,70 @@ public class WorkServiceImpl implements WorkService {
 
         postDAO.save(postVO);
         Long postId = postVO.getId();
+        if (postId == null) {
+            throw new RuntimeException("게시글 ID 생성 실패");
+        }
 
+        // 작품 저장
         WorkVO workVO = new WorkVO();
-        workVO.setId(postId);
+        workVO.setId(postId); // 게시글 ID 사용
         workVO.setWorkPrice(workDTO.getWorkPrice());
         workVO.setGenreType(workDTO.getGenreType());
         workVO.setReadCount(0);
         workVO.setFileContent(workDTO.getFileContent());
 
-        workDAO.save(workVO);
-        workDTO.setId(postId);
+        // 썸네일 파일 처리
+        String thumbnailFileName = workDTO.getThumbnailFileName();
+        if (thumbnailFileName != null) {
+            // 기존 메서드 사용
+            FileVO thumbnailFileVO = new FileVO();
+            thumbnailFileVO.setFileName(thumbnailFileName);
+            thumbnailFileVO.setFilePath(getPath());
+            File file = new File("C:/upload/" + getPath() + "/" + thumbnailFileName);
+            thumbnailFileVO.setFileSize(String.valueOf(file.length()));
 
-        // 파일 저장 처리
-        if (workFiles != null && workFiles.length > 0) {
-            for (MultipartFile file : workFiles) {
-                if (!file.isEmpty()) {
-                    postFileService.saveFile(file, workDTO.getId());
-                }
+            try {
+                thumbnailFileVO.setFileType(Files.probeContentType(file.toPath()));
+            } catch (IOException e) {
+                log.error("썸네일 파일의 콘텐츠 타입을 결정하는 중 오류 발생", e);
+                thumbnailFileVO.setFileType("unknown");  // 기본값 설정 또는 예외 처리
             }
+
+            // 파일 정보 데이터베이스에 저장
+            fileDAO.save(thumbnailFileVO);
+            workVO.setThumbnailFileId(thumbnailFileVO.getId());
+        } else {
+            workVO.setThumbnailFileId(null);
         }
 
-        // 썸네일 파일 처리
-        if (thumbnailFile != null && !thumbnailFile.isEmpty()) {
-            // 사용자가 업로드한 썸네일이 있는 경우 처리
-            FileVO thumbnailFileVO = postFileService.saveFile(thumbnailFile, workDTO.getId());
-            workDTO.setThumbnailFileId(thumbnailFileVO.getId()); // FileVO의 ID를 사용하여 설정
-            workDAO.updateWork(workDTO); // 썸네일 ID 업데이트
-        } else {
-            // 썸네일 파일이 없는 경우 기본 이미지 설정
-            String defaultThumbnailPath = "https://www.wishket.com/static/renewal/img/partner/profile/icon_btn_add_portfolio_image.png";
-            workDTO.setThumbnailFilePath(defaultThumbnailPath); // 기본 썸네일 경로 설정
-            workDAO.updateWork(workDTO); // 기본 썸네일 경로 업데이트
+        // 작품 엔티티 저장
+        workDAO.save(workVO);
+
+        // 업로드된 파일 처리
+        List<String> fileNames = workDTO.getFileNames();
+        if (fileNames != null && !fileNames.isEmpty()) {
+            for (String fileName : fileNames) {
+                // 기존 메서드 사용
+                FileVO fileVO = new FileVO();
+                fileVO.setFileName(fileName);
+                fileVO.setFilePath(getPath());
+                File file = new File("C:/upload/" + getPath() + "/" + fileName);
+                fileVO.setFileSize(String.valueOf(file.length()));
+
+                try {
+                    fileVO.setFileType(Files.probeContentType(file.toPath()));
+                } catch (IOException e) {
+                    log.error("파일의 콘텐츠 타입을 결정하는 중 오류 발생", e);
+                    fileVO.setFileType("unknown");  // 기본값 설정 또는 예외 처리
+                }
+
+                // 파일 정보 데이터베이스에 저장
+                fileDAO.save(fileVO);
+
+                // 파일과 게시글의 연관 관계 설정
+                PostFileVO postFileVO = new PostFileVO(postId, fileVO.getId());
+                postFileDAO.insertPostFile(postFileVO);
+            }
         }
     }
 
@@ -88,9 +135,19 @@ public class WorkServiceImpl implements WorkService {
 
     @Override
     public List<WorkDTO> findAllWithThumbnailAndSearchAndType(Search search, Pagination pagination) {
-        log.info("Service Layer - Search Parameters: {}", search);
-        pagination.progress2();
-        return workDAO.findAllWithThumbnailAndSearchAndType(search, pagination);
+        List<WorkDTO> works = workDAO.findAllWithThumbnailAndSearchAndType(search, pagination);
+
+        for (WorkDTO work : works) {
+            // 썸네일 파일 경로 설정
+            if (work.getThumbnailFileName() != null) {
+                String thumbnailFileName = "t_" + work.getThumbnailFileName();
+                String filePath = work.getThumbnailFilePath(); // 이 필드는 파일의 저장 경로를 나타냅니다.
+                String fullPath = filePath + "/" + thumbnailFileName;
+                work.setThumbnailFilePath(fullPath);
+            }
+        }
+
+        return works;
     }
 
     @Override
@@ -114,9 +171,9 @@ public class WorkServiceImpl implements WorkService {
             }
 
             // 새로운 썸네일 파일 저장
-            FileVO thumbnailFile = postFileService.saveFile(newThumbnailFile, workDTO.getId());
-            workDTO.setThumbnailFileId(thumbnailFile.getId());
-            log.info("새로운 썸네일 파일 저장 완료: 썸네일 파일 ID: {}", thumbnailFile.getId());
+//            FileVO thumbnailFile = postFileService.saveFile(newThumbnailFile, workDTO.getId());
+//            workDTO.setThumbnailFileId(thumbnailFile.getId());
+//            log.info("새로운 썸네일 파일 저장 완료: 썸네일 파일 ID: {}", thumbnailFile.getId());
         } else {
             // 새로운 썸네일 파일이 없을 경우, 기존 썸네일 파일 ID 유지
             workDTO.setThumbnailFileId(currentThumbnailFileId);
@@ -132,7 +189,7 @@ public class WorkServiceImpl implements WorkService {
         if (newFiles != null && !newFiles.isEmpty()) {
             for (MultipartFile file : newFiles) {
                 if (!file.isEmpty()) {
-                    postFileService.saveFile(file, workDTO.getId());
+//                    postFileService.saveFile(file, workDTO.getId());
                 }
             }
         }
@@ -188,7 +245,9 @@ public class WorkServiceImpl implements WorkService {
         return workDAO.findThreeByAuthor(memberProfileId, workId, postType);
     }
 
-
+    private String getPath() {
+        return LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd"));
+    }
 
 
 }

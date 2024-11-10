@@ -24,10 +24,11 @@ public class PostFileDTO {
     private String createdDate;
     private String updatedDate;
     private Long postId;
+    private Long fileId;
 
 
 
     public PostFileVO toVO(){
-        return new PostFileVO(id, postId);
+        return new PostFileVO(id, fileId, postId);
     }
 }
