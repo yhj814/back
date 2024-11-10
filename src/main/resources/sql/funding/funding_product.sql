@@ -7,3 +7,8 @@ create table tbl_funding_product (
     constraint fk_funding_product_funding foreign key (funding_id)
     references tbl_funding(id)
 );
+
+insert into tbl_funding_product
+values (17,'상품15',20000,'20',76);
+
+select *from tbl_funding_product;

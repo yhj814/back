@@ -1,5 +1,6 @@
 package com.app.ggumteo.repository.admin;
 
+import com.app.ggumteo.domain.admin.PayFundingDTO;
 import com.app.ggumteo.domain.admin.PayWorkDTO;
 import com.app.ggumteo.mapper.admin.PayMapper;
 import com.app.ggumteo.pagination.AdminPagination;
@@ -20,5 +21,15 @@ public class PayDAO {
     //  작품 결제 목록 총 개수
     public int getWorkProductCounts(String search){
         return payMapper.workProductCounts(search);
+    }
+
+    //  펀딩 상품 결제 목록
+    public List<PayFundingDTO> getFundingProducts(String search, AdminPagination pagination){
+        return payMapper.selectFundingProducts(search, pagination);
+    }
+
+    //  펀딩 상품 결제 목록 총 개수
+    public int getFundingProductCounts(String search){
+        return payMapper.fundingProductCounts(search);
     }
 }

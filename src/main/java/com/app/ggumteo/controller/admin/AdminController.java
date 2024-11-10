@@ -2,6 +2,7 @@ package com.app.ggumteo.controller.admin;
 
 import com.app.ggumteo.domain.admin.AdminDTO;
 import com.app.ggumteo.domain.admin.AnnouncementVO;
+import com.app.ggumteo.domain.admin.PayFundingDTO;
 import com.app.ggumteo.domain.admin.PayWorkDTO;
 import com.app.ggumteo.domain.inquiry.InquiryDTO;
 import com.app.ggumteo.domain.member.MemberProfileDTO;
@@ -269,7 +270,7 @@ public class AdminController {
         pagination.setPage(page);
 
         // 총 데이터 개수를 가져와서 페이징 진행
-        pagination.setTotal(workReportService.getVideoReportsCount(search,order));
+        pagination.setTotal(workReportService.getVideoReportsCount(search, order));
         pagination.progress();
 
         // 데이터 조회
@@ -278,7 +279,7 @@ public class AdminController {
         log.info("영상 신고 검색어: {}", search);
         log.info("영상 신고 기준: {}", order);
         log.info("페이지: {}", pagination);
-        log.info("{}",reports.size());
+        log.info("{}", reports.size());
 
         // 결과를 Map에 담아 반환
         Map<String, Object> response = new HashMap<>();
@@ -318,7 +319,7 @@ public class AdminController {
         pagination.setPage(page);
 
         // 총 데이터 개수를 가져와서 페이징 진행
-        pagination.setTotal(workReportService.getTextReportsCount(search,order));
+        pagination.setTotal(workReportService.getTextReportsCount(search, order));
         pagination.progress();
 
         // 데이터 조회
@@ -326,7 +327,7 @@ public class AdminController {
 
         log.info("글 신고 검색어: {}", search);
         log.info("글 신고 정렬 기준: {}", order);
-        log.info("{}",reports.size());
+        log.info("{}", reports.size());
 
         // 결과를 Map에 담아 반환
         Map<String, Object> response = new HashMap<>();
@@ -667,6 +668,35 @@ public class AdminController {
         List<PayWorkDTO> pays = payService.getWorkProducts(search, pagination);
 
         log.info("작품 결제 검색어: {}", search);
+        log.info("결과 개수: {}", pays.size());
+
+        // 결과를 Map에 담아 반환
+        Map<String, Object> response = new HashMap<>();
+        response.put("pays", pays);
+        response.put("pagination", pagination);
+
+        return response;
+    }
+
+    // 펀딩 상품 결제 목록
+    @GetMapping("/payFundingList")
+    @ResponseBody
+    public Map<String, Object> getPayFundingList(
+            @RequestParam(value = "search", required = false, defaultValue = "") String search,
+            @RequestParam(value = "page", defaultValue = "1") Integer page
+    ) {
+        // 페이징 설정
+        AdminPagination pagination = new AdminPagination();
+        pagination.setPage(page);
+
+        // 총 데이터 개수를 가져와서 페이징 진행
+        pagination.setTotal(payService.getFundingProductCounts(search));
+        pagination.progress();
+
+        // 데이터 조회
+        List<PayFundingDTO> pays = payService.getFundingProducts(search, pagination);
+
+        log.info("펀딩 상품 결제 검색어: {}", search);
         log.info("결과 개수: {}", pays.size());
 
         // 결과를 Map에 담아 반환

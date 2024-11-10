@@ -3,23 +3,23 @@
 <mapper namespace="com.app.ggumteo.mapper.admin.PayMapper">
     <!--작품 구매상품 조희-->
     <select id="selectWorkProducts" resultType="PayWorkDTO">
-        SELECT
-        p.id AS Id,
-        p.post_type AS postType,
-        p.post_title AS postTitle,
-        mp.profile_name AS profileName,
-        w.work_price AS workPrice,
-        bw.created_date AS createdDate
-        FROM
+        select
+        p.id as Id,
+        p.post_type as postType,
+        p.post_title as postTitle,
+        mp.profile_name as profileName,
+        w.work_price as workPrice,
+        bw.created_date as createdDate
+        from
         tbl_buy_work bw
-        INNER JOIN
-        tbl_work w ON bw.work_id = w.id
-        INNER JOIN
-        tbl_post p ON w.id = p.id
-        INNER JOIN
-        tbl_member_profile mp ON bw.member_profile_id = mp.id
-        WHERE
-        p.post_type IN ('WORKVIDEO', 'WORKTEXT')
+        join
+        tbl_work w on bw.work_id = w.id
+        join
+        tbl_post p on w.id = p.id
+        join
+        tbl_member_profile mp on bw.member_profile_id = mp.id
+        where
+        p.post_type in ('WORKVIDEO', 'WORKTEXT')
 
         <!-- 검색 조건 추가 -->
         <if test="search != null and search != ''">
@@ -30,30 +30,92 @@
             )
         </if>
         <!-- 기본 정렬 설정 -->
-        ORDER BY bw.created_date DESC
+        order by bw.created_date desc
         <!-- 페이징 추가 -->
         limit #{pagination.startRow}, #{pagination.rowCount}
     </select>
 
     <!-- 작품 총 구매 목록 조회 -->
     <select id="workProductCounts" resultType="int">
-        SELECT
+        select
         COUNT(*)
-        FROM
+        from
         tbl_buy_work bw
-        INNER JOIN
-        tbl_work w ON bw.work_id = w.id
-        INNER JOIN
-        tbl_post p ON w.id = p.id
-        INNER JOIN
-        tbl_member_profile mp ON bw.member_profile_id = mp.id
-        WHERE
-        p.post_type IN ('WORKVIDEO', 'WORKTEXT')
+        join
+        tbl_work w on bw.work_id = w.id
+        join
+        tbl_post p on w.id = p.id
+        join
+        tbl_member_profile mp on bw.member_profile_id = mp.id
+        where
+        p.post_type in ('WORKVIDEO', 'WORKTEXT')
 
         <!-- 검색 조건 추가 -->
         <if test="search != null and search != ''">
             and (
             p.post_title like concat('%', #{search}, '%')
+            or p.post_type like concat('%', #{search}, '%')
+            or mp.profile_name like concat('%', #{search}, '%')
+            )
+        </if>
+    </select>
+
+    <!--펀딩 구매상품 조희-->
+    <select id="selectFundingProducts" resultType="PayFundingDTO">
+        select
+        fp.id as Id,
+        p.post_type as postType,
+        fp.product_name as productName,
+        fp.product_price as productPrice,
+        mp.profile_name as profileName,
+        bfp.created_date as createdDate
+        from
+        tbl_buy_funding_product bfp
+        join
+        tbl_funding_product fp on bfp.funding_product_id = fp.id
+        join
+        tbl_funding f on fp.funding_id = f.id
+        join
+        tbl_post p on f.id = p.id
+        join
+        tbl_member_profile mp on bfp.member_profile_id = mp.id
+        where
+        p.post_type in ('FUNDINGVIDEO', 'FUNDINGTEXT')
+
+        <!-- 검색 조건 추가 -->
+        <if test="search != null and search != ''">
+            and (
+            fp.product_name like concat('%', #{search}, '%')
+            or p.post_type like concat('%', #{search}, '%')
+            or mp.profile_name like concat('%', #{search}, '%')
+            )
+        </if>
+        <!-- 기본 정렬 설정 -->
+        order by bfp.created_date desc
+        <!-- 페이징 추가 -->
+        limit #{pagination.startRow}, #{pagination.rowCount}
+    </select>
+
+    <!-- 펀딩 총 구매 목록 조회 -->
+    <select id="fundingProductCounts" resultType="int">
+        select
+        COUNT(*)
+        from
+        tbl_buy_funding_product bfp
+        join
+        tbl_funding_product fp on bfp.funding_product_id = fp.id
+        join
+        tbl_funding f on fp.funding_id = f.id
+        join
+        tbl_post p on f.id = p.id
+        join
+        tbl_member_profile mp on bfp.member_profile_id = mp.id
+        where
+        p.post_type in ('FUNDINGVIDEO', 'FUNDINGTEXT')
+        <!-- 검색 조건 추가 -->
+        <if test="search != null and search != ''">
+            and (
+            fp.product_name like concat('%', #{search}, '%')
             or p.post_type like concat('%', #{search}, '%')
             or mp.profile_name like concat('%', #{search}, '%')
             )
