@@ -11,3 +11,9 @@ create table tbl_funding_report (
     references tbl_member_profile(id)
 );
 
+select  *from tbl_funding_report;
+
+insert into tbl_funding_report
+values (30,'펀딩신고27',75,now(),default,1);
+
+select*from tbl_member_profile;

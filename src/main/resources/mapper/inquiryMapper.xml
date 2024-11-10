@@ -50,6 +50,7 @@
             and i.inquiry_status = 'YES'
         </if>
 
+
         <!-- 정렬 조건 설정 -->
         <choose>
             <when test="order == 'inquiry-answer-created-date'">
@@ -65,7 +66,7 @@
 
     <!-- 총 문의사항 개수 조회 -->
     <select id="countTotal" resultType="int">
-        select count(distinct p.id)
+        select count(*)
         from tbl_post p
         join tbl_inquiry i on p.id = i.id
         where p.post_type = 'INQUIRY'
@@ -78,13 +79,13 @@
             and i.inquiry_status = 'YES'
         </if>
 
+
         <!-- 검색 조건 -->
         <if test="searchKeyword != null and searchKeyword != ''">
             and (p.post_title like CONCAT('%', #{searchKeyword}, '%')
             or p.post_content like CONCAT('%', #{searchKeyword}, '%'))
         </if>
     </select>
-
 
 
     <!-- 문의사항 상태 업데이트 -->
