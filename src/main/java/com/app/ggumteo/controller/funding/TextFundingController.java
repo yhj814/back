@@ -5,6 +5,7 @@ import com.app.ggumteo.constant.PostType;
 import com.app.ggumteo.domain.file.PostFileDTO;
 import com.app.ggumteo.domain.funding.FundingDTO;
 import com.app.ggumteo.domain.funding.FundingProductVO;
+import com.app.ggumteo.domain.member.MemberProfileDTO;
 import com.app.ggumteo.domain.member.MemberProfileVO;
 import com.app.ggumteo.domain.member.MemberVO;
 import com.app.ggumteo.domain.work.WorkDTO;
@@ -39,24 +40,19 @@ public class TextFundingController {
     private final FundingService fundingService;
 
     @ModelAttribute
-    public void setTestMember(HttpSession session) {
-        if (session.getAttribute("member") == null) {
-            session.setAttribute("member", new MemberVO(3L, "testEmail@test.com", "모집중", "profileImageUrl", "", ""));
-        }
-        if (session.getAttribute("memberProfile") == null) {
-            session.setAttribute("memberProfile", new MemberProfileVO(
-                    3L,
-                    "홍길동",               // profileName
-                    "010-1234-5678",       // profilePhone
-                    "testEmail@test.com",  // profileEmail
-                    99,
-                    "testEmail@test.com",
-                    "소개",
-                    "기타",
-                    3L,
-                    "",
-                    ""
-            ));
+    public void setMemberInfo(HttpSession session, Model model) {
+        MemberVO member = (MemberVO) session.getAttribute("member");
+        MemberProfileDTO memberProfile = (MemberProfileDTO) session.getAttribute("memberProfile");
+
+        boolean isLoggedIn = member != null;
+        model.addAttribute("isLoggedIn", isLoggedIn);
+
+        if (isLoggedIn) {
+            model.addAttribute("member", member);
+            model.addAttribute("memberProfile", memberProfile);
+            log.info("로그인 상태 - 사용자 ID: {}, 프로필 ID: {}", member.getId(), memberProfile != null ? memberProfile.getId() : "null");
+        } else {
+            log.info("비로그인 상태입니다.");
         }
     }
 
