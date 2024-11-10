@@ -41,6 +41,7 @@
         <typeAlias type="com.app.ggumteo.domain.file.AuditionApplicationFileVO" alias="auditionApplicationFileVO"/>
         <typeAlias type="com.app.ggumteo.domain.file.AuditionApplicationFileDTO" alias="auditionApplicationFileDTO"/>
         <typeAlias type="com.app.ggumteo.domain.report.AuditionReportDTO" alias="auditionReportDTO"/>
+        <typeAlias type="com.app.ggumteo.domain.report.FundingReportDTO" alias="fundingReportDTO"/>
     </typeAliases>
 
 </configuration>

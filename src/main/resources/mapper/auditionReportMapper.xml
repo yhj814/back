@@ -72,7 +72,7 @@
     <!-- 전체 영상 모집글 신고 목록 카운트-->
     <select id="countVideoAuditionReports" resultType="int">
         select
-        count(distinct p.id)
+        count(*)
         from tbl_post p
         join tbl_member_profile mp on p.member_profile_id = mp.id
         join tbl_audition a on a.id = p.id
@@ -174,7 +174,7 @@
     <!-- 전체 글 모집글 신고 목록 카운트-->
     <select id="countTextAuditionReports" resultType="int">
         select
-        count(distinct p.id)
+        count(*)
         from tbl_post p
         join tbl_member_profile mp on p.member_profile_id = mp.id
         join tbl_audition a on a.id = p.id
@@ -182,6 +182,10 @@
         left join tbl_member_profile rp on ar.member_profile_id = rp.id
         where p.post_type = 'AUDITIONTEXT'
 
+        <!-- 신고 관리 조건: reportStatus가 'REPORT'일 때만 필터링 -->
+        <if test="order == '신고관리'">
+            and ar.report_status = 'REPORT'
+        </if>
 
         <!-- 검색 조건 추가 -->
         <if test="search != null and search != ''">
