@@ -69,18 +69,18 @@ public class FundingServiceImpl implements FundingService{
         if (fundingFiles != null && fundingFiles.length > 0) {
             for (MultipartFile file : fundingFiles) {
                 if (!file.isEmpty()) {
-                    postFileService.saveFile(file, fundingDTO.getId());
+//                    postFileService.saveFile(file, fundingDTO.getId());
                 }
             }
         }
 
-        // 썸네일 파일 처리
-        if (thumbnailFile != null && !thumbnailFile.isEmpty()) {
-            FileVO thumbnailFileVO = postFileService.saveFile(thumbnailFile, fundingDTO.getId());
-            fundingDTO.setThumbnailFileId(thumbnailFileVO.getId()); // FileVO의 ID를 사용하여 설정
-            log.info("Saving ThumbnailFile: {}", thumbnailFileVO);
-            fundingDAO.updateFunding(fundingDTO); // 썸네일 ID 업데이트
-        }
+//        // 썸네일 파일 처리
+//        if (thumbnailFile != null && !thumbnailFile.isEmpty()) {
+//            FileVO thumbnailFileVO = postFileService.saveFile(thumbnailFile, fundingDTO.getId());
+//            fundingDTO.setThumbnailFileId(thumbnailFileVO.getId()); // FileVO의 ID를 사용하여 설정
+//            log.info("Saving ThumbnailFile: {}", thumbnailFileVO);
+//            fundingDAO.updateFunding(fundingDTO); // 썸네일 ID 업데이트
+//        }
     }
     @Override
     public List<FundingDTO> findFundingList(Search search, Pagination pagination) {

@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface PostFileService {
     void savePostFile(PostFileVO postFileVO);
-    FileVO saveFile(MultipartFile file, Long postId);
+    FileVO saveFile(MultipartFile file);
     byte[] getFileData(String fileName);  // 파일 데이터를 가져오는 메서드
 
     List<PostFileDTO> uploadFile(List<MultipartFile> file) throws IOException;
