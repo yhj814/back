@@ -571,3 +571,23 @@ async function fetchUpdateTextFundingReportStatus(fundingId, reportStatus) {
         return false;
     }
 }
+
+//----------------------------------------------------------------------------------------------------------
+// 작품구매 목록
+
+async function fetchWorkProduct(page = 1, search = '') {
+    const searchParam = encodeURIComponent(search);
+
+    try {
+        const response = await fetch(`/admin/payWorkList?page=${page}&search=${searchParam}`);
+        if (!response.ok) {
+            throw new Error("서버 응답 오류");
+        }
+
+        const { pays, pagination } = await response.json();
+        return { pays, pagination };
+    } catch (error) {
+        console.error("작품 구매 목록 데이터를 가져오는 중 오류 발생:", error);
+        return { pays: [], pagination: null };
+    }
+}

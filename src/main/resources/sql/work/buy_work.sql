@@ -10,10 +10,19 @@ create table tbl_buy_work (
     references tbl_work (id)
 );
 
+select *from tbl_buy_work;
+
 select * from tbl_work;
 select * from tbl_post;
 select * from tbl_buy_work;
 select * from tbl_member_profile;
+
+insert into tbl_buy_work
+values (17,15,28,default,now());
+
+
+
+
 
 insert into tbl_buy_work (member_profile_id, work_id)
 values (4, 7);
