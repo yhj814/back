@@ -1,8 +1,10 @@
 package com.app.ggumteo.domain.work;
 
+import com.app.ggumteo.domain.file.PostFileDTO;
 import com.app.ggumteo.domain.post.PostVO;
 import lombok.*;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -34,6 +36,13 @@ public class WorkDTO {
     private Long thumbnailFileId; // 썸네일 파일 ID (추가된 필드)
     private List<Long> ids; // 삭제할 파일 id 목록
     private String profileImgUrl; // 카카오톡 프로필 이미지 url
+    private List<Long> fileIds;
+    private List<PostFileDTO> uploadedFiles;
+    private List<MultipartFile> files;
+    private MultipartFile workFile;
+    private MultipartFile thumbnailFile;
+    private List<String> fileNames;
+    private String filePath;
 
     public WorkVO toVO() {
         return new WorkVO(id, workPrice, genreType, fileContent, readCount, createdDate, updatedDate, thumbnailFileId);

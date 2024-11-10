@@ -1,5 +1,6 @@
 package com.app.ggumteo.controller.reply;
 
+import com.app.ggumteo.domain.member.MemberProfileDTO;
 import com.app.ggumteo.domain.member.MemberProfileVO;
 import com.app.ggumteo.domain.member.MemberVO;
 import com.app.ggumteo.domain.reply.ReplyDTO;
@@ -26,17 +27,26 @@ public class ReplyController {
 
     private final ReplyService replyService;
     private final HttpSession session;
-
     @ModelAttribute
-    public void setTestMemberProfile(HttpSession session) {
-        if (session.getAttribute("memberProfile") == null) {
-            session.setAttribute("memberProfile", new MemberProfileVO(2L, "", "", "", 30, "", "", "", 2L, "", ""));
+    public void setMemberInfo(HttpSession session, Model model) {
+        MemberVO member = (MemberVO) session.getAttribute("member");
+        MemberProfileDTO memberProfile = (MemberProfileDTO) session.getAttribute("memberProfile");
+
+        boolean isLoggedIn = member != null;
+        model.addAttribute("isLoggedIn", isLoggedIn);
+
+        if (isLoggedIn) {
+            model.addAttribute("member", member);
+            model.addAttribute("memberProfile", memberProfile);
+            log.info("로그인 상태 - 사용자 ID: {}, 프로필 ID: {}", member.getId(), memberProfile != null ? memberProfile.getId() : "null");
+        } else {
+            log.info("비로그인 상태입니다.");
         }
     }
-
     @PostMapping("write")
     public void write(@RequestBody ReplyDTO replyDTO) {
-        MemberProfileVO memberProfile = (MemberProfileVO) session.getAttribute("memberProfile");
+        MemberProfileDTO memberProfile = (MemberProfileDTO) session.getAttribute("memberProfile");
+
 
         if (memberProfile == null) {
             System.out.println("로그인이 필요합니다.");
