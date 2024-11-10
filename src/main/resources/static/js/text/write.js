@@ -17,45 +17,100 @@ document.addEventListener("DOMContentLoaded", function () {
         const inputElements = document.querySelectorAll(".label-input-partner input");
         const textareaElements = document.querySelectorAll(".textarea__border textarea");
 
-        inputElements.forEach((inputElement) => {
+        if (inputElement) {
+            inputElement.style.outline = "none";
+            inputElement.style.border = "none";
+
             inputElement.addEventListener("focus", function () {
                 labelInputPartner.classList.add("label-effect");
-                inputElement.style.borderColor = "#00a878";
-                inputElement.style.borderWidth = "1px";
-                inputElement.style.borderStyle = "solid";
-            });
-            inputElement.addEventListener("blur", function () {
-                if (inputElement.value.trim() === "") {
-                    labelInputPartner.classList.remove("label-effect");
-                    inputElement.style.borderColor = "#e52929";
-                } else {
-                    inputElement.style.borderColor = "#e0e0e0";
+                if (!inputElement.classList.contains("error")) {
+                    inputElement.style.borderColor = "#00a878";
+                    inputElement.style.borderWidth = "1px";
+                    inputElement.style.borderStyle = "solid";
                 }
             });
-            inputElement.addEventListener("input", function () {
-                labelInputPartner.classList.add("label-effect");
-                inputElement.style.borderColor = "#00a878";
-            });
-        });
 
-        textareaElements.forEach((textareaElement) => {
+            inputElement.addEventListener("blur", function () {
+                if (!inputElement.value) {
+                    labelInputPartner.classList.remove("label-effect");
+                    inputElement.classList.add("error");
+                    inputElement.style.borderColor = "#e52929";
+                    inputElement.style.borderWidth = "1px";
+                    inputElement.style.borderStyle = "solid";
+                } else {
+                    inputElement.classList.remove("error");
+                    inputElement.style.border = "1px solid #e0e0e0";
+                }
+            });
+
+            inputElement.addEventListener("input", function () {
+                if (inputElement.classList.contains("error")) {
+                    inputElement.classList.remove("error");
+                    inputElement.style.borderColor = "#00a878";
+                    inputElement.style.borderWidth = "1px";
+                    inputElement.style.borderStyle = "solid";
+                }
+                labelInputPartner.classList.add("label-effect");
+            });
+
+            inputElement.addEventListener("mouseover", function () {
+                if (!inputElement.classList.contains("error")) {
+                    inputElement.style.borderColor = "#00a878";
+                    inputElement.style.borderWidth = "1px";
+                    inputElement.style.borderStyle = "solid";
+                }
+            });
+
+            inputElement.addEventListener("mouseout", function () {
+                if (!inputElement.value && !inputElement.classList.contains("error")) {
+                    inputElement.style.border = "1px solid #e0e0e0";
+                }
+            });
+
+            inputElement.addEventListener("keydown", function (event) {
+                if (event.key === "Enter") {
+                    event.preventDefault();
+                }
+            });
+        }
+
+        if (textareaElement) {
+            textareaElement.style.outline = "none";
+            textareaElement.style.border = "none";
+
             textareaElement.addEventListener("focus", function () {
                 textareaBorder.classList.add("active");
-                textareaBorder.style.borderColor = "#00a878";
-            });
-            textareaElement.addEventListener("blur", function () {
-                if (textareaElement.value.trim() === "") {
-                    textareaBorder.classList.remove("active");
+                if (textareaBorder.classList.contains("error")) {
                     textareaBorder.style.borderColor = "#e52929";
                 } else {
-                    textareaBorder.style.borderColor = "#e0e0e0";
+                    textareaBorder.style.borderColor = "#00a878";
                 }
             });
-            textareaElement.addEventListener("input", function () {
-                textareaBorder.classList.add("active");
-                textareaBorder.style.borderColor = "#00a878";
+
+            textareaElement.addEventListener("blur", function () {
+                if (!textareaElement.value) {
+                    textareaBorder.classList.add("error");
+                    textareaBorder.style.borderColor = "#e52929";
+                } else {
+                    textareaBorder.classList.remove("error");
+                    textareaBorder.style.border = "1px solid #e0e0e0";
+                }
+                textareaBorder.classList.remove("active");
             });
-        });
+
+            textareaElement.addEventListener("input", function () {
+                if (textareaBorder.classList.contains("error")) {
+                    textareaBorder.classList.remove("error");
+                    textareaBorder.style.borderColor = "#00a878";
+                }
+            });
+
+            textareaElement.addEventListener("mouseover", function () {
+                if (textareaBorder.classList.contains("error")) {
+                    textareaBorder.style.borderColor = "#e52929";
+                }
+            });
+        }
     }
 
     // 함수 호출하여 이벤트 리스너 설정

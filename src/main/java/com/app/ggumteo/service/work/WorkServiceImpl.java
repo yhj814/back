@@ -74,7 +74,6 @@ public class WorkServiceImpl implements WorkService {
         // 썸네일 파일 처리
         String thumbnailFileName = workDTO.getThumbnailFileName();
         if (thumbnailFileName != null) {
-            // 기존 메서드 사용
             FileVO thumbnailFileVO = new FileVO();
             thumbnailFileVO.setFileName(thumbnailFileName);
             thumbnailFileVO.setFilePath(getPath());
@@ -95,7 +94,7 @@ public class WorkServiceImpl implements WorkService {
             workVO.setThumbnailFileId(null);
         }
 
-        // 작품 엔티티 저장
+        // 작품 저장
         workDAO.save(workVO);
 
         // 업로드된 파일 처리
@@ -138,7 +137,7 @@ public class WorkServiceImpl implements WorkService {
         List<WorkDTO> works = workDAO.findAllWithThumbnailAndSearchAndType(search, pagination);
 
         for (WorkDTO work : works) {
-            // 썸네일 파일 경로 설정
+            // 썸네일 파일 경로 설정 t_붙혀서 해놓음!!!!
             if (work.getThumbnailFileName() != null) {
                 String thumbnailFileName = "t_" + work.getThumbnailFileName();
                 String filePath = work.getThumbnailFilePath(); // 이 필드는 파일의 저장 경로를 나타냅니다.
@@ -151,29 +150,43 @@ public class WorkServiceImpl implements WorkService {
     }
 
     @Override
-    public void updateWork(WorkDTO workDTO, List<MultipartFile> newFiles, List<Long> deletedFileIds, MultipartFile newThumbnailFile) {
+    public void updateWork(WorkDTO workDTO, List<Long> deletedFileIds) {
         log.info("업데이트 요청 - 작품 ID: {}", workDTO.getId());
         log.info("삭제할 파일 IDs: {}", deletedFileIds);
-        log.info("새로 추가할 파일 수: {}", (newFiles != null ? newFiles.size() : 0));
-        workDTO.setPostId(workDTO.getId());
 
-        // 기존 데이터를 다시 조회하여 최신 정보를 가져옴 (특히 썸네일 파일 ID)
+        // 기존 데이터를 다시 조회하여 최신 정보를 가져옴
         WorkDTO currentWork = workDAO.findWorkById(workDTO.getId());
         Long currentThumbnailFileId = currentWork.getThumbnailFileId();
 
         // 썸네일 파일 교체 처리
-        if (newThumbnailFile != null && !newThumbnailFile.isEmpty()) {
+        if (workDTO.getThumbnailFileName() != null && !workDTO.getThumbnailFileName().isEmpty()) {
             // 기존 썸네일 파일의 외래 키 참조 해제
             if (currentThumbnailFileId != null) {
                 workDAO.updateThumbnailFileId(workDTO.getId(), null);  // 썸네일 파일 ID를 먼저 null로 설정
-                postFileService.deleteFilesByIds(Collections.singletonList(currentThumbnailFileId));
+                fileDAO.deleteFile(currentThumbnailFileId);
                 log.info("기존 썸네일 파일 삭제 완료: 썸네일 파일 ID: {}", currentThumbnailFileId);
             }
 
-            // 새로운 썸네일 파일 저장
-//            FileVO thumbnailFile = postFileService.saveFile(newThumbnailFile, workDTO.getId());
-//            workDTO.setThumbnailFileId(thumbnailFile.getId());
-//            log.info("새로운 썸네일 파일 저장 완료: 썸네일 파일 ID: {}", thumbnailFile.getId());
+            // 새로운 썸네일 파일 정보 생성
+            FileVO thumbnailFileVO = new FileVO();
+            thumbnailFileVO.setFileName(workDTO.getThumbnailFileName());
+            thumbnailFileVO.setFilePath(getPath());
+            File file = new File("C:/upload/" + getPath() + "/" + workDTO.getThumbnailFileName());
+            thumbnailFileVO.setFileSize(String.valueOf(file.length()));
+
+            try {
+                thumbnailFileVO.setFileType(Files.probeContentType(file.toPath()));
+            } catch (IOException e) {
+                log.error("썸네일 파일의 콘텐츠 타입을 결정하는 중 오류 발생", e);
+                thumbnailFileVO.setFileType("unknown");  // 기본값 설정 또는 예외 처리
+            }
+
+            // 파일 정보 데이터베이스에 저장
+            fileDAO.save(thumbnailFileVO);
+
+            // 저장된 파일의 ID를 설정
+            workDTO.setThumbnailFileId(thumbnailFileVO.getId());
+            log.info("새로운 썸네일 파일 저장 완료: 썸네일 파일 ID: {}", thumbnailFileVO.getId());
         } else {
             // 새로운 썸네일 파일이 없을 경우, 기존 썸네일 파일 ID 유지
             workDTO.setThumbnailFileId(currentThumbnailFileId);
@@ -186,10 +199,29 @@ public class WorkServiceImpl implements WorkService {
         }
 
         // 새 파일 추가 (썸네일 파일이 아닌 일반 파일들)
-        if (newFiles != null && !newFiles.isEmpty()) {
-            for (MultipartFile file : newFiles) {
-                if (!file.isEmpty()) {
-//                    postFileService.saveFile(file, workDTO.getId());
+        if (workDTO.getFileNames() != null && !workDTO.getFileNames().isEmpty()) {
+            for (String fileName : workDTO.getFileNames()) {
+                if (fileName != null && !fileName.isEmpty()) {
+                    FileVO newFileVO = new FileVO();
+                    newFileVO.setFileName(fileName);
+                    newFileVO.setFilePath(getPath());
+                    File file = new File("C:/upload/" + getPath() + "/" + fileName);
+                    newFileVO.setFileSize(String.valueOf(file.length()));
+
+                    try {
+                        newFileVO.setFileType(Files.probeContentType(file.toPath()));
+                    } catch (IOException e) {
+                        log.error("파일의 콘텐츠 타입을 결정하는 중 오류 발생", e);
+                        newFileVO.setFileType("unknown");  // 기본값 설정 또는 예외 처리
+                    }
+
+                    // 파일 정보 데이터베이스에 저장
+                    fileDAO.save(newFileVO);
+
+                    // 파일과 게시물의 연관 관계 설정
+                    PostFileVO postFileVO = new PostFileVO(workDTO.getId(), newFileVO.getId());
+                    postFileDAO.insertPostFile(postFileVO);
+                    log.info("새 파일 추가 완료: 파일 ID: {}", newFileVO.getId());
                 }
             }
         }
@@ -207,7 +239,6 @@ public class WorkServiceImpl implements WorkService {
             log.warn("게시글 정보가 부족하여 업데이트를 건너뜁니다: 작품 ID {}", workDTO.getId());
         }
     }
-
 
 
 

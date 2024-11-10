@@ -10,6 +10,7 @@ import com.app.ggumteo.domain.file.PostFileVO;
 import com.app.ggumteo.domain.member.MemberProfileDTO;
 import com.app.ggumteo.domain.member.MemberProfileVO;
 import com.app.ggumteo.domain.member.MemberVO;
+import com.app.ggumteo.domain.post.PostDTO;
 import com.app.ggumteo.domain.post.PostVO;
 import com.app.ggumteo.domain.reply.ReplyDTO;
 import com.app.ggumteo.domain.work.WorkDTO;
@@ -74,15 +75,16 @@ public class VideoWorkController {
 
     @PostMapping("upload")
     @ResponseBody
-    public List<PostFileDTO> upload(@RequestParam("file") List<MultipartFile> files) {
+    public String upload(@RequestParam("file") MultipartFile file) {
         try {
-            return postFileService.uploadFile(files);  // 서비스의 uploadFile 메서드 호출
-        } catch (IOException e) {
+            FileVO savedFile = postFileService.saveFile(file);  // 파일 저장 후 FileVO 반환
+            String savedFileName = savedFile.getFileName();  // 파일명 추출
+            return savedFileName;  // uuid+파일명 반환
+        } catch (Exception e) {
             log.error("파일 업로드 중 오류 발생: ", e);
-            return Collections.emptyList();  // 오류 발생 시 빈 리스트 반환
+            return "error";  // 오류 발생 시 "error" 문자열 반환
         }
     }
-
 
 
     @GetMapping("write")
@@ -91,17 +93,28 @@ public class VideoWorkController {
     }
 
     @PostMapping("write")
-    public ResponseEntity<?> write(@RequestBody WorkDTO workDTO, HttpSession session) {
+    public ResponseEntity<?> write(
+            @ModelAttribute WorkDTO workDTO,
+            @RequestParam(value = "thumbnailFileName", required = false) String thumbnailFileName,
+            @RequestParam(value = "fileNames", required = false) List<String> fileNames,
+            HttpSession session) {
         try {
             MemberVO member = (MemberVO) session.getAttribute("member");
             if (member == null) {
                 log.error("세션에 멤버 정보가 없습니다.");
                 return ResponseEntity.status(400).body(Collections.singletonMap("error", "세션에 멤버 정보가 없습니다."));
             }
+
             workDTO.setPostType(PostType.WORKVIDEO.name());
             workDTO.setMemberProfileId(member.getId());
 
-            // 파일 정보는 workDTO에 포함되어 있다고 가정
+            // 파일명 리스트를 DTO에 설정
+            workDTO.setFileNames(fileNames);
+
+            // 썸네일 파일명 설정
+            workDTO.setThumbnailFileName(thumbnailFileName);
+
+            // 서비스 계층으로 로직 이동
             workService.write(workDTO);
 
             return ResponseEntity.ok(Collections.singletonMap("success", true));
@@ -110,6 +123,12 @@ public class VideoWorkController {
             return ResponseEntity.status(500).body(Collections.singletonMap("error", "저장 중 오류가 발생했습니다."));
         }
     }
+
+
+
+
+
+
     // 작품 수정 폼으로 이동
     @GetMapping("modify/{id}")
     public String updateForm(@PathVariable("id") Long id, Model model) {
@@ -132,9 +151,9 @@ public class VideoWorkController {
     @PostMapping("modify")
     public String updateWork(
             @ModelAttribute WorkDTO workDTO,
-            @RequestParam(value = "newFiles", required = false) List<MultipartFile> newFiles,
+            @RequestParam(value = "fileNames", required = false) List<String> fileNames,
             @RequestParam(value = "deletedFileIds", required = false) List<Long> deletedFileIds,
-            @RequestParam(value = "newThumbnailFile", required = false) MultipartFile newThumbnailFile,
+            @RequestParam(value = "thumbnailFileName", required = false) String thumbnailFileName,
             @ModelAttribute Search search,  // 검색 조건 추가
             @RequestParam(value = "page", defaultValue = "1") int page,  // 페이지 파라미터 추가
             Model model) {
@@ -147,11 +166,21 @@ public class VideoWorkController {
                 workDTO.setThumbnailFileId(currentWork.getThumbnailFileId());
             }
 
-            // 서비스에서 작품 업데이트 로직 실행
-            workService.updateWork(workDTO, newFiles, deletedFileIds, newThumbnailFile); // 서비스로 전달
+            // 업로드된 파일명 처리 로직 추가
+            if (fileNames != null && !fileNames.isEmpty()) {
+                workDTO.setFileNames(fileNames);
+            }
 
-            // 수정 후 바로 리스트 페이지로 이동하여 데이터 전달
-            search.setPostType(PostType.WORKVIDEO.name());
+            // 썸네일 파일명 처리
+            if (thumbnailFileName != null && !thumbnailFileName.isEmpty()) {
+                workDTO.setThumbnailFileName(thumbnailFileName);
+            }
+
+            // 서비스에서 작품 업데이트 로직 실행
+            workService.updateWork(workDTO, deletedFileIds);
+
+            // 수정 후 리스트 페이지로 이동하기 위해 필요한 데이터 모델에 추가
+            search.setPostType(PostType.WORKVIDEO.name());  // 필요한 경우 게시글 타입 설정
             log.info("Received Search Parameters: {}", search);
             log.info("Received page: {}", page);
 
@@ -160,7 +189,7 @@ public class VideoWorkController {
 
             int totalWorks = workService.findTotalWithSearchAndType(search);
             pagination.setTotal(totalWorks);
-            pagination.progress2();
+            pagination.progress2();  // 페이지네이션 계산
 
             List<WorkDTO> works = workService.findAllWithThumbnailAndSearchAndType(search, pagination);
 
@@ -168,13 +197,14 @@ public class VideoWorkController {
             model.addAttribute("pagination", pagination);
             model.addAttribute("search", search);
 
-            return "video/list"; // 수정 후 바로 list 페이지로 이동
+            return "text/list";
         } catch (Exception e) {
             log.error("Error updating work: ", e);
             model.addAttribute("error", "업데이트 중 오류가 발생했습니다: " + e.getMessage());
-            return "video/list";
+            return "text/list";
         }
     }
+
 
 
 
@@ -184,7 +214,7 @@ public class VideoWorkController {
             @RequestParam(value = "page", defaultValue = "1") int page,
             Model model) {
 
-        // postType을 VIDEO로 설정하여 비디오 작품만 조회
+
         search.setPostType(PostType.WORKVIDEO.name());
         log.info("Received Search Parameters: {}", search);
         log.info("Received page: {}", page);
@@ -215,37 +245,22 @@ public class VideoWorkController {
 
 
 
-
     @GetMapping("display")
     @ResponseBody
     public byte[] display(@RequestParam("fileName") String fileName) throws IOException {
-        if (fileName == null || fileName.trim().isEmpty()) {
-            log.error("Received null or empty fileName in display method");
-            throw new FileNotFoundException("파일 이름이 null이거나 비어 있습니다.");
-        }
-
-        log.info("Requested fileName: {}", fileName);
-
         File file = new File("C:/upload", fileName);
 
         if (!file.exists()) {
-            log.error("파일을 찾을 수 없습니다: {}", fileName);
             throw new FileNotFoundException("파일을 찾을 수 없습니다: " + fileName);
         }
 
         return FileCopyUtils.copyToByteArray(file);
     }
 
-
-
-
-
-
     @GetMapping("/detail/{id}")
     public String detail(@PathVariable("id") Long id, Model model) {
         WorkDTO work = workService.findWorkById(id);
         workService.incrementReadCount(id);
-
 
         List<PostFileDTO> postFiles = workService.findFilesByPostId(id);
         List<WorkDTO> threeWorks = workService.getThreeWorksByGenre(work.getGenreType(), work.getId(), PostType.WORKVIDEO.name());
@@ -286,5 +301,6 @@ public class VideoWorkController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("저장 중 오류가 발생했습니다.");
         }
     }
+
 }
 

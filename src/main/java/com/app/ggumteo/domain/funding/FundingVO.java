@@ -21,4 +21,5 @@ public class FundingVO {
     private String fundingContent;
     private String createdDate; // 생성 날짜
     private String updatedDate; // 수정 날짜
+    private Long thumbnailFileId; // 썸네일 파일 ID
 }

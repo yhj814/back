@@ -51,8 +51,8 @@
 
     <!-- 펀딩 삽입 -->
     <insert id="insert" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
-        insert into tbl_funding (id, genre_type, investor_number, target_price, converge_price, file_content, funding_content, funding_status)
-        values (#{id}, #{genreType}, #{investorNumber}, #{targetPrice}, #{convergePrice}, #{fileContent}, #{fundingContent}, '펀딩 중')
+        insert into tbl_funding (id, genre_type, investor_number, target_price, converge_price, file_content, funding_content, funding_status, thumbnail_file_id)
+        values (#{id}, #{genreType}, #{investorNumber}, #{targetPrice}, #{convergePrice}, #{fileContent}, #{fundingContent}, '펀딩 중',  #{thumbnailFileId})
     </insert>
 
     <!-- 펀딩 상품 삽입 -->

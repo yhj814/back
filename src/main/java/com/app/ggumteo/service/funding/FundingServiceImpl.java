@@ -2,11 +2,15 @@ package com.app.ggumteo.service.funding;
 
 import com.app.ggumteo.domain.file.FileVO;
 import com.app.ggumteo.domain.file.PostFileDTO;
+import com.app.ggumteo.domain.file.PostFileVO;
 import com.app.ggumteo.domain.funding.FundingDTO;
 import com.app.ggumteo.domain.funding.FundingProductVO;
+import com.app.ggumteo.domain.funding.FundingVO;
 import com.app.ggumteo.domain.post.PostVO;
 import com.app.ggumteo.pagination.Pagination;
 import com.app.ggumteo.repository.buy.BuyFundingProductDAO;
+import com.app.ggumteo.repository.file.FileDAO;
+import com.app.ggumteo.repository.file.PostFileDAO;
 import com.app.ggumteo.repository.funding.FundingDAO;
 import com.app.ggumteo.repository.post.PostDAO;
 import com.app.ggumteo.repository.work.WorkDAO;
@@ -19,6 +23,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
@@ -31,56 +40,85 @@ public class FundingServiceImpl implements FundingService{
 
     private final FundingDAO fundingDAO;
     private final PostDAO postDAO;
-    private final PostFileService postFileService;  // 파일 저장 서비스 주입
+    private final FileDAO fileDAO;
+    private final PostFileDAO postFileDAO;
+    private final PostFileService postFileService;
     private final BuyFundingProductDAO buyFundingProductDAO;
 
     @Override
-    public void write(FundingDTO fundingDTO, MultipartFile[] fundingFiles, MultipartFile thumbnailFile) {
-        // Post 테이블에 저장할 데이터 설정
+    public void write(FundingDTO fundingDTO) {
+        // 게시글 저장
         PostVO postVO = new PostVO();
         postVO.setPostTitle(fundingDTO.getPostTitle());
         postVO.setPostContent(fundingDTO.getPostContent());
         postVO.setPostType(fundingDTO.getPostType());
         postVO.setMemberProfileId(fundingDTO.getMemberProfileId());
 
-        // post 데이터 저장
         postDAO.save(postVO);
         Long postId = postVO.getId();
+        if (postId == null) {
+            throw new RuntimeException("게시글 ID 생성 실패");
+        }
 
-        // Funding 테이블에 저장할 데이터 설정
+        // 펀딩 ID 설정
         fundingDTO.setId(postId);
-        fundingDAO.save(fundingDTO);
-        log.info("Saving FundingDTO: {}", fundingDTO);
+
+        // 썸네일 파일 처리
+        String thumbnailFileName = fundingDTO.getThumbnailFileName();
+        if (thumbnailFileName != null) {
+            FileVO thumbnailFileVO = new FileVO();
+            thumbnailFileVO.setFileName(thumbnailFileName);
+            thumbnailFileVO.setFilePath(getPath());
+            File file = new File("C:/upload/" + getPath() + "/" + thumbnailFileName);
+            thumbnailFileVO.setFileSize(String.valueOf(file.length()));
+
+            // 파일 정보 데이터베이스에 저장
+            fileDAO.save(thumbnailFileVO);
+
+            // 썸네일 파일 ID 설정
+            fundingDTO.setThumbnailFileId(thumbnailFileVO.getId());
+        } else {
+            fundingDTO.setThumbnailFileId(null);
+        }
+
+        // 펀딩 엔티티 저장
+        fundingDAO.save(fundingDTO); // FundingDTO를 전달
+
         // 펀딩 상품 삽입 처리
-        log.info("Saving FundingDTO: {}", fundingDTO);
         List<FundingProductVO> fundingProducts = fundingDTO.getFundingProducts();
         if (fundingProducts != null && !fundingProducts.isEmpty()) {
             for (FundingProductVO product : fundingProducts) {
                 product.setFundingId(postId); // 펀딩 ID 설정
                 fundingDAO.saveFundingProduct(product);
-                log.info("Saving Product: {}", product);
+                log.info("펀딩 상품 저장 완료: {}", product);
             }
         } else {
-            log.error("No products found in FundingDTO");
+            log.error("펀딩 상품이 없습니다.");
         }
 
+        // 업로드된 파일 처리
+        List<String> fileNames = fundingDTO.getFileNames();
+        if (fileNames != null && !fileNames.isEmpty()) {
+            for (String fileName : fileNames) {
+                if (fileName != null && !fileName.isEmpty()) {
+                    FileVO fileVO = new FileVO();
+                    fileVO.setFileName(fileName);
+                    fileVO.setFilePath(getPath());
+                    File file = new File("C:/upload/" + getPath() + "/" + fileName);
+                    fileVO.setFileSize(String.valueOf(file.length()));
 
-        // 파일 저장 처리 (펀딩 파일)
-        if (fundingFiles != null && fundingFiles.length > 0) {
-            for (MultipartFile file : fundingFiles) {
-                if (!file.isEmpty()) {
-//                    postFileService.saveFile(file, fundingDTO.getId());
+                    // 파일 정보 데이터베이스에 저장
+                    fileDAO.save(fileVO);
+
+                    // 파일과 게시글의 연관 관계 설정
+                    PostFileVO postFileVO = new PostFileVO(postId, fileVO.getId());
+                    postFileDAO.insertPostFile(postFileVO);
                 }
             }
         }
-
-//        // 썸네일 파일 처리
-//        if (thumbnailFile != null && !thumbnailFile.isEmpty()) {
-//            FileVO thumbnailFileVO = postFileService.saveFile(thumbnailFile, fundingDTO.getId());
-//            fundingDTO.setThumbnailFileId(thumbnailFileVO.getId()); // FileVO의 ID를 사용하여 설정
-//            log.info("Saving ThumbnailFile: {}", thumbnailFileVO);
-//            fundingDAO.updateFunding(fundingDTO); // 썸네일 ID 업데이트
-//        }
+    }
+    private String getPath() {
+        return LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd"));
     }
     @Override
     public List<FundingDTO> findFundingList(Search search, Pagination pagination) {

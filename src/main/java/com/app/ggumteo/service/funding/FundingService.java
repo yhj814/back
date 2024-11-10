@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface FundingService {
     // 펀딩 작성
-    void write(FundingDTO fundingDTO, MultipartFile[] fundingFiles, MultipartFile thumbnailFile);
+    void write(FundingDTO fundingDTO);
 
     List<FundingDTO> findFundingList(Search search, Pagination pagination);
 
