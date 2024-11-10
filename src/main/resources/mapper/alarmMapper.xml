@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.app.ggumteo.mapper.alarm.AlarmMapper">
+
+    <insert id="insertApplyAuditionAlarm" parameterType="map">
+        INSERT INTO tbl_apply_audition_notification (member_profile_id, audition_application_id, message, create_date)
+        SELECT p.member_profile_id, aa.id, #{content}, CURRENT_TIMESTAMP
+        FROM tbl_audition_application aa
+                 JOIN tbl_audition a ON aa.audition_id = a.id
+                 JOIN tbl_post p ON a.id = p.id
+        WHERE aa.id = #{auditionApplicationId}
+    </insert>
+

@@ -45,7 +45,6 @@ public class VideoAuditionController {
     private final HttpSession session;
     private final PostFileService postFileService;
     private final AuditionApplicationFileService auditionApplicationFileService;
-    private final AuditionDTO auditionDTO;
 
 
     @ModelAttribute
@@ -220,6 +219,7 @@ public class VideoAuditionController {
 
         AuditionDTO audition = auditionService.findAuditionById(id);
         List<PostFileDTO> postFiles = auditionService.findAllPostFiles(id);
+        log.info("Audition ID: {}", audition.getId());
 
         int applicantCount = auditionApplicationService.countApplicantsByAuditionId(id);
         log.info("지원자 수 - 모집글 ID: {}, 지원자 수: {}", id, applicantCount);
@@ -233,38 +233,44 @@ public class VideoAuditionController {
 
     @GetMapping("/application/{id}")
     public String application(@PathVariable("id") Long id, Model model) {
-        // 세션에서 member 정보를 가져옵니다.
+        // 세션에서 멤버 정보 가져오기
         MemberVO member = (MemberVO) session.getAttribute("member");
         MemberProfileDTO memberProfile = (MemberProfileDTO) session.getAttribute("memberProfile");
 
-        log.info("application 메서드 - 사용자 ID: {}, 프로필 ID: {}, 프로필 이름: {}", member != null ? member.getId() : "null",
+        log.info("application 메서드 - 사용자 ID: {}, 프로필 ID: {}, 프로필 이름: {}",
+                member != null ? member.getId() : "null",
                 memberProfile != null ? memberProfile.getId() : "null",
                 memberProfile != null ? memberProfile.getProfileName() : "null");
 
-        if (member != null && memberProfile != null) {
-            // MemberProfile 정보가 세션에 있는 경우 모델에 추가하여 뷰에 전달합니다.
-            model.addAttribute("memberProfile", memberProfile);
-        } else {
-            // 세션에 member 정보가 없을 경우 적절한 예외 처리
+        if (member == null || memberProfile == null) {
             model.addAttribute("error", "로그인이 필요합니다.");
             return "redirect:/login"; // 로그인 페이지로 리다이렉트
         }
 
-        model.addAttribute("audition", auditionDTO); // 오디션 ID도 모델에 추가
-        log.info("오디션id:{}",model.addAttribute("id", id));
+        // URL에서 전달받은 id를 사용하여 auditionDTO 조회
+        AuditionDTO audition = auditionService.findAuditionById(id);
+        if (audition == null) {
+            model.addAttribute("error", "해당 오디션 정보를 찾을 수 없습니다.");
+            return "/error"; // 오류 페이지로 이동
+        }
+
+        // 모델에 필요한 데이터 추가
+        model.addAttribute("memberProfile", memberProfile);
+        model.addAttribute("audition", audition);
+        model.addAttribute("id", id);
+
+        log.info("오디션 ID: {}", id);
 
         return "audition/video/application"; // 신청서 작성 페이지로 이동
     }
 
+
     @PostMapping("/application/{id}")
     public String submitApplication(
-            @RequestParam("id") Long id,  // 개별 id 값 가져오기
+            @PathVariable("id") Long id,
             AuditionApplicationDTO auditionApplicationDTO,
             Model model) {
-        log.info("받아온 Audition ID: {}", auditionDTO);
-
-
-        // 세션에서 member 정보를 가져옵니다.
+        // 세션에서 멤버 정보 가져오기
         MemberVO member = (MemberVO) session.getAttribute("member");
         MemberProfileDTO memberProfile = (MemberProfileDTO) session.getAttribute("memberProfile");
 
@@ -274,19 +280,20 @@ public class VideoAuditionController {
         }
 
         log.info("submitApplication 메서드 - 사용자 ID: {}, 프로필 ID: {}", member.getId(), memberProfile.getId());
-        log.info("auditionId: {}", auditionDTO.getId()); // auditionDTO의 ID를 로그로 출력
+        log.info("받아온 Audition ID: {}", id);
 
-        // 신청 데이터 생성
-        auditionApplicationDTO.setAuditionId(id); // auditionDTO에서 ID 가져오기
+        // 신청 데이터 설정
+        auditionApplicationDTO.setAuditionId(id);
         auditionApplicationDTO.setMemberProfileId(memberProfile.getId());
 
-        log.info("모집ID:{}", auditionApplicationDTO.getAuditionId());
+        log.info("모집 ID: {}", auditionApplicationDTO.getAuditionId());
 
         // 신청 데이터 저장
         auditionApplicationService.write(auditionApplicationDTO);
 
-        return "redirect:/audition/video/list/"; // 신청 성공 후 상세 페이지로 이동
+        return "redirect:/audition/video/detail/{id}"; // 신청 성공 후 리스트 페이지로 이동
     }
+
 
 
 
