@@ -1511,7 +1511,7 @@ h1.common-header-description {
 /* 세번째 열 */
 #payment-section .apply-header-cell:nth-child(4),
 #payment-section .apply-table-cell:nth-child(4) {
-    width: 6%;
+    width: 12%;
 }
 
 /* 네번째 열 */
@@ -1765,3 +1765,9 @@ h1.common-header-description {
     color: red;
 }
 
+.div-funding-product{
+    display: none;
+}
+#funding-product-search{
+    display: none;
+}

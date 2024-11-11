@@ -2624,7 +2624,7 @@
                     </section>
 
 
-                    <!-- section8: 결제 관리 -->
+                    <!-- section8: 결제 조희 -->
                     <section id="payment-section" class="common-section">
                         <!-- body_header -->
                         <div class="common-header-container">
@@ -2647,19 +2647,30 @@
                             <div>
                                 <!-- body_layout -->
                                 <div class="common-layout-container">
-                                    <div class="filter-wrap">
+                                    <div class="filter-wrap" id="work-product">
                                         <div class="sort-filter-options">
                                                     <span
-                                                            class="sort-filter-option selected"
-                                                    >최신순</span
+                                                            class="sort-filter-option selected work-product"
+                                                    >작품</span
                                                     >
+                                            <span
+                                                    class="sort-filter-option funding-product"
+                                            >펀딩</span
+                                            >
                                         </div>
                                         <!-- Action Buttons -->
                                         <div class="action-buttons">
                                             <input
                                                     type="text"
                                                     class="filter-search-input"
+                                                    id="work-product-search"
                                                     placeholder="통합검색"
+                                            />
+                                            <input
+                                                    type="text"
+                                                    class="filter-search-input"
+                                                    placeholder="통합검색"
+                                                    id="funding-product-search"
                                             />
                                             <button class="selected-btn" style="display: none">
                                                 환불 요청
@@ -2669,13 +2680,15 @@
                                             </button>
                                         </div>
                                     </div>
-                                    <!-- 회원 정보 테이블 -->
+                                    <!-- 작품 정보 테이블 -->
+                                    <div class="div-work-product">
                                     <div class="apply-table-container">
                                         <div
                                                 class="apply-table-row apply-table-header"
                                         >
                                             <div
                                                     class="apply-table-cell apply-header-cell select-all-cell"
+                                                    id="work-product-selectAll"
                                             >
                                                 <input
                                                         type="checkbox"
@@ -2700,6 +2713,11 @@
                                             <div
                                                     class="apply-table-cell apply-header-cell"
                                             >
+                                                상품 가격
+                                            </div>
+                                            <div
+                                                    class="apply-table-cell apply-header-cell"
+                                            >
                                                 구매자
                                             </div>
                                             <div
@@ -2710,66 +2728,75 @@
                                         </div>
 
                                         <!-- Example row (Initial data) -->
-                                        <div class="apply-table-row">
-                                            <div class="apply-table-cell">
-                                                <input
-                                                        type="checkbox"
-                                                        class="apply-checkbox"
-                                                />
-                                            </div>
-                                            <div class="apply-table-cell">1</div>
-                                            <div class="apply-table-cell">
-                                                작품
-                                            </div>
-                                            <div class="apply-table-cell">
-                                                독립영화 액션 시나리오
-                                            </div>
-                                            <div class="apply-table-cell">
-                                                홍길동
-                                            </div>
-                                            <div class="apply-table-cell"> 2024-01-01</div>
+                                        <div id="work-product-list">
+                                            <!-- js로 삽입-->
                                         </div>
                                     </div>
+                                        <nav class="pagination">
+                                            <ul class="pagination-list" id="pagination-work-list">
+                                                <!--  js로 삽입-->
+                                            </ul>
+                                        </nav>
+                                    </div>
                                 </div>
-                                <nav class="pagination">
-                                    <ul class="pagination-list">
-                                        <!-- 이전 페이지로 이동하는 버튼 -->
-                                        <li class="pagination-prev">
-                                            <a
-                                                    href="#"
-                                                    class="pagination-prev-link"
-                                                    rel="prev nofollow"
-                                            >
-                                                        <span
-                                                                class="pagination-prev-icon"
-                                                                aria-hidden="true"
-                                                        >‹</span
-                                                        >
-                                            </a>
-                                        </li>
-                                        <!-- 페이지 번호 버튼 -->
-                                        <li class="pagination-page active">
-                                            <a href="#" class="pagination-page-link"
-                                            >1</a
-                                            >
-                                        </li>
+                                <!--펀딩 구매상품-->
+                                <div class="div-funding-product">
+                                <div class="apply-table-container">
+                                    <div
+                                            class="apply-table-row apply-table-header"
+                                    >
+                                        <div
+                                                class="apply-table-cell apply-header-cell select-all-cell"
+                                                id="funding-product-selectAll"
+                                        >
+                                            <input
+                                                    type="checkbox"
+                                                    class="select-all"
+                                            />
+                                        </div>
+                                        <div
+                                                class="apply-table-cell apply-header-cell"
+                                        >
+                                            번호
+                                        </div>
+                                        <div
+                                                class="apply-table-cell apply-header-cell"
+                                        >
+                                            구분
+                                        </div>
+                                        <div
+                                                class="apply-table-cell apply-header-cell"
+                                        >
+                                            구매 상품
+                                        </div>
+                                        <div
+                                                class="apply-table-cell apply-header-cell"
+                                        >
+                                            상품 가격
+                                        </div>
+                                        <div
+                                                class="apply-table-cell apply-header-cell"
+                                        >
+                                            구매자
+                                        </div>
+                                        <div
+                                                class="apply-table-cell apply-header-cell"
+                                        >
+                                            결제일
+                                        </div>
+                                    </div>
 
-                                        <!-- 다음 페이지로 이동하는 버튼 -->
-                                        <li class="pagination-next">
-                                            <a
-                                                    href="#"
-                                                    class="pagination-next-link"
-                                                    rel="next nofollow"
-                                            >
-                                                        <span
-                                                                class="pagination-next-icon"
-                                                                aria-hidden="true"
-                                                        >›</span
-                                                        >
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </nav>
+                                    <!-- Example row (Initial data) -->
+                                    <div id="funding-product-list">
+                                        <!-- js로 삽입-->
+                                    </div>
+                                </div>
+                                    <nav class="pagination">
+                                        <ul class="pagination-list" id="pagination-funding-list">
+                                            <!--  js로 삽입-->
+                                        </ul>
+                                    </nav>
+                                </div>
                             </div>
                             <!-- 활불 상태 모달창 -->
                             <div class="refund-status-modal">
