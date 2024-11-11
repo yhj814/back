@@ -20,7 +20,6 @@
                         <div th:if="${funding != null}">
                             <input type="hidden" name="id" th:value="${funding.id}" />
                         </div>
-
                         <div class="write-add-view">
                             <div class="subtitle-1 write-add-title">
                                 펀딩글 수정하기
@@ -280,7 +279,7 @@
                                                         <input
                                                                 id="file-upload"
                                                                 type="file"
-                                                                name="fileNames"
+                                                                name="newFiles"
                                                                 accept="image/*,video/*"
                                                                 style="display: none;"
                                                         />
@@ -298,7 +297,7 @@
                                 <!-- 상품 추가 및 수정 -->
                                 <div class="product-container">
                                     <div class="product-title-content">
-                                        <img src="/static/images/video/money-icon.png" class="product-img" />
+                                        <img src="/images/video/money-icon.png" class="product-img" />
                                         <span class="title-text">가격별 상품을 수정해보세요.</span>
                                     </div>
 
@@ -343,7 +342,7 @@
                                                         required
                                                 />
                                                 <div class="product-cancel">
-                                                    <img src="/static/images/video/cancel.png" alt="취소 아이콘" />
+                                                    <img src="/images/video/cancel.png" alt="취소 아이콘" />
                                                     <button class="delete-existing-product-btn" type="button" data-product-id="${product.id}">
                                                         삭제
                                                     </button>
@@ -386,7 +385,7 @@
                                                     required
                                             />
                                             <div class="product-cancel">
-                                                <img src="/static/images/video/cancel.png" alt="취소 아이콘" />
+                                                <img src="/images/video/cancel.png" alt="취소 아이콘" />
                                                 <button class="product-cancel-btn" type="button">취소</button>
                                             </div>
                                         </div>
@@ -416,12 +415,12 @@
                                                     accept="image/*"
                                                     name="newThumbnailFile"
                                                     style="display: none"
+                                                    onchange="previewImage(event)"
                                             />
                                             <button
                                                     class="btn work-thumbnail-add-btn"
                                                     style="width: 100%"
                                                     type="button"
-                                                    onclick="document.getElementById('thumbnail-upload').click()"
                                             >
                                                 펀딩 표지 수정
                                             </button>

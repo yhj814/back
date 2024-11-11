@@ -190,24 +190,26 @@ public class TextFundingController {
         }
     }
 
-    // 작품 수정 폼으로 이동
     @GetMapping("modify/{id}")
     public String updateForm(@PathVariable("id") Long id, Model model) {
         FundingDTO funding = fundingService.findFundingId(id);  // funding 객체 조회
         List<PostFileDTO> existingFiles = postFileService.findFilesByPostId(id); // 기존 파일 조회
-        log.info("Fetched funding: {}", funding);  // funding 객체를 로그로 출력해 확인
 
         if (funding != null) {  // funding이 null이 아닌지 확인
+            // 펀딩 상품 정보 조회
+            List<FundingProductVO> fundingProducts = fundingService.findFundingProductsByFundingId(id);
+            funding.setFundingProducts(fundingProducts); // 상품 목록을 FundingDTO에 설정
+            log.info("펀딩 정보: {}", funding);
+            log.info("펀딩 상품 목록: {}", fundingProducts);
             model.addAttribute("funding", funding);
             model.addAttribute("existingFiles", existingFiles);
             return "text/funding/funding-modify";
         } else {
             // funding가 null인 경우 처리 (예: 에러 페이지로 이동)
-            model.addAttribute("error", "작품을 찾을 수 없습니다.");
+            model.addAttribute("error", "펀딩을 찾을 수 없습니다.");
             return "text/funding/error";
         }
     }
-
     // 펀딩 수정 요청 처리
     @PostMapping("modify")
     public String updateFunding(
