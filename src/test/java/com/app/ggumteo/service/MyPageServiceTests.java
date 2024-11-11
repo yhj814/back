@@ -150,22 +150,25 @@ public class MyPageServiceTests {
     @Test
     public void testGetMemberProfile() {
         MemberDTO memberDTO = new MemberDTO();
-        memberDTO.setId(2L);
 
         Optional<MemberProfileVO> foundMemberProfileInfo =
                 myPageService.getMemberProfile(memberDTO.getId());
         foundMemberProfileInfo.map(MemberProfileVO::toString).ifPresent(log::info);
     }
 
-//    @Test
-//    public void testUpdateMemberProfile() {
-//        MemberProfileDTO memberProfileDTO = new MemberProfileDTO();
-//        memberProfileDTO.setId(2L);
-//        memberProfileDTO.set
-//
-//        Optional<MemberProfileVO> foundMemberProfileInfo =
-//                myPageService.getMemberProfile(memberDTO.getId());
-//        foundMemberProfileInfo.map(MemberProfileVO::toString).ifPresent(log::info);
-//    }
+    @Test
+    public void testUpdateMemberProfile() {
+        MemberProfileDTO memberProfileDTO = new MemberProfileDTO();
+        memberProfileDTO.setId(1L);
+        memberProfileDTO.setProfileEmail("modify@gmail.com");
+        memberProfileDTO.setProfileNickName("너구리");
+        memberProfileDTO.setProfileAge(21);
+        memberProfileDTO.setProfileGender("남성");
+        memberProfileDTO.setProfilePhone("01033339999");
+        memberProfileDTO.setProfileEtc("dsfsdfsd");
+
+        myPageService.updateMemberProfile(memberProfileDTO.toVO());
+        log.info("updateMemberProfile-test={}", memberProfileDTO.toString());
+    }
 
 }
