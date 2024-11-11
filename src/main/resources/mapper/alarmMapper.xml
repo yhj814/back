@@ -10,4 +10,4 @@
                  JOIN tbl_post p ON a.id = p.id
         WHERE aa.id = #{auditionApplicationId}
     </insert>
-
+</mapper>

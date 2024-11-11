@@ -48,6 +48,6 @@ public interface AuditionMapper {
     );
 
     // 상세페이지에서 다중 파일 조회
-    List<PostFileDTO> selectFilesByPostId(Long postId);
+    List<PostFileDTO> selectFilesByPostId(@Param("postId")  Long postId);
 
 }
