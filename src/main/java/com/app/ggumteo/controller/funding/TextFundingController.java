@@ -127,8 +127,8 @@ public class TextFundingController {
         Pagination pagination = new Pagination();
         pagination.setPage(page);
 
-        int totalWorks = fundingService.findTotalWithSearchAndType(search);
-        pagination.setTotal(totalWorks);
+        int totalFundings = fundingService.findTotalWithSearchAndType(search);
+        pagination.setTotal(totalFundings);
         pagination.progress2();
 
         log.info("Pagination - Page: {}", pagination.getPage());
@@ -137,7 +137,7 @@ public class TextFundingController {
         log.info("Pagination - Row Count: {}", pagination.getRowCount());
 
         List<FundingDTO> fundings = fundingService.findFundingList(search, pagination);
-        log.info("Retrieved works list: {}", fundings);
+        log.info("Retrieved funding list: {}", fundings);
 
         model.addAttribute("fundings", fundings);
         model.addAttribute("pagination", pagination);
@@ -189,6 +189,27 @@ public class TextFundingController {
             return "redirect:/text/funding/funding-list";
         }
     }
+
+    // 작품 수정 폼으로 이동
+    @GetMapping("modify/{id}")
+    public String updateForm(@PathVariable("id") Long id, Model model) {
+        FundingDTO funding = fundingService.findFundingId(id);  // funding 객체 조회
+        List<PostFileDTO> existingFiles = postFileService.findFilesByPostId(id); // 기존 파일 조회
+        log.info("Fetched funding: {}", funding);  // funding 객체를 로그로 출력해 확인
+
+        if (funding != null) {  // funding이 null이 아닌지 확인
+            model.addAttribute("funding", funding);
+            model.addAttribute("existingFiles", existingFiles);
+            return "text/funding/funding-modify";
+        } else {
+            // funding가 null인 경우 처리 (예: 에러 페이지로 이동)
+            model.addAttribute("error", "작품을 찾을 수 없습니다.");
+            return "text/funding/error";
+        }
+    }
+
+
+
 
     @PostMapping("order")
     public ResponseEntity<?> completeOrder(@RequestBody Map<String, Object> orderData) {

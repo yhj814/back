@@ -152,10 +152,7 @@ public class VideoWorkController {
             @ModelAttribute WorkDTO workDTO,
             @RequestParam(value = "fileNames", required = false) List<String> fileNames,
             @RequestParam(value = "deletedFileIds", required = false) List<Long> deletedFileIds,
-            @RequestParam(value = "thumbnailFileName", required = false) String thumbnailFileName,
-            @ModelAttribute Search search,  // 검색 조건 추가
-            @RequestParam(value = "page", defaultValue = "1") int page,  // 페이지 파라미터 추가
-            Model model) {
+            @RequestParam(value = "thumbnailFileName", required = false) String thumbnailFileName) {
         try {
             log.info("수정 요청 - 작품 정보: {}", workDTO);
 
@@ -177,32 +174,13 @@ public class VideoWorkController {
 
             // 서비스에서 작품 업데이트 로직 실행
             workService.updateWork(workDTO, deletedFileIds);
-
-            // 수정 후 리스트 페이지로 이동하기 위해 필요한 데이터 모델에 추가
-            search.setPostType(PostType.WORKVIDEO.name());  // 필요한 경우 게시글 타입 설정
-            log.info("Received Search Parameters: {}", search);
-            log.info("Received page: {}", page);
-
-            Pagination pagination = new Pagination();
-            pagination.setPage(page);
-
-            int totalWorks = workService.findTotalWithSearchAndType(search);
-            pagination.setTotal(totalWorks);
-            pagination.progress2();  // 페이지네이션 계산
-
-            List<WorkDTO> works = workService.findAllWithThumbnailAndSearchAndType(search, pagination);
-
-            model.addAttribute("works", works);
-            model.addAttribute("pagination", pagination);
-            model.addAttribute("search", search);
-
-            return "text/list";
+            return "redirect:/video/list";
         } catch (Exception e) {
             log.error("Error updating work: ", e);
-            model.addAttribute("error", "업데이트 중 오류가 발생했습니다: " + e.getMessage());
-            return "text/list";
+            return "redirect:/video/modify/" + workDTO.getId();
         }
     }
+
 
 
 
