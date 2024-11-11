@@ -214,11 +214,11 @@
                                             <div class="img-content-box">
                                                 <!-- 비디오 파일일 경우 -->
                                                 <div th:if="${file.fileName.endsWith('.mp4') or file.fileName.endsWith('.avi') or file.fileName.endsWith('.mkv')}">
-                                                    <video th:src="@{'/video/display?fileName=' + ${file.fileName}}" controls class="thumbnail" alt="Uploaded Video" style="width: 600px" ></video>
+                                                    <video th:src="@{'/video/display?fileName=/' + ${file.filePath} + '/' + ${file.fileName}}" controls class="thumbnail" alt="Uploaded Video" style="width: 600px" ></video>
                                                 </div>
                                                 <!-- 이미지 파일일 경우 -->
                                                 <div th:if="${!file.fileName.endsWith('.mp4') and !file.fileName.endsWith('.avi') and !file.fileName.endsWith('.mkv')}">
-                                                    <img th:src="@{'/video/display?fileName=' + ${file.fileName}}" alt="Uploaded Image" class="thumbnail" />
+                                                    <img th:src="@{'/video/display?fileName=/' + ${file.filePath} + '/' + ${file.fileName}}" alt="Uploaded Image" class="thumbnail" />
                                                 </div>
                                             </div>
                                         </div>
@@ -392,7 +392,7 @@
                                                     >
                                                         <img style="height: 240px"
 
-                                                             th:src="@{/video/display?fileName={thumbnailFileName}(thumbnailFileName=${work.thumbnailFileName})}" alt="Thumbnail Image" />
+                                                             th:src="@{'/video/display?fileName=/' + ${work.thumbnailFilePath} + '/' + ${work.thumbnailFileName}}" alt="Thumbnail Image" />
                                                     </div>
                                                     <div
                                                             class="preview"

@@ -14,7 +14,7 @@
                     <div class="background"></div>
                     <div class="container">
                         <div class="profile-box write">
-                            <form action="/text/modify" id="write-form" method="post" enctype="multipart/form-data">
+                            <form action="/text/modify" id="write-form" method="post">
                                 <input type="hidden" name="thumbnailFileId" th:value="${work.thumbnailFileId}" />
                                 <div th:if="${work != null}">
                                     <input type="hidden" name="id" th:value="${work.id}" />
@@ -212,7 +212,7 @@
                                                             </div>
                                                         </div>
                                                     <div class="img-content-box">
-                                                        <img th:src="@{'/text/display?fileName=' + ${file.fileName}}" alt="Uploaded Image" />
+                                                        <img th:src="@{'/text/display?fileName=/' + ${file.filePath} + '/' + ${file.fileName}}" alt="Uploaded Image" />
                                                     </div>
                                                 </div>
                                                 <div class="img-caption-box" style="display: block;">
@@ -385,7 +385,7 @@
                                                             >
                                                                 <img style="height: 240px"
 
-                                                                    th:src="@{/text/display?fileName={thumbnailFileName}(thumbnailFileName=${work.thumbnailFileName})}" alt="Thumbnail Image" />
+                                                                     th:src="@{'/text/display?fileName=/' + ${work.thumbnailFilePath} + '/' + ${work.thumbnailFileName}}" alt="Thumbnail Image" />
                                                             </div>
                                                             <div
                                                                 class="preview"
