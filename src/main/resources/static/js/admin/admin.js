@@ -628,3 +628,30 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 });
+
+// 결제관리 작품 ,펀딩 , 누를시 이벤트
+
+const workProductBtn=document.querySelector(".sort-filter-option.work-product");
+const workProductDiv=document.querySelector(".div-work-product");
+const workProductSearch=document.querySelector("#work-product-search");
+const fundingProductDiv=document.querySelector(".div-funding-product");
+const fundingProductBtn=document.querySelector(".sort-filter-option.funding-product");
+const fundingProductSearch=document.querySelector("#funding-product-search");
+
+fundingProductBtn.addEventListener('click',()=>{
+    fundingProductDiv.style.display="block";
+    workProductDiv.style.display="none";
+    fundingProductSearch.style.display="block";
+    workProductSearch.style.display="none";
+});
+
+
+
+workProductBtn.addEventListener('click',()=>{
+    fundingProductDiv.style.display="none";
+    workProductDiv.style.display="block";
+    workProductSearch.style.display="block";
+    fundingProductSearch.style.display="none";
+});
+
+

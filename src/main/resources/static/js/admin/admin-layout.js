@@ -1348,3 +1348,206 @@ function renderTextFundingReportPagination(pagination) {
     });
     paginationContainer.appendChild(nextButton);
 }
+
+
+//----------------------------------------------------------------------------------------------------------
+
+// 작품구매목록조회
+
+function renderWorkList(pays) {
+    const container = document.getElementById("work-product-list");
+    container.innerHTML = '';
+
+    if (!pays || pays.length === 0) {
+        container.innerHTML = '<p>조회할 데이터가 없습니다.</p>';
+        return;
+    }
+
+    pays.forEach((pay) => {
+        const row = document.createElement("div");
+        row.className = "apply-table-row";
+
+
+        // 타입 화면 업로드
+        let workFieldText = '';
+        switch (pay.postType) {
+            case "WORKTEXT":
+                workFieldText = '글';
+                break;
+            case "WORKVIDEO":
+                workFieldText = '영상';
+                break;
+            default:
+                workFieldText = '';
+        }
+
+        row.innerHTML = `
+            <div class="apply-table-cell">
+                <input type="checkbox" class="apply-checkbox" data-id="${pay.id}"/>
+            </div>
+            <div class="apply-table-cell">${pay.id}</div>
+            <div class="apply-table-cell">${workFieldText}</div>
+            <div class="apply-table-cell post-title">
+                 <a href="#">
+                    ${pay.postTitle && pay.postTitle.length > 7
+            ? pay.postTitle.substring(0, 7) + '...'
+            : pay.postTitle || ''}
+                </a>
+            </div>
+            <div class="apply-table-cell">${pay.workPrice || ''}</div>
+            <div class="apply-table-cell">${pay.profileName || ''}</div>
+            <div class="apply-table-cell">${pay.createdDate || ''}</div>
+        `;
+
+        container.appendChild(row);
+    });
+
+    workCheckboxEvents();
+}
+
+// 페이지네이션 HTML을 생성
+function renderWorkPagination(pagination) {
+    const paginationContainer = document.getElementById("pagination-work-list");
+    paginationContainer.innerHTML = '';
+
+    if (!pagination) return;
+
+    // 이전 버튼
+    const prevButton = document.createElement("li");
+    prevButton.className = `pagination-prev ${pagination.page > 1 ? '' : 'disabled'}`;
+    prevButton.innerHTML = `
+        <a href="#" class="pagination-prev-link" rel="prev nofollow">
+            <span class="pagination-prev-icon" aria-hidden="true">‹</span>
+        </a>`;
+    prevButton.addEventListener("click", (e) => {
+        e.preventDefault();
+        if (pagination.page > 1) changeWorkPage(pagination.page - 1);
+    });
+    paginationContainer.appendChild(prevButton);
+
+    // 페이지 번호 버튼
+    for (let i = pagination.startPage; i <= Math.min(pagination.endPage, pagination.realEnd); i++) {
+        const pageButton = document.createElement("li");
+        pageButton.className = `pagination-page ${i === pagination.page ? 'active' : ''}`;
+        pageButton.innerHTML = `<a href="#" class="pagination-page-link">${i}</a>`;
+        pageButton.addEventListener("click", (e) => {
+            e.preventDefault();
+            changeWorkPage(i);
+        });
+        paginationContainer.appendChild(pageButton);
+    }
+
+    // 다음 버튼
+    const nextButton = document.createElement("li");
+    nextButton.className = `pagination-next ${pagination.page < pagination.realEnd ? '' : 'disabled'}`;
+    nextButton.innerHTML = `
+        <a href="#" class="pagination-next-link" rel="next nofollow">
+            <span class="pagination-next-icon" aria-hidden="true">›</span>
+        </a>`;
+    nextButton.addEventListener("click", (e) => {
+        e.preventDefault();
+        if (pagination.page < pagination.realEnd) changeWorkPage(pagination.page + 1);
+    });
+    paginationContainer.appendChild(nextButton);
+}
+
+//----------------------------------------------------------------------------------------------------------
+
+// 펀딩상품 구매목록 조회
+
+function renderFundingList(pays) {
+    const container = document.getElementById("funding-product-list");
+    container.innerHTML = '';
+
+    if (!pays || pays.length === 0) {
+        container.innerHTML = '<p>조회할 데이터가 없습니다.</p>';
+        return;
+    }
+
+    pays.forEach((pay) => {
+        const row = document.createElement("div");
+        row.className = "apply-table-row";
+
+
+        // 타입 화면 업로드
+        let fundingFieldText = '';
+        switch (pay.postType) {
+            case "FUNDINGTEXT":
+                fundingFieldText = '글';
+                break;
+            case "FUNDINGVIDEO":
+                fundingFieldText = '영상';
+                break;
+            default:
+                fundingFieldText = '';
+        }
+
+        row.innerHTML = `
+            <div class="apply-table-cell">
+                <input type="checkbox" class="apply-checkbox" data-id="${pay.id}"/>
+            </div>
+            <div class="apply-table-cell">${pay.id}</div>
+            <div class="apply-table-cell">${fundingFieldText}</div>
+            <div class="apply-table-cell post-title">
+                 <a href="#">
+                    ${pay.productName && pay.productName.length > 7
+            ? pay.productName.substring(0, 7) + '...'
+            : pay.productName || ''}
+                </a>
+            </div>
+            <div class="apply-table-cell">${pay.productPrice || ''}</div>
+            <div class="apply-table-cell">${pay.profileName || ''}</div>
+            <div class="apply-table-cell">${pay.createdDate || ''}</div>
+        `;
+
+        container.appendChild(row);
+    });
+
+    fundingCheckboxEvents();
+}
+
+// 페이지네이션 HTML을 생성
+function renderFundingPagination(pagination) {
+    const paginationContainer = document.getElementById("pagination-funding-list");
+    paginationContainer.innerHTML = '';
+
+    if (!pagination) return;
+
+    // 이전 버튼
+    const prevButton = document.createElement("li");
+    prevButton.className = `pagination-prev ${pagination.page > 1 ? '' : 'disabled'}`;
+    prevButton.innerHTML = `
+        <a href="#" class="pagination-prev-link" rel="prev nofollow">
+            <span class="pagination-prev-icon" aria-hidden="true">‹</span>
+        </a>`;
+    prevButton.addEventListener("click", (e) => {
+        e.preventDefault();
+        if (pagination.page > 1) changeFundingPage(pagination.page - 1);
+    });
+    paginationContainer.appendChild(prevButton);
+
+    // 페이지 번호 버튼
+    for (let i = pagination.startPage; i <= Math.min(pagination.endPage, pagination.realEnd); i++) {
+        const pageButton = document.createElement("li");
+        pageButton.className = `pagination-page ${i === pagination.page ? 'active' : ''}`;
+        pageButton.innerHTML = `<a href="#" class="pagination-page-link">${i}</a>`;
+        pageButton.addEventListener("click", (e) => {
+            e.preventDefault();
+            changeFundingPage(i);
+        });
+        paginationContainer.appendChild(pageButton);
+    }
+
+    // 다음 버튼
+    const nextButton = document.createElement("li");
+    nextButton.className = `pagination-next ${pagination.page < pagination.realEnd ? '' : 'disabled'}`;
+    nextButton.innerHTML = `
+        <a href="#" class="pagination-next-link" rel="next nofollow">
+            <span class="pagination-next-icon" aria-hidden="true">›</span>
+        </a>`;
+    nextButton.addEventListener("click", (e) => {
+        e.preventDefault();
+        if (pagination.page < pagination.realEnd) changeFundingPage(pagination.page + 1);
+    });
+    paginationContainer.appendChild(nextButton);
+}
