@@ -92,8 +92,7 @@ const showMyWorkList = ({myWorkPosts, workAndFundingPagination}) => {
                         </div>
                         <div class="btn products-image">
                             <a 
-                                ><img 
-                                    src="/member/video/my/work/display?fileName=${myWorkPost.thumbnailFilePath}/t_${myWorkPost.thumbnailFileName}"
+                                ><img src="/text/display?fileName=${myWorkPost.thumbnailFilePath}/t_${myWorkPost.thumbnailFileName}"
                             </a>
                         </div>
                     </div>
@@ -351,7 +350,7 @@ const showMyBuyWorkList = ({myBuyWorkPosts, workAndFundingPagination}) => {
                             <div class="btn products-image">
                                 <a
                                     ><img
-                                        src="/images/member/thumnail.png"
+                                        src="/text/display?fileName=${myBuyWorkPost.thumbnailFilePath}/t_${myBuyWorkPost.thumbnailFileName}"
                                 /></a>
                             </div>
                         </div>
@@ -861,22 +860,25 @@ const showMyBuyFundingList = ({myBuyFundingPosts, workAndFundingPagination}) => 
 
     myBuyFundingListLayout.innerHTML = text;
 
-    if(workAndFundingPagination.prev){
+//     콘솔창에 오류가 남. 확인 필요
+// if(myBuyFundingPosts[0].id !== null)  {}
+
+    if (workAndFundingPagination.prev) {
         pagingText += `
             <li class="page-item">
                 <a href="${workAndFundingPagination.startPage - 1}" class="page-link back"></a>
             </li>
         `
     }
-    for(let i=workAndFundingPagination.startPage; i<=workAndFundingPagination.endPage; i++){
-        if(workAndFundingPagination.page === i){
+    for (let i = workAndFundingPagination.startPage; i <= workAndFundingPagination.endPage; i++) {
+        if (workAndFundingPagination.page === i) {
             pagingText += `<li class="page-item"><div class="page-link active">${i}</div></li>`
-        }else{
+        } else {
             pagingText += `<li class="page-item"><a href="${i}" class="page-link">${i}</a></li>`
         }
     }
 
-    if(workAndFundingPagination.next) {
+    if (workAndFundingPagination.next) {
         pagingText += `
             <li class="page-item">
                 <a href="${workAndFundingPagination.endPage + 1}" class="page-link next"></a>
@@ -1075,4 +1077,167 @@ const showAdminAnswer = (adminAnswer) => {
     return text;
 }
 
+// 내 정보
+const myProfileLayout = document.getElementById("my-profile");
+
+console.log("myProfileLayout", myProfileLayout)
+
+const showMyProfile = (memberProfile) => {
+    let text = ``;
+
+    console.log("memberProfile : ", memberProfile)
+
+    text = `<form class="form-horizontal has-validation-callback" id="base-edit-form">
+                <div class="form-group">
+                    <label class="control-label required" id="full_name_label"><span></span> 이름</label>
+                    <div class="control-wrapper">
+                        <input class="form-control" id="full_name" placeholder="이름을 입력해 주세요." name="profileName" type="text" value="">
+                        <div class="error-message">
+                            <i class="fa fa-exclamation-circle"></i>
+                            이 항목을 채워주십시오.
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label required" id="full_nickname_label"><span></span> 닉네임</label>
+                    <div class="control-wrapper">
+                        <input class="form-control" id="full_nickname" placeholder="사용할 닉네임을 입력해주세요." name="profileNickName" type="text" value="">
+                        <div class="error-message">
+                            <i class="fa fa-exclamation-circle"></i>
+                            이 항목을 채워주십시오.
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group" style="margin-top: -5px">
+                    <label class="control-label" for="gender">성별</label>
+                    <div class="control-wrapper">
+                        <div class="error-message">
+                            <i class="fa fa-exclamation-circle"></i>
+                            이 항목을 채워주십시오.
+                        </div>
+                    </div>
+                    <div class="control-wrapper">
+                        <ul class="list-unstyled" style="margin-bottom: 0">
+                            <li>
+                                <label class="radio-inline" for="gender_1"><input data-exception="yes" id="gender_1" name="profileGender" type="radio" value="남성">남성</label>
+                            </li>
+                            <li>
+                                <label class="radio-inline" for="gender_2"><input data-exception="yes" id="gender_2" name="profileGender" type="radio" value="여성">여성</label>
+                            </li>
+                        </ul>
+                        <div class="error-message">
+                            <i class="fa fa-exclamation-circle"></i>
+                            이 항목을 채워주십시오.
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="date_of_birth" id="date_of_birth_label">나이</label>
+                    <div class="control-wrapper">
+                        <input class="form-control" id="member-age" name="profileAge}" placeholder="만 나이를 입력해주세요." type="text" value="">
+
+                        <div class="error-message">
+                            <i class="fa fa-exclamation-circle"></i>
+                            이 항목을 채워주십시오.
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">이메일</label>
+
+                    <div class="control-wrapper">
+                        <div class="input-gap loading-icon-wrap">
+                            <input class="form-control" data-exception="yes" placeholder="이메일을 입력하세요." name="profileEmail" type="text" value="">
+                            <button class="btn btn-certification-select" type="button" id="requestEmailCode">인증번호 요청</button>
+                            <img class="loading-icon" id="loadingGif" src="/images/main/loading.gif" alt="Loading...">
+                        </div>
+                        <div class="error-message">
+                            <i class="fa fa-exclamation-circle"></i>
+                            올바른 이메일 주소를
+                            입력해주세요.
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group certification-input-email">
+                    <label class="control-label required">이메일 인증</label>
+                    <div class="control-wrapper ">
+                        <div class="input-gap">
+                            <input class="form-control " id="emailVerificationCode" placeholder="인증번호를 입력하세요." type="text">
+                            <button class="btn btn-certification-select" type="button" id="verifyEmailCode">인증번호 확인</button>
+                        </div>
+                        <div class="error-message" id="emailVerificationError" style="display: none;"></div>
+                        <div class="email-timer-container" style="display: none;">
+                            <p>인증 유효 시간: <span id="emailTimerDisplay">3:00</span></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">연락처</label>
+                    <div class="control-wrapper">
+                        <div class="input-gap">
+                            <input class="form-control" data-exception="yes" placeholder="전화번호를 입력하세요." name="profilePhone" type="text" value="">
+                            <button class="btn btn-certification-select" type="button" id="requestVerificationCode">인증번호 요청</button>
+                        </div>
+                        <div class="error-message">
+                            <i class="fa fa-exclamation-circle"></i>
+                            올바른 전화번호를 입력해주세요.
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group certification-input-phone">
+                    <label class="control-label required">전화번호 인증</label>
+                    <div class="control-wrapper ">
+                        <div class="input-gap">
+                            <input class="form-control " id="verificationCode" placeholder="인증번호를 입력하세요." type="text">
+                            <button class="btn btn-certification-select" type="button" id="verifyCode">인증번호 확인</button>
+                        </div>
+                        <div class="error-message" id="verificationError">인증번호를 입력하세요.</div>
+                        <!-- 타이머 표시 영역 -->
+                        <div class="timer-container" style="display: none;">
+                            <p>인증번호 유효 시간: <span id="timerDisplay">3:00</span></p>
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="form-group">
+                    <label class="control-label">추가 작성사항</label>
+                    <div class="control-wrapper">
+                        <textarea class="form-control form-textarea" placeholder="간단한 자기소개를 입력해주세요." name="profileEtc" value="" style="height: 340px"></textarea>
+                        <div class="error-message">
+                            <i class="fa fa-exclamation-circle"></i>
+                            간단한 자기소개를 입력해주세요.
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group" style="margin-top: 360px">
+                    <label class="control-label" style="margin-top: 25px;">첨부파일</label>
+                    <div class="control-wrapper" style="margin-top: 25px;">
+                        <input accept=".pdf, .docx, .doc, .hwp" class="temp-upload-resume" name="profileFile" hidden="" type="file">
+
+                        <div class="selected-file-viewer">
+                            <input class="remove-request" hidden="" name="fileContent" type="checkbox">
+                            <p class="placeholder-attachment">
+                                이력서를 제출해주세요.
+                            </p>
+                            <div class="tooltip-group">
+                                <img class="viewer-file-icon" src="/images/audition/attachment_file_icon@2x.png" style="width: 15px"><a download="" id="resume_download"><p class="file-name-viewer text300 body-2-medium" id="selected_file_name_viewer"></p></a><img class="btn-delete-resume" id="btn_delete_resume" src="/images/audition/chip_btn_delete_normal@2x.png" style="width: 15px">
+                            </div>
+                        </div>
+                        <button class="btn btn-file-select" id="file_select_btn" type="button">
+                            <img src="/images/audition/btn_icon_add@2x.png" style="width: 15px">이력서 선택
+                        </button>
+                        <div class="error-message">
+                            <i class="fa fa-exclamation-circle"></i>
+                            첨부파일을 선택해주세요.
+                        </div>
+                    </div>
+                </div>
+            </form>`;
+
+    myProfileLayout.innerHTML = text;
+
+    console.log("myProfileLayout.innerHTML : ", myProfileLayout.innerHTML)
+
+}
 

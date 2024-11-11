@@ -1,10 +1,10 @@
 package com.app.ggumteo.controller.member;
 
-import com.app.ggumteo.aspect.annotation.MyWorkBuyerListLogStatus;
 import com.app.ggumteo.domain.admin.AdminAnswerDTO;
 import com.app.ggumteo.domain.buy.*;
 import com.app.ggumteo.domain.funding.MyFundingListDTO;
 import com.app.ggumteo.domain.inquiry.MyInquiryHistoryListDTO;
+import com.app.ggumteo.domain.member.MemberProfileDTO;
 import com.app.ggumteo.domain.member.MemberProfileVO;
 import com.app.ggumteo.domain.member.MemberVO;
 import com.app.ggumteo.domain.work.MyWorkListDTO;
@@ -154,19 +154,16 @@ public class MemberRestController {
     // SELECT
     @ResponseBody
     @GetMapping("/members/{memberId}/profile")
-    public void getMemberProfile(@PathVariable("memberId") Long memberId) {
-        myPageService.getMemberProfile(memberId);
+    public Optional<MemberProfileVO> getMemberProfile(@PathVariable("memberId") Long memberId) {
+        return myPageService.getMemberProfile(memberId);
     }
 
-//@Override
-//public Optional<MemberProfileVO> getMemberProfile(Long memberId) {
-//    return memberProfileDAO.findByMemberId(memberId);
-//}
-//
-//    //    마이페이지 - 내 정보 수정
-//    @Override
-//    public void updateMemberProfile(MemberProfileVO memberProfileVO) {
-//        memberProfileDAO.setMemberProfile(memberProfileVO);
+//    // 내 정보 수정
+//    // UPDATE
+//    @ResponseBody
+//    @GetMapping("/members/profile/update")
+//    public void updateMemberProfile(@RequestBody MemberProfileDTO memberProfileDTO) {
+//        myPageService.updateMemberProfile(memberProfileDTO.toVO());
 //    }
 
 //************************************************************************************************

@@ -208,3 +208,7 @@ myInquiryHistoryListLayout.addEventListener('click', async (e) => {
         }
     }
 });
+
+myPageService.getMemberProfile(memberId, showMyProfile);
+
+console.log("myPageService.getMemberProfile(memberId, showMyProfile) : ", myPageService.getMemberProfile(memberId, showMyProfile))

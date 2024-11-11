@@ -107,6 +107,27 @@ const myPageService = (() => {
         }
     }
 
+    const getMemberProfile = async (memberId, callback) => {
+        const response = await fetch(`/members/${memberId}/profile`);
+        const memberProfile = await response.json();
+
+        console.log(memberProfile);
+
+        if (callback) {
+            callback(memberProfile);
+        }
+    }
+
+    // const updateMemberProfile = async (memberProfile) => {
+    //     await fetch(`/members/profile/update`, {
+    //         method: "put",
+    //         body: JSON.stringify(memberProfile),
+    //         headers: {
+    //             "Content-Type": "application/json; charset=utf-8"
+    //         }
+    //     });
+    // }
+
     return {
         getMyVideoWorkList: getMyVideoWorkList,
         getMyVideoWorkBuyerList: getMyVideoWorkBuyerList,
@@ -118,6 +139,7 @@ const myPageService = (() => {
         updateFundingSendStatus: updateFundingSendStatus,
         getMyBuyFundingList: getMyBuyFundingList,
         getMyInquiryHistoryList: getMyInquiryHistoryList,
-        getAdminAnswerByInquiryId: getAdminAnswerByInquiryId
+        getAdminAnswerByInquiryId: getAdminAnswerByInquiryId,
+        getMemberProfile: getMemberProfile
     }
 })()

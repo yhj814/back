@@ -207,10 +207,9 @@
                  join tbl_post p on w.id = p.id and p.post_type = #{postType}
                  join tbl_member_profile mp on p.member_profile_id = mp.id
                  join tbl_member m on mp.member_id = m.id and m.id = #{memberId}
-                 join tbl_post_file pfl on p.id = pfl.post_id
-                 join tbl_file fl on pfl.id = fl.id and w.thumbnail_file_id = fl.id
+                 join tbl_file fl on w.thumbnail_file_id = fl.id
         order by w.id desc
-        limit #{workAndFundingPagination.startRow}, #{workAndFundingPagination.rowCount};
+        limit #{workAndFundingPagination.startRow}, #{workAndFundingPagination.rowCount}
     </select>
 
     <!-- 내 작품 게시글 전체 갯수  -->
@@ -218,7 +217,7 @@
         select count(*) from tbl_work w
         join tbl_post p on w.id = p.id and p.post_type = #{postType}
         join tbl_member_profile mp on p.member_profile_id = mp.id
-        join tbl_member m on mp.member_id = m.id and m.id = #{memberId};
+        join tbl_member m on mp.member_id = m.id and m.id = #{memberId}
     </select>
 
     <!--  내 작품 정보 조회  -->

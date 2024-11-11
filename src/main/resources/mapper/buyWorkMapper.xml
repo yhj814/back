@@ -39,7 +39,8 @@
 
     <select id="selectBuyWorkListByMember">
         select bw_mp.member_id, bw.id, bw.work_id, p.post_title, w.genre_type, p.created_date, p.post_content,
-               m.profile_img_url, mp.profile_nickname, w.work_price
+               m.profile_img_url, mp.profile_nickname, w.work_price,
+              fl.file_name as thumbnailFileName ,fl.file_path as thumbnailFilePath
         from tbl_buy_work bw
                  join tbl_work w on bw.work_id = w.id
                  join tbl_post p on w.id = p.id and p.post_type = #{postType}
@@ -47,6 +48,7 @@
                  join tbl_member m on mp.member_id = m.id
                  join tbl_member_profile bw_mp on bw.member_profile_id = bw_mp.id
                  join tbl_member bw_m on bw_mp.member_id = bw_m.id and bw_m.id = #{memberId}
+                 join tbl_file fl on w.thumbnail_file_id = fl.id
         order by w.id desc
             limit #{workAndFundingPagination.startRow}, #{workAndFundingPagination.rowCount};
     </select>
