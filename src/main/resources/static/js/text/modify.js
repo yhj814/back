@@ -3,6 +3,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const labelInputPartner = document.querySelector(".label-input-partner");
     const textareaElement = document.querySelector(".textarea__border textarea");
     const textareaBorder = document.querySelector(".textarea__border");
+    let uploadedFiles = []; // 업로드된 파일명을 저장하는 배열
+
 
     // 썸네일 관련 요소 설정
     const thumbnailUploadInput = document.getElementById("thumbnail-upload");
@@ -10,7 +12,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const thumbnailPreview = previewContainer.querySelector("img");
 
     let isThumbnailChanged = false; // 썸네일 변경 여부를 추적하는 변수
-
+    let uploadedThumbnailFileName = null;
     // 썸네일 변경 버튼 클릭 시 파일 선택창 열기
     document.querySelector(".work-thumbnail-add-btn").addEventListener("click", function () {
         if (thumbnailUploadInput) {
@@ -18,16 +20,60 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-    // 썸네일 파일 선택 시 미리보기 업데이트
+    // 썸네일 파일 선택 시 서버로 업로드 및 미리보기 업데이트
     thumbnailUploadInput.addEventListener("change", function () {
         const file = thumbnailUploadInput.files[0];
         if (file) {
-            isThumbnailChanged = true; // 썸네일 변경 여부 설정
             const reader = new FileReader();
             reader.onload = function (e) {
                 thumbnailPreview.src = e.target.result;
             };
             reader.readAsDataURL(file);
+
+            // 서버로 파일 업로드
+            const formData = new FormData();
+            formData.append('file', file);
+
+            fetch('/text/upload', {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => response.text())
+                .then(fileName => {
+                    if (fileName !== "error") {
+                        console.log('썸네일 파일이 성공적으로 업로드되었습니다:', fileName);
+                        uploadedThumbnailFileName = fileName; // 업로드된 파일명 저장
+
+                        // 숨겨진 입력 필드에 파일명 설정
+                        let hiddenInput = document.getElementById('thumbnailFileName');
+                        if (!hiddenInput) {
+                            hiddenInput = document.createElement('input');
+                            hiddenInput.type = 'hidden';
+                            hiddenInput.name = 'thumbnailFileName';
+                            hiddenInput.id = 'thumbnailFileName';
+                            writeForm.appendChild(hiddenInput);
+                        }
+                        hiddenInput.value = fileName;
+
+                        // 썸네일 변경 여부를 표시하는 숨겨진 입력 필드 설정
+                        let thumbnailChangedInput = document.getElementById('thumbnailChanged');
+                        if (!thumbnailChangedInput) {
+                            thumbnailChangedInput = document.createElement('input');
+                            thumbnailChangedInput.type = 'hidden';
+                            thumbnailChangedInput.name = 'thumbnailChanged';
+                            thumbnailChangedInput.id = 'thumbnailChanged';
+                            writeForm.appendChild(thumbnailChangedInput);
+                        }
+                        thumbnailChangedInput.value = 'true';
+
+                        isThumbnailChanged = true; // 썸네일 변경 여부 설정
+                    } else {
+                        console.error('썸네일 파일 업로드 실패.');
+                    }
+                })
+                .catch(error => {
+                    console.error('썸네일 업로드 중 에러 발생:', error);
+                });
         }
     });
 
@@ -51,6 +97,7 @@ document.addEventListener("DOMContentLoaded", function () {
             hiddenThumbnailInput.value = "true";
             writeForm.appendChild(hiddenThumbnailInput);
         }
+        console.log("폼 제출 시 업로드된 파일들:", uploadedFiles);
     });
 
     // 인풋 포커스 효과 설정
@@ -213,6 +260,19 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 imgBox.style.display = "none";
                 fileUpload.value = "";
+                const fileName = fileUpload.getAttribute('data-file-name');
+
+                // 업로드된 파일 배열에서 해당 파일명 제거
+                uploadedFiles = uploadedFiles.filter(name => name !== fileName);
+
+                // 숨겨진 입력 필드 제거
+                const hiddenInput = document.getElementById(`file-${fileName}`);
+                if (hiddenInput) {
+                    hiddenInput.remove();
+                }
+
+                // DOM에서 imgBox 제거
+                imgBox.remove();
             });
         }
     }
@@ -292,6 +352,38 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (file) {
             reader.readAsDataURL(file);
+
+            // 서버로 파일 업로드
+            const formData = new FormData();
+            formData.append('file', file);
+
+            fetch('/text/upload', {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => response.text())
+                .then(fileName => {
+                    if (fileName !== "error") {
+                        console.log('파일이 성공적으로 업로드되었습니다:', fileName);
+                        uploadedFiles.push(fileName); // 파일명 저장
+
+                        // 숨겨진 입력 필드 생성
+                        const hiddenInput = document.createElement('input');
+                        hiddenInput.type = 'hidden';
+                        hiddenInput.name = 'fileNames';
+                        hiddenInput.value = fileName;
+                        hiddenInput.id = `file-${fileName}`; // ID 설정
+                        fileInput.parentNode.appendChild(hiddenInput);
+
+                        // 파일명을 input 요소에 저장 (삭제 시 사용)
+                        fileInput.setAttribute('data-file-name', fileName);
+                    } else {
+                        console.error('파일 업로드 실패.');
+                    }
+                })
+                .catch(error => {
+                    console.error('에러 발생:', error);
+                });
         }
     }
 

@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>작품올리기</title>
-    <link rel="stylesheet" href="/css/video/write.css" />
+    <title>영상 작품올리기</title>
+    <link rel="stylesheet" href="/css/text/write.css" />
 </head>
 <body>
 <header></header>
@@ -15,7 +15,6 @@
             <div class="container">
                 <form id="writeForm" action="/video/write" method="post" enctype="multipart/form-data">
                     <div class="profile-box write">
-
                         <div class="write-add-view">
                             <div class="subtitle-1 write-add-title">
                                 내 작품올리기
@@ -302,7 +301,6 @@
                                                         <input
                                                                 id="file-upload"
                                                                 type="file"
-                                                                name="workFile"
                                                                 accept="image/*,video/*"
                                                                 style="
                                                                         display: none;
@@ -352,7 +350,6 @@
                                             <input
                                                     type="file"
                                                     id="thumbnail-upload"
-                                                    name="thumbnailFile"
                                                     accept="image/*"
                                                     style="display: none"
                                                     onchange="previewImage(event)"
