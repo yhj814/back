@@ -1,3 +1,10 @@
+// 로그아웃시 인증번호 페이지로 이동
+const logOutBtn=document.querySelector(".logout-btn");
+logOutBtn.addEventListener('click',()=>{
+    window.location.href="/admin/verify";111
+})
+
+
 // 페이지가 로드될 때 초기 데이터를 불러와서 표시
 document.addEventListener('DOMContentLoaded', function () {
     loadAnnouncements(1,'','createdDate'); // 첫 페이지를 로드하여 초기 화면 구성
@@ -2213,4 +2220,145 @@ function setupTextFundingReportDetailsModal() {
 document.addEventListener("DOMContentLoaded", () => {
     initTextFundingPage();
     setupTextFundingReportModal();
+});
+
+
+//----------------------------------------------------------------------------------------------------------
+// 작품 구매 조회
+
+// 선언
+let currentWorkSearch = '';
+
+
+// 페이지 변경
+async function changeWorkPage(page) {
+    const data = await fetchWorkProduct(page, currentWorkSearch);
+    renderWorkList(data.pays);
+    renderWorkPagination(data.pagination);
+}
+
+// 전체 선택 및 개별 체크박스 이벤트
+function workCheckboxEvents() {
+    const selectAllCheckbox = document.querySelector('#work-product-selectAll .select-all');
+    const workCheckboxes = document.querySelectorAll('.apply-table-row .apply-checkbox');
+
+    // 전체 체크박스
+    selectAllCheckbox.addEventListener('change', (event) => {
+        const isChecked = event.target.checked;
+        workCheckboxes.forEach(checkbox => {
+            checkbox.checked = isChecked;
+        });
+    });
+
+    // 개별 체크박스
+    workCheckboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', () => {
+            const allChecked = Array.from(workCheckboxes).every(cb => cb.checked);
+            selectAllCheckbox.checked = allChecked;
+        });
+    });
+}
+
+// 초기화 함수
+async function initWorkPage() {
+    const data = await fetchWorkProduct();
+    renderWorkList(data.pays);
+    renderWorkPagination(data.pagination);
+
+    const searchInput = document.getElementById("work-product-search");
+    searchInput.addEventListener("keypress", (e) => {
+        if (e.key === "Enter") {
+            let searchValue = e.target.value.trim();
+
+            // 검색어 변환
+            switch (searchValue) {
+                case "영상":
+                    currentWorkSearch = 'WORKVIDEO';
+                    break;
+                case "글":
+                    currentWorkSearch = 'WORKTEXT';
+                    break;
+                default:
+                    currentWorkSearch = searchValue;
+                    break;
+
+            }
+            // 검색어가 입력되면 첫 페이지로 이동
+            changeWorkPage(1);
+        }
+    });
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    initWorkPage();
+});
+
+//----------------------------------------------------------------------------------------------------------
+// 펀딩 상품 구매 조회
+
+// 선언
+let currentFundingSearch = '';
+
+
+// 페이지 변경
+async function changeFundingPage(page) {
+    const data = await fetchFundingProduct(page, currentFundingSearch);
+    renderFundingList(data.pays);
+    renderFundingPagination(data.pagination);
+}
+
+// 전체 선택 및 개별 체크박스 이벤트
+function fundingCheckboxEvents() {
+    const selectAllCheckbox = document.querySelector('#funding-product-selectAll .select-all');
+    const fundingCheckboxes = document.querySelectorAll('.apply-table-row .apply-checkbox');
+
+    // 전체 체크박스
+    selectAllCheckbox.addEventListener('change', (event) => {
+        const isChecked = event.target.checked;
+        fundingCheckboxes.forEach(checkbox => {
+            checkbox.checked = isChecked;
+        });
+    });
+
+    // 개별 체크박스
+    fundingCheckboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', () => {
+            const allChecked = Array.from(fundingCheckboxes).every(cb => cb.checked);
+            selectAllCheckbox.checked = allChecked;
+        });
+    });
+}
+
+// 초기화 함수
+async function initFundingPage() {
+    const data = await fetchFundingProduct();
+    renderFundingList(data.pays);
+    renderFundingPagination(data.pagination);
+
+    const searchInput = document.getElementById("funding-product-search");
+    searchInput.addEventListener("keypress", (e) => {
+        if (e.key === "Enter") {
+            let searchValue = e.target.value.trim();
+
+            // 검색어 변환
+            switch (searchValue) {
+                case "영상":
+                    currentFundingSearch = 'FUNDINGVIDEO';
+                    break;
+                case "글":
+                    currentFundingSearch = 'FUNDINGTEXT';
+                    break;
+                default:
+                    currentFundingSearch = searchValue;
+                    break;
+
+            }
+            // 검색어가 입력되면 첫 페이지로 이동
+            changeFundingPage(1);
+        }
+    });
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    initFundingPage();
 });
