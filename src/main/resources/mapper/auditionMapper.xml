@@ -130,7 +130,7 @@
             f.id as fileId, f.file_name, f.file_path, f.file_size, f.file_type
         from
             tbl_post_file pf
-                join tbl_file f on pf.id = f.id
+                join tbl_file f on pf.file_id = f.id
         where
             pf.post_id = #{postId}
         order by pf.id

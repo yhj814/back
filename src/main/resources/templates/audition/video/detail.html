@@ -303,14 +303,14 @@
                                         <div class="file-content" th:text="${audition.fileContent}"></div>
                                         <div class="upload-media" th:each="file : ${postFiles}">
                                             <!-- 이미지 파일일 경우 -->
-                                            <div class="media-wrapper" th:if="${#strings.endsWith(file.fileName, '.jpg') or #strings.endsWith(file.fileName, '.jpeg') or #strings.endsWith(file.fileName, '.png') or #strings.endsWith(file.fileName, '.gif')}">
-                                                <img th:src="@{'/audition/video/display?fileName=' + ${file.fileName}}" alt="첨부 이미지" class="center-media" />
+                                            <div class="media-wrapper" th:if="${file.fileName.endsWith('.jpg') or file.fileName.endsWith('.jpeg') or file.fileName.endsWith('.png') or file.fileName.endsWith('.gif')}">
+                                                <img th:src="@{'/audition/text/display?fileName=' + ${file.filePath} + '/' + ${file.fileName}}" alt="첨부 이미지" class="center-media" />
                                             </div>
 
                                             <!-- 동영상 파일일 경우 -->
-                                            <div class="media-wrapper" th:if="${#strings.endsWith(file.fileName, '.mp4') or #strings.endsWith(file.fileName, '.avi') or #strings.endsWith(file.fileName, '.mov') or #strings.endsWith(file.fileName, '.wmv')}">
+                                            <div class="media-wrapper" th:if="${file.fileName.endsWith('.mp4') or file.fileName.endsWith('.avi') or file.fileName.endsWith('.mkv')}">
                                                 <video controls class="center-media">
-                                                    <source th:src="@{'/audition/video/display?fileName=' + ${file.fileName}}" type="video/mp4">
+                                                    <source th:src="@{'/audition/text/display?fileName=' + ${file.filePath} + '/' + ${file.fileName}}" type="video/mp4">
                                                     동영상 형식을 지원하지 않는 브라우저입니다.
                                                 </video>
                                             </div>

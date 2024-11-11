@@ -28,4 +28,6 @@ public class FileDAO {
     public List<FileVO> findFileByPostId(Long postId) {
         return fileMapper.selectFileByPostId(postId);
     }
+
+    public List<FileVO> findFileByAuditionApplicationId(Long auditionApplicationId) {return fileMapper.selectFileByPostId(auditionApplicationId);}
 }

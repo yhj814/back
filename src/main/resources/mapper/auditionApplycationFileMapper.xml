@@ -3,8 +3,8 @@
 <mapper namespace="com.app.ggumteo.mapper.file.AuditionApplicationFileMapper">
 
     <insert id="insertAuditionApplicationFile" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
-        insert into tbl_audition_application_file(id, audition_application_id)
-        values(#{id}, #{auditionApplicationId})
+        insert into tbl_audition_application_file(file_id, audition_application_id)
+        values(#{fileId}, #{auditionApplicationId})
     </insert>
 
 

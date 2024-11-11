@@ -6,6 +6,7 @@ import com.app.ggumteo.domain.audition.AuditionApplicationVO;
 import com.app.ggumteo.domain.audition.AuditionDTO;
 import com.app.ggumteo.domain.file.AuditionApplicationFileDTO;
 import com.app.ggumteo.domain.file.AuditionApplicationFileVO;
+import com.app.ggumteo.domain.file.FileVO;
 import com.app.ggumteo.domain.file.PostFileDTO;
 import com.app.ggumteo.domain.member.MemberProfileDTO;
 import com.app.ggumteo.domain.member.MemberVO;
@@ -66,23 +67,27 @@ public class VideoAuditionController {
 
     @PostMapping("upload")
     @ResponseBody
-    public List<PostFileDTO> upload(@RequestParam("file") List<MultipartFile> files) {
+    public String upload(@RequestParam("file") MultipartFile file) {
         try {
-            return postFileService.uploadFile(files);
-        } catch (IOException e) {
+            FileVO savedFile = postFileService.saveFile(file);
+            String savedFileName = savedFile.getFileName();
+            return savedFileName;
+        } catch (Exception e) {
             log.error("파일 업로드 중 오류 발생: ", e);
-            return Collections.emptyList();
+            return "error";
         }
     }
 
     @PostMapping("upload-apply")
     @ResponseBody
-    public List<AuditionApplicationFileDTO> uploadApply(@RequestParam("file") List<MultipartFile> files) {
+    public String uploadApply(@RequestParam("file") MultipartFile file) {
         try {
-            return auditionApplicationFileService.uploadFile(files);
-        } catch (IOException e) {
+            FileVO savedFile = auditionApplicationFileService.saveFile(file);
+            String savedFileName = savedFile.getFileName();
+            return savedFileName;
+        } catch (Exception e) {
             log.error("파일 업로드 중 오류 발생: ", e);
-            return Collections.emptyList();
+            return "error";
         }
     }
 
@@ -93,7 +98,9 @@ public class VideoAuditionController {
     }
 
     @PostMapping("write")
-    public String write(AuditionDTO auditionDTO, @RequestParam("auditionFile") MultipartFile[] auditionFiles, Model model) {
+    public String write(AuditionDTO auditionDTO,
+                        @RequestParam(value = "fileNames", required = false) List<String> fileNames,
+                        Model model) {
         try {
             MemberVO member = (MemberVO) session.getAttribute("member");
             MemberProfileDTO memberProfile = (MemberProfileDTO) session.getAttribute("memberProfile");
@@ -111,7 +118,9 @@ public class VideoAuditionController {
 
             log.info("write 메서드 - 사용자 ID: {}, 프로필 ID: {}", member.getId(), auditionDTO.getMemberProfileId());
 
-            auditionService.write(auditionDTO, auditionFiles);
+            auditionDTO.setFileNames(fileNames);
+
+            auditionService.write(auditionDTO);
 
             return "redirect:/audition/video/detail/" + auditionDTO.getId();
         } catch (Exception e) {
@@ -142,12 +151,11 @@ public class VideoAuditionController {
     @PostMapping("/modify")
     public String updateAudition(
             @ModelAttribute AuditionDTO auditionDTO,
-            @RequestParam(value = "newFiles", required = false) List<MultipartFile> newFiles,
+            @RequestParam(value = "fileNames", required = false) List<String> fileNames,
             @RequestParam(value = "deletedFileIds", required = false) List<Long> deletedFileIds,
             Model model) {
         try {
             log.info("수정 요청 - AuditionDTO 정보: {}", auditionDTO);
-            log.info("수정 요청 - 새 파일 목록: {}", newFiles);
             log.info("수정 요청 - 삭제할 파일 ID 목록: {}", deletedFileIds);
 
             AuditionDTO currentAudition = auditionService.findAuditionById(auditionDTO.getId());
@@ -157,7 +165,12 @@ public class VideoAuditionController {
                 log.info("게시글 id:{}", currentAudition.getId());
             }
 
-            auditionService.updateAudition(auditionDTO, newFiles, deletedFileIds);
+            // 업로드된 파일명 처리 로직 추가
+            if (fileNames != null && !fileNames.isEmpty()) {
+                auditionDTO.setFileNames(fileNames);
+            }
+
+            auditionService.updateAudition(auditionDTO, deletedFileIds);
 
             log.info("업데이트 성공 - AuditionDTO ID: {}", auditionDTO.getId());
 
@@ -201,17 +214,9 @@ public class VideoAuditionController {
     @GetMapping("display")
     @ResponseBody
     public byte[] display(@RequestParam("fileName") String fileName) throws IOException {
-        if (fileName == null || fileName.trim().isEmpty()) {
-            log.error("Received null or empty fileName in display method");
-            throw new FileNotFoundException("파일 이름이 null이거나 비어 있습니다.");
-        }
-
-        log.info("Requested fileName: {}", fileName);
-
         File file = new File("C:/upload", fileName);
 
         if (!file.exists()) {
-            log.error("파일을 찾을 수 없습니다: {}", fileName);
             throw new FileNotFoundException("파일을 찾을 수 없습니다: " + fileName);
         }
 
@@ -276,6 +281,7 @@ public class VideoAuditionController {
     @PostMapping("/application/{id}")
     public String submitApplication(
             @PathVariable("id") Long id,
+            @RequestParam(value = "fileNames", required = false) List<String> fileNames,
             AuditionApplicationDTO auditionApplicationDTO,
             Model model) {
         // 세션에서 멤버 정보 가져오기
@@ -289,18 +295,19 @@ public class VideoAuditionController {
 
         log.info("submitApplication 메서드 - 사용자 ID: {}, 프로필 ID: {}", member.getId(), memberProfile.getId());
         log.info("받아온 Audition ID: {}", id);
+        log.info("받아온 fileNames: {}", fileNames);
 
         // 신청 데이터 설정
         auditionApplicationDTO.setAuditionId(id);
         auditionApplicationDTO.setMemberProfileId(memberProfile.getId());
-
-        log.info("모집 ID: {}", auditionApplicationDTO.getAuditionId());
+        auditionApplicationDTO.setFileNames(fileNames);
 
         // 신청 데이터 저장
         auditionApplicationService.write(auditionApplicationDTO);
 
-        return "redirect:/audition/video/detail/{id}"; // 신청 성공 후 리스트 페이지로 이동
+        return "redirect:/audition/video/detail/{id}"; // 신청 성공 후 상세 페이지로 이동
     }
+
 
 
 
