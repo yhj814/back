@@ -34,7 +34,6 @@
                             <div class="text-input-ggumteo icon-right">
                                 <div>
                                     <input type="hidden" id="genreType" th:value="${genreType}"/>
-                                    <input type="hidden" id="postType" th:value="${postType}" />
                                     <input
                                             type="text"
                                             class="theme-ggumteo search-input"
@@ -52,49 +51,23 @@
                         </div>
                     </div>
                 </div>
-<!--                <div class="filter-box-wrapper">-->
-<!--                    <div class="filter-group-wrapper">-->
-<!--                        <div class="filter-group">-->
-<!--                            <div class="filter-box-group">-->
-<!--                                <button class="filter-box" data-genre="romance" onclick="filterByGenre('romance')">로맨스</button>-->
-<!--                            </div>-->
-<!--                            <div class="filter-box-group">-->
-<!--                                <button class="filter-box" data-genre="comedy" onclick="filterByGenre('comedy')">코미디</button>-->
-<!--                            </div>-->
-<!--                            <div class="filter-box-group">-->
-<!--                                <button class="filter-box" data-genre="horror" onclick="filterByGenre('horror')">공포</button>-->
-<!--                            </div>-->
-<!--                            <div class="filter-box-group">-->
-<!--                                <button class="filter-box" data-genre="action" onclick="filterByGenre('action')">액션</button>-->
-<!--                            </div>-->
-<!--                            <div class="filter-box-group">-->
-<!--                                <button class="filter-box" data-genre="drama" onclick="filterByGenre('drama')">드라마</button>-->
-<!--                            </div>-->
-<!--                            <div class="box-group">-->
-<!--                                <div class="write-box">-->
-<!--                                    <a href="/video/write" style="color: inherit; text-decoration: none;">내 작품올리기</a>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
                 <div class="filter-box-wrapper">
                     <div class="filter-group-wrapper">
                         <div class="filter-group">
                             <div class="filter-box-group">
-                                <a href="/video/list?genreType=romance&postType=VIDEOWORK" class="filter-box">로맨스</a>
+                                <a href="/video/list?genreType=romance&postType=WORKVIDEO" class="filter-box">로맨스</a>
                             </div>
                             <div class="filter-box-group">
-                                <a href="/video/list?genreType=comedy&postType=VIDEOWORK" class="filter-box">코미디</a>
+                                <a href="/video/list?genreType=comedy&postType=WORKVIDEO" class="filter-box">코미디</a>
                             </div>
                             <div class="filter-box-group">
-                                <a href="/video/list?genreType=horror&postType=VIDEOWORK" class="filter-box">공포</a>
+                                <a href="/video/list?genreType=horror&postType=WORKVIDEO" class="filter-box">공포</a>
                             </div>
                             <div class="filter-box-group">
-                                <a href="/video/list?genreType=action&postType=VIDEOWORK" class="filter-box">액션</a>
+                                <a href="/video/list?genreType=action&postType=WORKVIDEO" class="filter-box">액션</a>
                             </div>
                             <div class="filter-box-group">
-                                <a href="/video/list?genreType=drama&postType=VIDEOWORK" class="filter-box">드라마</a>
+                                <a href="/video/list?genreType=drama&postType=WORKVIDEO" class="filter-box">드라마</a>
                             </div>
                             <div class="box-group">
                                 <div class="write-box">
@@ -108,7 +81,12 @@
                     <div class="list-box-wrapper">
                         <li th:each="work : ${works}" style="width: 213px">
                             <a th:href="@{/video/detail/{id}(id=${work.id})}"  class="box">
-                                <img id="thumbnail-image" th:src="@{/video/display(fileName=${work.thumbnailFileName})}" class="thumbnail" alt="썸네일 이미지" />
+                                <img
+                                        id="thumbnail-image"
+                                        th:src="@{'/video/display?fileName=' + ${work.thumbnailFilePath}}"
+                                        class="thumbnail"
+                                        alt="썸네일 이미지"
+                                />
                                 <div class="title" style="width: 180px" th:text="${work.postTitle}"></div>
                                 <div class="detail">
                                     <span th:text="${work.genreType}"></span>
@@ -146,25 +124,24 @@
                             <!-- 이전 버튼 -->
                             <li th:classappend="${!pagination.prev} ? 'disabled'">
                                 <a class="page-link" th:if="${pagination.prev}"
-                                   th:href="@{/video/list(page=${pagination.startPage - 1}, genreType=${param.genreType}, keyword=${param.keyword}, postType=${param.postType})}">이전</a>
+                                   th:href="@{/video/list(page=${pagination.startPage - 1}, genreType=${param.genreType}, postType=${param.postType}, keyword=${param.keyword})}">이전</a>
                                 <span th:unless="${pagination.prev}"></span>
                             </li>
 
                             <!-- 페이지 번호 -->
                             <li th:each="i : ${#numbers.sequence(pagination.startPage, pagination.endPage)}"
                                 th:class="${pagination.page == i} ? 'page-item active' : 'page-item'">
-                                <a class="page-link" th:href="@{/video/list(page=${i}, genreType=${param.genreType}, keyword=${param.keyword}, postType=${param.postType})}" th:text="${i}"></a>
+                                <a class="page-link" th:href="@{/video/list(page=${i}, genreType=${param.genreType}, postType=${param.postType}, keyword=${param.keyword})}" th:text="${i}"></a>
                             </li>
 
                             <!-- 다음 버튼 -->
                             <li th:classappend="${!pagination.next} ? 'disabled'">
                                 <a class="page-link" th:if="${pagination.next}"
-                                   th:href="@{/video/list(page=${pagination.endPage + 1}, genreType=${param.genreType}, keyword=${param.keyword}, postType=${param.postType})}">다음</a>
+                                   th:href="@{/video/list(page=${pagination.endPage + 1}, genreType=${param.genreType}, postType=${param.postType}, keyword=${param.keyword})}">다음</a>
                                 <span th:unless="${pagination.next}"></span>
                             </li>
                         </ul>
                     </div>
-
                 </div>
             </div>
         </div>
