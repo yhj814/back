@@ -6,6 +6,7 @@ import com.app.ggumteo.domain.audition.AuditionApplicationVO;
 import com.app.ggumteo.domain.audition.AuditionDTO;
 import com.app.ggumteo.domain.file.AuditionApplicationFileDTO;
 import com.app.ggumteo.domain.file.AuditionApplicationFileVO;
+import com.app.ggumteo.domain.file.FileVO;
 import com.app.ggumteo.domain.file.PostFileDTO;
 import com.app.ggumteo.domain.member.MemberProfileDTO;
 import com.app.ggumteo.domain.member.MemberVO;
@@ -45,7 +46,6 @@ public class VideoAuditionController {
     private final HttpSession session;
     private final PostFileService postFileService;
     private final AuditionApplicationFileService auditionApplicationFileService;
-    private final AuditionDTO auditionDTO;
 
 
     @ModelAttribute
@@ -67,23 +67,27 @@ public class VideoAuditionController {
 
     @PostMapping("upload")
     @ResponseBody
-    public List<PostFileDTO> upload(@RequestParam("file") List<MultipartFile> files) {
+    public String upload(@RequestParam("file") MultipartFile file) {
         try {
-            return postFileService.uploadFile(files);
-        } catch (IOException e) {
+            FileVO savedFile = postFileService.saveFile(file);
+            String savedFileName = savedFile.getFileName();
+            return savedFileName;
+        } catch (Exception e) {
             log.error("파일 업로드 중 오류 발생: ", e);
-            return Collections.emptyList();
+            return "error";
         }
     }
 
     @PostMapping("upload-apply")
     @ResponseBody
-    public List<AuditionApplicationFileDTO> uploadApply(@RequestParam("file") List<MultipartFile> files) {
+    public String uploadApply(@RequestParam("file") MultipartFile file) {
         try {
-            return auditionApplicationFileService.uploadFile(files);
-        } catch (IOException e) {
+            FileVO savedFile = auditionApplicationFileService.saveFile(file);
+            String savedFileName = savedFile.getFileName();
+            return savedFileName;
+        } catch (Exception e) {
             log.error("파일 업로드 중 오류 발생: ", e);
-            return Collections.emptyList();
+            return "error";
         }
     }
 
@@ -94,7 +98,9 @@ public class VideoAuditionController {
     }
 
     @PostMapping("write")
-    public String write(AuditionDTO auditionDTO, @RequestParam("auditionFile") MultipartFile[] auditionFiles, Model model) {
+    public String write(AuditionDTO auditionDTO,
+                        @RequestParam(value = "fileNames", required = false) List<String> fileNames,
+                        Model model) {
         try {
             MemberVO member = (MemberVO) session.getAttribute("member");
             MemberProfileDTO memberProfile = (MemberProfileDTO) session.getAttribute("memberProfile");
@@ -112,7 +118,9 @@ public class VideoAuditionController {
 
             log.info("write 메서드 - 사용자 ID: {}, 프로필 ID: {}", member.getId(), auditionDTO.getMemberProfileId());
 
-            auditionService.write(auditionDTO, auditionFiles);
+            auditionDTO.setFileNames(fileNames);
+
+            auditionService.write(auditionDTO);
 
             return "redirect:/audition/video/detail/" + auditionDTO.getId();
         } catch (Exception e) {
@@ -143,12 +151,11 @@ public class VideoAuditionController {
     @PostMapping("/modify")
     public String updateAudition(
             @ModelAttribute AuditionDTO auditionDTO,
-            @RequestParam(value = "newFiles", required = false) List<MultipartFile> newFiles,
+            @RequestParam(value = "fileNames", required = false) List<String> fileNames,
             @RequestParam(value = "deletedFileIds", required = false) List<Long> deletedFileIds,
             Model model) {
         try {
             log.info("수정 요청 - AuditionDTO 정보: {}", auditionDTO);
-            log.info("수정 요청 - 새 파일 목록: {}", newFiles);
             log.info("수정 요청 - 삭제할 파일 ID 목록: {}", deletedFileIds);
 
             AuditionDTO currentAudition = auditionService.findAuditionById(auditionDTO.getId());
@@ -158,7 +165,12 @@ public class VideoAuditionController {
                 log.info("게시글 id:{}", currentAudition.getId());
             }
 
-            auditionService.updateAudition(auditionDTO, newFiles, deletedFileIds);
+            // 업로드된 파일명 처리 로직 추가
+            if (fileNames != null && !fileNames.isEmpty()) {
+                auditionDTO.setFileNames(fileNames);
+            }
+
+            auditionService.updateAudition(auditionDTO, deletedFileIds);
 
             log.info("업데이트 성공 - AuditionDTO ID: {}", auditionDTO.getId());
 
@@ -220,6 +232,7 @@ public class VideoAuditionController {
 
         AuditionDTO audition = auditionService.findAuditionById(id);
         List<PostFileDTO> postFiles = auditionService.findAllPostFiles(id);
+        log.info("Audition ID: {}", audition.getId());
 
         int applicantCount = auditionApplicationService.countApplicantsByAuditionId(id);
         log.info("지원자 수 - 모집글 ID: {}, 지원자 수: {}", id, applicantCount);
@@ -233,38 +246,45 @@ public class VideoAuditionController {
 
     @GetMapping("/application/{id}")
     public String application(@PathVariable("id") Long id, Model model) {
-        // 세션에서 member 정보를 가져옵니다.
+        // 세션에서 멤버 정보 가져오기
         MemberVO member = (MemberVO) session.getAttribute("member");
         MemberProfileDTO memberProfile = (MemberProfileDTO) session.getAttribute("memberProfile");
 
-        log.info("application 메서드 - 사용자 ID: {}, 프로필 ID: {}, 프로필 이름: {}", member != null ? member.getId() : "null",
+        log.info("application 메서드 - 사용자 ID: {}, 프로필 ID: {}, 프로필 이름: {}",
+                member != null ? member.getId() : "null",
                 memberProfile != null ? memberProfile.getId() : "null",
                 memberProfile != null ? memberProfile.getProfileName() : "null");
 
-        if (member != null && memberProfile != null) {
-            // MemberProfile 정보가 세션에 있는 경우 모델에 추가하여 뷰에 전달합니다.
-            model.addAttribute("memberProfile", memberProfile);
-        } else {
-            // 세션에 member 정보가 없을 경우 적절한 예외 처리
+        if (member == null || memberProfile == null) {
             model.addAttribute("error", "로그인이 필요합니다.");
             return "redirect:/login"; // 로그인 페이지로 리다이렉트
         }
 
-        model.addAttribute("id", id); // 오디션 ID도 모델에 추가
-        log.info("오디션id:{}",model.addAttribute("id", id));
+        // URL에서 전달받은 id를 사용하여 auditionDTO 조회
+        AuditionDTO audition = auditionService.findAuditionById(id);
+        if (audition == null) {
+            model.addAttribute("error", "해당 오디션 정보를 찾을 수 없습니다.");
+            return "/error"; // 오류 페이지로 이동
+        }
+
+        // 모델에 필요한 데이터 추가
+        model.addAttribute("memberProfile", memberProfile);
+        model.addAttribute("audition", audition);
+        model.addAttribute("id", id);
+
+        log.info("오디션 ID: {}", id);
 
         return "audition/video/application"; // 신청서 작성 페이지로 이동
     }
 
+
     @PostMapping("/application/{id}")
     public String submitApplication(
-            @RequestParam("id") Long id,  // 개별 id 값 가져오기
+            @PathVariable("id") Long id,
+            @RequestParam(value = "fileNames", required = false) List<String> fileNames,
             AuditionApplicationDTO auditionApplicationDTO,
             Model model) {
-        log.info("받아온 Audition ID: {}", id);
-
-
-        // 세션에서 member 정보를 가져옵니다.
+        // 세션에서 멤버 정보 가져오기
         MemberVO member = (MemberVO) session.getAttribute("member");
         MemberProfileDTO memberProfile = (MemberProfileDTO) session.getAttribute("memberProfile");
 
@@ -274,19 +294,21 @@ public class VideoAuditionController {
         }
 
         log.info("submitApplication 메서드 - 사용자 ID: {}, 프로필 ID: {}", member.getId(), memberProfile.getId());
-        log.info("auditionId: {}", auditionDTO.getId()); // auditionDTO의 ID를 로그로 출력
+        log.info("받아온 Audition ID: {}", id);
+        log.info("받아온 fileNames: {}", fileNames);
 
-        // 신청 데이터 생성
-        auditionApplicationDTO.setAuditionId(id); // auditionDTO에서 ID 가져오기
+        // 신청 데이터 설정
+        auditionApplicationDTO.setAuditionId(id);
         auditionApplicationDTO.setMemberProfileId(memberProfile.getId());
-
-        log.info("모집ID:{}", auditionApplicationDTO.getAuditionId());
+        auditionApplicationDTO.setFileNames(fileNames);
 
         // 신청 데이터 저장
         auditionApplicationService.write(auditionApplicationDTO);
 
-        return "redirect:/audition/video/list/"; // 신청 성공 후 상세 페이지로 이동
+        return "redirect:/audition/video/detail/{id}"; // 신청 성공 후 상세 페이지로 이동
     }
+
+
 
 
 

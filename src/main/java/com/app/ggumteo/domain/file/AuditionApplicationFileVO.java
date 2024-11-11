@@ -14,5 +14,11 @@ import java.io.Serializable;
 public class AuditionApplicationFileVO implements Serializable {
     @EqualsAndHashCode.Include
     private Long id;
+    private Long fileId;
     private Long auditionApplicationId;
+
+    public AuditionApplicationFileVO(Long fileId, Long auditionApplicationId) {
+        this.fileId = fileId;
+        this.auditionApplicationId = auditionApplicationId;
+    }
 }

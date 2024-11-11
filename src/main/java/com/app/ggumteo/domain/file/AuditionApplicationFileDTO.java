@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 public class AuditionApplicationFileDTO {
     @EqualsAndHashCode.Include
     private Long id;
+    private Long fileId;
     private String fileName;
     private String filePath;
     private String fileType;
@@ -23,5 +24,5 @@ public class AuditionApplicationFileDTO {
     private Long auditionApplicationId;
 
 
-    public AuditionApplicationFileVO toVO() { return  new AuditionApplicationFileVO(id, auditionApplicationId);};
+    public AuditionApplicationFileVO toVO() { return  new AuditionApplicationFileVO(id, fileId, auditionApplicationId);};
 }

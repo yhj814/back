@@ -2,11 +2,14 @@ package com.app.ggumteo.service.audition;
 
 import com.app.ggumteo.domain.audition.AuditionApplicationDTO;
 import com.app.ggumteo.domain.file.AuditionApplicationFileVO;
+import com.app.ggumteo.domain.file.FileVO;
+import com.app.ggumteo.domain.file.PostFileVO;
 import com.app.ggumteo.domain.notification.ApplyAuditionNotificationVO;
 import com.app.ggumteo.mapper.audition.AuditionApplicationMapper;
 import com.app.ggumteo.mapper.notification.ApplyAuditionNotificationMapper;
 import com.app.ggumteo.repository.audition.AuditionApplicationDAO;
 import com.app.ggumteo.repository.file.AuditionApplicationFileDAO;
+import com.app.ggumteo.repository.file.FileDAO;
 import com.app.ggumteo.repository.notification.ApplyAuditionNotificationDAO;
 import com.app.ggumteo.service.file.AuditionApplicationFileService;
 import com.app.ggumteo.service.file.AuditionApplicationFileServiceImpl;
@@ -16,6 +19,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -23,8 +33,8 @@ public class AuditionApplicationServiceImpl implements AuditionApplicationServic
 
     private final AuditionApplicationDAO auditionApplicationDAO;
     private final ApplyAuditionNotificationDAO applyAuditionNotificationDAO;
+    private final FileDAO fileDAO;
     private final AuditionApplicationFileDAO auditionApplicationFileDAO;
-    private final AuditionApplicationFileService auditionApplicationFileService;
 
     @Override
     @Transactional
@@ -42,11 +52,43 @@ public class AuditionApplicationServiceImpl implements AuditionApplicationServic
         applyAuditionNotificationDAO.save(notificationVO);
 
         log.info("Notification saved with auditionApplicationId: {}", auditionApplicationId);
+
+        // 업로드된 파일 처리
+        List<String> fileNames = auditionApplicationDTO.getFileNames();
+        if (fileNames != null && !fileNames.isEmpty()) {
+            for (String fileName : fileNames) {
+                // 기존 메서드 사용
+                FileVO fileVO = new FileVO();
+                fileVO.setFileName(fileName);
+                fileVO.setFilePath(getPath());
+                File file = new File("C:/upload/" + getPath() + "/" + fileName);
+                fileVO.setFileSize(String.valueOf(file.length()));
+
+                try {
+                    fileVO.setFileType(Files.probeContentType(file.toPath()));
+                } catch (IOException e) {
+                    log.error("파일의 콘텐츠 타입을 결정하는 중 오류 발생", e);
+                    fileVO.setFileType("unknown");  // 기본값 설정 또는 예외 처리
+                }
+
+                // 파일 정보 데이터베이스에 저장
+                fileDAO.save(fileVO);
+
+                // 파일과 게시글의 연관 관계 설정
+                AuditionApplicationFileVO auditionApplicationFileVO = new AuditionApplicationFileVO(fileVO.getId(), auditionApplicationId);
+                auditionApplicationFileDAO.insertAuditionApplicationFile(auditionApplicationFileVO);
+
+            }
+        }
     }
 
     @Override
     public int countApplicantsByAuditionId(Long auditionId) {
         return auditionApplicationDAO.countApplicantsByAuditionId(auditionId);
+    }
+
+    private String getPath() {
+        return LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd"));
     }
 }
 
