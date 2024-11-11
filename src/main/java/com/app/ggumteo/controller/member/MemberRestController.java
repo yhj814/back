@@ -1,6 +1,10 @@
 package com.app.ggumteo.controller.member;
 
 import com.app.ggumteo.domain.admin.AdminAnswerDTO;
+import com.app.ggumteo.domain.audition.AuditionApplicationDTO;
+import com.app.ggumteo.domain.audition.MyApplicationAuditionListDTO;
+import com.app.ggumteo.domain.audition.MyAuditionApplicantListDTO;
+import com.app.ggumteo.domain.audition.MyAuditionListDTO;
 import com.app.ggumteo.domain.buy.*;
 import com.app.ggumteo.domain.funding.MyFundingListDTO;
 import com.app.ggumteo.domain.inquiry.MyInquiryHistoryListDTO;
@@ -127,6 +131,48 @@ public class MemberRestController {
             , @PathVariable("page") int page, WorkAndFundingPagination workAndFundingPagination, String postType) {
 
         return myPageService.getMyBuyFundingList(page, workAndFundingPagination, memberId, postType);
+    }
+
+
+//************************************************************************************************
+
+    // 나의 모집 게시글 목록
+    // SELECT
+    @ResponseBody
+    @GetMapping("/members/{memberId}/video/my/audition/{page}")
+    public MyAuditionListDTO getMyVideoAuditionList(@PathVariable("memberId") Long memberId
+            , @PathVariable("page") int page, WorkAndFundingPagination workAndFundingPagination, String postType) {
+
+        return myPageService.getMyVideoAuditionList(page, workAndFundingPagination, memberId, postType);
+    }
+
+    // 나의 모집 지원자 목록
+    // SELECT
+    @ResponseBody
+    @GetMapping("/members/video/my/audition/{auditionPostId}/Applicants/{page}")
+    public MyAuditionApplicantListDTO getMyVideoAuditionApplicantList(@PathVariable("auditionPostId") Long auditionPostId
+            , @PathVariable("page") int page, SettingTablePagination settingTablePagination) {
+
+        log.info("auditionPostId={}", auditionPostId);
+        return myPageService.getMyVideoAuditionApplicantList(page, settingTablePagination, auditionPostId);
+    }
+
+    // 나의 모집 확인여부
+    // UPDATE
+    @ResponseBody
+    @PutMapping("/members/video/my/audition/applicants/confirm-status/update")
+    public void updateConfirmStatus(@RequestBody AuditionApplicationDTO auditionApplicationDTO) {
+        myPageService.updateConfirmStatus(auditionApplicationDTO.toVO());
+    }
+
+    // 내가 신청한 모집 게시글 목록
+    // SELECT
+    @ResponseBody
+    @GetMapping("/members/{memberId}/video/my/application/audition/{page}")
+    public MyApplicationAuditionListDTO getMyVideoApplicationAuditionList(@PathVariable("memberId") Long memberId
+            , @PathVariable("page") int page, WorkAndFundingPagination workAndFundingPagination, String postType) {
+
+        return myPageService.getMyVideoApplicationAuditionList(page, workAndFundingPagination, memberId, postType);
     }
 
 //************************************************************************************************

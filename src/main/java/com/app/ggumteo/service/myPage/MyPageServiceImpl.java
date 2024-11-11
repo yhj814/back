@@ -3,6 +3,7 @@ package com.app.ggumteo.service.myPage;
 import com.app.ggumteo.aspect.annotation.*;
 import com.app.ggumteo.constant.PostType;
 import com.app.ggumteo.domain.admin.AdminAnswerDTO;
+import com.app.ggumteo.domain.audition.*;
 import com.app.ggumteo.domain.buy.*;
 import com.app.ggumteo.domain.funding.*;
 import com.app.ggumteo.domain.inquiry.InquiryDTO;
@@ -13,6 +14,8 @@ import com.app.ggumteo.domain.work.MyWorkListDTO;
 import com.app.ggumteo.domain.work.WorkDTO;
 import com.app.ggumteo.pagination.SettingTablePagination;
 import com.app.ggumteo.pagination.WorkAndFundingPagination;
+import com.app.ggumteo.repository.audition.AuditionApplicationDAO;
+import com.app.ggumteo.repository.audition.AuditionDAO;
 import com.app.ggumteo.repository.buy.BuyFundingProductDAO;
 import com.app.ggumteo.repository.buy.BuyWorkDAO;
 import com.app.ggumteo.repository.funding.FundingDAO;
@@ -38,6 +41,8 @@ public class MyPageServiceImpl implements MyPageService {
     private final BuyWorkDAO buyWorkDAO;
     private final FundingDAO fundingDAO;
     private final BuyFundingProductDAO buyFundingProductDAO;
+    private final AuditionDAO auditionDAO;
+    private final AuditionApplicationDAO auditionApplicationDAO;
     private final InquiryDAO inquiryDAO;
     private final MemberProfileDAO memberProfileDAO;
 
@@ -197,6 +202,76 @@ public class MyPageServiceImpl implements MyPageService {
     @Override
     public int getMyBuyFundingListTotal(Long memberId, String postType) {
         return buyFundingProductDAO.getMyBuyFundingListTotal(memberId, postType);
+    }
+
+    //    나의 모집 게시물 전체 목록 - 영상
+    @Override
+    public MyAuditionListDTO getMyVideoAuditionList(int page, WorkAndFundingPagination workAndFundingPagination, Long memberId, String postType) {
+        MyAuditionListDTO myAuditionPosts = new MyAuditionListDTO();
+        workAndFundingPagination.setPage(page);
+        workAndFundingPagination.setTotal(auditionDAO.getTotal(memberId, PostType.AUDITIONVIDEO.name()));
+        workAndFundingPagination.progress();
+        myAuditionPosts.setWorkAndFundingPagination(workAndFundingPagination);
+        myAuditionPosts.setMyAuditionPosts(auditionDAO.findByMemberId(workAndFundingPagination, memberId, PostType.AUDITIONVIDEO.name()));
+
+        return myAuditionPosts;
+    }
+
+    //    나의 모집 게시물 전체 개수
+    @Override
+    public int getMyVideoAuditionPostsTotal(Long memberId, String postType) {
+        return auditionDAO.getTotal(memberId, postType);
+    }
+
+    //    모집 정보 조회
+    @Override
+    public Optional<AuditionDTO> getAudition(Long id, String postType) {
+        return auditionDAO.findByIdAndPostType(id, postType);
+    }
+
+    // 나의 모집 지원자 목록 조회
+    @Override
+    public MyAuditionApplicantListDTO getMyVideoAuditionApplicantList(int page, SettingTablePagination settingTablePagination, Long auditionPostId) {
+        MyAuditionApplicantListDTO myAuditionApplicants = new MyAuditionApplicantListDTO();
+        settingTablePagination.setPage(page);
+        settingTablePagination.setTotal(auditionApplicationDAO.getTotal(auditionPostId));
+        settingTablePagination.progress();
+        myAuditionApplicants.setSettingTablePagination(settingTablePagination);
+        myAuditionApplicants.setMyAuditionApplicants(auditionApplicationDAO.findByAuditionPostId(settingTablePagination, auditionPostId));
+
+        return myAuditionApplicants;
+    }
+
+    // 나의 모집 게시글 한개당 지원자 전체 갯수
+    @Override
+    public int getMyVideoAuditionApplicantsTotal(Long auditionPostId) {
+        return auditionApplicationDAO.getTotal(auditionPostId);
+    }
+
+    // 확인 여부
+    @Override
+    public void updateConfirmStatus(AuditionApplicationVO auditionApplicationVO) {
+        auditionApplicationDAO.updateConfirmStatus(auditionApplicationVO);
+    }
+
+    // 내가 신청한 모집 목록 조회
+    @Override
+    public MyApplicationAuditionListDTO getMyVideoApplicationAuditionList(int page, WorkAndFundingPagination workAndFundingPagination, Long memberId, String postType) {
+        MyApplicationAuditionListDTO myApplicationAuditionPosts = new MyApplicationAuditionListDTO();
+        workAndFundingPagination.setPage(page);
+        workAndFundingPagination.setTotal(auditionApplicationDAO.getMyAuditionApplicationListTotal(memberId, PostType.AUDITIONVIDEO.name()));
+        workAndFundingPagination.progress();
+        myApplicationAuditionPosts.setWorkAndFundingPagination(workAndFundingPagination);
+        myApplicationAuditionPosts.setMyApplicationAuditionPosts(auditionApplicationDAO
+                .findMyAppliedAuditionList(workAndFundingPagination, memberId, PostType.AUDITIONVIDEO.name()));
+
+        return myApplicationAuditionPosts;
+    }
+
+    // 내가 신청한 모집 전체 갯수
+    @Override
+    public int getMyApplicationAuditionListTotal(Long memberId, String postType) {
+        return auditionApplicationDAO.getMyAuditionApplicationListTotal(memberId, postType);
     }
 
     //    마이페이지 - 문의 내역 조회

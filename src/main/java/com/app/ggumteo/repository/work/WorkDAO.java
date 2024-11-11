@@ -98,6 +98,8 @@ public class WorkDAO {
         workMapper.updateThumbnailFileId(workId, thumbnailFileId);
     }
 
+//************ 마이페이지 **************
+
     // 내 작품 게시물 전체 조회
     public List<WorkDTO> findByMemberId(WorkAndFundingPagination workAndFundingPagination, Long memberId, String postType) {
         return workMapper.selectByMemberId(workAndFundingPagination, memberId, postType);
@@ -111,5 +113,5 @@ public class WorkDAO {
     // 작품 정보 조회
     public Optional<WorkDTO> findByIdAndPostType(Long id, String postType) {
         return workMapper.selectByIdAndPostType(id, postType);
-    };
+    }
 }

@@ -65,6 +65,8 @@ public interface WorkMapper {
     // 썸네일 파일 ID 업데이트 메소드
     void updateThumbnailFileId(@Param("workId") Long workId, @Param("thumbnailFileId") Long thumbnailFileId);
 
+//************ 마이페이지 **************
+
     // 내 작품 게시물 전체 조회
     public List<WorkDTO> selectByMemberId(@Param("workAndFundingPagination") WorkAndFundingPagination workAndFundingPagination
             , @Param("memberId") Long memberId, @Param("postType") String postType);

@@ -1,6 +1,7 @@
 package com.app.ggumteo.service.myPage;
 
 import com.app.ggumteo.domain.admin.AdminAnswerDTO;
+import com.app.ggumteo.domain.audition.*;
 import com.app.ggumteo.domain.buy.*;
 import com.app.ggumteo.domain.funding.*;
 import com.app.ggumteo.domain.inquiry.InquiryDTO;
@@ -78,6 +79,37 @@ public interface MyPageService {
 
     // 내가 결제한 펀딩 목록 전체 갯수
     public int getMyBuyFundingListTotal(Long memberId, String postType);
+
+
+//====모집 ====================================================
+
+    // 나의 모집 게시물 전체 조회
+    public MyAuditionListDTO getMyVideoAuditionList(
+            int page , WorkAndFundingPagination workAndFundingPagination, Long memberId, String postType);
+
+    // 나의 모집 게시물 전체 개수
+    public int getMyVideoAuditionPostsTotal(Long memberId, String postType);
+
+    // 모집 정보 조회
+    public Optional<AuditionDTO> getAudition(Long id, String postType);
+
+    // 나의 모집 지원자 목록 조회
+    public MyAuditionApplicantListDTO getMyVideoAuditionApplicantList
+    (int page, SettingTablePagination settingTablePagination , Long auditionPostId);
+
+    // 나의 모집 게시물 하나의 지원자 전체 갯수
+    public int getMyVideoAuditionApplicantsTotal(Long auditionPostId);
+
+    // 확인 여부
+    public void updateConfirmStatus(AuditionApplicationVO auditionApplicationVO);
+
+    // 내가 신청한 모집 목록 조회
+    public MyApplicationAuditionListDTO getMyVideoApplicationAuditionList(
+            int page, WorkAndFundingPagination workAndFundingPagination, Long memberId, String postType);
+
+    // 내가 신청한 모집  목록 전체 갯수
+    public int getMyApplicationAuditionListTotal(Long memberId, String postType);
+
 
 //====문의내역 ====================================================
 

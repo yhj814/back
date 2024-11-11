@@ -1091,7 +1091,7 @@ const showMyProfile = (memberProfile) => {
                 <div class="form-group">
                     <label class="control-label required" id="full_name_label"><span></span> 이름</label>
                     <div class="control-wrapper">
-                        <input class="form-control" id="full_name" placeholder="이름을 입력해 주세요." name="profileName" type="text" value="">
+                        <input class="form-control" id="full_name" placeholder="이름을 입력해 주세요." name="profileName" type="text" value="${memberProfile.profileName}">
                         <div class="error-message">
                             <i class="fa fa-exclamation-circle"></i>
                             이 항목을 채워주십시오.
@@ -1101,7 +1101,7 @@ const showMyProfile = (memberProfile) => {
                 <div class="form-group">
                     <label class="control-label required" id="full_nickname_label"><span></span> 닉네임</label>
                     <div class="control-wrapper">
-                        <input class="form-control" id="full_nickname" placeholder="사용할 닉네임을 입력해주세요." name="profileNickName" type="text" value="">
+                        <input class="form-control" id="full_nickname" placeholder="사용할 닉네임을 입력해주세요." name="profileNickName" type="text" value="${memberProfile.profileNickName}">
                         <div class="error-message">
                             <i class="fa fa-exclamation-circle"></i>
                             이 항목을 채워주십시오.
@@ -1119,10 +1119,10 @@ const showMyProfile = (memberProfile) => {
                     <div class="control-wrapper">
                         <ul class="list-unstyled" style="margin-bottom: 0">
                             <li>
-                                <label class="radio-inline" for="gender_1"><input data-exception="yes" id="gender_1" name="profileGender" type="radio" value="남성">남성</label>
+                                <label class="radio-inline" for="gender_1"><input data-exception="yes" id="gender_1" name="profileGender" type="radio" value="남성" checked="${memberProfile.profileGender == '남성'}">남성</label>
                             </li>
                             <li>
-                                <label class="radio-inline" for="gender_2"><input data-exception="yes" id="gender_2" name="profileGender" type="radio" value="여성">여성</label>
+                                <label class="radio-inline" for="gender_2"><input data-exception="yes" id="gender_2" name="profileGender" type="radio" value="여성" checked="${memberProfile.profileGender == '여성'}">여성</label>
                             </li>
                         </ul>
                         <div class="error-message">
@@ -1134,7 +1134,7 @@ const showMyProfile = (memberProfile) => {
                 <div class="form-group">
                     <label class="control-label" for="date_of_birth" id="date_of_birth_label">나이</label>
                     <div class="control-wrapper">
-                        <input class="form-control" id="member-age" name="profileAge}" placeholder="만 나이를 입력해주세요." type="text" value="">
+                        <input class="form-control" id="member-age" name="profileAge}" placeholder="만 나이를 입력해주세요." type="text" value="${memberProfile.profileAge}">
 
                         <div class="error-message">
                             <i class="fa fa-exclamation-circle"></i>
@@ -1147,7 +1147,7 @@ const showMyProfile = (memberProfile) => {
 
                     <div class="control-wrapper">
                         <div class="input-gap loading-icon-wrap">
-                            <input class="form-control" data-exception="yes" placeholder="이메일을 입력하세요." name="profileEmail" type="text" value="">
+                            <input class="form-control" data-exception="yes" placeholder="이메일을 입력하세요." name="profileEmail" type="text" value="${memberProfile.profileEmail}">
                             <button class="btn btn-certification-select" type="button" id="requestEmailCode">인증번호 요청</button>
                             <img class="loading-icon" id="loadingGif" src="/images/main/loading.gif" alt="Loading...">
                         </div>
@@ -1175,7 +1175,7 @@ const showMyProfile = (memberProfile) => {
                     <label class="control-label">연락처</label>
                     <div class="control-wrapper">
                         <div class="input-gap">
-                            <input class="form-control" data-exception="yes" placeholder="전화번호를 입력하세요." name="profilePhone" type="text" value="">
+                            <input class="form-control" data-exception="yes" placeholder="전화번호를 입력하세요." name="profilePhone" type="text" value="${memberProfile.profilePhone}">
                             <button class="btn btn-certification-select" type="button" id="requestVerificationCode">인증번호 요청</button>
                         </div>
                         <div class="error-message">
@@ -1203,7 +1203,7 @@ const showMyProfile = (memberProfile) => {
                 <div class="form-group">
                     <label class="control-label">추가 작성사항</label>
                     <div class="control-wrapper">
-                        <textarea class="form-control form-textarea" placeholder="간단한 자기소개를 입력해주세요." name="profileEtc" value="" style="height: 340px"></textarea>
+                        <textarea class="form-control form-textarea" placeholder="간단한 자기소개를 입력해주세요." name="profileEtc" value="${memberProfile.profileEtc}" style="height: 340px"></textarea>
                         <div class="error-message">
                             <i class="fa fa-exclamation-circle"></i>
                             간단한 자기소개를 입력해주세요.
