@@ -228,7 +228,9 @@ public class WorkServiceImpl implements WorkService {
 
         // 작품 정보 업데이트
         workDAO.updateWork(workDTO);
-
+        if (workDTO.getPostTitle() != null && workDTO.getPostContent() != null) {
+            workDAO.updatePost(workDTO);
+        }
         log.info("작품 정보 업데이트 완료: 작품 ID {}", workDTO.getId());
 
         if (workDTO.getPostTitle() != null && workDTO.getPostContent() != null) {

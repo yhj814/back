@@ -114,7 +114,7 @@
             f.id as fileId, f.file_name, f.file_path, f.file_size, f.file_type
         from
             tbl_post_file pf
-                join tbl_file f on pf.id = f.id
+        join tbl_file f on pf.file_id = f.id  <!-- 수정된 부분 -->
         where pf.post_id = #{postId}
         order by pf.id
     </select>
@@ -149,7 +149,6 @@
         converge_price = #{convergePrice},
         file_content = #{fileContent},
         funding_content = #{fundingContent},
-        funding_status = #{fundingStatus}
         <if test="thumbnailFileId != null">
             , thumbnail_file_id = #{thumbnailFileId}
         </if>
@@ -168,7 +167,8 @@
     <select id="selectRelatedFundingByGenre" resultType="fundingDTO">
         select
         f.id, f.genre_type, p.post_title,
-        fl.file_path as thumbnailFilePath
+        fl.file_name as thumbnailFileName,  <!-- 변경된 부분 -->
+        fl.file_path as thumbnailFilePath  <!-- 추가된 부분 -->
         from
         tbl_funding f
         join tbl_post p on f.id = p.id
@@ -179,7 +179,45 @@
         limit 5
     </select>
 
+    <!-- 게시글 내용 수정 -->
+    <update id="updatePost">
+        update tbl_post
+        set
+            post_title = #{postTitle},
+            post_content = #{postContent},
+            updated_date = current_timestamp
+        where id = #{id}
+    </update>
 
+
+    <!-- 썸네일 파일 ID 초기화 -->
+    <update id="updateThumbnailFileId">
+        update tbl_funding
+        set thumbnail_file_id = #{thumbnailFileId}
+        where id = #{fundingId}
+    </update>
+
+
+
+    <!-- 펀딩 id로 펀딩 조회 (썸네일 파일 ID 포함) -->
+    <select id="selectByFundingId" resultType="fundingDTO">
+        select
+        f.id, f.investor_number, f.target_price, f.converge_price, f.file_content, f.funding_content f.genre_type,
+        p.post_title, p.post_content, p.member_profile_id, p.created_date, p.updated_date,
+        fl.file_name as thumbnailFileName,
+        fl.file_path as thumbnailFilePath,  <!-- 추가된 부분 -->
+        f.thumbnail_file_id as thumbnailFileId,
+        mp.profile_nickname,
+        m.profile_img_url as profileImgUrl
+        from
+        tbl_funding f
+        join tbl_post p on w.id = p.id
+        join tbl_member_profile mp on p.member_profile_id = mp.id
+        join tbl_member m on mp.member_id = m.id
+        left join tbl_file fl on w.thumbnail_file_id = fl.id
+        where
+        w.id = #{id}
+    </select>
 
 
 
