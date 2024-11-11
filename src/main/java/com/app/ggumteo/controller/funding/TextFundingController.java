@@ -208,7 +208,49 @@ public class TextFundingController {
         }
     }
 
+    // 펀딩 수정 요청 처리
+    @PostMapping("modify")
+    public String updateFunding(
+            @ModelAttribute FundingDTO fundingDTO,
+            @RequestParam(value = "fileNames", required = false) List<String> fileNames,
+            @RequestParam(value = "deletedFileIds", required = false) List<Long> deletedFileIds,
+            @RequestParam(value = "thumbnailFileName", required = false) String thumbnailFileName) {
+        try {
+            log.info("수정 요청 - 펀딩 정보: {}", fundingDTO);
+            log.info("삭제할 파일 IDs: {}", deletedFileIds);
+            log.info("삭제할 펀딩 상품 IDs: {}", fundingDTO.getFundingProductIds());
+            log.info("새로운 썸네일 파일명: {}", thumbnailFileName);
 
+            // 세션에서 로그인 사용자 정보 가져오기
+            MemberVO member = (MemberVO) session.getAttribute("member");
+            if (member == null) {
+                log.error("세션에 멤버 정보가 없습니다.");
+                return "redirect:/main";  // 로그인 페이지로 리다이렉트
+            }
+
+            // 펀딩 타입 설정
+            fundingDTO.setPostType(PostType.FUNDINGTEXT.name());
+
+            // 파일명 리스트를 DTO에 설정
+            if (fileNames != null && !fileNames.isEmpty()) {
+                fundingDTO.setFileNames(fileNames);
+            }
+
+            // 썸네일 파일명 설정
+            if (thumbnailFileName != null && !thumbnailFileName.isEmpty()) {
+                fundingDTO.setThumbnailFileName(thumbnailFileName);
+            }
+
+            // 서비스에서 펀딩 수정 로직 실행
+            fundingService.updateFunding(fundingDTO, deletedFileIds);
+
+            log.info("펀딩 수정 완료: 펀딩 ID {}", fundingDTO.getId());
+            return "redirect:/text/funding/detail/" + fundingDTO.getId();
+        } catch (Exception e) {
+            log.error("펀딩 수정 중 오류 발생", e);
+            return "redirect:/text/funding/modify/" + fundingDTO.getId();
+        }
+    }
 
 
     @PostMapping("order")

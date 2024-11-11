@@ -106,6 +106,11 @@ public class FundingDAO {
         return fundingMapper.selectByFundingId(id);
     }
 
+    // 파일 ID를 기준으로 펀딩 상품 삭제
+    public void deleteFundingProductById(Long id) {
+        fundingMapper.deleteFundingProductById(id);
+    }
+
 }
 
 

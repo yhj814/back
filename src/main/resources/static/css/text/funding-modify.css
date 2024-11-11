@@ -63,6 +63,62 @@
     font-smoothing: antialiased;
 }
 
+/* 기존 상품 스타일 */
+.existing-product {
+    border: 1px solid #e0e0e0;
+    padding: 10px;
+    margin-bottom: 10px;
+    position: relative;
+}
+
+.existing-product .product-cancel {
+    margin-top: 10px;
+}
+
+.delete-existing-product-btn {
+    background-color: #e52929;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.delete-existing-product-btn:hover {
+    background-color: #c52727;
+}
+
+/* 새로운 상품 추가 스타일 */
+.product-add {
+    border: 1px dashed #e0e0e0;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.product-cancel-btn {
+    background-color: #ff5c5c;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.product-cancel-btn:hover {
+    background-color: #ff0000;
+}
+
+/* '추가' 버튼 스타일 */
+.product-div-add {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    color: #00a878;
+    margin-top: 10px;
+}
+
+.product-div-add img {
+    margin-right: 5px;
+}
+
 .main {
     min-width: 1080px;
     height: auto;

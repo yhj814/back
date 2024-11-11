@@ -182,11 +182,6 @@ document.querySelector(".img-add").addEventListener("click", () => {
                     <input id="file-upload-${timestamp}" type="file" accept="image/*,video/*" style="display: none;" />
                 </div>
             </div>
-            <div class="img-caption-box" style="display: none;">
-                <div class="default-input-partner">
-                    <input type="text" class="img-caption-box-content" placeholder="올린 파일에 대한 설명을 입력해주세요." />
-                </div>
-            </div>
         </div>
     `;
 

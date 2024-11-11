@@ -26,6 +26,7 @@ public interface FundingService {
     int findTotalWithSearchAndType(Search search);
 
 
+
     // 상세보기 기본정보 조회
     List<FundingDTO> findFundingById(Long id);
 

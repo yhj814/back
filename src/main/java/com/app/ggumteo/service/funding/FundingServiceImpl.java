@@ -159,16 +159,21 @@ public class FundingServiceImpl implements FundingService{
 
     @Override
     public void updateFunding(FundingDTO fundingDTO, List<Long> deletedFileIds) {
-        log.info("업데이트 요청 - 작품 ID: {}", fundingDTO.getId());
+        log.info("업데이트 요청 - 펀딩 ID: {}", fundingDTO.getId());
         log.info("삭제할 파일 IDs: {}", deletedFileIds);
+        log.info("삭제할 펀딩 상품 IDs: {}", fundingDTO.getFundingProductIds());
+        log.info("새로운 썸네일 파일명: {}", fundingDTO.getThumbnailFileName());
 
         // 기존 데이터를 다시 조회하여 최신 정보를 가져옴
         FundingDTO currentFunding = fundingDAO.findFundingId(fundingDTO.getId());
+        if (currentFunding == null) {
+            throw new RuntimeException("펀딩을 찾을 수 없습니다: ID " + fundingDTO.getId());
+        }
         Long currentThumbnailFileId = currentFunding.getThumbnailFileId();
 
         // 썸네일 파일 교체 처리
         if (fundingDTO.getThumbnailFileName() != null && !fundingDTO.getThumbnailFileName().isEmpty()) {
-            // 기존 썸네일 파일의 외래 키 참조 해제
+            // 기존 썸네일 파일의 외래 키 참조 해제 및 삭제
             if (currentThumbnailFileId != null) {
                 fundingDAO.updateThumbnailFileId(fundingDTO.getId(), null);  // 썸네일 파일 ID를 먼저 null로 설정
                 fileDAO.deleteFile(currentThumbnailFileId);
@@ -201,9 +206,19 @@ public class FundingServiceImpl implements FundingService{
             log.info("새로운 썸네일 파일이 없습니다. 기존 썸네일 유지.");
         }
 
+        // 펀딩 상품 삭제 처리
+        List<Long> fundingProductIdsToDelete = fundingDTO.getFundingProductIds();
+        if (fundingProductIdsToDelete != null && !fundingProductIdsToDelete.isEmpty()) {
+            for (Long productId : fundingProductIdsToDelete) {
+                fundingDAO.deleteFundingProductById(productId);
+                log.info("펀딩 상품 삭제 완료: 펀딩 상품 ID {}", productId);
+            }
+        }
+
         // 기존 파일 삭제
         if (deletedFileIds != null && !deletedFileIds.isEmpty()) {
             postFileService.deleteFilesByIds(deletedFileIds);
+            log.info("삭제된 파일 IDs: {}", deletedFileIds);
         }
 
         // 새 파일 추가 (썸네일 파일이 아닌 일반 파일들)
@@ -239,16 +254,10 @@ public class FundingServiceImpl implements FundingService{
         if (fundingDTO.getPostTitle() != null && fundingDTO.getPostContent() != null) {
             fundingDAO.updatePost(fundingDTO);
         }
-        log.info("펀딩 정보 업데이트 완료: 작품 ID {}", fundingDTO.getId());
-
-        if (fundingDTO.getPostTitle() != null && fundingDTO.getPostContent() != null) {
-            log.info("펀딩 정보 업데이트 시도: 제목 - {}, 내용 - {}", fundingDTO.getPostTitle(), fundingDTO.getPostContent());
-            fundingDAO.updatePost(fundingDTO);
-            log.info("펀딩 정보 업데이트 완료: 작품 ID {}", fundingDTO.getId());
-        } else {
-            log.warn("펀딩 정보가 부족하여 업데이트를 건너뜁니다: 작품 ID {}", fundingDTO.getId());
-        }
+        log.info("펀딩 정보 업데이트 완료: 펀딩 ID {}", fundingDTO.getId());
     }
+
+
 
 
     @Override
