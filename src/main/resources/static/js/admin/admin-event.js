@@ -1,3 +1,10 @@
+// 로그아웃시 인증번호 페이지로 이동
+const logOutBtn=document.querySelector(".logout-btn");
+logOutBtn.addEventListener('click',()=>{
+    window.location.href="/admin/verify";111
+})
+
+
 // 페이지가 로드될 때 초기 데이터를 불러와서 표시
 document.addEventListener('DOMContentLoaded', function () {
     loadAnnouncements(1,'','createdDate'); // 첫 페이지를 로드하여 초기 화면 구성
@@ -435,6 +442,7 @@ completeButton.addEventListener('click', async () => {
         try {
             const success = await updateMemberStatus(currentMemberId, newStatus);
             if (success) {
+                alert("회원 상태 변경 완료.")
                 updateMemberStatusUI(currentMemberId, newStatus);
                 closeMemberModal();
             } else {
@@ -632,7 +640,31 @@ async function initPage() {
     const searchInput = document.getElementById("video-report-search");
     searchInput.addEventListener("keypress", (e) => {
         if (e.key === "Enter") {
-            currentSearch = searchInput.value;
+            let searchValue = e.target.value.trim();
+
+            // 검색어 변환 테이블 : 영어 , 화면 : 힌글
+            switch (searchValue) {
+                case "코미디":
+                    currentSearch = 'comedy';
+                    break;
+                case "공포":
+                    currentSearch = 'horror';
+                    break;
+                case "액션":
+                    currentSearch = 'action';
+                    break;
+                case "드라마":
+                    currentSearch = 'drama';
+                    break;
+                case "로맨스":
+                    currentSearch = 'romance';
+                    break;
+                default:
+                    currentSearch = searchValue; // 숫자가 아닌 경우 그대로 사용
+                    break;
+
+            }
+            // 검색어가 입력되면 첫 페이지로 이동
             changePage(1);
         }
     });
@@ -804,7 +836,31 @@ async function initTextPage() {
     const searchInput = document.getElementById("text-report-search");
     searchInput.addEventListener("keypress", (e) => {
         if (e.key === "Enter") {
-            currentTextSearch = searchInput.value;
+            let searchValue = e.target.value.trim();
+
+            // 검색어 변환 테이블 : 영어 , 화면 : 힌글
+            switch (searchValue) {
+                case "코미디":
+                    currentTextSearch = 'comedy';
+                    break;
+                case "공포":
+                    currentTextSearch = 'horror';
+                    break;
+                case "액션":
+                    currentTextSearch = 'action';
+                    break;
+                case "드라마":
+                    currentTextSearch = 'drama';
+                    break;
+                case "로맨스":
+                    currentTextSearch = 'romance';
+                    break;
+                default:
+                    currentTextSearch = searchValue; // 숫자가 아닌 경우 그대로 사용
+                    break;
+
+            }
+            // 검색어가 입력되면 첫 페이지로 이동
             changeTextPage(1);
         }
     });
@@ -1721,4 +1777,588 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 
+//--------------------------------------------------------------------------------------------------------
+// 영상 펀딩 신고관리
 
+// 검색 정렬 선언
+let currentVideoFundingOrder = 'createdDate';
+let currentVideoFundingSearch = '';
+
+// 페이지 변경 함수
+async function changeVideoFundingPage(page) {
+    const data = await fetchVideoFundingReports(page, currentVideoFundingSearch, currentVideoFundingOrder || 'createdDate');
+    renderVideoFundingReportList(data.reports);
+    renderVideoFundingReportPagination(data.pagination);
+}
+
+
+// 신고 상태 업데이트 요청 후 목록 갱신
+async function updateVideoFundingReportStatus(fundingId, reportStatus) {
+    const success = await fetchUpdateVideoFundingReportStatus(fundingId, reportStatus);
+    if (success) {
+        alert("상태가 업데이트되었습니다."); // 상태 업데이트 알림
+        changeVideoFundingPage(1); // 상태 변경 후 목록 갱신
+        document.getElementById("video-funding-report-modal").style.display = "none"; // 모달 닫기
+    }
+}
+
+// 전체 선택 및 개별 체크박스 이벤트
+function videoFundingReportCheckboxEvents() {
+    const selectAllCheckbox = document.querySelector('#video-funding-report-selectAll .select-all');
+    const videoFundingReportCheckboxes = document.querySelectorAll('.apply-table-row .apply-checkbox');
+
+    // 전체 체크박스
+    selectAllCheckbox.addEventListener('change', (event) => {
+        const isChecked = event.target.checked;
+        videoFundingReportCheckboxes.forEach(checkbox => {
+            checkbox.checked = isChecked;
+        });
+    });
+
+    // 개별 체크박스
+    videoFundingReportCheckboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', () => {
+            const allChecked = Array.from(videoFundingReportCheckboxes).every(cb => cb.checked);
+            selectAllCheckbox.checked = allChecked;
+        });
+    });
+}
+
+// 신고 상태 모달 열기
+function openVideoFundingReportModal(event) {
+    const modal = document.getElementById("video-funding-report-modal");
+    modal.style.display = "flex";
+    selectedFundingId = event.target.closest(".apply-table-row").querySelector(".apply-checkbox").dataset.id;
+}
+
+// 신고 상태 선택 및 저장
+function setupVideoFundingReportModal() {
+    const modal = document.getElementById("video-funding-report-modal");
+    const choiceButtons = modal.querySelectorAll(".choice-container input[type=button]");
+    const saveButton = modal.querySelector(".btn-complete");
+    const overlay = modal.querySelector(".background-overlay");
+
+    choiceButtons.forEach(button => {
+        button.addEventListener("click", () => {
+            choiceButtons.forEach(btn => btn.classList.remove("on"));
+            button.classList.add("on");
+            selectedReportFundingStatus = button.getAttribute("data-status");
+        });
+    });
+
+    // 상태 선택 후 저장
+    saveButton.addEventListener("click", async () => {
+        if (selectedReportFundingStatus) {
+            const success = await updateVideoFundingReportStatus(selectedFundingId, selectedReportFundingStatus);
+            if (success) {
+                modal.style.display = "none";
+                updateVideoFundingReportStatusInView(selectedFundingId, selectedReportFundingStatus);
+            }
+        } else {
+            alert("상태를 선택해주세요.");
+        }
+    });
+
+    overlay.addEventListener("click", () => {
+        modal.style.display = "none";
+    });
+}
+
+// 화면 신고 상태 업데이트
+function updateVideoFundingReportStatusInView(fundingId, newStatus) {
+    const statusButton = document.querySelector(`.apply-checkbox[data-id="${fundingId}"]`)
+        .closest(".apply-table-row")
+        .querySelector(".report-management-btn.status");
+    statusButton.textContent = newStatus;
+
+    // 신고 상태에 따른 배경색 변경
+    switch (newStatus) {
+        case "DELETE":
+            statusButton.style.backgroundColor = "rgba(41, 153, 41, 0.818)";
+            break;
+        case "HOLD":
+            statusButton.style.backgroundColor = "#ffa600";
+            break;
+        case "NOPROBLEM":
+            statusButton.style.backgroundColor = "rgb(183, 183, 183)";
+            break;
+        default:
+            statusButton.style.backgroundColor = "";
+    }
+}
+
+// 페이지 초기화
+function initVideoFundingPage() {
+    const searchInput = document.getElementById("video-funding-report-search");
+
+    // 검색 입력 이벤트
+    searchInput.addEventListener("keypress", (e) => {
+        if (e.key === "Enter") {
+            let searchValue = e.target.value.trim();
+
+            // 검색어 변환 테이블값 :  영어 , 화면에는 한글
+            switch (searchValue) {
+                case "코미디":
+                    currentVideoFundingSearch = 'comedy';
+                    break;
+                case "공포":
+                    currentVideoFundingSearch = 'horror';
+                    break;
+                case "액션":
+                    currentVideoFundingSearch = 'action';
+                    break;
+                case "드라마":
+                    currentVideoFundingSearch = 'drama';
+                    break;
+                case "로맨스":
+                    currentVideoFundingSearch = 'romance';
+                    break;
+                default:
+                    currentVideoFundingSearch = searchValue; // 숫자가 아닌 경우 그대로 사용
+                    break;
+            }
+
+            // 검색어가 입력되면 첫 페이지로 이동
+            changeVideoFundingPage(1);
+        }
+    });
+
+    // 필터 버튼 클릭 이벤트
+    document.querySelectorAll(".sort-filter-option.video-funding").forEach((option) => {
+        option.addEventListener("click", () => {
+            // 현재 클릭한 필터 버튼의 data-order 속성 값을 currentVideoFundingOrder에 설정
+            const selectedOrder = option.getAttribute("data-order");
+
+            // 선택한 정렬 기준에 따라 currentVideoFundingOrder를 설정
+            if (selectedOrder === "createdDate") {
+                currentVideoFundingOrder = "작성순";
+            } else if (selectedOrder === "video-funding-converge-price") {
+                currentVideoFundingOrder = "현재모인금액순";
+            } else if (selectedOrder === "video-funding-investor-number") {
+                currentVideoFundingOrder = "투자자수순";
+            } else if (selectedOrder === "reportStatus") {
+                currentVideoFundingOrder = "신고관리";
+            } else {
+                currentVideoFundingOrder = "작성순"; // 기본값
+            }
+
+            // 모든 필터 버튼의 'selected' 클래스 제거 후 현재 선택한 옵션에 추가
+            document.querySelectorAll(".sort-filter-option.video-funding").forEach(opt => opt.classList.remove("selected"));
+            option.classList.add("selected");
+
+            console.log(`Current Order set to: ${currentVideoFundingOrder}`); // 설정된 정렬 기준 로그
+
+            // 변경된 정렬 기준으로 목록 갱신
+            changeVideoFundingPage(1);
+        });
+    });
+
+
+    // 페이지 초기 로드
+    changeVideoFundingPage(1);
+}
+
+// 신고 내역보기 모달
+function setupVideoFundingReportDetailsModal() {
+    const modal = document.querySelector(".reasons-report-modal.video-funding"); // 모달 요소
+    const overlay=document.querySelector(".background-overlay");
+    const closeModalButton = modal.querySelector(".close-btn");           // 닫기 버튼
+
+    // 모든 "보기" 버튼에 이벤트 리스너 추가
+    document.querySelectorAll(".report-content-look-video-funding").forEach(button => {
+        button.addEventListener("click", () => {
+            console.log("보기 버튼 클릭"); // 로그 추가
+
+            // 버튼의 데이터 속성에서 정보를 읽어옴
+            const name = button.getAttribute("data-name") || ' ';
+            const email = button.getAttribute("data-email") || ' ';
+            const time = button.getAttribute("data-time") || ' ';
+            const content = button.getAttribute("data-content") || ' 내용 없음 ';
+
+            // 모달 내부에 데이터를 설정
+            modal.querySelector(".name").textContent = name;
+            modal.querySelector(".email").textContent = email;
+            modal.querySelector(".time").textContent = time;
+            modal.querySelector("textarea[name='reason']").textContent = content;
+
+            modal.style.display = "block"; // 모달 표시
+            overlay.style.display="none";
+        });
+    });
+
+    // 닫기 버튼 클릭 시 모달 닫기
+    closeModalButton.addEventListener("click", () => {
+        modal.style.display = "none";
+    });
+}
+
+
+// 페이지 로드
+document.addEventListener("DOMContentLoaded", () => {
+    initVideoFundingPage();
+    setupVideoFundingReportModal();
+});
+
+
+//--------------------------------------------------------------------------------------------------------
+// 글 펀딩 신고관리
+
+// 검색 정렬 선언
+let currentTextFundingOrder = 'createdDate';
+let currentTextFundingSearch = '';
+
+// 페이지 변경 함수
+async function changeTextFundingPage(page) {
+    const data = await fetchTextFundingReports(page, currentTextFundingSearch, currentTextFundingOrder || 'createdDate');
+    renderTextFundingReportList(data.reports);
+    renderTextFundingReportPagination(data.pagination);
+}
+
+
+// 신고 상태 업데이트 요청 후 목록 갱신
+async function updateTextFundingReportStatus(fundingId, reportStatus) {
+    const success = await fetchUpdateTextFundingReportStatus(fundingId, reportStatus);
+    if (success) {
+        alert("상태가 업데이트되었습니다."); // 상태 업데이트 알림
+        changeTextFundingPage(1); // 상태 변경 후 목록 갱신
+        document.getElementById("text-funding-report-modal").style.display = "none"; // 모달 닫기
+    }
+}
+
+// 전체 선택 및 개별 체크박스 이벤트
+function textFundingReportCheckboxEvents() {
+    const selectAllCheckbox = document.querySelector('#text-funding-report-selectAll .select-all');
+    const textFundingReportCheckboxes = document.querySelectorAll('.apply-table-row .apply-checkbox');
+
+    // 전체 체크박스
+    selectAllCheckbox.addEventListener('change', (event) => {
+        const isChecked = event.target.checked;
+        textFundingReportCheckboxes.forEach(checkbox => {
+            checkbox.checked = isChecked;
+        });
+    });
+
+    // 개별 체크박스
+    textFundingReportCheckboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', () => {
+            const allChecked = Array.from(textFundingReportCheckboxes).every(cb => cb.checked);
+            selectAllCheckbox.checked = allChecked;
+        });
+    });
+}
+
+// 신고 상태 모달 열기
+function openTextFundingReportModal(event) {
+    const modal = document.getElementById("text-funding-report-modal");
+    modal.style.display = "flex";
+    selectedFundingId = event.target.closest(".apply-table-row").querySelector(".apply-checkbox").dataset.id;
+}
+
+// 신고 상태 선택 및 저장
+function setupTextFundingReportModal() {
+    const modal = document.getElementById("text-funding-report-modal");
+    const choiceButtons = modal.querySelectorAll(".choice-container input[type=button]");
+    const saveButton = modal.querySelector(".btn-complete");
+    const overlay = modal.querySelector(".background-overlay");
+
+    choiceButtons.forEach(button => {
+        button.addEventListener("click", () => {
+            choiceButtons.forEach(btn => btn.classList.remove("on"));
+            button.classList.add("on");
+            selectedReportFundingStatus = button.getAttribute("data-status");
+        });
+    });
+
+    // 상태 선택 후 저장
+    saveButton.addEventListener("click", async () => {
+        if (selectedReportFundingStatus) {
+            const success = await updateTextFundingReportStatus(selectedFundingId, selectedReportFundingStatus);
+            if (success) {
+                modal.style.display = "none";
+                updateTextFundingReportStatusInView(selectedFundingId, selectedReportFundingStatus);
+            }
+        } else {
+            alert("상태를 선택해주세요.");
+        }
+    });
+
+    overlay.addEventListener("click", () => {
+        modal.style.display = "none";
+    });
+}
+
+// 화면 신고 상태 업데이트
+function updateTextFundingReportStatusInView(fundingId, newStatus) {
+    const statusButton = document.querySelector(`.apply-checkbox[data-id="${fundingId}"]`)
+        .closest(".apply-table-row")
+        .querySelector(".report-management-btn.status");
+    statusButton.textContent = newStatus;
+
+    // 신고 상태에 따른 배경색 변경
+    switch (newStatus) {
+        case "DELETE":
+            statusButton.style.backgroundColor = "rgba(41, 153, 41, 0.818)";
+            break;
+        case "HOLD":
+            statusButton.style.backgroundColor = "#ffa600";
+            break;
+        case "NOPROBLEM":
+            statusButton.style.backgroundColor = "rgb(183, 183, 183)";
+            break;
+        default:
+            statusButton.style.backgroundColor = "";
+    }
+}
+
+// 페이지 초기화
+function initTextFundingPage() {
+    const searchInput = document.getElementById("text-funding-report-search");
+
+    // 검색 입력 이벤트
+    searchInput.addEventListener("keypress", (e) => {
+        if (e.key === "Enter") {
+            let searchValue = e.target.value.trim();
+
+            // 검색어 변환 테이블값 :  영어 , 화면에는 한글
+            switch (searchValue) {
+                case "코미디":
+                    currentTextFundingSearch = 'comedy';
+                    break;
+                case "공포":
+                    currentTextFundingSearch = 'horror';
+                    break;
+                case "액션":
+                    currentTextFundingSearch = 'action';
+                    break;
+                case "드라마":
+                    currentTextFundingSearch = 'drama';
+                    break;
+                case "로맨스":
+                    currentTextFundingSearch = 'romance';
+                    break;
+                default:
+                    currentTextFundingSearch = searchValue; // 숫자가 아닌 경우 그대로 사용
+                    break;
+            }
+
+            // 검색어가 입력되면 첫 페이지로 이동
+            changeTextFundingPage(1);
+        }
+    });
+
+    // 필터 버튼 클릭 이벤트
+    document.querySelectorAll(".sort-filter-option.text-funding").forEach((option) => {
+        option.addEventListener("click", () => {
+            // 현재 클릭한 필터 버튼의 data-order 속성 값을 currentVideoFundingOrder에 설정
+            const selectedOrder = option.getAttribute("data-order");
+
+            // 선택한 정렬 기준에 따라 currentVideoFundingOrder를 설정
+            if (selectedOrder === "createdDate") {
+                currentTextFundingOrder = "작성순";
+            } else if (selectedOrder === "text-funding-converge-price") {
+                currentTextFundingOrder = "현재모인금액순";
+            } else if (selectedOrder === "text-funding-investor-number") {
+                currentTextFundingOrder = "투자자수순";
+            } else if (selectedOrder === "reportStatus") {
+                currentTextFundingOrder = "신고관리";
+            } else {
+                currentTextFundingOrder = "작성순"; // 기본값
+            }
+
+            // 모든 필터 버튼의 'selected' 클래스 제거 후 현재 선택한 옵션에 추가
+            document.querySelectorAll(".sort-filter-option.text-funding").forEach(opt => opt.classList.remove("selected"));
+            option.classList.add("selected");
+
+            console.log(`Current Order set to: ${currentTextFundingOrder}`); // 설정된 정렬 기준 로그
+
+            // 변경된 정렬 기준으로 목록 갱신
+            changeTextFundingPage(1);
+        });
+    });
+
+
+    // 페이지 초기 로드
+    changeTextFundingPage(1);
+}
+
+// 신고 내역보기 모달
+function setupTextFundingReportDetailsModal() {
+    const modal = document.querySelector(".reasons-report-modal.text-funding"); // 모달 요소
+    const overlay=document.querySelector(".background-overlay");
+    const closeModalButton = modal.querySelector(".close-btn");           // 닫기 버튼
+
+    // 모든 "보기" 버튼에 이벤트 리스너 추가
+    document.querySelectorAll(".report-content-look-text-funding").forEach(button => {
+        button.addEventListener("click", () => {
+            console.log("보기 버튼 클릭"); // 로그 추가
+
+            // 버튼의 데이터 속성에서 정보를 읽어옴
+            const name = button.getAttribute("data-name") || ' ';
+            const email = button.getAttribute("data-email") || ' ';
+            const time = button.getAttribute("data-time") || ' ';
+            const content = button.getAttribute("data-content") || ' 내용 없음 ';
+
+            // 모달 내부에 데이터를 설정
+            modal.querySelector(".name").textContent = name;
+            modal.querySelector(".email").textContent = email;
+            modal.querySelector(".time").textContent = time;
+            modal.querySelector("textarea[name='reason']").textContent = content;
+
+            modal.style.display = "block"; // 모달 표시
+            overlay.style.display="none";
+        });
+    });
+
+    // 닫기 버튼 클릭 시 모달 닫기
+    closeModalButton.addEventListener("click", () => {
+        modal.style.display = "none";
+    });
+}
+
+
+// 페이지 로드
+document.addEventListener("DOMContentLoaded", () => {
+    initTextFundingPage();
+    setupTextFundingReportModal();
+});
+
+
+//----------------------------------------------------------------------------------------------------------
+// 작품 구매 조회
+
+// 선언
+let currentWorkSearch = '';
+
+
+// 페이지 변경
+async function changeWorkPage(page) {
+    const data = await fetchWorkProduct(page, currentWorkSearch);
+    renderWorkList(data.pays);
+    renderWorkPagination(data.pagination);
+}
+
+// 전체 선택 및 개별 체크박스 이벤트
+function workCheckboxEvents() {
+    const selectAllCheckbox = document.querySelector('#work-product-selectAll .select-all');
+    const workCheckboxes = document.querySelectorAll('.apply-table-row .apply-checkbox');
+
+    // 전체 체크박스
+    selectAllCheckbox.addEventListener('change', (event) => {
+        const isChecked = event.target.checked;
+        workCheckboxes.forEach(checkbox => {
+            checkbox.checked = isChecked;
+        });
+    });
+
+    // 개별 체크박스
+    workCheckboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', () => {
+            const allChecked = Array.from(workCheckboxes).every(cb => cb.checked);
+            selectAllCheckbox.checked = allChecked;
+        });
+    });
+}
+
+// 초기화 함수
+async function initWorkPage() {
+    const data = await fetchWorkProduct();
+    renderWorkList(data.pays);
+    renderWorkPagination(data.pagination);
+
+    const searchInput = document.getElementById("work-product-search");
+    searchInput.addEventListener("keypress", (e) => {
+        if (e.key === "Enter") {
+            let searchValue = e.target.value.trim();
+
+            // 검색어 변환
+            switch (searchValue) {
+                case "영상":
+                    currentWorkSearch = 'WORKVIDEO';
+                    break;
+                case "글":
+                    currentWorkSearch = 'WORKTEXT';
+                    break;
+                default:
+                    currentWorkSearch = searchValue;
+                    break;
+
+            }
+            // 검색어가 입력되면 첫 페이지로 이동
+            changeWorkPage(1);
+        }
+    });
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    initWorkPage();
+});
+
+//----------------------------------------------------------------------------------------------------------
+// 펀딩 상품 구매 조회
+
+// 선언
+let currentFundingSearch = '';
+
+
+// 페이지 변경
+async function changeFundingPage(page) {
+    const data = await fetchFundingProduct(page, currentFundingSearch);
+    renderFundingList(data.pays);
+    renderFundingPagination(data.pagination);
+}
+
+// 전체 선택 및 개별 체크박스 이벤트
+function fundingCheckboxEvents() {
+    const selectAllCheckbox = document.querySelector('#funding-product-selectAll .select-all');
+    const fundingCheckboxes = document.querySelectorAll('.apply-table-row .apply-checkbox');
+
+    // 전체 체크박스
+    selectAllCheckbox.addEventListener('change', (event) => {
+        const isChecked = event.target.checked;
+        fundingCheckboxes.forEach(checkbox => {
+            checkbox.checked = isChecked;
+        });
+    });
+
+    // 개별 체크박스
+    fundingCheckboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', () => {
+            const allChecked = Array.from(fundingCheckboxes).every(cb => cb.checked);
+            selectAllCheckbox.checked = allChecked;
+        });
+    });
+}
+
+// 초기화 함수
+async function initFundingPage() {
+    const data = await fetchFundingProduct();
+    renderFundingList(data.pays);
+    renderFundingPagination(data.pagination);
+
+    const searchInput = document.getElementById("funding-product-search");
+    searchInput.addEventListener("keypress", (e) => {
+        if (e.key === "Enter") {
+            let searchValue = e.target.value.trim();
+
+            // 검색어 변환
+            switch (searchValue) {
+                case "영상":
+                    currentFundingSearch = 'FUNDINGVIDEO';
+                    break;
+                case "글":
+                    currentFundingSearch = 'FUNDINGTEXT';
+                    break;
+                default:
+                    currentFundingSearch = searchValue;
+                    break;
+
+            }
+            // 검색어가 입력되면 첫 페이지로 이동
+            changeFundingPage(1);
+        }
+    });
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    initFundingPage();
+});

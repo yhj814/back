@@ -2,16 +2,21 @@ package com.app.ggumteo.controller.admin;
 
 import com.app.ggumteo.domain.admin.AdminDTO;
 import com.app.ggumteo.domain.admin.AnnouncementVO;
+import com.app.ggumteo.domain.admin.PayFundingDTO;
+import com.app.ggumteo.domain.admin.PayWorkDTO;
 import com.app.ggumteo.domain.inquiry.InquiryDTO;
 import com.app.ggumteo.domain.member.MemberProfileDTO;
 import com.app.ggumteo.domain.report.AuditionReportDTO;
+import com.app.ggumteo.domain.report.FundingReportDTO;
 import com.app.ggumteo.domain.report.ReplyReportDTO;
 import com.app.ggumteo.domain.report.WorkReportDTO;
 import com.app.ggumteo.pagination.AdminPagination;
 import com.app.ggumteo.service.admin.AdminService;
 import com.app.ggumteo.service.admin.AnnouncementService;
+import com.app.ggumteo.service.admin.PayService;
 import com.app.ggumteo.service.inquiry.InquiryService;
 import com.app.ggumteo.service.report.AuditionReportService;
+import com.app.ggumteo.service.report.FundingReportService;
 import com.app.ggumteo.service.report.ReplyReportService;
 import com.app.ggumteo.service.report.WorkReportService;
 import lombok.RequiredArgsConstructor;
@@ -37,6 +42,8 @@ public class AdminController {
     private final WorkReportService workReportService;
     private final ReplyReportService replyReportService;
     private final AuditionReportService auditionReportService;
+    private final FundingReportService fundingReportService;
+    private final PayService payService;
 
     // 인증번호 입력 페이지
     @GetMapping("/verify")
@@ -263,7 +270,7 @@ public class AdminController {
         pagination.setPage(page);
 
         // 총 데이터 개수를 가져와서 페이징 진행
-        pagination.setTotal(workReportService.getVideoReportsCount(search,order));
+        pagination.setTotal(workReportService.getVideoReportsCount(search, order));
         pagination.progress();
 
         // 데이터 조회
@@ -272,7 +279,7 @@ public class AdminController {
         log.info("영상 신고 검색어: {}", search);
         log.info("영상 신고 기준: {}", order);
         log.info("페이지: {}", pagination);
-        log.info("{}",reports.size());
+        log.info("{}", reports.size());
 
         // 결과를 Map에 담아 반환
         Map<String, Object> response = new HashMap<>();
@@ -312,7 +319,7 @@ public class AdminController {
         pagination.setPage(page);
 
         // 총 데이터 개수를 가져와서 페이징 진행
-        pagination.setTotal(workReportService.getTextReportsCount(search,order));
+        pagination.setTotal(workReportService.getTextReportsCount(search, order));
         pagination.progress();
 
         // 데이터 조회
@@ -320,7 +327,7 @@ public class AdminController {
 
         log.info("글 신고 검색어: {}", search);
         log.info("글 신고 정렬 기준: {}", order);
-        log.info("{}",reports.size());
+        log.info("{}", reports.size());
 
         // 결과를 Map에 담아 반환
         Map<String, Object> response = new HashMap<>();
@@ -541,6 +548,163 @@ public class AdminController {
             log.error("Text 모집 신고 상태 변경 중 오류 발생 - 신고 ID: {}", auditionId, e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("글 모집 신고 상태 변경에 실패했습니다.");
         }
+    }
+
+
+    // 영상 펀딩 신고 목록
+    @GetMapping("/videoFundingReports")
+    @ResponseBody
+    public Map<String, Object> getVideoFundingReports(
+            @RequestParam(value = "search", required = false, defaultValue = "") String search,
+            @RequestParam(value = "order", required = false, defaultValue = "createdDate") String order,
+            @RequestParam(value = "page", defaultValue = "1") Integer page
+    ) {
+        // 페이징 설정
+        AdminPagination pagination = new AdminPagination();
+        pagination.setPage(page);
+
+        // 총 데이터 개수를 가져와서 페이징 진행
+        pagination.setTotal(fundingReportService.getFundingVideoReportsCount(search, order));
+        pagination.progress();
+
+        // 데이터 조회
+        List<FundingReportDTO> reports = fundingReportService.getFundingVideoReports(search, order, pagination);
+
+        log.info("영상 펀딩 신고 검색어: {}", search);
+        log.info("영상 펀딩 신고 정렬 기준: {}", order);
+        log.info("결과 개수: {}", reports.size());
+
+        // 결과를 Map에 담아 반환
+        Map<String, Object> response = new HashMap<>();
+        response.put("reports", reports);
+        response.put("pagination", pagination);
+
+        return response;
+    }
+
+
+    // 영상 펀딩 신고 상태 업데이트
+    @PostMapping("/videoFundingReports/status")
+    @ResponseBody
+    public ResponseEntity<String> updateVideoFundingReportStatus(@RequestBody Map<String, Object> requestData) {
+        Long fundingId = Long.valueOf(requestData.get("fundingId").toString());
+        String status = requestData.get("reportStatus").toString();
+
+        try {
+            fundingReportService.updateVideoFundingReportStatus(fundingId, status);
+            log.info("영상 펀딩 신고 ID {}의 상태가 {}로 변경되었습니다.", fundingId, status);
+            return ResponseEntity.ok("영상 펀딩 신고 상태가 성공적으로 변경되었습니다.");
+        } catch (Exception e) {
+            log.error("영상 펀딩 신고 상태 변경 중 오류 발생 - 신고 ID: {}", fundingId, e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("영상 펀딩 신고 상태 변경에 실패했습니다.");
+        }
+    }
+
+    // 글 펀딩 신고 목록
+    @GetMapping("/textFundingReports")
+    @ResponseBody
+    public Map<String, Object> getTextFundingReports(
+            @RequestParam(value = "search", required = false, defaultValue = "") String search,
+            @RequestParam(value = "order", required = false, defaultValue = "createdDate") String order,
+            @RequestParam(value = "page", defaultValue = "1") Integer page
+    ) {
+        // 페이징 설정
+        AdminPagination pagination = new AdminPagination();
+        pagination.setPage(page);
+
+        // 총 데이터 개수를 가져와서 페이징 진행
+        pagination.setTotal(fundingReportService.getFundingTextReportsCount(search, order));
+        pagination.progress();
+
+        // 데이터 조회
+        List<FundingReportDTO> reports = fundingReportService.getFundingTextReports(search, order, pagination);
+
+        log.info("글 펀딩 신고 검색어: {}", search);
+        log.info("글 펀딩 신고 정렬 기준: {}", order);
+        log.info("결과 개수: {}", reports.size());
+
+        // 결과를 Map에 담아 반환
+        Map<String, Object> response = new HashMap<>();
+        response.put("reports", reports);
+        response.put("pagination", pagination);
+
+        return response;
+    }
+
+
+    // 글 펀딩 신고 상태 업데이트
+    @PostMapping("/textFundingReports/status")
+    @ResponseBody
+    public ResponseEntity<String> updateTextFundingReportStatus(@RequestBody Map<String, Object> requestData) {
+        Long fundingId = Long.valueOf(requestData.get("fundingId").toString());
+        String status = requestData.get("reportStatus").toString();
+
+        try {
+            fundingReportService.updateTextFundingReportStatus(fundingId, status);
+            log.info("글 펀딩 신고 ID {}의 상태가 {}로 변경되었습니다.", fundingId, status);
+            return ResponseEntity.ok("글 펀딩 신고 상태가 성공적으로 변경되었습니다.");
+        } catch (Exception e) {
+            log.error("글 펀딩 신고 상태 변경 중 오류 발생 - 신고 ID: {}", fundingId, e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("글 펀딩 신고 상태 변경에 실패했습니다.");
+        }
+    }
+
+    // 작품 결제 목록
+    @GetMapping("/payWorkList")
+    @ResponseBody
+    public Map<String, Object> getPayWorkList(
+            @RequestParam(value = "search", required = false, defaultValue = "") String search,
+            @RequestParam(value = "page", defaultValue = "1") Integer page
+    ) {
+        // 페이징 설정
+        AdminPagination pagination = new AdminPagination();
+        pagination.setPage(page);
+
+        // 총 데이터 개수를 가져와서 페이징 진행
+        pagination.setTotal(payService.getWorkProductCounts(search));
+        pagination.progress();
+
+        // 데이터 조회
+        List<PayWorkDTO> pays = payService.getWorkProducts(search, pagination);
+
+        log.info("작품 결제 검색어: {}", search);
+        log.info("결과 개수: {}", pays.size());
+
+        // 결과를 Map에 담아 반환
+        Map<String, Object> response = new HashMap<>();
+        response.put("pays", pays);
+        response.put("pagination", pagination);
+
+        return response;
+    }
+
+    // 펀딩 상품 결제 목록
+    @GetMapping("/payFundingList")
+    @ResponseBody
+    public Map<String, Object> getPayFundingList(
+            @RequestParam(value = "search", required = false, defaultValue = "") String search,
+            @RequestParam(value = "page", defaultValue = "1") Integer page
+    ) {
+        // 페이징 설정
+        AdminPagination pagination = new AdminPagination();
+        pagination.setPage(page);
+
+        // 총 데이터 개수를 가져와서 페이징 진행
+        pagination.setTotal(payService.getFundingProductCounts(search));
+        pagination.progress();
+
+        // 데이터 조회
+        List<PayFundingDTO> pays = payService.getFundingProducts(search, pagination);
+
+        log.info("펀딩 상품 결제 검색어: {}", search);
+        log.info("결과 개수: {}", pays.size());
+
+        // 결과를 Map에 담아 반환
+        Map<String, Object> response = new HashMap<>();
+        response.put("pays", pays);
+        response.put("pagination", pagination);
+
+        return response;
     }
 }
 

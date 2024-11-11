@@ -28,7 +28,7 @@ public class AuditionApplicationServiceImpl implements AuditionApplicationServic
 
     @Override
     @Transactional
-    public void write(AuditionApplicationDTO auditionApplicationDTO, MultipartFile applicationfile) {
+    public void write(AuditionApplicationDTO auditionApplicationDTO) {
         // auditionApplication 테이블에 신청 정보 삽입
         auditionApplicationDAO.save(auditionApplicationDTO);
 
@@ -42,11 +42,6 @@ public class AuditionApplicationServiceImpl implements AuditionApplicationServic
         applyAuditionNotificationDAO.save(notificationVO);
 
         log.info("Notification saved with auditionApplicationId: {}", auditionApplicationId);
-
-        // 필요 시 파일 첨부 로직 추가
-        if (applicationfile != null && !applicationfile.isEmpty()) {
-            auditionApplicationFileService.saveAuditionApplicationFile(applicationfile, auditionApplicationId);
-        }
     }
 
     @Override

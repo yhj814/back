@@ -434,6 +434,15 @@ video {
     margin: 10px;
     padding: 10px;
 }
+#funding-section .filter-wrap {
+    width: 1350px;
+    justify-content: space-between;
+    display: flex;
+    border-top: 1px solid #e2e8f0;
+    border-bottom: 1px solid #e2e8f0;
+    margin: 10px;
+    padding: 10px;
+}
 #member-container .filter-wrap {
     width: 1350px;
     justify-content: space-between;
@@ -513,6 +522,15 @@ video {
 /* ******************************************* */
 .apply-table-container {
     width: 1250px;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    overflow: hidden;
+    display: table; /* 테이블처럼 보이도록 설정 */
+    table-layout: fixed; /* 모든 열이 지정된 비율에 맞게 크기를 고정 */
+    text-align: center;
+}
+#funding-section .apply-table-container {
+    width: 1350px;
     border: 1px solid #dee2e6;
     border-radius: 8px;
     overflow: hidden;
@@ -665,7 +683,7 @@ video {
 .choice-container .btn-no-issue.on,
 .choice-container .btn-terminated-member.on,
 .choice-container .btn-cancel.not-allowed.on {
-    background-color: rgb(183, 183, 183);
+    background-color: red;
 }
 /* (모달창 아님.) 신고상태 버튼, 문의 처리 상태 버튼 */
 .status{
@@ -1207,19 +1225,19 @@ h1.common-header-description {
 /* 체크박스 열 */
 #funding-section .apply-header-cell:nth-child(1),
 #funding-section .apply-table-cell:nth-child(1) {
-    width: 3%;
+    width: 1%;
 }
 
 /* 첫번째 열 */
 #funding-section .apply-header-cell:nth-child(2),
 #funding-section .apply-table-cell:nth-child(2) {
-    width: 4%;
+    width: 5%;
 }
 
 /* 두번째 열 */
 #funding-section .apply-header-cell:nth-child(3),
 #funding-section .apply-table-cell:nth-child(3) {
-    width: 5%;
+    width: 9%;
 }
 
 /* 세번째 열 */
@@ -1238,13 +1256,13 @@ h1.common-header-description {
 /* 다섯번째 열 */
 #funding-section .apply-header-cell:nth-child(6),
 #funding-section .apply-table-cell:nth-child(6) {
-    width: 5%;
+    width: 8%;
 }
 
 /* 여섯번째 열 */
 #funding-section .apply-header-cell:nth-child(7),
 #funding-section .apply-table-cell:nth-child(7) {
-    width: 9%;
+    width: 14%;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -1253,12 +1271,12 @@ h1.common-header-description {
 /* 일곱 열 */
 #funding-section .apply-header-cell:nth-child(8),
 #funding-section .apply-table-cell:nth-child(8) {
-    width: 7%;
+    width: 11%;
 }
 /* 여덟 열 */
 #funding-section .apply-header-cell:nth-child(9),
 #funding-section .apply-table-cell:nth-child(9) {
-    width: 7%;
+    width: 11%;
 }
 
 /* 아홉 열 */
@@ -1270,26 +1288,15 @@ h1.common-header-description {
 /* 10 열 */
 #funding-section .apply-header-cell:nth-child(11),
 #funding-section .apply-table-cell:nth-child(11) {
-    width: 6%;
+    width: 12%;
 }
 
 /* 11 열 */
 #funding-section .apply-header-cell:nth-child(12),
 #funding-section .apply-table-cell:nth-child(12) {
-    width: 7%;
+    width: 12%;
 }
 
-/* 12 열 */
-#funding-section .apply-header-cell:nth-child(13),
-#funding-section .apply-table-cell:nth-child(13) {
-    width: 7%;
-}
-
-/* 마지막 열 */
-#funding-section .apply-header-cell:nth-child(14),
-#funding-section .apply-table-cell:nth-child(14) {
-    width: 7%;
-}
 
 /* section5 : 모집 관리 */
 /* 기존의 너비 설정 유지 */
@@ -1504,7 +1511,7 @@ h1.common-header-description {
 /* 세번째 열 */
 #payment-section .apply-header-cell:nth-child(4),
 #payment-section .apply-table-cell:nth-child(4) {
-    width: 6%;
+    width: 12%;
 }
 
 /* 네번째 열 */
@@ -1758,3 +1765,9 @@ h1.common-header-description {
     color: red;
 }
 
+.div-funding-product{
+    display: none;
+}
+#funding-product-search{
+    display: none;
+}

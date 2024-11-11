@@ -10,7 +10,6 @@ import com.app.ggumteo.domain.file.PostFileVO;
 import com.app.ggumteo.domain.member.MemberProfileDTO;
 import com.app.ggumteo.domain.member.MemberProfileVO;
 import com.app.ggumteo.domain.member.MemberVO;
-import com.app.ggumteo.domain.post.PostDTO;
 import com.app.ggumteo.domain.post.PostVO;
 import com.app.ggumteo.domain.reply.ReplyDTO;
 import com.app.ggumteo.domain.work.WorkDTO;

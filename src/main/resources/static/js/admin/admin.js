@@ -498,57 +498,6 @@ function showReviewDetailModal(sectionId) {
 }
 showReviewDetailModal("#review-section");
 
-// ####공통 로직: 문자 발송 모달창을 수행하는 함수
-function showMesaageModal(sectionId) {
-    const btnsVideo = document.querySelectorAll(
-        `${sectionId} .video-wrapper .selected-btn.message`
-    );
-    const modalVideo = document.querySelector(
-        `${sectionId} .video.message-modal`
-    );
-    const backgroundOverlayVideo = document.querySelector(
-        `${sectionId} .video.message-modal .background-overlay`
-    );
-
-    // 문자발송 버튼 클릭했을 때
-    btnsVideo.forEach((btn) => {
-        btn.addEventListener("click", () => {
-            // 모달창 나옴.
-            modalVideo.style.display = "flex";
-        });
-    });
-    // 백그라운드 클릭했을 때
-    backgroundOverlayVideo.addEventListener("click", () => {
-        // 모달창 사라짐.
-        modalVideo.style.display = "none";
-    });
-
-    const btnsText = document.querySelectorAll(
-        `${sectionId} .text-wrapper .selected-btn.message`
-    );
-    const modalText = document.querySelector(
-        `${sectionId} .text.message-modal`
-    );
-    const backgroundOverlayText = document.querySelector(
-        `${sectionId} .text.message-modal .background-overlay`
-    );
-
-    // 문자발송 버튼 클릭했을 때
-    btnsText.forEach((btn) => {
-        btn.addEventListener("click", () => {
-            // 모달창 나옴.
-            modalText.style.display = "flex";
-        });
-    });
-    // 백그라운드 클릭했을 때
-    // backgroundOverlayText.addEventListener("click", () => {
-    //     // 모달창 사라짐.
-    //     modalText.style.display = "none";
-    // });
-}
-showMesaageModal("#work-section");
-showMesaageModal("#funding-section");
-
 // **문의사항 답변 모달창**
 function showAnsweredModal(sectionId, type) {
     const btns = document.querySelectorAll(`.answered-btn.${type}`);
@@ -679,3 +628,30 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 });
+
+// 결제관리 작품 ,펀딩 , 누를시 이벤트
+
+const workProductBtn=document.querySelector(".sort-filter-option.work-product");
+const workProductDiv=document.querySelector(".div-work-product");
+const workProductSearch=document.querySelector("#work-product-search");
+const fundingProductDiv=document.querySelector(".div-funding-product");
+const fundingProductBtn=document.querySelector(".sort-filter-option.funding-product");
+const fundingProductSearch=document.querySelector("#funding-product-search");
+
+fundingProductBtn.addEventListener('click',()=>{
+    fundingProductDiv.style.display="block";
+    workProductDiv.style.display="none";
+    fundingProductSearch.style.display="block";
+    workProductSearch.style.display="none";
+});
+
+
+
+workProductBtn.addEventListener('click',()=>{
+    fundingProductDiv.style.display="none";
+    workProductDiv.style.display="block";
+    workProductSearch.style.display="block";
+    fundingProductSearch.style.display="none";
+});
+
+

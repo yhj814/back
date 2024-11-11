@@ -1029,23 +1029,27 @@
 
                         <!-- 1. 영상 -->
                         <div>
-                            <div class="video-wrapper">
+                            <div class="video-wrapper" id="video-funding-report">
                                 <!-- body_layout -->
                                 <div class="common-layout-container">
                                     <div class="filter-wrap">
-                                        <div class="sort-filter-options">
-                                                    <span class="sort-filter-option"
+                                        <div class="sort-filter-options" id="video-funding-report-filter"
+                                             data-order="createdDate">
+                                                    <span class="sort-filter-option selected video-funding"
                                                     >작성일 순</span
                                                     >
-                                            <span class="sort-filter-option"
+                                            <span class="sort-filter-option video-funding"
+                                                  data-order="video-funding-converge-price"
                                             >현재모인금액 순</span
                                             >
-                                            <span class="sort-filter-option"
+                                            <span class="sort-filter-option video-funding"
+                                                  data-order="video-funding-investor-number"
                                             >투자자수 순</span
                                             >
                                             <!-- 신고관리 defalt  -->
                                             <span
-                                                    class="sort-filter-option selected"
+                                                    class="sort-filter-option video-funding"
+                                                    data-order="reportStatus"
                                             >신고관리</span
                                             >
                                         </div>
@@ -1055,6 +1059,7 @@
                                                     type="text"
                                                     class="filter-search-input"
                                                     placeholder="통합검색"
+                                                    id="video-funding-report-search"
                                             />
                                             <div class="btn-wrapper">
                                                 <p class="caption">펀딩에 대한 추가적인 안내 또는 전달사항이 있는 경우</p>
@@ -1074,6 +1079,7 @@
                                         >
                                             <div
                                                     class="apply-table-cell apply-header-cell select-all-cell"
+                                                    id="video-funding-report-selectAll"
                                             >
                                                 <input
                                                         type="checkbox"
@@ -1128,11 +1134,6 @@
                                             <div
                                                     class="apply-table-cell apply-header-cell"
                                             >
-                                                진행상태
-                                            </div>
-                                            <div
-                                                    class="apply-table-cell apply-header-cell"
-                                            >
                                                 신고상태
                                             </div>
                                             <div
@@ -1141,321 +1142,19 @@
                                                 신고내역
                                             </div>
                                         </div>
-
-                                        <!-- Example row (Initial data) -->
-                                        <div class="apply-table-row">
-                                            <div class="apply-table-cell">
-                                                <input
-                                                        type="checkbox"
-                                                        class="apply-checkbox"
-                                                />
-                                            </div>
-                                            <div class="apply-table-cell">1</div>
-                                            <div class="apply-table-cell">
-                                                홍길동
-                                            </div>
-                                            <div class="apply-table-cell">
-                                                2024-01-01
-                                            </div>
-                                            <div class="apply-table-cell">
-                                                2024-02-02
-                                            </div>
-                                            <div class="apply-table-cell">
-                                                드라마
-                                            </div>
-                                            <div
-                                                    class="apply-table-cell post-title"
-                                            >
-                                                <a href=""
-                                                >영상 펀딩 테스트 제목입니다.</a
-                                                >
-                                            </div>
-                                            <div class="apply-table-cell">
-                                                30,000
-                                            </div>
-                                            <div class="apply-table-cell">
-                                                1,000,000원
-                                            </div>
-                                            <div class="apply-table-cell">1</div>
-                                            <div class="apply-table-cell progress">
-                                                진행 중
-                                            </div>
-                                            <div class="apply-table-cell">
-                                                <button
-                                                        class="report-management-btn status hold"
-                                                >
-                                                    보류
-                                                </button>
-                                            </div>
-                                            <div class="apply-table-cell">
-                                                <button class="reasons-report-btn">
-                                                    보기
-                                                </button>
-                                            </div>
-                                        </div>
-                                        <div class="apply-table-row">
-                                            <div class="apply-table-cell">
-                                                <input
-                                                        type="checkbox"
-                                                        class="apply-checkbox"
-                                                />
-                                            </div>
-                                            <div class="apply-table-cell">2</div>
-                                            <div class="apply-table-cell">
-                                                홍길동
-                                            </div>
-                                            <div class="apply-table-cell">
-                                                2024-01-01
-                                            </div>
-                                            <div class="apply-table-cell">
-                                                2024-02-02
-                                            </div>
-                                            <div class="apply-table-cell">
-                                                코미디
-                                            </div>
-                                            <div
-                                                    class="apply-table-cell post-title"
-                                            >
-                                                <a href=""
-                                                >영상 펀딩 테스트 제목입니다.</a
-                                                >
-                                            </div>
-                                            <div class="apply-table-cell">
-                                                500,000
-                                            </div>
-                                            <div class="apply-table-cell">
-                                                700,000
-                                            </div>
-                                            <div class="apply-table-cell">5</div>
-                                            <div class="apply-table-cell end">
-                                                종료
-                                            </div>
-
-                                            <div class="apply-table-cell">-</div>
-                                            <div class="apply-table-cell edit">
-                                                -
-                                            </div>
-                                        </div>
-                                        <div class="apply-table-row">
-                                            <div class="apply-table-cell">
-                                                <input
-                                                        type="checkbox"
-                                                        class="apply-checkbox"
-                                                />
-                                            </div>
-                                            <div class="apply-table-cell">3</div>
-                                            <div class="apply-table-cell">
-                                                홍길동
-                                            </div>
-                                            <div class="apply-table-cell">
-                                                2024-01-01
-                                            </div>
-                                            <div class="apply-table-cell">
-                                                2024-02-02
-                                            </div>
-                                            <div class="apply-table-cell">액션</div>
-                                            <div
-                                                    class="apply-table-cell post-title"
-                                            >
-                                                <a href=""
-                                                >영상 펀딩 테스트 제목입니다.</a
-                                                >
-                                            </div>
-                                            <div class="apply-table-cell">0</div>
-                                            <div class="apply-table-cell">
-                                                500,000
-                                            </div>
-                                            <div class="apply-table-cell">-</div>
-                                            <div class="apply-table-cell progress">
-                                                진행 중
-                                            </div>
-                                            <div class="apply-table-cell">
-                                                -
-                                            </div>
-                                            <div class="apply-table-cell">
-                                                <button
-                                                        class="report-management-btn status report"
-                                                >
-                                                    신고
-                                                </button>
-                                            </div>
-                                            <div class="apply-table-cell edit">
-                                                <button class="reasons-report-btn">
-                                                    보기
-                                                </button>
-                                            </div>
-                                        </div>
-                                        <div class="apply-table-row">
-                                            <div class="apply-table-cell">
-                                                <input
-                                                        type="checkbox"
-                                                        class="apply-checkbox"
-                                                />
-                                            </div>
-                                            <div class="apply-table-cell">4</div>
-                                            <div class="apply-table-cell">
-                                                홍길동
-                                            </div>
-                                            <div class="apply-table-cell">
-                                                2024-01-01
-                                            </div>
-                                            <div class="apply-table-cell">
-                                                2024-02-02
-                                            </div>
-                                            <div class="apply-table-cell">액션</div>
-                                            <div
-                                                    class="apply-table-cell post-title"
-                                            >
-                                                <a href=""
-                                                >영상 펀딩 테스트 제목입니다.</a
-                                                >
-                                            </div>
-                                            <div class="apply-table-cell">
-                                                2,000,000
-                                            </div>
-                                            <div class="apply-table-cell">
-                                                1,000,000
-                                            </div>
-                                            <div class="apply-table-cell">10</div>
-                                            <div class="apply-table-cell end">
-                                                종료
-                                            </div>
-                                            <div class="apply-table-cell">
-                                                <button
-                                                        class="status delete-processing"
-                                                >
-                                                    삭제 처리
-                                                </button>
-                                            </div>
-                                            <div class="apply-table-cell">
-                                                <button class="reasons-report-btn">
-                                                    보기
-                                                </button>
-                                            </div>
-                                        </div>
-                                        <div class="apply-table-row">
-                                            <div class="apply-table-cell">
-                                                <input
-                                                        type="checkbox"
-                                                        class="apply-checkbox"
-                                                />
-                                            </div>
-                                            <div class="apply-table-cell">5</div>
-                                            <div class="apply-table-cell">
-                                                홍길동
-                                            </div>
-                                            <div class="apply-table-cell">
-                                                2024-01-01
-                                            </div>
-                                            <div class="apply-table-cell">
-                                                2024-02-02
-                                            </div>
-                                            <div class="apply-table-cell">액션</div>
-                                            <div
-                                                    class="apply-table-cell post-title"
-                                            >
-                                                <a href=""
-                                                >영상 펀딩 테스트 제목입니다.</a
-                                                >
-                                            </div>
-                                            <div class="apply-table-cell">
-                                                3,500,000
-                                            </div>
-                                            <div class="apply-table-cell">
-                                                3,450,000
-                                            </div>
-                                            <div class="apply-table-cell">15</div>
-                                            <div class="apply-table-cell progress">
-                                                진행 중
-                                            </div>
-                                            <div class="apply-table-cell">
-                                                -
-                                            </div>
-                                            <div class="apply-table-cell">
-                                                <button
-                                                        class="status no-issue"
-                                                >
-                                                    이상 없음
-                                                </button>
-                                            </div>
-                                            <div class="apply-table-cell">
-                                                <button class="reasons-report-btn">
-                                                    보기
-                                                </button>
-                                            </div>
+                                        <div id="video-funding-report-list">
+                                            <!--js로 삽입-->
                                         </div>
                                     </div>
                                 </div>
                                 <nav class="pagination">
-                                    <ul class="pagination-list">
-                                        <!-- 처음 페이지로 이동하는 버튼 -->
-                                        <li class="pagination-first">
-                                            <a
-                                                    href="#"
-                                                    class="pagination-first-link"
-                                                    rel="nofollow"
-                                            >
-                                                        <span
-                                                                class="pagination-first-icon"
-                                                                aria-hidden="true"
-                                                        >«</span
-                                                        >
-                                            </a>
-                                        </li>
-                                        <!-- 이전 페이지로 이동하는 버튼 -->
-                                        <li class="pagination-prev">
-                                            <a
-                                                    href="#"
-                                                    class="pagination-prev-link"
-                                                    rel="prev nofollow"
-                                            >
-                                                        <span
-                                                                class="pagination-prev-icon"
-                                                                aria-hidden="true"
-                                                        >‹</span
-                                                        >
-                                            </a>
-                                        </li>
-                                        <!-- 페이지 번호 버튼 -->
-                                        <li class="pagination-page active">
-                                            <a href="#" class="pagination-page-link"
-                                            >1</a
-                                            >
-                                        </li>
-
-                                        <!-- 다음 페이지로 이동하는 버튼 -->
-                                        <li class="pagination-next">
-                                            <a
-                                                    href="#"
-                                                    class="pagination-next-link"
-                                                    rel="next nofollow"
-                                            >
-                                                        <span
-                                                                class="pagination-next-icon"
-                                                                aria-hidden="true"
-                                                        >›</span
-                                                        >
-                                            </a>
-                                        </li>
-                                        <!-- 마지막 페이지로 이동하는 버튼 -->
-                                        <li class="pagination-last">
-                                            <a
-                                                    href="#"
-                                                    class="pagination-last-link"
-                                                    rel="nofollow"
-                                            >
-                                                        <span
-                                                                class="pagination-last-icon"
-                                                                aria-hidden="true"
-                                                        >»</span
-                                                        >
-                                            </a>
-                                        </li>
+                                    <ul class="pagination-list" id="pagination-funding-video-report">
+                                        <!--  js로 삽입-->
                                     </ul>
                                 </nav>
                             </div>
                             <!-- 문자 발송 모달창 -->
-                            <div class="message-modal video">
+                            <div class="message-modal video-funding">
                                 <div class="modal-content">
                                     <div class="message-modal-contents">
                                         <form>
@@ -1480,24 +1179,27 @@
                                 <div class="background-overlay"></div>
                             </div>
                             <!-- 신고관리 모달창 -->
-                            <div class="report-management-modal video">
+                            <div class="report-management-modal video-funding" id="video-funding-report-modal">
                                 <div class="background-overlay"></div>
                                 <div class="modal-content">
                                     <div class="choice-container">
                                         <input
                                                 class="btn-delete-processing"
                                                 type="button"
-                                                value="삭제 처리"
+                                                value="DELETE"
+                                                data-status="DELETE"
                                         />
                                         <input
                                                 class="btn-hold"
                                                 type="button"
-                                                value="보류"
+                                                value="HOLD"
+                                                data-status="HOLD"
                                         />
                                         <input
                                                 class="btn-no-issue"
                                                 type="button"
-                                                value="이상 없음"
+                                                value="NOPROBLEM"
+                                                data-status="NOPROBLEM"
                                         />
                                     </div>
                                     <div class="button-container">
@@ -1507,7 +1209,7 @@
                             </div>
                             <!-- 여기까지(신고관리 모달창)!! -->
                             <!-- 신고내역 모달창 -->
-                            <div class="reasons-report-modal video">
+                            <div class="reasons-report-modal video-funding" id="video-funding-report-modal-content">
                                 <div class="modal-content">
                                     <div class="reasons-report-header">
                                         <div class="header-title-wrapper">
@@ -1533,7 +1235,7 @@
                                                     >
                                                         <strong>이름 :</strong>
                                                         <span class="name">
-                                                                    정지수
+                                                                    신고자이름
                                                                 </span>
                                                     </p>
                                                     <p
@@ -1541,7 +1243,7 @@
                                                     >
                                                         <strong>이메일 : </strong>
                                                         <span class="email"
-                                                        >000jisoo@naver.com</span
+                                                        >신고자 이메일</span
                                                         >
                                                     </p>
                                                     <p
@@ -1551,7 +1253,7 @@
                                                         >신고 시간 :
                                                         </strong>
                                                         <span class="time"
-                                                        >2024-10-19 15:00</span
+                                                        >신고한시간</span
                                                         >
                                                     </p>
                                                 </div>
@@ -1567,7 +1269,7 @@
                                                         rows="4"
                                                         cols="50"
                                                         readonly
-                                                >작품 결제를 했는데, 작품 영상 링크를 아직까지 안 보냈습니다. 메일로 연락해도 답이 없습니다.....ㅠㅠ</textarea
+                                                >신고내용</textarea
                                                 >
                                             </div>
                                         </form>
@@ -1579,23 +1281,27 @@
 
                             <!-- 2. 글 -->
                             <div>
-                                <div class="text-wrapper">
+                                <div class="text-wrapper" id="text-funding-report">
                                     <!-- body_layout -->
                                     <div class="common-layout-container">
                                         <div class="filter-wrap">
-                                            <div class="sort-filter-options">
-                                                    <span class="sort-filter-option"
+                                            <div class="sort-filter-options" id="text-funding-report-filter"
+                                                data-order="createdDate">
+                                                    <span class="sort-filter-option selected text-funding"
                                                     >작성일 순</span
                                                     >
-                                                <span class="sort-filter-option"
+                                                <span class="sort-filter-option text-funding"
+                                                      data-order="text-funding-converge-price"
                                                 >현재모인금액 순</span
                                                 >
-                                                <span class="sort-filter-option"
+                                                <span class="sort-filter-option text-funding"
+                                                      data-order="text-funding-investor-number"
                                                 >투자자수 순</span
                                                 >
                                                 <!-- 신고관리 defalt  -->
                                                 <span
-                                                        class="sort-filter-option selected"
+                                                        class="sort-filter-option text-funding"
+                                                        data-order="reportStatus"
                                                 >신고관리</span
                                                 >
                                             </div>
@@ -1605,6 +1311,7 @@
                                                         type="text"
                                                         class="filter-search-input"
                                                         placeholder="통합검색"
+                                                        id="text-funding-report-search"
                                                 />
                                                 <div class="btn-wrapper">
                                                     <p class="caption">펀딩에 대한 추가적인 안내 또는 전달사항이 있는 경우</p>
@@ -1624,6 +1331,7 @@
                                             >
                                                 <div
                                                         class="apply-table-cell apply-header-cell select-all-cell"
+                                                        id="text-funding-report-selectAll"
                                                 >
                                                     <input
                                                             type="checkbox"
@@ -1645,7 +1353,11 @@
                                                 >
                                                     작성일
                                                 </div>
-
+                                                <div
+                                                        class="apply-table-cell apply-header-cell"
+                                                >
+                                                    종료일
+                                                </div>
                                                 <div
                                                         class="apply-table-cell apply-header-cell"
                                                 >
@@ -1682,289 +1394,20 @@
                                                     신고내역
                                                 </div>
                                             </div>
-
-                                            <!-- Example row (Initial data) -->
-                                            <div class="apply-table-row">
-                                                <div class="apply-table-cell">
-                                                    <input
-                                                            type="checkbox"
-                                                            class="apply-checkbox"
-                                                    />
-                                                </div>
-                                                <div class="apply-table-cell">1</div>
-                                                <div class="apply-table-cell">
-                                                    홍길동
-                                                </div>
-                                                <div class="apply-table-cell">
-                                                    2024-01-01
-                                                </div>
-
-                                                <div class="apply-table-cell">
-                                                    드라마
-                                                </div>
-                                                <div
-                                                        class="apply-table-cell post-title"
-                                                >
-                                                    <a href=""
-                                                    >글 펀딩 테스트 제목입니다.</a
-                                                    >
-                                                </div>
-                                                <div class="apply-table-cell">
-                                                    30,000
-                                                </div>
-                                                <div class="apply-table-cell">
-                                                    1,000,000
-                                                </div>
-                                                <div class="apply-table-cell">1</div>
-                                                <div class="apply-table-cell">
-                                                    <button
-                                                            class="report-management-btn status hold"
-                                                    >
-                                                        보류
-                                                    </button>
-                                                </div>
-                                                <div class="apply-table-cell">
-                                                    <button class="reasons-report-btn">
-                                                        보기
-                                                    </button>
-                                                </div>
-                                            </div>
-                                            <div class="apply-table-row">
-                                                <div class="apply-table-cell">
-                                                    <input
-                                                            type="checkbox"
-                                                            class="apply-checkbox"
-                                                    />
-                                                </div>
-                                                <div class="apply-table-cell">2</div>
-                                                <div class="apply-table-cell">
-                                                    홍길동
-                                                </div>
-                                                <div class="apply-table-cell">
-                                                    2024-01-01
-                                                </div>
-
-                                                <div class="apply-table-cell">
-                                                    코미디
-                                                </div>
-                                                <div
-                                                        class="apply-table-cell post-title"
-                                                >
-                                                    <a href=""
-                                                    >글 펀딩 테스트 제목입니다.</a
-                                                    >
-                                                </div>
-                                                <div class="apply-table-cell">
-                                                    500,000
-                                                </div>
-                                                <div class="apply-table-cell">
-                                                    700,000
-                                                </div>
-                                                <div class="apply-table-cell">5</div>
-                                                <div class="apply-table-cell">-</div>
-                                                <div class="apply-table-cell edit">
-                                                    -
-                                                </div>
-                                            </div>
-                                            <div class="apply-table-row">
-                                                <div class="apply-table-cell">
-                                                    <input
-                                                            type="checkbox"
-                                                            class="apply-checkbox"
-                                                    />
-                                                </div>
-                                                <div class="apply-table-cell">3</div>
-                                                <div class="apply-table-cell">
-                                                    홍길동
-                                                </div>
-                                                <div class="apply-table-cell">
-                                                    2024-01-01
-                                                </div>
-
-                                                <div class="apply-table-cell">액션</div>
-                                                <div
-                                                        class="apply-table-cell post-title"
-                                                >
-                                                    <a href=""
-                                                    >글 펀딩 테스트 제목입니다.</a
-                                                    >
-                                                </div>
-                                                <div class="apply-table-cell">0</div>
-                                                <div class="apply-table-cell">
-                                                    500,000
-                                                </div>
-                                                <div class="apply-table-cell">-</div>
-                                                <div class="apply-table-cell">
-                                                    <button
-                                                            class="report-management-btn status report"
-                                                    >
-                                                        신고
-                                                    </button>
-                                                </div>
-                                                <div class="apply-table-cell edit">
-                                                    <button class="reasons-report-btn">
-                                                        보기
-                                                    </button>
-                                                </div>
-                                            </div>
-                                            <div class="apply-table-row">
-                                                <div class="apply-table-cell">
-                                                    <input
-                                                            type="checkbox"
-                                                            class="apply-checkbox"
-                                                    />
-                                                </div>
-                                                <div class="apply-table-cell">4</div>
-                                                <div class="apply-table-cell">
-                                                    홍길동
-                                                </div>
-                                                <div class="apply-table-cell">
-                                                    2024-01-01
-                                                </div>
-
-                                                <div class="apply-table-cell">액션</div>
-                                                <div
-                                                        class="apply-table-cell post-title"
-                                                >
-                                                    <a href=""
-                                                    >글 펀딩 테스트 제목입니다.</a
-                                                    >
-                                                </div>
-                                                <div class="apply-table-cell">
-                                                    2,000,000
-                                                </div>
-                                                <div class="apply-table-cell">
-                                                    1,000,000
-                                                </div>
-                                                <div class="apply-table-cell">10</div>
-                                                <div class="apply-table-cell">
-                                                    <button
-                                                            class="status delete-processing"
-                                                    >
-                                                        삭제 처리
-                                                    </button>
-                                                </div>
-                                                <div class="apply-table-cell">
-                                                    <button class="reasons-report-btn">
-                                                        보기
-                                                    </button>
-                                                </div>
-                                            </div>
-                                            <div class="apply-table-row">
-                                                <div class="apply-table-cell">
-                                                    <input
-                                                            type="checkbox"
-                                                            class="apply-checkbox"
-                                                    />
-                                                </div>
-                                                <div class="apply-table-cell">5</div>
-                                                <div class="apply-table-cell">
-                                                    홍길동
-                                                </div>
-                                                <div class="apply-table-cell">
-                                                    2024-01-01
-                                                </div>
-
-                                                <div class="apply-table-cell">액션</div>
-                                                <div
-                                                        class="apply-table-cell post-title"
-                                                >
-                                                    <a href=""
-                                                    >글 펀딩 테스트 제목입니다.</a
-                                                    >
-                                                </div>
-                                                <div class="apply-table-cell">
-                                                    3,500,000
-                                                </div>
-                                                <div class="apply-table-cell">
-                                                    3,450,000
-                                                </div>
-                                                <div class="apply-table-cell">15</div>
-                                                <div class="apply-table-cell">
-                                                    <button
-                                                            class="status no-issue"
-                                                    >
-                                                        이상 없음
-                                                    </button>
-                                                </div>
-                                                <div class="apply-table-cell">
-                                                    <button class="reasons-report-btn">
-                                                        보기
-                                                    </button>
-                                                </div>
+                                            <div id="text-funding-report-list">
+                                                <!--js로 삽입-->
                                             </div>
                                         </div>
                                     </div>
                                     <nav class="pagination">
-                                        <ul class="pagination-list">
-                                            <!-- 처음 페이지로 이동하는 버튼 -->
-                                            <li class="pagination-first">
-                                                <a
-                                                        href="#"
-                                                        class="pagination-first-link"
-                                                        rel="nofollow"
-                                                >
-                                                        <span
-                                                                class="pagination-first-icon"
-                                                                aria-hidden="true"
-                                                        >«</span
-                                                        >
-                                                </a>
-                                            </li>
-                                            <!-- 이전 페이지로 이동하는 버튼 -->
-                                            <li class="pagination-prev">
-                                                <a
-                                                        href="#"
-                                                        class="pagination-prev-link"
-                                                        rel="prev nofollow"
-                                                >
-                                                        <span
-                                                                class="pagination-prev-icon"
-                                                                aria-hidden="true"
-                                                        >‹</span
-                                                        >
-                                                </a>
-                                            </li>
-                                            <!-- 페이지 번호 버튼 -->
-                                            <li class="pagination-page active">
-                                                <a href="#" class="pagination-page-link"
-                                                >1</a
-                                                >
-                                            </li>
-
-                                            <!-- 다음 페이지로 이동하는 버튼 -->
-                                            <li class="pagination-next">
-                                                <a
-                                                        href="#"
-                                                        class="pagination-next-link"
-                                                        rel="next nofollow"
-                                                >
-                                                        <span
-                                                                class="pagination-next-icon"
-                                                                aria-hidden="true"
-                                                        >›</span
-                                                        >
-                                                </a>
-                                            </li>
-                                            <!-- 마지막 페이지로 이동하는 버튼 -->
-                                            <li class="pagination-last">
-                                                <a
-                                                        href="#"
-                                                        class="pagination-last-link"
-                                                        rel="nofollow"
-                                                >
-                                                        <span
-                                                                class="pagination-last-icon"
-                                                                aria-hidden="true"
-                                                        >»</span
-                                                        >
-                                                </a>
-                                            </li>
+                                        <ul class="pagination-list" id="pagination-funding-text-report">
+                                            <!--  js로 삽입-->
                                         </ul>
                                     </nav>
+
                                 </div>
                                 <!-- 문자 발송 모달창 -->
-                                <div class="message-modal text">
+                                <div class="message-modal text-funding">
                                     <div class="modal-content">
                                         <div class="message-modal-contents">
                                             <form>
@@ -1989,24 +1432,27 @@
                                     <div class="background-overlay"></div>
                                 </div>
                                 <!-- 신고관리 모달창 -->
-                                <div class="report-management-modal text">
+                                <div class="report-management-modal text-funding" id="text-funding-report-modal">
                                     <div class="background-overlay"></div>
                                     <div class="modal-content">
                                         <div class="choice-container">
                                             <input
                                                     class="btn-delete-processing"
                                                     type="button"
-                                                    value="삭제 처리"
+                                                    value="DELETE"
+                                                    data-status="DELETE"
                                             />
                                             <input
                                                     class="btn-hold"
                                                     type="button"
-                                                    value="보류"
+                                                    value="HOLD"
+                                                    data-status="HOLD"
                                             />
                                             <input
                                                     class="btn-no-issue"
                                                     type="button"
-                                                    value="이상 없음"
+                                                    value="NOPROBLEM"
+                                                    data-status="NOPROBLEM"
                                             />
                                         </div>
                                         <div class="button-container">
@@ -2016,7 +1462,7 @@
                                 </div>
                                 <!-- 여기까지(신고관리 모달창)!! -->
                                 <!-- 신고내역 모달창 -->
-                                <div class="reasons-report-modal text">
+                                <div class="reasons-report-modal text-funding" id="text-funding-report-modal-content">
                                     <div class="modal-content">
                                         <div class="reasons-report-header">
                                             <div class="header-title-wrapper">
@@ -2042,7 +1488,7 @@
                                                         >
                                                             <strong>이름 :</strong>
                                                             <span class="name">
-                                                                    정지수
+                                                                    신고자이름
                                                                 </span>
                                                         </p>
                                                         <p
@@ -2050,7 +1496,7 @@
                                                         >
                                                             <strong>이메일 : </strong>
                                                             <span class="email"
-                                                            >000jisoo@naver.com</span
+                                                            >신고자 이메일</span
                                                             >
                                                         </p>
                                                         <p
@@ -2060,7 +1506,7 @@
                                                             >신고 시간 :
                                                             </strong>
                                                             <span class="time"
-                                                            >2024-10-19 15:00</span
+                                                            >신고한시간</span
                                                             >
                                                         </p>
                                                     </div>
@@ -2075,9 +1521,7 @@
                                                             name="reason"
                                                             rows="4"
                                                             cols="50"
-                                                    >
-            작품 결제를 했는데, 작품 영상 링크를 아직까지 안 보냈습니다. 메일로 연락해도 답이 없습니다.....ㅠㅠ</textarea
-                                                    >
+                                                    >신고내용</textarea>
                                                 </div>
                                             </form>
                                         </div>
@@ -3180,7 +2624,7 @@
                     </section>
 
 
-                    <!-- section8: 결제 관리 -->
+                    <!-- section8: 결제 조희 -->
                     <section id="payment-section" class="common-section">
                         <!-- body_header -->
                         <div class="common-header-container">
@@ -3203,19 +2647,30 @@
                             <div>
                                 <!-- body_layout -->
                                 <div class="common-layout-container">
-                                    <div class="filter-wrap">
+                                    <div class="filter-wrap" id="work-product">
                                         <div class="sort-filter-options">
                                                     <span
-                                                            class="sort-filter-option selected"
-                                                    >최신순</span
+                                                            class="sort-filter-option selected work-product"
+                                                    >작품</span
                                                     >
+                                            <span
+                                                    class="sort-filter-option funding-product"
+                                            >펀딩</span
+                                            >
                                         </div>
                                         <!-- Action Buttons -->
                                         <div class="action-buttons">
                                             <input
                                                     type="text"
                                                     class="filter-search-input"
+                                                    id="work-product-search"
                                                     placeholder="통합검색"
+                                            />
+                                            <input
+                                                    type="text"
+                                                    class="filter-search-input"
+                                                    placeholder="통합검색"
+                                                    id="funding-product-search"
                                             />
                                             <button class="selected-btn" style="display: none">
                                                 환불 요청
@@ -3225,13 +2680,15 @@
                                             </button>
                                         </div>
                                     </div>
-                                    <!-- 회원 정보 테이블 -->
+                                    <!-- 작품 정보 테이블 -->
+                                    <div class="div-work-product">
                                     <div class="apply-table-container">
                                         <div
                                                 class="apply-table-row apply-table-header"
                                         >
                                             <div
                                                     class="apply-table-cell apply-header-cell select-all-cell"
+                                                    id="work-product-selectAll"
                                             >
                                                 <input
                                                         type="checkbox"
@@ -3256,6 +2713,11 @@
                                             <div
                                                     class="apply-table-cell apply-header-cell"
                                             >
+                                                상품 가격
+                                            </div>
+                                            <div
+                                                    class="apply-table-cell apply-header-cell"
+                                            >
                                                 구매자
                                             </div>
                                             <div
@@ -3266,66 +2728,75 @@
                                         </div>
 
                                         <!-- Example row (Initial data) -->
-                                        <div class="apply-table-row">
-                                            <div class="apply-table-cell">
-                                                <input
-                                                        type="checkbox"
-                                                        class="apply-checkbox"
-                                                />
-                                            </div>
-                                            <div class="apply-table-cell">1</div>
-                                            <div class="apply-table-cell">
-                                                작품
-                                            </div>
-                                            <div class="apply-table-cell">
-                                                독립영화 액션 시나리오
-                                            </div>
-                                            <div class="apply-table-cell">
-                                                홍길동
-                                            </div>
-                                            <div class="apply-table-cell"> 2024-01-01</div>
+                                        <div id="work-product-list">
+                                            <!-- js로 삽입-->
                                         </div>
                                     </div>
+                                        <nav class="pagination">
+                                            <ul class="pagination-list" id="pagination-work-list">
+                                                <!--  js로 삽입-->
+                                            </ul>
+                                        </nav>
+                                    </div>
                                 </div>
-                                <nav class="pagination">
-                                    <ul class="pagination-list">
-                                        <!-- 이전 페이지로 이동하는 버튼 -->
-                                        <li class="pagination-prev">
-                                            <a
-                                                    href="#"
-                                                    class="pagination-prev-link"
-                                                    rel="prev nofollow"
-                                            >
-                                                        <span
-                                                                class="pagination-prev-icon"
-                                                                aria-hidden="true"
-                                                        >‹</span
-                                                        >
-                                            </a>
-                                        </li>
-                                        <!-- 페이지 번호 버튼 -->
-                                        <li class="pagination-page active">
-                                            <a href="#" class="pagination-page-link"
-                                            >1</a
-                                            >
-                                        </li>
+                                <!--펀딩 구매상품-->
+                                <div class="div-funding-product">
+                                <div class="apply-table-container">
+                                    <div
+                                            class="apply-table-row apply-table-header"
+                                    >
+                                        <div
+                                                class="apply-table-cell apply-header-cell select-all-cell"
+                                                id="funding-product-selectAll"
+                                        >
+                                            <input
+                                                    type="checkbox"
+                                                    class="select-all"
+                                            />
+                                        </div>
+                                        <div
+                                                class="apply-table-cell apply-header-cell"
+                                        >
+                                            번호
+                                        </div>
+                                        <div
+                                                class="apply-table-cell apply-header-cell"
+                                        >
+                                            구분
+                                        </div>
+                                        <div
+                                                class="apply-table-cell apply-header-cell"
+                                        >
+                                            구매 상품
+                                        </div>
+                                        <div
+                                                class="apply-table-cell apply-header-cell"
+                                        >
+                                            상품 가격
+                                        </div>
+                                        <div
+                                                class="apply-table-cell apply-header-cell"
+                                        >
+                                            구매자
+                                        </div>
+                                        <div
+                                                class="apply-table-cell apply-header-cell"
+                                        >
+                                            결제일
+                                        </div>
+                                    </div>
 
-                                        <!-- 다음 페이지로 이동하는 버튼 -->
-                                        <li class="pagination-next">
-                                            <a
-                                                    href="#"
-                                                    class="pagination-next-link"
-                                                    rel="next nofollow"
-                                            >
-                                                        <span
-                                                                class="pagination-next-icon"
-                                                                aria-hidden="true"
-                                                        >›</span
-                                                        >
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </nav>
+                                    <!-- Example row (Initial data) -->
+                                    <div id="funding-product-list">
+                                        <!-- js로 삽입-->
+                                    </div>
+                                </div>
+                                    <nav class="pagination">
+                                        <ul class="pagination-list" id="pagination-funding-list">
+                                            <!--  js로 삽입-->
+                                        </ul>
+                                    </nav>
+                                </div>
                             </div>
                             <!-- 활불 상태 모달창 -->
                             <div class="refund-status-modal">

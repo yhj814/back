@@ -10,6 +10,12 @@ create table tbl_buy_funding_product (
     references tbl_funding_product (id)
 );
 
+select * from tbl_buy_funding_product;
+
+insert into tbl_buy_funding_product
+values (20, 9,11,default,now());
+
+
 select *
 from tbl_funding;
 
