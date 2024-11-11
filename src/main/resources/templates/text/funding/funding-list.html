@@ -55,19 +55,19 @@
                             <div class="filter-group-wrapper">
                                 <div class="filter-group">
                                     <div class="filter-box-group">
-                                        <a href="/text/funding/list?genreType=romance&postType=TEXT" class="filter-box">로맨스</a>
+                                        <a href="/text/funding/list?genreType=romance&postType=FUNDINGTEXT" class="filter-box">로맨스</a>
                                     </div>
                                     <div class="filter-box-group">
-                                        <a href="/text/funding/list?genreType=comedy&postType=TEXT" class="filter-box">코미디</a>
+                                        <a href="/text/funding/list?genreType=comedy&postType=FUNDINGTEXT" class="filter-box">코미디</a>
                                     </div>
                                     <div class="filter-box-group">
-                                        <a href="/text/funding/list?genreType=horror&postType=TEXT" class="filter-box">공포</a>
+                                        <a href="/text/funding/list?genreType=horror&postType=FUNDINGTEXT" class="filter-box">공포</a>
                                     </div>
                                     <div class="filter-box-group">
-                                        <a href="/text/funding/list?genreType=action&postType=TEXT" class="filter-box">액션</a>
+                                        <a href="/text/funding/list?genreType=action&postType=FUNDINGTEXT" class="filter-box">액션</a>
                                     </div>
                                     <div class="filter-box-group">
-                                        <a href="/text/funding/list?genreType=drama&postType=TEXT" class="filter-box">드라마</a>
+                                        <a href="/text/funding/list?genreType=drama&postType=FUNDINGTEXT" class="filter-box">드라마</a>
                                     </div>
                                     <div class="box-group">
                                         <div class="write-box">
@@ -82,7 +82,7 @@
                                 <li th:each="funding : ${fundings}" style="width: 213px">
                                     <a th:href="@{/text/funding/detail/{id}(id=${funding.id})}" class="box">
                                         <!-- 썸네일 이미지 -->
-                                        <img id="thumbnail-image" th:src="@{/text/funding/display(fileName=${funding.thumbnailFileName})}" class="thumbnail" alt="썸네일 이미지" />
+                                        <img id="thumbnail-image"  th:src="@{'/text/funding/display?fileName=' + ${funding.thumbnailFilePath}}" class="thumbnail" alt="썸네일 이미지" />
 
                                         <!-- 펀딩 상태 -->
                                         <div class="funding-status-div">

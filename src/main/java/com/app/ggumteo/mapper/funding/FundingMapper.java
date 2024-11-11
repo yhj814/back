@@ -3,6 +3,8 @@ package com.app.ggumteo.mapper.funding;
 import com.app.ggumteo.domain.file.PostFileDTO;
 import com.app.ggumteo.domain.funding.FundingDTO;
 import com.app.ggumteo.domain.funding.FundingProductVO;
+import com.app.ggumteo.domain.post.PostDTO;
+import com.app.ggumteo.domain.work.WorkDTO;
 import com.app.ggumteo.pagination.Pagination;
 import com.app.ggumteo.pagination.WorkAndFundingPagination;
 import com.app.ggumteo.search.Search;
@@ -44,9 +46,17 @@ public interface FundingMapper {
 
     // 펀딩 정보 수정 (tbl_funding 및 tbl_post 업데이트)
     public void updateFunding(FundingDTO fundingDTO);
+    public void updatePost(FundingDTO fundingDTO);
+
+    // 썸네일 파일 ID 업데이트 메소드
+    void updateThumbnailFileId(@Param("workId") Long fundingId, @Param("thumbnailFileId") Long thumbnailFileId);
 
     // 펀딩 상태 갱신 (펀딩 중 -> 펀딩 종료)
     public void updateFundingStatusToEnded();
+
+    // 펀딩 ID로 작품 조회
+    FundingDTO selectByFundingId(Long id);
+
 
     // 펀딩 상세 조회
     public List<FundingDTO> selectFundingById(@Param("id") Long id);
