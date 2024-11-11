@@ -14,7 +14,11 @@
                     <div class="background"></div>
                     <div class="container">
                         <div class="profile-box write">
-                            <form action="" id="write-form">
+                            <form action="/text/funding/modify" id="write-form" method="post" enctype="multipart/form-data">
+                                <input type="hidden" name="thumbnailFileId" th:value="${funding.thumbnailFileId}" />
+                                <div th:if="${funding != null}">
+                                    <input type="hidden" name="id" th:value="${funding.id}" />
+                                </div>
                                 <div class="write-add-view">
                                     <div class="subtitle-1 write-add-title">
                                         펀딩글 수정하기

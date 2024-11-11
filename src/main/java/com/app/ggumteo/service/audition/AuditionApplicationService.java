@@ -6,7 +6,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 public interface AuditionApplicationService {
 
-    void write(AuditionApplicationDTO auditionApplicationDTO, MultipartFile applicationFile);
+    void write(AuditionApplicationDTO auditionApplicationDTO);
 
     int countApplicantsByAuditionId(Long auditionId);
 }

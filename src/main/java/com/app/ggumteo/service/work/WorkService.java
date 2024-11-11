@@ -14,7 +14,7 @@ public interface WorkService {
 
     WorkDTO findWorkById(Long id);
 
-    void updateWork(WorkDTO workDTO, List<MultipartFile> newFiles, List<Long> deletedFileIds, MultipartFile newThumbnailFile);
+    void updateWork(WorkDTO workDTO, List<Long> deletedFileIds);
 
 
     void deleteWorkById(Long id);

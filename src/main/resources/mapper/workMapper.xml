@@ -20,8 +20,8 @@
     </sql>
     <!-- 작품 삽입 -->
     <insert id="insert" parameterType="com.app.ggumteo.domain.work.WorkVO">
-        INSERT INTO tbl_work (id, work_price, genre_type, read_count, file_content, thumbnail_file_id)
-        VALUES (#{id}, #{workPrice}, #{genreType}, #{readCount}, #{fileContent}, #{thumbnailFileId})
+        insert into tbl_work (id, work_price, genre_type, read_count, file_content, thumbnail_file_id)
+        values (#{id}, #{workPrice}, #{genreType}, #{readCount}, #{fileContent}, #{thumbnailFileId})
     </insert>
 
 
@@ -75,7 +75,7 @@
             post_title = #{postTitle},
             post_content = #{postContent},
             updated_date = current_timestamp
-        where id = #{postId}
+        where id = #{id}
     </update>
 
     <!-- 작품 삭제 -->
@@ -145,6 +145,7 @@
         mp.profile_nickname as profileNickName,
         m.profile_img_url as profileImgUrl,
         f.file_name as thumbnailFileName,  <!-- 변경된 부분 -->
+        f.file_path as thumbnailFilePath,  <!-- 추가된 부분 -->
         ifnull(round(avg(r.star), 1), 0) as star
         from
         tbl_work w
@@ -168,6 +169,7 @@
         w.id, w.work_price, w.read_count, w.genre_type,
         p.post_title, p.post_content, p.member_profile_id, p.created_date, p.updated_date,
         f.file_name as thumbnailFileName,  <!-- 변경된 부분 -->
+        f.file_path as thumbnailFilePath,  <!-- 추가된 부분 -->
         mp.profile_nickname,
         m.profile_img_url as profileImgUrl,
         ifnull(round(avg(r.star), 1), 0) as star

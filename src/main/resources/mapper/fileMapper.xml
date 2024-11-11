@@ -16,6 +16,13 @@
         where pf.post_id = #{postId}
     </select>
 
+    <select id="selectFileByAuditionApplicationId" resultType="fileVO">
+        select f.*
+        from tbl_file f
+            join tbl_audition_applycation_file aa on f.id = aa.file_id
+        where aa.audition_application_id = #{auditionApplicationId}
+    </select>
+
     <!-- 파일 ID를 기준으로 파일 삭제 -->
     <delete id="deleteFileById" parameterType="Long">
         delete from tbl_file where id = #{id}

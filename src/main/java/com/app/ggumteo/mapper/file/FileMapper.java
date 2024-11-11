@@ -17,4 +17,7 @@ public interface FileMapper {
 
     // 특정 게시물의 파일 조회
     List<FileVO> selectFileByPostId(@Param("postId") Long postId);
+
+    // 오디션 신청의 파일 조회
+    List<FileVO> selectFileByAuditionApplicationId(@Param("auditionApplicationId") Long auditionApplicationId);
 }

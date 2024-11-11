@@ -40,10 +40,11 @@ public class FundingDTO {
     private String endDate; // created_date에서 한 달 더한 값
     private String profileEmail;
     private String profileEtc;
+    private List<String> fileNames; // 업로드된 파일 이름 목록
 
 
 
     public FundingVO toVO() {
-        return new FundingVO(id, genreType, investorNumber, targetPrice, convergePrice, fileContent, fundingStatus, fundingContent, createdDate, updatedDate);
+        return new FundingVO(id, genreType, investorNumber, targetPrice, convergePrice, fileContent, fundingStatus, fundingContent, createdDate, updatedDate, thumbnailFileId);
     }
 }

@@ -3,6 +3,8 @@ package com.app.ggumteo.repository.funding;
 import com.app.ggumteo.domain.file.PostFileDTO;
 import com.app.ggumteo.domain.funding.FundingDTO;
 import com.app.ggumteo.domain.funding.FundingProductVO;
+import com.app.ggumteo.domain.funding.FundingVO;
+import com.app.ggumteo.domain.work.WorkDTO;
 import com.app.ggumteo.mapper.funding.FundingMapper;
 import com.app.ggumteo.pagination.Pagination;
 import com.app.ggumteo.pagination.WorkAndFundingPagination;
@@ -36,7 +38,6 @@ public class FundingDAO {
     }
 
 
-
     // 펀딩 삽입 메서드
     public void save(FundingDTO fundingDTO) {
         if (fundingDTO.getFundingStatus() == null) {
@@ -44,6 +45,7 @@ public class FundingDAO {
         }
         fundingMapper.insert(fundingDTO);
     }
+
 
     // 펀딩 상품 삽입 메서드
     public void saveFundingProduct(FundingProductVO fundingProductVO) {
@@ -63,6 +65,9 @@ public class FundingDAO {
     // 펀딩 정보 수정
     public void updateFunding(FundingDTO fundingDTO) {
         fundingMapper.updateFunding(fundingDTO);
+    }
+    public void updatePost(FundingDTO fundingDTO) {
+        fundingMapper.updatePost(fundingDTO);
     }
 
     // 펀딩 상태 갱신 (펀딩 중 -> 펀딩 종료)
@@ -86,11 +91,21 @@ public class FundingDAO {
         return fundingProducts;
     }
 
+    // 썸네일 파일 ID 업데이트 메소드 추가
+    public void updateThumbnailFileId(Long fundingId, Long thumbnailFileId) {
+        fundingMapper.updateThumbnailFileId(fundingId, thumbnailFileId);
+    }
 
     // 같은 장르의 펀딩 게시글 조회
     public List<FundingDTO> findRelatedFundingByGenre(String genreType, Long fundingId) {
         return fundingMapper.selectRelatedFundingByGenre(genreType, fundingId);
     }
+
+    // 펀딩 ID로 조회
+    public FundingDTO findFundingId(Long id) {
+        return fundingMapper.selectByFundingId(id);
+    }
+
 }
 
 
