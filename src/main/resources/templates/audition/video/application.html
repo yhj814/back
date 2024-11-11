@@ -134,7 +134,8 @@
                                     </div>
                                 </div>
                                 <form
-                                    action=""
+                                    method="post"
+                                    th:action="@{/audition/video/application/{id}(id=${audition.id})}"
                                     class="form-horizontal has-validation-callback"
                                     id="base-edit-form"
                                     style="
@@ -144,6 +145,7 @@
                                         height: 100%;
                                     "
                                 >
+                                    <input type="hidden" name="id" th:value="${audition.id}">
                                     <div class="form-group">
                                         <label
                                             class="control-label required"
@@ -241,43 +243,11 @@
                                                 이 항목을 채워주십시오.
                                             </div>
                                         </div>
-                                        <!--<div class="control-wrapper">
-                                            <input
-                                                class="form-control"
-                                                data-exception="yes"
-                                                placeholder="이메일을 입력하세요."
-                                                type="text"
-                                                value=""
-                                            />
-
-                                            <div class="error-message">
-                                                <i
-                                                    class="fa fa-exclamation-circle"
-                                                ></i>
-                                                올바른 이메일 주소를
-                                                입력해주세요.
-                                            </div>
-                                        </div>-->
                                     </div>
                                     <div class="form-group">
                                         <label class="control-label"
                                             >연락처</label
                                         >
-                                        <!--<div class="control-wrapper">
-                                            <input
-                                                class="form-control"
-                                                data-exception="yes"
-                                                placeholder="전화번호를 입력하세요."
-                                                type="text"
-                                                value=""
-                                            />
-                                            <div class="error-message">
-                                                <i
-                                                    class="fa fa-exclamation-circle"
-                                                ></i>
-                                                올바른 전화번호를 입력해주세요.
-                                            </div>
-                                        </div>-->
                                         <div class="control-wrapper">
                                             <div
                                                 class="form-control"
@@ -398,6 +368,6 @@
         </main>
         <footer></footer>
     </body>
-    <script src="/js/audition/application2.js"></script>
-    <script src="/js/audition/application-date.js"></script>
+    <script src="/js/audition/application-layout.js"></script>
+    <script src="/js/audition/application-file.js"></script>
 </html>

@@ -6,6 +6,7 @@ import lombok.Setter;
 import lombok.ToString;
 import org.springframework.stereotype.Component;
 
+@Component
 @Getter
 @Setter
 @ToString
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Component;
 public class AuditionApplicationFileDTO {
     @EqualsAndHashCode.Include
     private Long id;
+    private Long fileId;
     private String fileName;
     private String filePath;
     private String fileType;
@@ -21,11 +23,6 @@ public class AuditionApplicationFileDTO {
     private String updatedDate;
     private Long auditionApplicationId;
 
-    public AuditionApplicationFileDTO(Long id, String fileName, String filePath) {
-        this.id = id;
-        this.fileName = fileName;
-        this.filePath = filePath;
-    }
 
-    public AuditionApplicationFileVO toVO() { return  new AuditionApplicationFileVO(id, auditionApplicationId);};
+    public AuditionApplicationFileVO toVO() { return  new AuditionApplicationFileVO(id, fileId, auditionApplicationId);};
 }
