@@ -24,11 +24,11 @@ public interface FundingService {
     List<FundingProductVO> findFundingProductsByFundingId(Long fundingId);
 
     int findTotalWithSearchAndType(Search search);
-
-
+// 상품 수정
+    void updateFundingProduct(FundingProductVO fundingProductVO);
 
     // 상세보기 기본정보 조회
-    List<FundingDTO> findFundingById(Long id);
+    FundingDTO findFundingById(Long id);
 
     void updateFundingStatusToEnded();
 

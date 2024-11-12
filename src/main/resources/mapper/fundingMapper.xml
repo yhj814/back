@@ -139,7 +139,7 @@
     </select>
 
     <!-- 펀딩 상품 수정 -->
-    <update id="updateFundingProduct" parameterType="fundingProductVO">
+    <update id="updateFundingProduct">
         update tbl_funding_product
         set
             product_name = #{productName},

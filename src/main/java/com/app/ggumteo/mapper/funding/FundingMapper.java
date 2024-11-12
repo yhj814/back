@@ -64,6 +64,8 @@ public interface FundingMapper {
     // 펀딩 ID로 작품 조회
     FundingDTO selectByFundingId(Long id);
 
+    // 상품 정보 수정
+    public void updateFundingProduct(FundingProductVO fundingProductVO);
 
     // 펀딩 상세 조회
     public List<FundingDTO> selectFundingById(@Param("id") Long id);

@@ -50,7 +50,7 @@ document.addEventListener("DOMContentLoaded", function () {
             const formData = new FormData();
             formData.append('file', file);
 
-            fetch('/text/upload', {
+            fetch('/text/funding/upload', {
                 method: 'POST',
                 body: formData
             })
@@ -341,7 +341,7 @@ document.addEventListener("DOMContentLoaded", function () {
             const formData = new FormData();
             formData.append('file', file);
 
-            fetch('/text/upload', {
+            fetch('/text/funding/upload', {
                 method: 'POST',
                 body: formData
             })

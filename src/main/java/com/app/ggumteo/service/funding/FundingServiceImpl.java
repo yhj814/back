@@ -45,6 +45,7 @@ public class FundingServiceImpl implements FundingService{
     private final PostFileDAO postFileDAO;
     private final PostFileService postFileService;
     private final BuyFundingProductDAO buyFundingProductDAO;
+    private final FundingVO fundingVO;
 
     @Override
     public void write(FundingDTO fundingDTO) {
@@ -143,10 +144,13 @@ public class FundingServiceImpl implements FundingService{
         return fundings;
     }
 
-
     @Override
-    public List<FundingDTO> findFundingById(Long id) {
-        return fundingDAO.findByFundingId(id);
+    public FundingDTO findFundingById(Long id) {
+        FundingDTO funding = fundingDAO.findFundingId(id);
+        if (funding == null) {
+            throw new RuntimeException("펀딩을 찾을 수 없습니다: ID " + id);
+        }
+        return funding;
     }
 
 
@@ -154,6 +158,7 @@ public class FundingServiceImpl implements FundingService{
     public FundingDTO findFundingId(Long id) {
         return fundingDAO.findFundingId(id);
     }
+
 
 
 
@@ -185,7 +190,11 @@ public class FundingServiceImpl implements FundingService{
             thumbnailFileVO.setFileName(fundingDTO.getThumbnailFileName());
             thumbnailFileVO.setFilePath(getPath());
             File file = new File("C:/upload/" + getPath() + "/" + fundingDTO.getThumbnailFileName());
-            thumbnailFileVO.setFileSize(String.valueOf(file.length()));
+            if (file.exists()) {
+                thumbnailFileVO.setFileSize(String.valueOf(file.length()));
+            } else {
+                throw new RuntimeException("새로운 썸네일 파일이 존재하지 않습니다: " + fundingDTO.getThumbnailFileName());
+            }
 
             try {
                 thumbnailFileVO.setFileType(Files.probeContentType(file.toPath()));
@@ -215,6 +224,23 @@ public class FundingServiceImpl implements FundingService{
             }
         }
 
+        // 펀딩 상품 업데이트 및 삽입 처리
+        List<FundingProductVO> updatedProducts = fundingDTO.getFundingProducts();
+        if (updatedProducts != null) {
+            for (FundingProductVO product : updatedProducts) {
+                if (product.getId() != null) {
+                    // 기존 펀딩 상품 업데이트
+                    fundingDAO.updateFundingProduct(product);
+                    log.info("펀딩 상품 업데이트 완료: {}", product);
+                } else {
+                    // 새로운 펀딩 상품 삽입
+                    product.setFundingId(fundingDTO.getId());
+                    fundingDAO.saveFundingProduct(product);
+                    log.info("새로운 펀딩 상품 삽입 완료: {}", product);
+                }
+            }
+        }
+
         // 기존 파일 삭제
         if (deletedFileIds != null && !deletedFileIds.isEmpty()) {
             postFileService.deleteFilesByIds(deletedFileIds);
@@ -229,7 +255,11 @@ public class FundingServiceImpl implements FundingService{
                     newFileVO.setFileName(fileName);
                     newFileVO.setFilePath(getPath());
                     File file = new File("C:/upload/" + getPath() + "/" + fileName);
-                    newFileVO.setFileSize(String.valueOf(file.length()));
+                    if (file.exists()) {
+                        newFileVO.setFileSize(String.valueOf(file.length()));
+                    } else {
+                        throw new RuntimeException("새로운 파일이 존재하지 않습니다: " + fileName);
+                    }
 
                     try {
                         newFileVO.setFileType(Files.probeContentType(file.toPath()));
@@ -256,8 +286,6 @@ public class FundingServiceImpl implements FundingService{
         }
         log.info("펀딩 정보 업데이트 완료: 펀딩 ID {}", fundingDTO.getId());
     }
-
-
 
 
     @Override
@@ -303,5 +331,13 @@ public class FundingServiceImpl implements FundingService{
         // 구매 내역 삽입 (memberId와 fundingProductId 사용)
         buyFundingProductDAO.insertBuyFundingProduct(memberId, fundingProductId);
     }
+
+
+
+    @Override
+    public void updateFundingProduct(FundingProductVO fundingProductVO) {
+        fundingDAO.updateFundingProduct(fundingProductVO);
+    }
+
 
 }

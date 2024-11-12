@@ -91,6 +91,10 @@ public class FundingDAO {
         return fundingProducts;
     }
 
+    public void updateFundingProduct(FundingProductVO fundingProductVO) {
+        fundingMapper.updateFundingProduct(fundingProductVO);
+    }
+
     // 썸네일 파일 ID 업데이트 메소드 추가
     public void updateThumbnailFileId(Long fundingId, Long thumbnailFileId) {
         fundingMapper.updateThumbnailFileId(fundingId, thumbnailFileId);
