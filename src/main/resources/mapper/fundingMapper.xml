@@ -105,7 +105,10 @@
     </select>
 
 
-
+    <!-- 파일 ID를 기준으로 펀딩 상품 삭제 -->
+    <delete id="deleteFundingProductById" parameterType="Long">
+        delete from tbl_funding_product where id = #{id}
+    </delete>
 
 
     <!-- 상세보기에서 다중 파일 조회 -->
@@ -135,25 +138,33 @@
         <include refid="search"/>
     </select>
 
-
-
-
-
+    <!-- 펀딩 상품 수정 -->
+    <update id="updateFundingProduct">
+        update tbl_funding_product
+        set
+            product_name = #{productName},
+            product_price = #{productPrice},
+            product_amount = #{productAmount}
+        where id = #{id}
+    </update>
 
     <!-- 펀딩 정보 수정 (썸네일 파일 ID 포함) -->
     <update id="updateFunding">
         update tbl_funding
-        set genre_type = #{genreType},
+        set
+        genre_type = #{genreType},
         investor_number = #{investorNumber},
         target_price = #{targetPrice},
         converge_price = #{convergePrice},
         file_content = #{fileContent},
         funding_content = #{fundingContent},
+        funding_status = #{fundingStatus}
         <if test="thumbnailFileId != null">
             , thumbnail_file_id = #{thumbnailFileId}
         </if>
         where id = #{id}
     </update>
+
 
     <!-- 펀딩 상태 갱신 (한 달이 지난 경우 펀딩 종료로 변경) -->
     <update id="updateFundingStatusToEnded">
@@ -202,7 +213,7 @@
     <!-- 펀딩 id로 펀딩 조회 (썸네일 파일 ID 포함) -->
     <select id="selectByFundingId" resultType="fundingDTO">
         select
-        f.id, f.investor_number, f.target_price, f.converge_price, f.file_content, f.funding_content f.genre_type,
+        f.id, f.investor_number, f.target_price, f.converge_price, f.file_content, f.funding_content, f.genre_type,
         p.post_title, p.post_content, p.member_profile_id, p.created_date, p.updated_date,
         fl.file_name as thumbnailFileName,
         fl.file_path as thumbnailFilePath,  <!-- 추가된 부분 -->
@@ -211,12 +222,12 @@
         m.profile_img_url as profileImgUrl
         from
         tbl_funding f
-        join tbl_post p on w.id = p.id
+        join tbl_post p on f.id = p.id
         join tbl_member_profile mp on p.member_profile_id = mp.id
         join tbl_member m on mp.member_id = m.id
-        left join tbl_file fl on w.thumbnail_file_id = fl.id
+        left join tbl_file fl on f.thumbnail_file_id = fl.id
         where
-        w.id = #{id}
+        f.id = #{id}
     </select>
 
 
