@@ -2,11 +2,8 @@ package com.app.ggumteo.mapper.audition;
 
 import com.app.ggumteo.domain.audition.AuditionApplicationDTO;
 import com.app.ggumteo.domain.audition.AuditionApplicationVO;
-import com.app.ggumteo.domain.buy.BuyFundingProductDTO;
-import com.app.ggumteo.domain.buy.BuyFundingProductVO;
-import com.app.ggumteo.pagination.SettingTablePagination;
+import com.app.ggumteo.pagination.MySettingTablePagination;
 import com.app.ggumteo.pagination.WorkAndFundingPagination;
-import com.app.ggumteo.repository.audition.AuditionApplicationDAO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -21,7 +18,7 @@ public interface AuditionApplicationMapper {
 
     //    나의 모집 지원자 목록 조회
     public List<AuditionApplicationDTO> selectByAuditionPostId(
-            @Param("settingTablePagination") SettingTablePagination settingTablePagination , Long AuditionPostId);
+            @Param("mySettingTablePagination") MySettingTablePagination mySettingTablePagination, Long AuditionPostId);
 
     //    나의 모집  게시물 하나의 지원자 전체 갯수
     public int selectCount(Long AuditionPostId);

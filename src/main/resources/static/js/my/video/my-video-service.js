@@ -1,5 +1,7 @@
 const myPageService = (() => {
 
+//************* 작품 ***************
+
     const getMyVideoWorkList = async (page, memberId, callback) => {
         page = page || 1;
         const response = await fetch(`/members/${memberId}/video/my/work/${page}`);
@@ -46,6 +48,8 @@ const myPageService = (() => {
         });
     }
 
+//************* 펀딩 ***************
+
     const getMyFundingList = async (page, memberId, callback) => {
         page = page || 1;
         const response = await fetch(`/members/${memberId}/video/my/funding/${page}`);
@@ -86,26 +90,49 @@ const myPageService = (() => {
         }
     }
 
-    const getMyInquiryHistoryList = async (page, memberId, callback) => {
+//************* 모집 ***************
+
+    const getMyVideoAuditionList = async (page, memberId, callback) => {
         page = page || 1;
-        const response = await fetch(`/members/${memberId}/inquiry/${page}`);
-        const myInquiryHistories = await response.json();
+        const response = await fetch(`/members/${memberId}/video/my/audition/${page}`);
+        const myAuditionPosts = await response.json();
 
-        if(callback) {
-            callback(myInquiryHistories);
+        if(callback){
+            callback(myAuditionPosts);
         }
     }
 
-    const getAdminAnswerByInquiryId = async (inquiryId, callback) => {
-        const response = await fetch(`/members/inquiry/${inquiryId}/admin-answer`);
-        const adminAnswer = await response.json();
+    const getMyVideoAuditionApplicantList = async (page, auditionPostId, callback) => {
+        page = page || 1;
+        const response = await fetch(`/members/video/my/audition/${auditionPostId}/Applicants/${page}`);
+        const myAuditionApplicants = await response.json();
 
-        console.log("adminAnswer : ", adminAnswer)
-
-        if (callback) {
-            return callback(adminAnswer)
+        if(callback){
+            return callback(myAuditionApplicants);
         }
     }
+
+    const updateConfirmStatus = async (auditionApplication) => {
+        await fetch(`/members/video/my/audition/applicants/confirm-status/update`, {
+            method: "put",
+            body: JSON.stringify(auditionApplication),
+            headers: {
+                "Content-Type": "application/json; charset=utf-8"
+            }
+        });
+    }
+
+    const getMyVideoApplicationAuditionList = async (page, memberId, callback) => {
+        page = page || 1;
+        const response = await fetch(`/members/${memberId}/video/my/application/audition/${page}`);
+        const myApplicationAuditionPosts = await response.json();
+
+        if(callback){
+            callback(myApplicationAuditionPosts);
+        }
+    }
+
+//************* 내 정보 ***************
 
     const getMemberProfile = async (memberId, callback) => {
         const response = await fetch(`/members/${memberId}/profile`);
@@ -127,6 +154,30 @@ const myPageService = (() => {
     //         }
     //     });
     // }
+
+//************* 문의 ***************
+
+    const getMyInquiryHistoryList = async (page, memberId, callback) => {
+        page = page || 1;
+        const response = await fetch(`/members/${memberId}/inquiry/${page}`);
+        const myInquiryHistories = await response.json();
+
+        if(callback) {
+            callback(myInquiryHistories);
+        }
+    }
+
+    const getAdminAnswerByInquiryId = async (inquiryId, callback) => {
+        const response = await fetch(`/members/inquiry/${inquiryId}/admin-answer`);
+        const adminAnswer = await response.json();
+
+        console.log("adminAnswer : ", adminAnswer)
+
+        if (callback) {
+            return callback(adminAnswer)
+        }
+    }
+
 
     return {
         getMyVideoWorkList: getMyVideoWorkList,

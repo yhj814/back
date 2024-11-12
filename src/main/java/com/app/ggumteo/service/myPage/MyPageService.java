@@ -10,7 +10,7 @@ import com.app.ggumteo.domain.member.MemberProfileVO;
 import com.app.ggumteo.domain.member.MemberVO;
 import com.app.ggumteo.domain.work.MyWorkListDTO;
 import com.app.ggumteo.domain.work.WorkDTO;
-import com.app.ggumteo.pagination.SettingTablePagination;
+import com.app.ggumteo.pagination.MySettingTablePagination;
 import com.app.ggumteo.pagination.WorkAndFundingPagination;
 
 import java.util.Optional;
@@ -33,7 +33,7 @@ public interface MyPageService {
 
     // 작품 구매자 목록 조회
     public MyWorkBuyerListDTO getMyVideoWorkBuyerList
-    (int page, SettingTablePagination settingTablePagination , Long workPostId);
+    (int page, MySettingTablePagination mySettingTablePagination, Long workPostId);
 
     // 내 작품 게시물 하나의 구매자 전체 갯수
     public int getMyVideoWorkBuyersTotal(Long workPostId);
@@ -65,7 +65,7 @@ public interface MyPageService {
 
     // 펀딩 구매자 목록 조회
     public MyFundingBuyerListDTO getMyFundingBuyerList(
-           int page, SettingTablePagination settingTablePagination, Long fundingPostId);
+            int page, MySettingTablePagination mySettingTablePagination, Long fundingPostId);
 
     // 내 펀딩 게시물 하나의 구매자 전체 갯수
     public int getMyFundingPostBuyersTotal(Long fundingPostId);
@@ -95,7 +95,7 @@ public interface MyPageService {
 
     // 나의 모집 지원자 목록 조회
     public MyAuditionApplicantListDTO getMyVideoAuditionApplicantList
-    (int page, SettingTablePagination settingTablePagination , Long auditionPostId);
+    (int page, MySettingTablePagination mySettingTablePagination, Long auditionPostId);
 
     // 나의 모집 게시물 하나의 지원자 전체 갯수
     public int getMyVideoAuditionApplicantsTotal(Long auditionPostId);

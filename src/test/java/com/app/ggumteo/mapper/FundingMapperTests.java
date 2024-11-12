@@ -8,8 +8,8 @@ import com.app.ggumteo.domain.post.PostVO;
 import com.app.ggumteo.mapper.buy.BuyFundingProductMapper;
 import com.app.ggumteo.mapper.funding.FundingMapper;
 import com.app.ggumteo.mapper.post.PostMapper;
+import com.app.ggumteo.pagination.MySettingTablePagination;
 import com.app.ggumteo.pagination.Pagination;
-import com.app.ggumteo.pagination.SettingTablePagination;
 import com.app.ggumteo.search.Search;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -43,12 +43,12 @@ public class FundingMapperTests {
     @Test
     public void testSelectBuyerByFundingPostId() {
         FundingDTO fundingDTO = null;
-        SettingTablePagination settingTablePagination = new SettingTablePagination();
+        MySettingTablePagination mySettingTablePagination = new MySettingTablePagination();
         fundingDTO = fundingMapper.selectById(9L, PostType.FUNDINGVIDEO.name()).get();
-        settingTablePagination.setTotal(buyFundingProductMapper.selectCount(fundingDTO.getId()));
-        settingTablePagination.progress();
+        mySettingTablePagination.setTotal(buyFundingProductMapper.selectCount(fundingDTO.getId()));
+        mySettingTablePagination.progress();
         buyFundingProductMapper.selectByFundingPostId(
-                        settingTablePagination, fundingDTO.getId()).stream()
+                        mySettingTablePagination, fundingDTO.getId()).stream()
                 .map(BuyFundingProductDTO::toString).forEach(log::info);
     }
 

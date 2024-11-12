@@ -2,10 +2,8 @@ package com.app.ggumteo.repository.audition;
 
 import com.app.ggumteo.domain.audition.AuditionApplicationDTO;
 import com.app.ggumteo.domain.audition.AuditionApplicationVO;
-import com.app.ggumteo.domain.buy.BuyFundingProductDTO;
-import com.app.ggumteo.domain.buy.BuyFundingProductVO;
 import com.app.ggumteo.mapper.audition.AuditionApplicationMapper;
-import com.app.ggumteo.pagination.SettingTablePagination;
+import com.app.ggumteo.pagination.MySettingTablePagination;
 import com.app.ggumteo.pagination.WorkAndFundingPagination;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -28,8 +26,8 @@ public class AuditionApplicationDAO {
 //*********** 마이페이지 **************
 
     //    나의 모집 지원자 목록 조회
-    public List<AuditionApplicationDTO> findByAuditionPostId(SettingTablePagination settingTablePagination, Long auditionPostId) {
-        return auditionApplicationMapper.selectByAuditionPostId(settingTablePagination, auditionPostId);
+    public List<AuditionApplicationDTO> findByAuditionPostId(MySettingTablePagination mySettingTablePagination, Long auditionPostId) {
+        return auditionApplicationMapper.selectByAuditionPostId(mySettingTablePagination, auditionPostId);
     }
 
     //    나의 모집 게시물 하나의 지원자 전체 갯수

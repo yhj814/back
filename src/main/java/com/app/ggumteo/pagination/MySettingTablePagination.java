@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Data
 @Slf4j
-public class SettingTablePagination extends MyPagePagination {
+public class MySettingTablePagination extends MyPagePagination {
     @Override
     public void progress() {
         this.page = page == null ? 1 : page;

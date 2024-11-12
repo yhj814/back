@@ -8,11 +8,10 @@ import com.app.ggumteo.domain.audition.MyAuditionListDTO;
 import com.app.ggumteo.domain.buy.*;
 import com.app.ggumteo.domain.funding.MyFundingListDTO;
 import com.app.ggumteo.domain.inquiry.MyInquiryHistoryListDTO;
-import com.app.ggumteo.domain.member.MemberProfileDTO;
 import com.app.ggumteo.domain.member.MemberProfileVO;
 import com.app.ggumteo.domain.member.MemberVO;
 import com.app.ggumteo.domain.work.MyWorkListDTO;
-import com.app.ggumteo.pagination.SettingTablePagination;
+import com.app.ggumteo.pagination.MySettingTablePagination;
 import com.app.ggumteo.pagination.WorkAndFundingPagination;
 import com.app.ggumteo.service.file.PostFileService;
 import com.app.ggumteo.service.myPage.MyPageService;
@@ -59,10 +58,10 @@ public class MemberRestController {
     @ResponseBody
     @GetMapping("/members/video/my/work/{workPostId}/buyers/{page}")
     public MyWorkBuyerListDTO getMyVideoWorkBuyerList(@PathVariable("workPostId") Long workPostId
-            , @PathVariable("page") int page, SettingTablePagination settingTablePagination) {
+            , @PathVariable("page") int page, MySettingTablePagination mySettingTablePagination) {
 
         log.info("workPostId={}", workPostId);
-        return myPageService.getMyVideoWorkBuyerList(page, settingTablePagination, workPostId);
+        return myPageService.getMyVideoWorkBuyerList(page, mySettingTablePagination, workPostId);
     }
 
     // 내 영상 작품 발송 여부
@@ -109,10 +108,10 @@ public class MemberRestController {
     @ResponseBody
     @GetMapping("/members/video/my/funding/{fundingPostId}/buyers/{page}")
     public MyFundingBuyerListDTO getFundingBuyerList(@PathVariable("fundingPostId") Long fundingPostId
-            , @PathVariable("page") int page, SettingTablePagination settingTablePagination) {
+            , @PathVariable("page") int page, MySettingTablePagination mySettingTablePagination) {
 
         log.info("fundingPostId={}", fundingPostId);
-        return myPageService.getMyFundingBuyerList(page, settingTablePagination, fundingPostId);
+        return myPageService.getMyFundingBuyerList(page, mySettingTablePagination, fundingPostId);
     }
 
     // 내 영상 펀딩 상품 발송 여부
@@ -151,10 +150,10 @@ public class MemberRestController {
     @ResponseBody
     @GetMapping("/members/video/my/audition/{auditionPostId}/Applicants/{page}")
     public MyAuditionApplicantListDTO getMyVideoAuditionApplicantList(@PathVariable("auditionPostId") Long auditionPostId
-            , @PathVariable("page") int page, SettingTablePagination settingTablePagination) {
+            , @PathVariable("page") int page, MySettingTablePagination mySettingTablePagination) {
 
         log.info("auditionPostId={}", auditionPostId);
-        return myPageService.getMyVideoAuditionApplicantList(page, settingTablePagination, auditionPostId);
+        return myPageService.getMyVideoAuditionApplicantList(page, mySettingTablePagination, auditionPostId);
     }
 
     // 나의 모집 확인여부

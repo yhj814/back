@@ -12,7 +12,7 @@ import com.app.ggumteo.domain.member.MemberProfileVO;
 import com.app.ggumteo.domain.member.MemberVO;
 import com.app.ggumteo.domain.work.MyWorkListDTO;
 import com.app.ggumteo.domain.work.WorkDTO;
-import com.app.ggumteo.pagination.SettingTablePagination;
+import com.app.ggumteo.pagination.MySettingTablePagination;
 import com.app.ggumteo.pagination.WorkAndFundingPagination;
 import com.app.ggumteo.repository.inquiry.InquiryDAO;
 import com.app.ggumteo.service.myPage.MyPageService;
@@ -57,11 +57,11 @@ public class MyPageServiceTests {
     @Test
     public void testGetMyVideoWorkBuyerList() {
         WorkDTO workDTO = null;
-        SettingTablePagination settingTablePagination = new SettingTablePagination();
+        MySettingTablePagination mySettingTablePagination = new MySettingTablePagination();
         workDTO = myPageService.getWork(5L, PostType.WORKVIDEO.name()).get();
-        settingTablePagination.setTotal(myPageService.getMyVideoWorkBuyersTotal(workDTO.getId()));
-        settingTablePagination.progress();
-        MyWorkBuyerListDTO myWorkBuyers = myPageService.getMyVideoWorkBuyerList(1, settingTablePagination, workDTO.getId());
+        mySettingTablePagination.setTotal(myPageService.getMyVideoWorkBuyersTotal(workDTO.getId()));
+        mySettingTablePagination.progress();
+        MyWorkBuyerListDTO myWorkBuyers = myPageService.getMyVideoWorkBuyerList(1, mySettingTablePagination, workDTO.getId());
 
         log.info("myWorkBuyers.toString()-test={}", myWorkBuyers.toString());
     }
@@ -95,11 +95,11 @@ public class MyPageServiceTests {
     @Test
     public void testGetMyFundingBuyerList() {
         FundingDTO fundingDTO = null;
-        SettingTablePagination settingTablePagination = new SettingTablePagination();
+        MySettingTablePagination mySettingTablePagination = new MySettingTablePagination();
         fundingDTO = myPageService.getFunding(9L, PostType.FUNDINGVIDEO.name()).get();
-        settingTablePagination.setTotal(myPageService.getMyFundingPostBuyersTotal(fundingDTO.getId()));
-        settingTablePagination.progress();
-        MyFundingBuyerListDTO myFundingBuyers = myPageService.getMyFundingBuyerList(1, settingTablePagination, fundingDTO.getId());
+        mySettingTablePagination.setTotal(myPageService.getMyFundingPostBuyersTotal(fundingDTO.getId()));
+        mySettingTablePagination.progress();
+        MyFundingBuyerListDTO myFundingBuyers = myPageService.getMyFundingBuyerList(1, mySettingTablePagination, fundingDTO.getId());
 
         log.info("GetMyFundingBuyerList-test={}", myFundingBuyers.toString());
   }

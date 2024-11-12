@@ -1,9 +1,8 @@
 package com.app.ggumteo.mapper.buy;
 
-import com.app.ggumteo.domain.buy.BuyFundingProductDTO;
 import com.app.ggumteo.domain.buy.BuyWorkDTO;
 import com.app.ggumteo.domain.buy.BuyWorkVO;
-import com.app.ggumteo.pagination.SettingTablePagination;
+import com.app.ggumteo.pagination.MySettingTablePagination;
 import com.app.ggumteo.pagination.WorkAndFundingPagination;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -16,7 +15,7 @@ public interface BuyWorkMapper {
 
     //    작품 구매자 목록 조회
     public List<BuyWorkDTO> selectByWorkPostId(
-            @Param("settingTablePagination") SettingTablePagination settingTablePagination , @Param("workPostId") Long workPostId);
+            @Param("mySettingTablePagination") MySettingTablePagination mySettingTablePagination, @Param("workPostId") Long workPostId);
 
     //    내 작품 게시물 하나의 구매자 전체 갯수
     public int selectCount(Long workPostId);

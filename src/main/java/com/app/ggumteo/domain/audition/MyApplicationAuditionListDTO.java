@@ -1,6 +1,5 @@
 package com.app.ggumteo.domain.audition;
 
-import com.app.ggumteo.pagination.SettingTablePagination;
 import com.app.ggumteo.pagination.WorkAndFundingPagination;
 import lombok.Getter;
 import lombok.Setter;

@@ -1,7 +1,6 @@
 package com.app.ggumteo.domain.audition;
 
-import com.app.ggumteo.pagination.SettingTablePagination;
-import com.app.ggumteo.pagination.WorkAndFundingPagination;
+import com.app.ggumteo.pagination.MySettingTablePagination;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -13,5 +12,5 @@ import java.util.List;
 @Getter @Setter @ToString
 public class MyAuditionApplicantListDTO {
     private List<AuditionApplicationDTO> myAuditionApplicants;
-    private SettingTablePagination settingTablePagination;
+    private MySettingTablePagination mySettingTablePagination;
 }

@@ -18,7 +18,7 @@
                 join tbl_member m on mp.member_id = m.id
                 join tbl_member_profile bw_mp on bw.member_profile_id = bw_mp.id
         order by w.id desc
-            limit #{settingTablePagination.startRow}, #{settingTablePagination.rowCount};
+            limit #{mySettingTablePagination.startRow}, #{mySettingTablePagination.rowCount};
     </select>
 
     <select id="selectCount">

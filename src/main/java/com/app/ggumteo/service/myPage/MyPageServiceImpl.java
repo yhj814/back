@@ -12,7 +12,7 @@ import com.app.ggumteo.domain.member.MemberProfileVO;
 import com.app.ggumteo.domain.member.MemberVO;
 import com.app.ggumteo.domain.work.MyWorkListDTO;
 import com.app.ggumteo.domain.work.WorkDTO;
-import com.app.ggumteo.pagination.SettingTablePagination;
+import com.app.ggumteo.pagination.MySettingTablePagination;
 import com.app.ggumteo.pagination.WorkAndFundingPagination;
 import com.app.ggumteo.repository.audition.AuditionApplicationDAO;
 import com.app.ggumteo.repository.audition.AuditionDAO;
@@ -23,7 +23,6 @@ import com.app.ggumteo.repository.inquiry.InquiryDAO;
 import com.app.ggumteo.repository.member.MemberDAO;
 import com.app.ggumteo.repository.member.MemberProfileDAO;
 import com.app.ggumteo.repository.work.WorkDAO;
-import com.app.ggumteo.service.file.PostFileService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Primary;
@@ -82,13 +81,13 @@ public class MyPageServiceImpl implements MyPageService {
     //    작품 구매자 목록 조회
     @Override
     @MyWorkBuyerListLogStatus
-    public MyWorkBuyerListDTO getMyVideoWorkBuyerList(int page, SettingTablePagination settingTablePagination, Long workPostId) {
+    public MyWorkBuyerListDTO getMyVideoWorkBuyerList(int page, MySettingTablePagination mySettingTablePagination, Long workPostId) {
         MyWorkBuyerListDTO myWorkBuyers = new MyWorkBuyerListDTO();
-        settingTablePagination.setPage(page);
-        settingTablePagination.setTotal(buyWorkDAO.getTotal(workPostId));
-        settingTablePagination.progress();
-        myWorkBuyers.setSettingTablePagination(settingTablePagination);
-        myWorkBuyers.setMyWorkBuyers(buyWorkDAO.findByWorkPostId(settingTablePagination, workPostId));
+        mySettingTablePagination.setPage(page);
+        mySettingTablePagination.setTotal(buyWorkDAO.getTotal(workPostId));
+        mySettingTablePagination.progress();
+        myWorkBuyers.setMySettingTablePagination(mySettingTablePagination);
+        myWorkBuyers.setMyWorkBuyers(buyWorkDAO.findByWorkPostId(mySettingTablePagination, workPostId));
 
         return myWorkBuyers;
     }
@@ -160,13 +159,13 @@ public class MyPageServiceImpl implements MyPageService {
     //    펀딩 구매자 목록 조회
     @Override
     @MyFundingBuyerListLogStatus
-    public MyFundingBuyerListDTO getMyFundingBuyerList(int page, SettingTablePagination settingTablePagination, Long fundingPostId) {
+    public MyFundingBuyerListDTO getMyFundingBuyerList(int page, MySettingTablePagination mySettingTablePagination, Long fundingPostId) {
         MyFundingBuyerListDTO myFundingBuyers = new MyFundingBuyerListDTO();
-        settingTablePagination.setPage(page);
-        settingTablePagination.setTotal(buyFundingProductDAO.getTotal(fundingPostId));
-        settingTablePagination.progress();
-        myFundingBuyers.setSettingTablePagination(settingTablePagination);
-        myFundingBuyers.setMyFundingBuyers(buyFundingProductDAO.findByFundingPostId(settingTablePagination, fundingPostId));
+        mySettingTablePagination.setPage(page);
+        mySettingTablePagination.setTotal(buyFundingProductDAO.getTotal(fundingPostId));
+        mySettingTablePagination.progress();
+        myFundingBuyers.setMySettingTablePagination(mySettingTablePagination);
+        myFundingBuyers.setMyFundingBuyers(buyFundingProductDAO.findByFundingPostId(mySettingTablePagination, fundingPostId));
 
         return myFundingBuyers;
     }
@@ -231,13 +230,13 @@ public class MyPageServiceImpl implements MyPageService {
 
     // 나의 모집 지원자 목록 조회
     @Override
-    public MyAuditionApplicantListDTO getMyVideoAuditionApplicantList(int page, SettingTablePagination settingTablePagination, Long auditionPostId) {
+    public MyAuditionApplicantListDTO getMyVideoAuditionApplicantList(int page, MySettingTablePagination mySettingTablePagination, Long auditionPostId) {
         MyAuditionApplicantListDTO myAuditionApplicants = new MyAuditionApplicantListDTO();
-        settingTablePagination.setPage(page);
-        settingTablePagination.setTotal(auditionApplicationDAO.getTotal(auditionPostId));
-        settingTablePagination.progress();
-        myAuditionApplicants.setSettingTablePagination(settingTablePagination);
-        myAuditionApplicants.setMyAuditionApplicants(auditionApplicationDAO.findByAuditionPostId(settingTablePagination, auditionPostId));
+        mySettingTablePagination.setPage(page);
+        mySettingTablePagination.setTotal(auditionApplicationDAO.getTotal(auditionPostId));
+        mySettingTablePagination.progress();
+        myAuditionApplicants.setMySettingTablePagination(mySettingTablePagination);
+        myAuditionApplicants.setMyAuditionApplicants(auditionApplicationDAO.findByAuditionPostId(mySettingTablePagination, auditionPostId));
 
         return myAuditionApplicants;
     }

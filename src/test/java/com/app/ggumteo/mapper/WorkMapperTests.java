@@ -7,7 +7,7 @@ import com.app.ggumteo.domain.work.WorkDTO;
 import com.app.ggumteo.mapper.buy.BuyWorkMapper;
 import com.app.ggumteo.mapper.member.MemberMapper;
 import com.app.ggumteo.mapper.work.WorkMapper;
-import com.app.ggumteo.pagination.SettingTablePagination;
+import com.app.ggumteo.pagination.MySettingTablePagination;
 import com.app.ggumteo.pagination.WorkAndFundingPagination;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -51,15 +51,15 @@ public class WorkMapperTests {
     @Test
     public void testSelectByWorkPostId() {
         WorkDTO workDTO = null;
-        SettingTablePagination settingTablePagination = new SettingTablePagination();
-        log.info("settingTablePagination={}", settingTablePagination);
+        MySettingTablePagination mySettingTablePagination = new MySettingTablePagination();
+        log.info("mySettingTablePagination={}", mySettingTablePagination);
         workDTO = workMapper.selectByIdAndPostType(5L, PostType.WORKVIDEO.name()).get();
         log.info("workDTO={}", workDTO);
-        settingTablePagination.setTotal(buyWorkMapper.selectCount(workDTO.getId()));
-        log.info("settingTablePagination={}", settingTablePagination);
-        settingTablePagination.progress();
+        mySettingTablePagination.setTotal(buyWorkMapper.selectCount(workDTO.getId()));
+        log.info("mySettingTablePagination={}", mySettingTablePagination);
+        mySettingTablePagination.progress();
         buyWorkMapper.selectByWorkPostId(
-                        settingTablePagination, workDTO.getId()).stream()
+                        mySettingTablePagination, workDTO.getId()).stream()
                 .map(BuyWorkDTO::toString).forEach(log::info);
     }
 }
