@@ -200,7 +200,7 @@ const showMyWorkList = ({myWorkPosts, workAndFundingPagination}) => {
 }
 
 // 나의 작품 - 구매자 목록, 페이징
-const showMyWorkBuyerList = ({myWorkBuyers, settingTablePagination}) => {
+const showMyWorkBuyerList = ({myWorkBuyers, mySettingTablePagination}) => {
 
     let text = `<div class="price-member setting-th">
                             <div class="setting-td size-l">
@@ -273,18 +273,18 @@ const showMyWorkBuyerList = ({myWorkBuyers, settingTablePagination}) => {
 
     text += `<ul class="pagination theme-yozm mypage-page back-or-next">`;
 
-    if(settingTablePagination.prev){
+    if(mySettingTablePagination.prev){
         text += `
             <li class="page-item">
-                <a href="${settingTablePagination.startPage - 1}" class="page-link back"></a>
+                <a href="${mySettingTablePagination.startPage - 1}" class="page-link back"></a>
             </li>
         `
     }
 
-    if(settingTablePagination.next) {
+    if(mySettingTablePagination.next) {
         text += `
             <li class="page-item">
-                <a href="${settingTablePagination.endPage + 1}" class="page-link next"></a>
+                <a href="${mySettingTablePagination.endPage + 1}" class="page-link next"></a>
             </li>
         `
     }
@@ -593,7 +593,7 @@ const showMyFundingList = ({myFundingPosts, workAndFundingPagination}) => {
 }
 
 // 나의 펀딩 - 구매자 목록, 페이징
-const showFundingBuyerList = ({myFundingBuyers, settingTablePagination}) => {
+const showFundingBuyerList = ({myFundingBuyers, mySettingTablePagination}) => {
 
     let text = `<div class="setting-th">
                                 <div class="setting-td size-l">
@@ -713,18 +713,18 @@ const showFundingBuyerList = ({myFundingBuyers, settingTablePagination}) => {
 
     text += `<ul class="pagination theme-yozm mypage-page back-or-next">`;
 
-    if(settingTablePagination.prev){
+    if(mySettingTablePagination.prev){
         text += `
             <li class="page-item">
-                <a href="${settingTablePagination.startPage - 1}" class="page-link back"></a>
+                <a href="${mySettingTablePagination.startPage - 1}" class="page-link back"></a>
             </li>
         `
     }
 
-    if(settingTablePagination.next) {
+    if(mySettingTablePagination.next) {
         text += `
             <li class="page-item">
-                <a href="${settingTablePagination.endPage + 1}" class="page-link next"></a>
+                <a href="${mySettingTablePagination.endPage + 1}" class="page-link next"></a>
             </li>
         `
     }
@@ -866,22 +866,22 @@ const showMyBuyFundingList = ({myBuyFundingPosts, workAndFundingPagination}) => 
     if (workAndFundingPagination.prev) {
         pagingText += `
             <li class="page-item">
-                <a href="${workAndFundingPagination.startPage - 1}" class="page-link back"></a>
+                <a href="${myWorkAndFundingPagination.startPage - 1}" class="page-link back"></a>
             </li>
         `
     }
-    for (let i = workAndFundingPagination.startPage; i <= workAndFundingPagination.endPage; i++) {
-        if (workAndFundingPagination.page === i) {
+    for (let i = myWorkAndFundingPagination.startPage; i <= myWorkAndFundingPagination.endPage; i++) {
+        if (myWorkAndFundingPagination.page === i) {
             pagingText += `<li class="page-item"><div class="page-link active">${i}</div></li>`
         } else {
             pagingText += `<li class="page-item"><a href="${i}" class="page-link">${i}</a></li>`
         }
     }
 
-    if (workAndFundingPagination.next) {
+    if (myWorkAndFundingPagination.next) {
         pagingText += `
             <li class="page-item">
-                <a href="${workAndFundingPagination.endPage + 1}" class="page-link next"></a>
+                <a href="${myWorkAndFundingPagination.endPage + 1}" class="page-link next"></a>
             </li>
         `
     }
@@ -893,7 +893,7 @@ const showMyBuyFundingList = ({myBuyFundingPosts, workAndFundingPagination}) => 
 const myAuditionListLayout = document.getElementById("my-audition-list");
 const myAuditionListPaging = document.getElementById("my-audition-list=paging");
 
-const showMyWorkList = ({myWorkPosts, workAndFundingPagination}) => {
+const showMyWorkList = ({myWorkPosts, myWorkAndFundingPagination}) => {
     let text = ``;
     let pagingText = ``;
 
@@ -1027,25 +1027,25 @@ const showMyWorkList = ({myWorkPosts, workAndFundingPagination}) => {
     myWorkListLayout.innerHTML = text;
 
 
-    if(workAndFundingPagination.prev){
+    if(myWorkAndFundingPagination.prev){
         pagingText += `
             <li class="page-item">
-                <a href="${workAndFundingPagination.startPage - 1}" class="page-link back"></a>
+                <a href="${myWorkAndFundingPagination.startPage - 1}" class="page-link back"></a>
             </li>
         `
     }
-    for(let i=workAndFundingPagination.startPage; i<=workAndFundingPagination.endPage; i++){
-        if(workAndFundingPagination.page === i){
+    for(let i=myWorkAndFundingPagination.startPage; i<=myWorkAndFundingPagination.endPage; i++){
+        if(myWorkAndFundingPagination.page === i){
             pagingText += `<li class="page-item"><div class="page-link active">${i}</div></li>`
         }else{
             pagingText += `<li class="page-item"><a href="${i}" class="page-link">${i}</a></li>`
         }
     }
 
-    if(workAndFundingPagination.next) {
+    if(myWorkAndFundingPagination.next) {
         pagingText += `
             <li class="page-item">
-                <a href="${workAndFundingPagination.endPage + 1}" class="page-link next"></a>
+                <a href="${myWorkAndFundingPagination.endPage + 1}" class="page-link next"></a>
             </li>
         `
     }
@@ -1054,7 +1054,7 @@ const showMyWorkList = ({myWorkPosts, workAndFundingPagination}) => {
 }
 
 // // 나의 모집 목록, 페이징 - 구매자 목록, 페이징
-const showMyWorkBuyerList = ({myWorkBuyers, settingTablePagination}) => {
+const showMyWorkBuyerList = ({myWorkBuyers, mySettingTablePagination}) => {
 
     let text = `<div class="price-member setting-th">
                             <div class="setting-td size-l">
@@ -1127,18 +1127,18 @@ const showMyWorkBuyerList = ({myWorkBuyers, settingTablePagination}) => {
 
     text += `<ul class="pagination theme-yozm mypage-page back-or-next">`;
 
-    if(settingTablePagination.prev){
+    if(mySettingTablePagination.prev){
         text += `
             <li class="page-item">
-                <a href="${settingTablePagination.startPage - 1}" class="page-link back"></a>
+                <a href="${mySettingTablePagination.startPage - 1}" class="page-link back"></a>
             </li>
         `
     }
 
-    if(settingTablePagination.next) {
+    if(mySettingTablePagination.next) {
         text += `
             <li class="page-item">
-                <a href="${settingTablePagination.endPage + 1}" class="page-link next"></a>
+                <a href="${mySettingTablePagination.endPage + 1}" class="page-link next"></a>
             </li>
         `
     }
@@ -1152,7 +1152,7 @@ const myBuyWorkListLayout = document.getElementById("my-buy-work-list");
 const myBuyWorkListPaging = document.getElementById("my-buy-work-list-paging");
 
 
-const showMyBuyWorkList = ({myBuyWorkPosts, workAndFundingPagination}) => {
+const showMyBuyWorkList = ({myBuyWorkPosts, myWorkAndFundingPagination}) => {
     let text = ``;
     let pagingText = ``;
 
@@ -1260,25 +1260,25 @@ const showMyBuyWorkList = ({myBuyWorkPosts, workAndFundingPagination}) => {
 
     myBuyWorkListLayout.innerHTML = text;
 
-    if(workAndFundingPagination.prev){
+    if(myWorkAndFundingPagination.prev){
         pagingText += `
             <li class="page-item">
-                <a href="${workAndFundingPagination.startPage - 1}" class="page-link back"></a>
+                <a href="${myWorkAndFundingPagination.startPage - 1}" class="page-link back"></a>
             </li>
         `
     }
-    for(let i=workAndFundingPagination.startPage; i<=workAndFundingPagination.endPage; i++){
-        if(workAndFundingPagination.page === i){
+    for(let i=myWorkAndFundingPagination.startPage; i<=myWorkAndFundingPagination.endPage; i++){
+        if(myWorkAndFundingPagination.page === i){
             pagingText += `<li class="page-item"><div class="page-link active">${i}</div></li>`
         }else{
             pagingText += `<li class="page-item"><a href="${i}" class="page-link">${i}</a></li>`
         }
     }
 
-    if(workAndFundingPagination.next) {
+    if(myWorkAndFundingPagination.next) {
         pagingText += `
             <li class="page-item">
-                <a href="${workAndFundingPagination.endPage + 1}" class="page-link next"></a>
+                <a href="${myWorkAndFundingPagination.endPage + 1}" class="page-link next"></a>
             </li>
         `
     }
@@ -1291,7 +1291,7 @@ const myInquiryHistoryListLayout = document.getElementById("my-inquiry-history-l
 const myInquiryHistoryListPaging = document.getElementById("my-inquiry-history-list-paging");
 
 
-const showMyInquiryHistoryList = ({myInquiryHistories, workAndFundingPagination}) => {
+const showMyInquiryHistoryList = ({myInquiryHistories, myWorkAndFundingPagination}) => {
 let text = ``;
 let pagingText = ``;
 
@@ -1402,25 +1402,25 @@ let pagingText = ``;
     myInquiryHistoryListLayout.innerHTML = text;
 
 
-    if(workAndFundingPagination.prev){
+    if(myWorkAndFundingPagination.prev){
         pagingText += `
             <li class="page-item">
-                <a href="${workAndFundingPagination.startPage - 1}" class="page-link back"></a>
+                <a href="${myWorkAndFundingPagination.startPage - 1}" class="page-link back"></a>
             </li>
         `
     }
-    for(let i=workAndFundingPagination.startPage; i<=workAndFundingPagination.endPage; i++){
-        if(workAndFundingPagination.page === i){
+    for(let i=myWorkAndFundingPagination.startPage; i<=myWorkAndFundingPagination.endPage; i++){
+        if(myWorkAndFundingPagination.page === i){
             pagingText += `<li class="page-item"><div class="page-link active">${i}</div></li>`
         }else{
             pagingText += `<li class="page-item"><a href="${i}" class="page-link">${i}</a></li>`
         }
     }
 
-    if(workAndFundingPagination.next) {
+    if(myWorkAndFundingPagination.next) {
         pagingText += `
             <li class="page-item">
-                <a href="${workAndFundingPagination.endPage + 1}" class="page-link next"></a>
+                <a href="${myWorkAndFundingPagination.endPage + 1}" class="page-link next"></a>
             </li>
         `
     }
