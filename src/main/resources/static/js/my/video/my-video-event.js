@@ -176,6 +176,72 @@ myBuyFundingListPaging.addEventListener("click", (e)=>{
     }
 });
 
+// 나의 모집
+globalThis.myAuditionPage = 1;
+myPageService.getMyVideoAuditionList(globalThis.myAuditionPage, memberId, showMyAuditionList);
+
+myAuditionListPaging.addEventListener("click", (e)=>{
+    e.preventDefault();
+    if(e.target.tagName === "A") {
+        globalThis.myAuditionPage = e.target.getAttribute("href");
+        myPageService.getMyVideoAuditionList(globalThis.myAuditionPage, memberId, showMyAuditionList);
+    }
+});
+
+// 나의 모집 지원자 목록
+myAuditionListLayout.addEventListener('click', async (e) => {
+    console.log("들어옴1")
+    if(e.target.id === "my-audition-applicant-btn" ) {
+        console.log("e.target : ", e.target)
+        const myAuditionPostId = e.target.classList[1];
+        console.log("myAuditionPostId : ", myAuditionPostId)
+
+        const auditionApplicantTable = document.querySelector(`.audition-applicant-${myAuditionPostId}`);
+        console.log("auditionApplicantTable : ", auditionApplicantTable)
+        if (
+            auditionApplicantTable.style.display === "none"
+        ) {
+            if(auditionApplicantTable.children.length == 0) {
+                console.log("들어옴3")
+                globalThis.myAuditionApplicantPage = 1;
+                auditionApplicantTable.innerHTML = await myPageService.getMyVideoAuditionApplicantList(globalThis.myAuditionApplicantPage, myAuditionPostId, showMyAuditionApplicantList);
+
+                // 구매자 테이블을 클릭했을 때
+                auditionApplicantTable.addEventListener('click', async (e) => {
+                    e.preventDefault();
+                    // 만약 a 태그를 클릭한다면
+                    if(e.target.tagName === 'A') {
+                        // 클릭한 링크(의 번호)를 페이지 변수?에 담아라
+                        globalThis.myAuditionApplicantPage = e.target.getAttribute("href");
+                        // 구매자 테이블 html 을
+                        auditionApplicantTable.innerHTML = await myPageService.getMyVideoAuditionApplicantList(globalThis.myAuditionApplicantPage, myAuditionPostId, showMyAuditionApplicantList);
+                    }
+
+                    if(e.target.classList[1] === "btn-public") {
+                        const ApplicationAuditionId = e.target.classList[2];
+                        const confirmOk = "YES";
+
+                        if(e.target.nextElementSibling.classList[2] === "active") {
+                            e.target.classList.add("active");
+                            e.target.nextElementSibling.classList.remove("active")
+                            await myPageService.updateConfirmStatus({
+                                id: ApplicationAuditionId, confirmStatus: confirmOk
+                            });
+                        }
+                    }
+                });
+            }
+            // 2. 작품 구매자 테이블의 자식요소[배열]의 길이가 0이 아니라면 (=목록이 불러진 상태라면)
+            // 작품 구매자 테이블에 목록을 추가하지 말고 작품 구매자 테이블을 화면에 보여줘라.
+            auditionApplicantTable.style.display = "block";
+        } else {// 작품 구매자 테이블이 화면에 나타나있다면
+            // 작품 구매자 테이블을 화면에서 숨겨라
+            auditionApplicantTable.style.display = "none";
+        }
+    }
+
+});
+
 // 문의 내역
 myPageService.getMyInquiryHistoryList(globalThis.myInquiryHistoryPage, memberId, showMyInquiryHistoryList);
 

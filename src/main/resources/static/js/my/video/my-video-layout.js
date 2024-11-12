@@ -39,860 +39,6 @@ function timeForToday(datetime) {
 const myWorkListLayout = document.getElementById("my-work-list");
 const myWorkListPaging = document.getElementById("my-work-list-paging");
 
-const showMyWorkList = ({myWorkPosts, workAndFundingPagination}) => {
-    let text = ``;
-    let pagingText = ``;
-
-    myWorkPosts.forEach((myWorkPost) => {
-
-        text += `
-            <div class="list-item">
-                <div class="products-list">
-                    <div class="flex-box">
-                        <div class="products-text">
-                            <a
-                                ><p
-                                    class="my-products-title"
-                                >
-                                    ${myWorkPost.postTitle}
-                                </p></a
-                            >
-                            <div
-                                class="my-products-info"
-                            >
-                                <a
-                                    ><p
-                                        class="btn smooth my-products-category"
-                                    >
-                                         ${myWorkPost.genreType}
-                                    </p></a
-                                >
-                                <div
-                                    class="divider"
-                                ></div>
-                                <div class="flex-box">
-                                    <img
-                                        class="time"
-                                        src="/images/member/clock.png"
-                                    />
-                                    <div
-                                        class="timeandcontent smooth"
-                                    >
-                                        ${timeForToday(myWorkPost.createdDate)}
-                                    </div>
-                                </div>
-                            </div>
-                            <a
-                                ><p
-                                    class="timeandcontent content products-description"
-                                >
-                                 ${myWorkPost.postContent}
-                                </p></a
-                            >
-                        </div>
-                        <div class="btn products-image">
-                            <a 
-                                ><img src="/text/display?fileName=${myWorkPost.thumbnailFilePath}/t_${myWorkPost.thumbnailFileName}"
-                            </a>
-                        </div>
-                    </div>
-                    <div
-                        class="flex-box products-author-box"
-                    >
-                        <div
-                            class="author-info flex-box"
-                        >
-                            <img
-                                class="author-image"
-                                src=${myWorkPost.profileImgUrl}
-                            />
-                            <p class="author-name">
-                                ${myWorkPost.profileNickName}
-                            </p>
-                        </div>
-                        <div class="flex-box">
-                            <div class="btn-wrapper">
-                                <button
-                                    class="btn btn-action btn-icon-edit-my"
-                                    name="toggle_btn"
-                                    type="button"
-                                >
-                                    <p
-                                        class="action-tooltip bottom-action edit-my-off"
-                                    >
-                                        구매한 사람들
-                                    </p>
-                                    <div
-                                        class="edit-my-off"
-                                    >
-                                        <div
-                                            id="my-work-buyer-btn"
-                                            class="icon-my-edit-off ${myWorkPost.id}"
-                                        ></div>
-                                    </div>
-                                    <div
-                                        class="edit-my-on"
-                                        style="
-                                            display: none;
-                                        "
-                                    >
-                                        <div
-                                            class="icon-my-edit-on"
-                                        ></div>
-                                    </div>
-                                </button>
-                            </div>
-                            <div class="btn-wrapper">
-                                <button
-                                    class="btn btn-action icon-delete-read-products"
-                                    type="button"
-                                >
-                                    <div
-                                        class="icon-my-delete"
-                                    ></div>
-                                    <p
-                                        class="action-tooltip bottom-action"
-                                    >
-                                        수정
-                                    </p>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="setting-table work-buyer-${myWorkPost.id}" style="
-                            border-top: 1px solid
-                                rgb(224, 224, 224);
-                            display: none;
-                        ">
-                        <!--내 작품 구매자 테이블-->
-                    </div>
-                </div>
-            </div>
-            `;
-    });
-    myWorkListLayout.innerHTML = text;
-
-
-    if(workAndFundingPagination.prev){
-        pagingText += `
-            <li class="page-item">
-                <a href="${workAndFundingPagination.startPage - 1}" class="page-link back"></a>
-            </li>
-        `
-    }
-    for(let i=workAndFundingPagination.startPage; i<=workAndFundingPagination.endPage; i++){
-        if(workAndFundingPagination.page === i){
-            pagingText += `<li class="page-item"><div class="page-link active">${i}</div></li>`
-        }else{
-            pagingText += `<li class="page-item"><a href="${i}" class="page-link">${i}</a></li>`
-        }
-    }
-
-    if(workAndFundingPagination.next) {
-        pagingText += `
-            <li class="page-item">
-                <a href="${workAndFundingPagination.endPage + 1}" class="page-link next"></a>
-            </li>
-        `
-    }
-
-    myWorkListPaging.innerHTML = pagingText;
-}
-
-// 나의 작품 - 구매자 목록, 페이징
-const showMyWorkBuyerList = ({myWorkBuyers, mySettingTablePagination}) => {
-
-    let text = `<div class="price-member setting-th">
-                            <div class="setting-td size-l">
-                                이름/이메일
-                            </div>
-                            <div class="center-text setting-td size-s">
-                                금액
-                            </div>
-                            <div class="center-text setting-td trueorfalse">
-                                발송 여부
-                            </div>
-                        </div>
-                       `
-    text += `<div class="setting-tr-group" style="border-bottom: solid 1px #e0e0e0; padding-bottom: 0px;">`;
-
-    myWorkBuyers.forEach((myWorkBuyer) => {
-        text += `<div class="price-member setting-tr" style="padding-top: 7px">
-                    <div class="setting-td with-sub size-l">
-                        <div class="membername major-span">
-                            ${myWorkBuyer.profileName}
-                        </div>
-                        <div class="memberemail sub-span">
-                            ${myWorkBuyer.profileEmail}
-                        </div>
-                    </div>
-                    <div class="center-text price-member setting-td with-text primary size-s"
-                            style="margin-bottom: 35px;">
-                        ${myWorkBuyer.workPrice}
-                    </div>
-                    <div class="center-text setting-td with-btn trueorfalse">
-                        <div class="btn-group choice-group">`
-        if(myWorkBuyer.workSendStatus === "YES") {
-           text += `<div class="btn-choice btn-public active">`
-        } else {
-            text += `<div class="btn-choice btn-public ${myWorkBuyer.id}">`
-        }
-                        text += `<input
-                                        checked=""
-                                        class="radio-value"
-                                        name="is_secret_employment"
-                                        type="radio"
-                                        value="YES"/>보냄
-                            </div>`
-        if(myWorkBuyer.workSendStatus === "NO") {
-            text += `<div class="btn-choice btn-secret active">`
-        } else {
-            text += `<div class="btn-choice btn-secret">`
-        }
-             text +=          `<input
-                                        class="radio-value"
-                                        name="is_secret_employment"
-                                        type="radio"
-                                        value="NO"/>안보냄
-                            </div>
-                        </div>
-                    </div>
-                    <label
-                            class="switch"
-                            style="display: none;">
-                        <input
-                                class="media-checkbox"
-                                type="checkbox"/>
-                        <span class="slider round"></span>
-                    </label>
-                </div>
-            `;
-
-    });
-    text += `    </div>`;
-
-    text += `<ul class="pagination theme-yozm mypage-page back-or-next">`;
-
-    if(mySettingTablePagination.prev){
-        text += `
-            <li class="page-item">
-                <a href="${mySettingTablePagination.startPage - 1}" class="page-link back"></a>
-            </li>
-        `
-    }
-
-    if(mySettingTablePagination.next) {
-        text += `
-            <li class="page-item">
-                <a href="${mySettingTablePagination.endPage + 1}" class="page-link next"></a>
-            </li>
-        `
-    }
-    text += `    </ul>`;
-
-    return text;
-}
-
-// 구매한 작품 목록, 페이징
-const myBuyWorkListLayout = document.getElementById("my-buy-work-list");
-const myBuyWorkListPaging = document.getElementById("my-buy-work-list-paging");
-
-
-const showMyBuyWorkList = ({myBuyWorkPosts, workAndFundingPagination}) => {
-    let text = ``;
-    let pagingText = ``;
-
-    myBuyWorkPosts.forEach((myBuyWorkPost) => {
-        text += ` <div class="list-item">
-                    <div class="products-list">
-                        <div class="flex-box">
-                            <div class="products-text">
-                                <a
-                                    ><p
-                                        class="my-products-title"
-                                    >
-                                        ${myBuyWorkPost.postTitle}
-                                    </p></a
-                                >
-                                <div
-                                    class="my-products-info"
-                                >
-                                    <a
-                                        ><p
-                                            class="btn smooth my-products-category"
-                                        >
-                                           ${myBuyWorkPost.genreType}
-                                        </p></a
-                                    >
-                                    <div
-                                        class="divider"
-                                    ></div>
-                                    <div class="flex-box">
-                                        <img
-                                            class="time"
-                                            src="/images/member/clock.png"
-                                        />
-                                        <div
-                                            class="timeandcontent smooth"
-                                        >
-                                             ${timeForToday(myBuyWorkPost.createdDate)}
-                                        </div>
-                                    </div>
-                                </div>
-                                <a
-                                    ><p
-                                        class="timeandcontent content products-description"
-                                    >
-                                         ${myBuyWorkPost.postContent}
-                                    </p></a
-                                >
-                            </div>
-                            <div class="btn products-image">
-                                <a
-                                    ><img
-                                        src="/text/display?fileName=${myBuyWorkPost.thumbnailFilePath}/t_${myBuyWorkPost.thumbnailFileName}"
-                                /></a>
-                            </div>
-                        </div>
-                        <div
-                            class="flex-box products-author-box"
-                        >
-                            <div
-                                class="author-info flex-box"
-                            >
-                                <img
-                                    class="author-image"
-                                    src=${myBuyWorkPost.profileImgUrl}
-                                />
-                                <p class="author-name">
-                                     ${myBuyWorkPost.profileNickName}
-                                </p>
-                                <div
-                                    class="divider"
-                                    style="
-                                        margin-left: 10px;
-                                        margin-right: 10px;
-                                    "
-                                ></div>
-    
-                                <div
-                                    class="timeandcontent smooth"
-                                >
-                                    ${myBuyWorkPost.workPrice}
-                                </div>
-                            </div>
-                            <div class="flex-box">
-                                <div class="btn-wrapper">
-                                    <button
-                                        class="btn btn-action icon-delete-read-products"
-                                        type="button"
-                                    >
-                                        <div
-                                            id="buy-work-delete-btn"
-                                            class="icon-my-delete ${myBuyWorkPost.id}"
-                                        ></div>
-                                        <p
-                                            class="action-tooltip bottom-action"
-                                        >
-                                            구매내역 삭제
-                                        </p>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>`
-    });
-
-    myBuyWorkListLayout.innerHTML = text;
-
-    if(workAndFundingPagination.prev){
-        pagingText += `
-            <li class="page-item">
-                <a href="${workAndFundingPagination.startPage - 1}" class="page-link back"></a>
-            </li>
-        `
-    }
-    for(let i=workAndFundingPagination.startPage; i<=workAndFundingPagination.endPage; i++){
-        if(workAndFundingPagination.page === i){
-            pagingText += `<li class="page-item"><div class="page-link active">${i}</div></li>`
-        }else{
-            pagingText += `<li class="page-item"><a href="${i}" class="page-link">${i}</a></li>`
-        }
-    }
-
-    if(workAndFundingPagination.next) {
-        pagingText += `
-            <li class="page-item">
-                <a href="${workAndFundingPagination.endPage + 1}" class="page-link next"></a>
-            </li>
-        `
-    }
-
-    myBuyWorkListPaging.innerHTML = pagingText;
-}
-
-// 나의 펀딩 목록, 페이징
-const myFundingListLayout = document.getElementById("my-funding-list");
-const myFundingListPaging = document.getElementById("my-funding-list-paging");
-
-const showMyFundingList = ({myFundingPosts, workAndFundingPagination}) => {
-    let text = ``;
-    let pagingText = ``;
-
-    myFundingPosts.forEach((myFundingPost) => {
-
-        text += `
-         <div class="list-item my-funding-posts">
-            <div class="products-list">
-                <div class="flex-box">
-                    <div class="products-text">
-                        <a
-                        ><p
-                                class="my-products-title"
-                        >
-                            ${myFundingPost.postTitle}
-                        </p></a
-                        >
-                        <div
-                                class="my-products-info"
-                        >
-                            <a
-                            ><p
-                                    class="btn smooth my-products-category"
-                            >
-                                ${myFundingPost.genreType}
-                            </p></a
-                            >
-                            <div
-                                    class="divider"
-                            ></div>
-                            <div class="flex-box">
-                                <img
-                                        class="time"
-                                        src="/images/member/clock.png"
-                                />
-                                <div
-                                        class="timeandcontent smooth"
-                                >
-                                   ${timeForToday(myFundingPost.createdDate)}
-                                </div>
-                            </div>
-                        </div>
-                        <a
-                        ><p
-                                class="timeandcontent content products-description"
-                        >
-                            ${myFundingPost.postContent}
-                        </p></a
-                        >
-                    </div>
-                    <div class="btn products-image">
-                        <a
-                            ><img
-                             src="/images/member/thumnail.png"
-                        /></a>
-                    </div>
-                </div>
-                <div
-                    class="flex-box products-author-box"
-                >
-                    <div
-                        class="author-info flex-box"
-                    >
-                        <img
-                            class="author-image"
-                            src="/images/member/member-image.jpg"
-                        />
-                        <p class="author-name">
-                            ${myFundingPost.profileNickname}
-                        </p>
-                    </div>
-                    <div class="flex-box">
-                        <div class="btn-wrapper">
-                            <button
-                                class="btn btn-action btn-icon-edit-my"
-                                name="toggle_btn"
-                                type="button"
-                            >
-                                <p
-                                    class="action-tooltip bottom-action edit-my-off"
-                                >
-                                    구매한 사람들
-                                </p>
-                                <div
-                                    class="edit-my-off"
-                                >
-                                    <div
-                                        id="my-funding-buyer-btn"
-                                        class="icon-my-edit-off ${myFundingPost.id}"
-                                    ></div>
-                                </div>
-                                <div
-                                    class="edit-my-on"
-                                    style="
-                                        display: none;
-                                    "
-                                >
-                                    <div
-                                        class="icon-my-edit-on"
-                                    ></div>
-                                </div>
-                            </button>
-                        </div>
-                        <div class="btn-wrapper">
-                            <button
-                                class="btn btn-action icon-delete-read-products"
-                                type="button"
-                            >
-                                <div
-                                    class="icon-my-delete"
-                                ></div>
-                                <p
-                                    class="action-tooltip bottom-action"
-                                >
-                                    수정
-                                </p>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <div class="setting-table funding-buyer-${myFundingPost.id}" style="border-top: 1px solid rgb(224, 224, 224); display: none;">
-                 </div>    
-            </div>
-        </div>
-            `;
-    });
-    myFundingListLayout.innerHTML = text;
-
-
-    if(workAndFundingPagination.prev){
-        pagingText += `
-            <li class="page-item">
-                <a href="${workAndFundingPagination.startPage - 1}" class="page-link back"></a>
-            </li>
-        `
-    }
-    for(let i=workAndFundingPagination.startPage; i<=workAndFundingPagination.endPage; i++){
-        if(workAndFundingPagination.page === i){
-            pagingText += `<li class="page-item"><div class="page-link active">${i}</div></li>`
-        }else{
-            pagingText += `<li class="page-item"><a href="${i}" class="page-link">${i}</a></li>`
-        }
-    }
-
-    if(workAndFundingPagination.next) {
-        pagingText += `
-            <li class="page-item">
-                <a href="${workAndFundingPagination.endPage + 1}" class="page-link next"></a>
-            </li>
-        `
-    }
-
-    myFundingListPaging.innerHTML = pagingText;
-}
-
-// 나의 펀딩 - 구매자 목록, 페이징
-const showFundingBuyerList = ({myFundingBuyers, mySettingTablePagination}) => {
-
-    let text = `<div class="setting-th">
-                                <div class="setting-td size-l">
-                                    이름/이메일
-                                </div>
-                                <div class="center-text setting-td size-s">
-                                    금액
-                                </div>
-                                <div class="center-text setting-td trueorfalse">
-                                    발송 여부
-                                </div>
-                        </div>
-                       `
-    text += `<div>
-                            <div
-                                class="setting-tr-group"
-                                style="
-                                border-bottom: solid 1px
-                                    #e0e0e0;
-                                padding-bottom: 0px;
-                            "
-                    >`;
-
-    myFundingBuyers.forEach((myFundingBuyer) => {
-        text += `<div class="price-member setting-tr" style="padding-top: 7px">
-                        <div
-                                class="setting-td with-sub size-l"
-                        >
-                            <div
-                                    class="membername major-span"
-                            >
-                                ${myFundingBuyer.profileName}
-                            </div>
-                            <div
-                                    class="memberemail sub-span"
-                            >
-                                ${myFundingBuyer.profileEmail}
-                            </div>
-                        </div>
-                        <div
-                                class="center-text price-member setting-td with-text primary size-s"
-                                style="
-                                margin-bottom: 35px;
-                            "
-                        >
-                             ${myFundingBuyer.productPrice}원
-                        </div>
-                        <div
-                                class="center-text setting-td with-btn trueorfalse"
-                        >
-                            <div
-                                    class="btn-group choice-group"
-                            >
-                            `
-            if(myFundingBuyer.fundingSendStatus === "YES") {
-                        text += `
-                                <div
-                                        class="btn-choice btn-public active" style="cursor: unset"
-                                >`
-            }else{
-                        text += `
-                                <div
-                                        class="btn-choice btn-public ${myFundingBuyer.id}"
-                                >
-                                `
-            }
-                        text +=  `<input
-                                            checked=""
-                                            class="radio-value"
-                                            name="is_secret_employment"
-                                            type="radio"
-                                            value="YES"
-                                    />
-                                    보냄
-                                </div>`
-
-            if(myFundingBuyer.fundingSendStatus === "NO") {
-                        text += `
-                                <div
-                                        class="btn-choice btn-secret active"
-                                >`
-            } else {
-                        text += `
-                                <div
-                                        class="btn-choice btn-secret" style="cursor: unset"
-                                >`
-            }
-                        text += `<input
-                                            class="radio-value"
-                                            name="is_secret_employment"
-                                            type="radio"
-                                            value="NO"
-                                    />안보냄
-                                </div>
-                            </div>
-                        </div>
-                        <label
-                                class="switch"
-                                style="
-                                display: none;
-                            "
-                        >
-                            <input
-                                    class="media-checkbox"
-                                    type="checkbox"
-                            />
-                            <span
-                                    class="slider round"
-                            ></span>
-                        </label>
-                   </div>
-            `;
-
-    });
-    text += `    </div>
-            </div>`;
-
-    text += `<ul class="pagination theme-yozm mypage-page back-or-next">`;
-
-    if(mySettingTablePagination.prev){
-        text += `
-            <li class="page-item">
-                <a href="${mySettingTablePagination.startPage - 1}" class="page-link back"></a>
-            </li>
-        `
-    }
-
-    if(mySettingTablePagination.next) {
-        text += `
-            <li class="page-item">
-                <a href="${mySettingTablePagination.endPage + 1}" class="page-link next"></a>
-            </li>
-        `
-    }
-    text += `    </ul>`;
-
-    return text;
-}
-
-// 결제한 펀딩 목록, 페이징
-const myBuyFundingListLayout = document.getElementById("my-buy-funding-list");
-const myBuyFundingListPaging = document.getElementById("my-buy-funding-list-paging");
-
-
-const showMyBuyFundingList = ({myBuyFundingPosts, workAndFundingPagination}) => {
-    let text = ``;
-    let pagingText = ``;
-
-    myBuyFundingPosts.forEach((myBuyFundingPost) => {
-        text += ` <div class="list-item">
-                      <div class="products-list">
-                            <div class="flex-box">
-                                <div class="products-text">
-                                    <a
-                                        ><p
-                                            class="my-products-title"
-                                        >
-                                            ${myBuyFundingPost.postTitle}
-                                        </p></a
-                                    >
-                                    <div
-                                        class="my-products-info"
-                                    >
-                                        <a
-                                            ><p
-                                                class="btn smooth my-products-category"
-                                            >
-                                                ${myBuyFundingPost.genreType}
-                                            </p></a
-                                        >
-                                        <div
-                                            class="divider"
-                                        ></div>
-                                        <div class="flex-box">
-                                            <img
-                                                class="time"
-                                                src="/images/member/clock.png"
-                                            />
-                                            <div
-                                                class="timeandcontent smooth"
-                                            >
-                                                ${timeForToday(myBuyFundingPost.createdDate)}
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <a
-                                        ><p
-                                            class="timeandcontent content products-description"
-                                        >
-                                             ${myBuyFundingPost.postContent}
-                                        </p></a
-                                    >
-                                </div>
-                                <div class="btn products-image">
-                                    <a
-                                        ><img
-                                            src="/images/member/thumnail.png"
-                                    /></a>
-                                </div>
-                            </div>
-                            <div
-                                class="flex-box products-author-box"
-                            >
-                                <div
-                                    class="author-info flex-box"
-                                >
-                                    <img
-                                        class="author-image"
-                                        src="/images/member/member-image.jpg"
-                                    />
-                                    <p class="author-name">
-                                        ${myBuyFundingPost.postContent}
-                                    </p>
-                                    <div
-                                        class="divider"
-                                        style="
-                                            margin-left: 10px;
-                                            margin-right: 10px;
-                                        "
-                                    ></div>
-                                    <div
-                                        class="timeandcontent smooth"
-                                    >
-                                        ${myBuyFundingPost.productName}
-                                    </div>
-                                    <div
-                                        class="divider"
-                                        style="
-                                            margin-left: 10px;
-                                            margin-right: 10px;
-                                        "
-                                    ></div>
-                                    <div
-                                        class="timeandcontent smooth"
-                                    >
-                                        ${myBuyFundingPost.productPrice}
-                                    </div>
-                                </div>
-    
-                                <div class="flex-box">
-                                    <div
-                                        class="btn-wrapper"
-                                    ></div>
-                                    <div class="btn-wrapper">
-                                        <button
-                                            class="btn btn-action icon-delete-read-products"
-                                            type="button"
-                                        >
-                                            <div
-                                                class="icon-my-delete"
-                                            ></div>
-                                            <p
-                                                class="action-tooltip bottom-action"
-                                            >
-                                                결제내역 삭제
-                                            </p>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                  </div>`
-    });
-
-    myBuyFundingListLayout.innerHTML = text;
-
-//     콘솔창에 오류가 남. 확인 필요
-// if(myBuyFundingPosts[0].id !== null)  {}
-
-    if (workAndFundingPagination.prev) {
-        pagingText += `
-            <li class="page-item">
-                <a href="${myWorkAndFundingPagination.startPage - 1}" class="page-link back"></a>
-            </li>
-        `
-    }
-    for (let i = myWorkAndFundingPagination.startPage; i <= myWorkAndFundingPagination.endPage; i++) {
-        if (myWorkAndFundingPagination.page === i) {
-            pagingText += `<li class="page-item"><div class="page-link active">${i}</div></li>`
-        } else {
-            pagingText += `<li class="page-item"><a href="${i}" class="page-link">${i}</a></li>`
-        }
-    }
-
-    if (myWorkAndFundingPagination.next) {
-        pagingText += `
-            <li class="page-item">
-                <a href="${myWorkAndFundingPagination.endPage + 1}" class="page-link next"></a>
-            </li>
-        `
-    }
-
-    myBuyFundingListPaging.innerHTML = pagingText;
-}
-
-// 나의 모집 목록, 페이징
-const myAuditionListLayout = document.getElementById("my-audition-list");
-const myAuditionListPaging = document.getElementById("my-audition-list=paging");
-
 const showMyWorkList = ({myWorkPosts, myWorkAndFundingPagination}) => {
     let text = ``;
     let pagingText = ``;
@@ -1053,7 +199,7 @@ const showMyWorkList = ({myWorkPosts, myWorkAndFundingPagination}) => {
     myWorkListPaging.innerHTML = pagingText;
 }
 
-// // 나의 모집 목록, 페이징 - 구매자 목록, 페이징
+// 나의 작품 - 구매자 목록, 페이징
 const showMyWorkBuyerList = ({myWorkBuyers, mySettingTablePagination}) => {
 
     let text = `<div class="price-member setting-th">
@@ -1087,11 +233,11 @@ const showMyWorkBuyerList = ({myWorkBuyers, mySettingTablePagination}) => {
                     <div class="center-text setting-td with-btn trueorfalse">
                         <div class="btn-group choice-group">`
         if(myWorkBuyer.workSendStatus === "YES") {
-            text += `<div class="btn-choice btn-public active">`
+           text += `<div class="btn-choice btn-public active">`
         } else {
             text += `<div class="btn-choice btn-public ${myWorkBuyer.id}">`
         }
-        text += `<input
+                        text += `<input
                                         checked=""
                                         class="radio-value"
                                         name="is_secret_employment"
@@ -1103,7 +249,7 @@ const showMyWorkBuyerList = ({myWorkBuyers, mySettingTablePagination}) => {
         } else {
             text += `<div class="btn-choice btn-secret">`
         }
-        text +=          `<input
+             text +=          `<input
                                         class="radio-value"
                                         name="is_secret_employment"
                                         type="radio"
@@ -1147,7 +293,7 @@ const showMyWorkBuyerList = ({myWorkBuyers, mySettingTablePagination}) => {
     return text;
 }
 
-// 내가 신청한 모집 목록, 페이징
+// 구매한 작품 목록, 페이징
 const myBuyWorkListLayout = document.getElementById("my-buy-work-list");
 const myBuyWorkListPaging = document.getElementById("my-buy-work-list-paging");
 
@@ -1285,6 +431,931 @@ const showMyBuyWorkList = ({myBuyWorkPosts, myWorkAndFundingPagination}) => {
 
     myBuyWorkListPaging.innerHTML = pagingText;
 }
+
+// 나의 펀딩 목록, 페이징
+const myFundingListLayout = document.getElementById("my-funding-list");
+const myFundingListPaging = document.getElementById("my-funding-list-paging");
+
+const showMyFundingList = ({myFundingPosts, myWorkAndFundingPagination}) => {
+    let text = ``;
+    let pagingText = ``;
+
+    myFundingPosts.forEach((myFundingPost) => {
+
+        text += `
+         <div class="list-item my-funding-posts">
+            <div class="products-list">
+                <div class="flex-box">
+                    <div class="products-text">
+                        <a
+                        ><p
+                                class="my-products-title"
+                        >
+                            ${myFundingPost.postTitle}
+                        </p></a
+                        >
+                        <div
+                                class="my-products-info"
+                        >
+                            <a
+                            ><p
+                                    class="btn smooth my-products-category"
+                            >
+                                ${myFundingPost.genreType}
+                            </p></a
+                            >
+                            <div
+                                    class="divider"
+                            ></div>
+                            <div class="flex-box">
+                                <img
+                                        class="time"
+                                        src="/images/member/clock.png"
+                                />
+                                <div
+                                        class="timeandcontent smooth"
+                                >
+                                   ${timeForToday(myFundingPost.createdDate)}
+                                </div>
+                            </div>
+                        </div>
+                        <a
+                        ><p
+                                class="timeandcontent content products-description"
+                        >
+                            ${myFundingPost.postContent}
+                        </p></a
+                        >
+                    </div>
+                    <div class="btn products-image">
+                        <a
+                            ><img
+                             src="/images/member/thumnail.png"
+                        /></a>
+                    </div>
+                </div>
+                <div
+                    class="flex-box products-author-box"
+                >
+                    <div
+                        class="author-info flex-box"
+                    >
+                        <img
+                            class="author-image"
+                            src="/images/member/member-image.jpg"
+                        />
+                        <p class="author-name">
+                            ${myFundingPost.profileNickname}
+                        </p>
+                    </div>
+                    <div class="flex-box">
+                        <div class="btn-wrapper">
+                            <button
+                                class="btn btn-action btn-icon-edit-my"
+                                name="toggle_btn"
+                                type="button"
+                            >
+                                <p
+                                    class="action-tooltip bottom-action edit-my-off"
+                                >
+                                    구매한 사람들
+                                </p>
+                                <div
+                                    class="edit-my-off"
+                                >
+                                    <div
+                                        id="my-funding-buyer-btn"
+                                        class="icon-my-edit-off ${myFundingPost.id}"
+                                    ></div>
+                                </div>
+                                <div
+                                    class="edit-my-on"
+                                    style="
+                                        display: none;
+                                    "
+                                >
+                                    <div
+                                        class="icon-my-edit-on"
+                                    ></div>
+                                </div>
+                            </button>
+                        </div>
+                        <div class="btn-wrapper">
+                            <button
+                                class="btn btn-action icon-delete-read-products"
+                                type="button"
+                            >
+                                <div
+                                    class="icon-my-delete"
+                                ></div>
+                                <p
+                                    class="action-tooltip bottom-action"
+                                >
+                                    수정
+                                </p>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="setting-table funding-buyer-${myFundingPost.id}" style="border-top: 1px solid rgb(224, 224, 224); display: none;">
+                 </div>    
+            </div>
+        </div>
+            `;
+    });
+    myFundingListLayout.innerHTML = text;
+
+
+    if(myWorkAndFundingPagination.prev){
+        pagingText += `
+            <li class="page-item">
+                <a href="${myWorkAndFundingPagination.startPage - 1}" class="page-link back"></a>
+            </li>
+        `
+    }
+    for(let i=myWorkAndFundingPagination.startPage; i<=myWorkAndFundingPagination.endPage; i++){
+        if(myWorkAndFundingPagination.page === i){
+            pagingText += `<li class="page-item"><div class="page-link active">${i}</div></li>`
+        }else{
+            pagingText += `<li class="page-item"><a href="${i}" class="page-link">${i}</a></li>`
+        }
+    }
+
+    if(myWorkAndFundingPagination.next) {
+        pagingText += `
+            <li class="page-item">
+                <a href="${myWorkAndFundingPagination.endPage + 1}" class="page-link next"></a>
+            </li>
+        `
+    }
+
+    myFundingListPaging.innerHTML = pagingText;
+}
+
+// 나의 펀딩 - 구매자 목록, 페이징
+const showFundingBuyerList = ({myFundingBuyers, mySettingTablePagination}) => {
+
+    let text = `<div class="setting-th">
+                                <div class="setting-td size-l">
+                                    이름/이메일
+                                </div>
+                                <div class="center-text setting-td size-s">
+                                    금액
+                                </div>
+                                <div class="center-text setting-td trueorfalse">
+                                    발송 여부
+                                </div>
+                        </div>
+                       `
+    text += `<div>
+                            <div
+                                class="setting-tr-group"
+                                style="
+                                border-bottom: solid 1px
+                                    #e0e0e0;
+                                padding-bottom: 0px;
+                            "
+                    >`;
+
+    myFundingBuyers.forEach((myFundingBuyer) => {
+        text += `<div class="price-member setting-tr" style="padding-top: 7px">
+                        <div
+                                class="setting-td with-sub size-l"
+                        >
+                            <div
+                                    class="membername major-span"
+                            >
+                                ${myFundingBuyer.profileName}
+                            </div>
+                            <div
+                                    class="memberemail sub-span"
+                            >
+                                ${myFundingBuyer.profileEmail}
+                            </div>
+                        </div>
+                        <div
+                                class="center-text price-member setting-td with-text primary size-s"
+                                style="
+                                margin-bottom: 35px;
+                            "
+                        >
+                             ${myFundingBuyer.productPrice}원
+                        </div>
+                        <div
+                                class="center-text setting-td with-btn trueorfalse"
+                        >
+                            <div
+                                    class="btn-group choice-group"
+                            >
+                            `
+            if(myFundingBuyer.fundingSendStatus === "YES") {
+                        text += `
+                                <div
+                                        class="btn-choice btn-public active" style="cursor: unset"
+                                >`
+            }else{
+                        text += `
+                                <div
+                                        class="btn-choice btn-public ${myFundingBuyer.id}"
+                                >
+                                `
+            }
+                        text +=  `<input
+                                            checked=""
+                                            class="radio-value"
+                                            name="is_secret_employment"
+                                            type="radio"
+                                            value="YES"
+                                    />
+                                    보냄
+                                </div>`
+
+            if(myFundingBuyer.fundingSendStatus === "NO") {
+                        text += `
+                                <div
+                                        class="btn-choice btn-secret active"
+                                >`
+            } else {
+                        text += `
+                                <div
+                                        class="btn-choice btn-secret" style="cursor: unset"
+                                >`
+            }
+                        text += `<input
+                                            class="radio-value"
+                                            name="is_secret_employment"
+                                            type="radio"
+                                            value="NO"
+                                    />안보냄
+                                </div>
+                            </div>
+                        </div>
+                        <label
+                                class="switch"
+                                style="
+                                display: none;
+                            "
+                        >
+                            <input
+                                    class="media-checkbox"
+                                    type="checkbox"
+                            />
+                            <span
+                                    class="slider round"
+                            ></span>
+                        </label>
+                   </div>
+            `;
+
+    });
+    text += `    </div>
+            </div>`;
+
+    text += `<ul class="pagination theme-yozm mypage-page back-or-next">`;
+
+    if(mySettingTablePagination.prev){
+        text += `
+            <li class="page-item">
+                <a href="${mySettingTablePagination.startPage - 1}" class="page-link back"></a>
+            </li>
+        `
+    }
+
+    if(mySettingTablePagination.next) {
+        text += `
+            <li class="page-item">
+                <a href="${mySettingTablePagination.endPage + 1}" class="page-link next"></a>
+            </li>
+        `
+    }
+    text += `    </ul>`;
+
+    return text;
+}
+
+// 결제한 펀딩 목록, 페이징
+const myBuyFundingListLayout = document.getElementById("my-buy-funding-list");
+const myBuyFundingListPaging = document.getElementById("my-buy-funding-list-paging");
+
+
+const showMyBuyFundingList = ({myBuyFundingPosts, myWorkAndFundingPagination}) => {
+    let text = ``;
+    let pagingText = ``;
+
+    myBuyFundingPosts.forEach((myBuyFundingPost) => {
+        text += ` <div class="list-item">
+                      <div class="products-list">
+                            <div class="flex-box">
+                                <div class="products-text">
+                                    <a
+                                        ><p
+                                            class="my-products-title"
+                                        >
+                                            ${myBuyFundingPost.postTitle}
+                                        </p></a
+                                    >
+                                    <div
+                                        class="my-products-info"
+                                    >
+                                        <a
+                                            ><p
+                                                class="btn smooth my-products-category"
+                                            >
+                                                ${myBuyFundingPost.genreType}
+                                            </p></a
+                                        >
+                                        <div
+                                            class="divider"
+                                        ></div>
+                                        <div class="flex-box">
+                                            <img
+                                                class="time"
+                                                src="/images/member/clock.png"
+                                            />
+                                            <div
+                                                class="timeandcontent smooth"
+                                            >
+                                                ${timeForToday(myBuyFundingPost.createdDate)}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <a
+                                        ><p
+                                            class="timeandcontent content products-description"
+                                        >
+                                             ${myBuyFundingPost.postContent}
+                                        </p></a
+                                    >
+                                </div>
+                                <div class="btn products-image">
+                                    <a
+                                        ><img
+                                            src="/images/member/thumnail.png"
+                                    /></a>
+                                </div>
+                            </div>
+                            <div
+                                class="flex-box products-author-box"
+                            >
+                                <div
+                                    class="author-info flex-box"
+                                >
+                                    <img
+                                        class="author-image"
+                                        src="/images/member/member-image.jpg"
+                                    />
+                                    <p class="author-name">
+                                        ${myBuyFundingPost.postContent}
+                                    </p>
+                                    <div
+                                        class="divider"
+                                        style="
+                                            margin-left: 10px;
+                                            margin-right: 10px;
+                                        "
+                                    ></div>
+                                    <div
+                                        class="timeandcontent smooth"
+                                    >
+                                        ${myBuyFundingPost.productName}
+                                    </div>
+                                    <div
+                                        class="divider"
+                                        style="
+                                            margin-left: 10px;
+                                            margin-right: 10px;
+                                        "
+                                    ></div>
+                                    <div
+                                        class="timeandcontent smooth"
+                                    >
+                                        ${myBuyFundingPost.productPrice}
+                                    </div>
+                                </div>
+    
+                                <div class="flex-box">
+                                    <div
+                                        class="btn-wrapper"
+                                    ></div>
+                                    <div class="btn-wrapper">
+                                        <button
+                                            class="btn btn-action icon-delete-read-products"
+                                            type="button"
+                                        >
+                                            <div
+                                                class="icon-my-delete"
+                                            ></div>
+                                            <p
+                                                class="action-tooltip bottom-action"
+                                            >
+                                                결제내역 삭제
+                                            </p>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                  </div>`
+    });
+
+    myBuyFundingListLayout.innerHTML = text;
+
+//     콘솔창에 오류가 남. 확인 필요
+// if(myBuyFundingPosts[0].id !== null)  {}
+
+    if (myWorkAndFundingPagination.prev) {
+        pagingText += `
+            <li class="page-item">
+                <a href="${myWorkAndFundingPagination.startPage - 1}" class="page-link back"></a>
+            </li>
+        `
+    }
+    for (let i = myWorkAndFundingPagination.startPage; i <= myWorkAndFundingPagination.endPage; i++) {
+        if (myWorkAndFundingPagination.page === i) {
+            pagingText += `<li class="page-item"><div class="page-link active">${i}</div></li>`
+        } else {
+            pagingText += `<li class="page-item"><a href="${i}" class="page-link">${i}</a></li>`
+        }
+    }
+
+    if (myWorkAndFundingPagination.next) {
+        pagingText += `
+            <li class="page-item">
+                <a href="${myWorkAndFundingPagination.endPage + 1}" class="page-link next"></a>
+            </li>
+        `
+    }
+
+    myBuyFundingListPaging.innerHTML = pagingText;
+}
+
+//************** 모집 ****************
+
+// 나의 모집 목록, 페이징
+const myAuditionListLayout = document.getElementById("my-audition-list");
+const myAuditionListPaging = document.getElementById("my-audition-list-paging");
+
+const showMyAuditionList = ({myAuditionPosts, myAuditionPagination}) => {
+    let text = ``;
+    let pagingText = ``;
+
+    myAuditionPosts.forEach((myAuditionPost) => {
+
+        text += `
+             <div class="item">
+                <div class="item_recruit">
+                    <div class="area_job">
+                        <h2 class="job_tit">
+                            <a
+                                target="_blank"
+                                title="[역삼역] 단편영화 배우모집합니다."
+                                href=""
+                            >
+                                <span>
+                                    ${myAuditionPost.postTitle} / `
+        if (myAuditionPost.auditionField == 1) {
+            text += `<b>배우</b> 채용`
+        } else if (myAuditionPost.auditionField == 2) {
+            text += `<b>스텝</b> 채용`
+        } else if (myAuditionPost.auditionField == 3) {
+            text += `<b>감독</b> 채용`
+        } else if (myAuditionPost.auditionField == 4) {
+            text += `<b>기타</b> 채용`
+        }
+        text += `</span>
+                            </a>
+                        </h2>
+                        <div class="job_date">
+                            <span class="date"
+                                >~
+                                ${myAuditionPost.auditionDeadLine} </span
+                            >`
+        if (myAuditionPost.auditionStatus === 'YES') {
+           text += `<button class="sri_btn_xs"
+                                title="클릭하면 입사지원할 수 있는 창이 뜹니다."> 
+                                <span
+                                    class="sri_btn_immediately"
+                                    >모집중</span>
+                            </button>`
+        }
+        else {
+            text += `<button class="sri_btn_xs">
+                                <span class="btn-complete">
+                                    모집완료</span>
+                     </button>`
+        }
+
+        text +=  `</div>
+                        <div
+                            class="job_condition"
+                        >
+                            <span
+                                ><a
+                                    target="_blank"
+                                    href=""
+                                    >${myAuditionPost.auditionLocation}</a
+                                ></span
+                            >`
+        if (myAuditionPost.auditionCareer === '') {
+            text +=  `<span
+                                >신입</span
+                            >`
+        } else {
+            text += `<span
+                                >경력</span
+                            >`
+        }
+        text +=          `</div>
+                        <div class="job_sector">
+                            <b
+                                ><a
+                                    target="_blank"
+                                    href=""
+                                    >${myAuditionPost.expectedAmount}</a
+                                ></b
+                            >,
+                            <b
+                                ><a
+                                    target="_blank"
+                                    href=""
+                                    >${myAuditionPost.auditionPersonnel}</a
+                                ></b
+                            >
+                            <span
+                                class="job_day"
+                                >등록일
+                                ${myAuditionPost.createdDate}</span
+                            >
+                        </div>
+                    </div>
+                    <div class="area_corp">
+                        <strong
+                            class="corp_name"
+                            style="
+                                margin-top: 43px;
+                            "
+                        >
+                            <a
+                                href=""
+                                target="_blank"
+                                class=""
+                            >
+                                ${myAuditionPost.profileName}
+                            </a>
+                        </strong>
+                        <span
+                            class="corp_affiliate"
+                            >${myAuditionPost.profileEmail}</span
+                        >
+        
+                        <div
+                            class="btn-wrapper"
+                            id="toggleReplyBtn"
+                            data-reply="1"
+                            style="
+                                left: -90px;
+                                bottom: 12px;
+                            "
+                        >
+                            <button
+                                class="btn btn-action btn-icon-edit-my"
+                                name="toggle_btn"
+                                type="button"
+                                style="
+                                    background: white;
+                                    border: none;
+                                    cursor: unset;
+                                "
+                            >
+                                <p
+                                    class="action-tooltip bottom-action edit-my-off"
+                                >
+                                    지원자
+                                    상세보기
+                                </p>
+                                    <div
+                                        id="my-audition-applicant-btn"
+                                        class="icon-my-edit-off ${myAuditionPost.id}"
+                                    ></div>
+                                <div
+                                    class="edit-my-on"
+                                    style="
+                                        display: none;
+                                    "
+                                >
+                                    <div
+                                        class="icon-my-edit-on"
+                                    ></div>
+                                </div>
+                            </button>
+                            <button
+                                    style="
+                                    background: none;
+                                "
+                                    class="btn btn-action icon-delete-read-products"
+                                    type="button"
+                            >
+                                <div
+                                        class="icon-my-delete"
+                                ></div>
+                                <p
+                                        class="action-tooltip bottom-action"
+                                >
+                                    수정
+                                </p>
+                            </button>
+                        </div>
+                    </div>
+        
+                    <div
+                        class="similar_recruit"
+                        style="display: none"
+                    ></div>
+                </div>
+                <!-- js에서 id="replySection1", id="replySection2" 이런 식으로 구분합니다 참고해주세요 -->
+                <div
+                    class="reply"
+                    id="replySection1"
+                    style="display: none"
+                >
+                    <div class="item_recruit">
+                        <div
+                            class="setting-table audition-applicant-${myAuditionPost.id}"
+                            style="
+                                border-top: 1px
+                                    solid
+                                    rgb(
+                                        224,
+                                        224,
+                                        224
+                                    );
+                                display: block;
+                            "
+                        >
+<!--                            지원자 목록 & 페이징-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            `;
+    });
+    myAuditionListLayout.innerHTML = text;
+
+
+    if (myAuditionPagination.prev) {
+        pagingText += `<a href="${myAuditionPagination.startPage - 1}" class="btnPrev page_move track_event" 
+                        page="10" title="이전">이전</a>
+        `
+    }
+    for(let i=myAuditionPagination.startPage; i<=myAuditionPagination.endPage; i++){
+        if(myAuditionPagination.page === i){
+            pagingText += `<span class="page">${i}</span>`
+        }else{
+            pagingText += `<a href="${i}" page="${i}" class="page page_move track_event">
+                            <span>${i}</span></a>`
+        }
+    }
+
+    if(myAuditionPagination.next) {
+        pagingText += `<a href="${myAuditionPagination.endPage + 1}" class="btnNext page_move track_event"
+                          page="11" title="다음">다음</a>
+        `
+    }
+
+    myAuditionListPaging.innerHTML = pagingText;
+}
+
+// 나의 모집 목록, 페이징 - 구매자 목록, 페이징
+const showMyAuditionApplicantList = ({myAuditionApplicants, mySettingTablePagination}) => {
+    console.log("layout-myAuditionApplicants : ", myAuditionApplicants)
+    console.log("layout-mySettingTablePagination : ", mySettingTablePagination)
+
+    let text = `<div
+                                class="setting-th"
+                            >
+                                <div
+                                    class="setting-td size-l"
+                                >
+                                    이름/이메일
+                                </div>
+                                <div
+                                    class="center-text setting-td size-s"
+                                >
+                                    지원분야
+                                </div>
+                                <div
+                                    class="center-text setting-td size-m"
+                                >
+                                    확인 여부
+                                </div>
+                       </div>
+                       `
+    text += `<div class="setting-tr-group" style="border-bottom: solid 1px #e0e0e0; padding-bottom: 0px;">`;
+
+    myAuditionApplicants.forEach((myAuditionApplicant) => {
+        text += `<div class="setting-tr" style="padding-top: 7px">
+                    <div class="setting-td with-sub size-l">
+                        <div class="mb4 major-span">
+                           ${myAuditionApplicant.profileName}
+                        </div>
+                        <a  href="" class="sub-span">
+                           이력서 보기
+                        </a>
+                    </div>
+                    <div class="center-text setting-td with-text primary size-s"
+                         style="margin-bottom: 35px;">
+                         ${myAuditionApplicant.auditionField}
+                    </div>
+                    <div class="center-text setting-td with-btn size-m">
+                        <div class="btn-group choice-group">`
+        if(myAuditionApplicant.confirmStatus === "YES") {
+            text += `<div class="btn-choice btn-public active">`
+        } else {
+            text += `<div class="btn-choice btn-public ${myAuditionApplicant.id}">`
+        }
+        text += `<input checked="" class="radio-value"
+                  name="is_secret_employment" type="radio"
+                  value="false"/>미확인 </div>`
+        if(myAuditionApplicant.confirmStatus === "NO") {
+            text += `<div class="btn-choice btn-secret active">`
+        } else {
+            text += `<div class="btn-choice btn-secret">`
+        }
+            text +=     `<input
+                                class="radio-value"
+                                name="is_secret_employment"
+                                type="radio"
+                                value="true"
+                            />확인
+                        </div>
+                    </div>
+                </div>
+            </div>
+            `;
+
+    });
+    text += `    </div>`;
+
+    text += `<ul class="pagination theme-yozm mypage-page back-or-next">`;
+
+    if(mySettingTablePagination.prev){
+        text += `
+            <li class="page-item">
+                <a href="${mySettingTablePagination.startPage - 1}" class="page-link back"></a>
+            </li>
+        `
+    }
+
+    if(mySettingTablePagination.next) {
+        text += `
+            <li class="page-item">
+                <a href="${mySettingTablePagination.endPage + 1}" class="page-link next"></a>
+            </li>
+        `
+    }
+    text += `    </ul>`;
+
+    return text;
+}
+//
+// // 내가 신청한 모집 목록, 페이징
+// const myBuyWorkListLayout = document.getElementById("my-buy-work-list");
+// const myBuyWorkListPaging = document.getElementById("my-buy-work-list-paging");
+//
+//
+// const showMyBuyWorkList = ({myBuyWorkPosts, myWorkAndFundingPagination}) => {
+//     let text = ``;
+//     let pagingText = ``;
+//
+//     myBuyWorkPosts.forEach((myBuyWorkPost) => {
+//         text += ` <div class="list-item">
+//                     <div class="products-list">
+//                         <div class="flex-box">
+//                             <div class="products-text">
+//                                 <a
+//                                     ><p
+//                                         class="my-products-title"
+//                                     >
+//                                         ${myBuyWorkPost.postTitle}
+//                                     </p></a
+//                                 >
+//                                 <div
+//                                     class="my-products-info"
+//                                 >
+//                                     <a
+//                                         ><p
+//                                             class="btn smooth my-products-category"
+//                                         >
+//                                            ${myBuyWorkPost.genreType}
+//                                         </p></a
+//                                     >
+//                                     <div
+//                                         class="divider"
+//                                     ></div>
+//                                     <div class="flex-box">
+//                                         <img
+//                                             class="time"
+//                                             src="/images/member/clock.png"
+//                                         />
+//                                         <div
+//                                             class="timeandcontent smooth"
+//                                         >
+//                                              ${timeForToday(myBuyWorkPost.createdDate)}
+//                                         </div>
+//                                     </div>
+//                                 </div>
+//                                 <a
+//                                     ><p
+//                                         class="timeandcontent content products-description"
+//                                     >
+//                                          ${myBuyWorkPost.postContent}
+//                                     </p></a
+//                                 >
+//                             </div>
+//                             <div class="btn products-image">
+//                                 <a
+//                                     ><img
+//                                         src="/text/display?fileName=${myBuyWorkPost.thumbnailFilePath}/t_${myBuyWorkPost.thumbnailFileName}"
+//                                 /></a>
+//                             </div>
+//                         </div>
+//                         <div
+//                             class="flex-box products-author-box"
+//                         >
+//                             <div
+//                                 class="author-info flex-box"
+//                             >
+//                                 <img
+//                                     class="author-image"
+//                                     src=${myBuyWorkPost.profileImgUrl}
+//                                 />
+//                                 <p class="author-name">
+//                                      ${myBuyWorkPost.profileNickName}
+//                                 </p>
+//                                 <div
+//                                     class="divider"
+//                                     style="
+//                                         margin-left: 10px;
+//                                         margin-right: 10px;
+//                                     "
+//                                 ></div>
+//
+//                                 <div
+//                                     class="timeandcontent smooth"
+//                                 >
+//                                     ${myBuyWorkPost.workPrice}
+//                                 </div>
+//                             </div>
+//                             <div class="flex-box">
+//                                 <div class="btn-wrapper">
+//                                     <button
+//                                         class="btn btn-action icon-delete-read-products"
+//                                         type="button"
+//                                     >
+//                                         <div
+//                                             id="buy-work-delete-btn"
+//                                             class="icon-my-delete ${myBuyWorkPost.id}"
+//                                         ></div>
+//                                         <p
+//                                             class="action-tooltip bottom-action"
+//                                         >
+//                                             구매내역 삭제
+//                                         </p>
+//                                     </button>
+//                                 </div>
+//                             </div>
+//                         </div>
+//                     </div>
+//                 </div>`
+//     });
+//
+//     myBuyWorkListLayout.innerHTML = text;
+//
+//     if(myWorkAndFundingPagination.prev){
+//         pagingText += `
+//             <li class="page-item">
+//                 <a href="${myWorkAndFundingPagination.startPage - 1}" class="page-link back"></a>
+//             </li>
+//         `
+//     }
+//     for(let i=myWorkAndFundingPagination.startPage; i<=myWorkAndFundingPagination.endPage; i++){
+//         if(myWorkAndFundingPagination.page === i){
+//             pagingText += `<li class="page-item"><div class="page-link active">${i}</div></li>`
+//         }else{
+//             pagingText += `<li class="page-item"><a href="${i}" class="page-link">${i}</a></li>`
+//         }
+//     }
+//
+//     if(myWorkAndFundingPagination.next) {
+//         pagingText += `
+//             <li class="page-item">
+//                 <a href="${myWorkAndFundingPagination.endPage + 1}" class="page-link next"></a>
+//             </li>
+//         `
+//     }
+//
+//     myBuyWorkListPaging.innerHTML = pagingText;
+// }
 
 // 문의내역, 페이징
 const myInquiryHistoryListLayout = document.getElementById("my-inquiry-history-list");
@@ -1430,7 +1501,6 @@ let pagingText = ``;
 // 내 문의 내역 관리자 답변
 const showAdminAnswer = (adminAnswer) => {
     let text =``;
-    console.log("layout-adminAnswer: ",adminAnswer);
 
         text =  `<div class="setting-th">
                 <div
@@ -1477,12 +1547,8 @@ const showAdminAnswer = (adminAnswer) => {
 // 내 정보
 const myProfileLayout = document.getElementById("my-profile");
 
-console.log("myProfileLayout", myProfileLayout)
-
 const showMyProfile = (memberProfile) => {
     let text = ``;
-
-    console.log("memberProfile : ", memberProfile)
 
     text = `<form class="form-horizontal has-validation-callback" id="base-edit-form">
                 <div class="form-group">
@@ -1633,8 +1699,5 @@ const showMyProfile = (memberProfile) => {
             </form>`;
 
     myProfileLayout.innerHTML = text;
-
-    console.log("myProfileLayout.innerHTML : ", myProfileLayout.innerHTML)
-
 }
 

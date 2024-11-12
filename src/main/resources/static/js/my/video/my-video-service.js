@@ -97,6 +97,8 @@ const myPageService = (() => {
         const response = await fetch(`/members/${memberId}/video/my/audition/${page}`);
         const myAuditionPosts = await response.json();
 
+        console.log("myAuditionPosts : ", myAuditionPosts)
+
         if(callback){
             callback(myAuditionPosts);
         }
@@ -106,6 +108,8 @@ const myPageService = (() => {
         page = page || 1;
         const response = await fetch(`/members/video/my/audition/${auditionPostId}/Applicants/${page}`);
         const myAuditionApplicants = await response.json();
+
+        console.log("myAuditionApplicants : ", myAuditionApplicants)
 
         if(callback){
             return callback(myAuditionApplicants);
@@ -138,8 +142,6 @@ const myPageService = (() => {
         const response = await fetch(`/members/${memberId}/profile`);
         const memberProfile = await response.json();
 
-        console.log(memberProfile);
-
         if (callback) {
             callback(memberProfile);
         }
@@ -171,8 +173,6 @@ const myPageService = (() => {
         const response = await fetch(`/members/inquiry/${inquiryId}/admin-answer`);
         const adminAnswer = await response.json();
 
-        console.log("adminAnswer : ", adminAnswer)
-
         if (callback) {
             return callback(adminAnswer)
         }
@@ -189,6 +189,9 @@ const myPageService = (() => {
         getFundingBuyerList: getFundingBuyerList,
         updateFundingSendStatus: updateFundingSendStatus,
         getMyBuyFundingList: getMyBuyFundingList,
+        getMyVideoAuditionList: getMyVideoAuditionList,
+        getMyVideoAuditionApplicantList: getMyVideoAuditionApplicantList,
+        updateConfirmStatus: updateConfirmStatus,
         getMyInquiryHistoryList: getMyInquiryHistoryList,
         getAdminAnswerByInquiryId: getAdminAnswerByInquiryId,
         getMemberProfile: getMemberProfile

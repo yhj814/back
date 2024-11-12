@@ -33,6 +33,7 @@ public class AuditionApplicationDTO {
     private String filePath;
     private String createdDate;
     private String updatedDate;
+    private String auditionField;
 
     public AuditionApplicationVO toVO() {
         return new AuditionApplicationVO(id, memberProfileId, applyEtc, auditionId, createdDate, confirmStatus);

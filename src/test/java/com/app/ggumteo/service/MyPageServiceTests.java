@@ -2,6 +2,7 @@ package com.app.ggumteo.service;
 
 import com.app.ggumteo.constant.PostType;
 import com.app.ggumteo.domain.admin.AdminAnswerDTO;
+import com.app.ggumteo.domain.audition.AuditionDTO;
 import com.app.ggumteo.domain.buy.*;
 import com.app.ggumteo.domain.funding.*;
 import com.app.ggumteo.domain.inquiry.InquiryDTO;
@@ -170,5 +171,50 @@ public class MyPageServiceTests {
         myPageService.updateMemberProfile(memberProfileDTO.toVO());
         log.info("updateMemberProfile-test={}", memberProfileDTO.toString());
     }
+
+//
+    @Test
+    public void testGetAudition() {
+    AuditionDTO auditionDTO = new AuditionDTO();
+        auditionDTO.setId(33L);
+        auditionDTO.setPostType(PostType.AUDITIONVIDEO.name());
+
+    Optional<AuditionDTO> foundAudition = myPageService.getAudition(auditionDTO.getId(), auditionDTO.getPostType());
+        foundAudition.map(AuditionDTO::toString).ifPresent(log::info);
+}
+
+//    @Test
+//    public void testGetMyVideoWorkList() {
+//        MemberVO memberVO = null;
+//        MyWorkAndFundingPagination myWorkAndFundingPagination = new MyWorkAndFundingPagination();
+//        memberVO = myPageService.getMember(2L).get();
+//        myWorkAndFundingPagination.setTotal(myPageService.getMyVideoWorkPostsTotal(memberVO.getId(), PostType.WORKVIDEO.name()));
+//        myWorkAndFundingPagination.progress();
+//        MyWorkListDTO myWorkPosts = myPageService.getMyVideoWorkList
+//                (1, myWorkAndFundingPagination, memberVO.getId(), PostType.WORKVIDEO.name());
+//
+//        log.info(" myWorkPosts.toString()-test={}", myWorkPosts.toString());
+//    }
+//
+//    @Test
+//    public void testGetMyVideoWorkBuyerList() {
+//        WorkDTO workDTO = null;
+//        MySettingTablePagination mySettingTablePagination = new MySettingTablePagination();
+//        workDTO = myPageService.getWork(5L, PostType.WORKVIDEO.name()).get();
+//        mySettingTablePagination.setTotal(myPageService.getMyVideoWorkBuyersTotal(workDTO.getId()));
+//        mySettingTablePagination.progress();
+//        MyWorkBuyerListDTO myWorkBuyers = myPageService.getMyVideoWorkBuyerList(1, mySettingTablePagination, workDTO.getId());
+//
+//        log.info("myWorkBuyers.toString()-test={}", myWorkBuyers.toString());
+//    }
+//
+//    @Test
+//    public void testUpdateWorkSendStatus() {
+//        BuyWorkDTO buyWorkDTO = new BuyWorkDTO();
+//        buyWorkDTO.setId(1L);
+//        buyWorkDTO.setWorkSendStatus("YES");
+//
+//        myPageService.updateWorkSendStatus(buyWorkDTO.toVO());
+//    }
 
 }
