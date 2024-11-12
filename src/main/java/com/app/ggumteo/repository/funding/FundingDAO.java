@@ -91,6 +91,10 @@ public class FundingDAO {
         return fundingProducts;
     }
 
+    public void updateFundingProduct(FundingProductVO fundingProductVO) {
+        fundingMapper.updateFundingProduct(fundingProductVO);
+    }
+
     // 썸네일 파일 ID 업데이트 메소드 추가
     public void updateThumbnailFileId(Long fundingId, Long thumbnailFileId) {
         fundingMapper.updateThumbnailFileId(fundingId, thumbnailFileId);
@@ -104,6 +108,11 @@ public class FundingDAO {
     // 펀딩 ID로 조회
     public FundingDTO findFundingId(Long id) {
         return fundingMapper.selectByFundingId(id);
+    }
+
+    // 파일 ID를 기준으로 펀딩 상품 삭제
+    public void deleteFundingProductById(Long id) {
+        fundingMapper.deleteFundingProductById(id);
     }
 
 }

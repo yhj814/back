@@ -29,6 +29,13 @@ public interface FundingMapper {
 
 
 
+
+
+
+
+    // 파일 ID를 기준으로 펀딩 상품 삭제
+    void deleteFundingProductById(@Param("id") Long id);
+
     // 펀딩 삽입
     public void insert(FundingDTO fundingDTO);
 
@@ -49,7 +56,7 @@ public interface FundingMapper {
     public void updatePost(FundingDTO fundingDTO);
 
     // 썸네일 파일 ID 업데이트 메소드
-    void updateThumbnailFileId(@Param("workId") Long fundingId, @Param("thumbnailFileId") Long thumbnailFileId);
+    void updateThumbnailFileId(@Param("fundingId") Long fundingId, @Param("thumbnailFileId") Long thumbnailFileId);
 
     // 펀딩 상태 갱신 (펀딩 중 -> 펀딩 종료)
     public void updateFundingStatusToEnded();
@@ -57,6 +64,8 @@ public interface FundingMapper {
     // 펀딩 ID로 작품 조회
     FundingDTO selectByFundingId(Long id);
 
+    // 상품 정보 수정
+    public void updateFundingProduct(FundingProductVO fundingProductVO);
 
     // 펀딩 상세 조회
     public List<FundingDTO> selectFundingById(@Param("id") Long id);
