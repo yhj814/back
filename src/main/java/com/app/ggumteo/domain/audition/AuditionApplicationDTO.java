@@ -33,7 +33,16 @@ public class AuditionApplicationDTO {
     private String filePath;
     private String createdDate;
     private String updatedDate;
-    private String auditionField;
+    // 추가(마이페이지)
+    private String auditionField; // 모집 분야
+    private String auditionCareer; // 모집 경력
+    private String expectedAmount; // 예상 금액
+    private String auditionDeadLine; // 모집 마감날짜
+    private String auditionPersonnel; // 모집 인원
+    private String auditionLocation; // 모집 장소
+    private String auditionStatus; // 모집 상태
+    private String postTitle;
+    private String postContent;
 
     public AuditionApplicationVO toVO() {
         return new AuditionApplicationVO(id, memberProfileId, applyEtc, auditionId, createdDate, confirmStatus);

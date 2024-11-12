@@ -125,7 +125,7 @@ const myPageService = (() => {
             }
         });
     }
-
+    //
     const getMyVideoApplicationAuditionList = async (page, memberId, callback) => {
         page = page || 1;
         const response = await fetch(`/members/${memberId}/video/my/application/audition/${page}`);
@@ -192,6 +192,7 @@ const myPageService = (() => {
         getMyVideoAuditionList: getMyVideoAuditionList,
         getMyVideoAuditionApplicantList: getMyVideoAuditionApplicantList,
         updateConfirmStatus: updateConfirmStatus,
+        getMyVideoApplicationAuditionList: getMyVideoApplicationAuditionList,
         getMyInquiryHistoryList: getMyInquiryHistoryList,
         getAdminAnswerByInquiryId: getAdminAnswerByInquiryId,
         getMemberProfile: getMemberProfile

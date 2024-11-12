@@ -46,7 +46,6 @@ public class MyPageServiceImpl implements MyPageService {
     private final AuditionApplicationDAO auditionApplicationDAO;
     private final InquiryDAO inquiryDAO;
     private final MemberProfileDAO memberProfileDAO;
-    private final MemberRestController memberRestController;
 
     //    회원 정보 조회
     @Override
@@ -206,6 +205,8 @@ public class MyPageServiceImpl implements MyPageService {
         return buyFundingProductDAO.getMyBuyFundingListTotal(memberId, postType);
     }
 
+//************************************************************************************************
+
     //    나의 모집 게시물 전체 목록 - 영상
     @Override
     public MyAuditionListDTO getMyVideoAuditionList(int page, MyAuditionPagination myAuditionPagination, Long memberId, String postType) {
@@ -233,6 +234,7 @@ public class MyPageServiceImpl implements MyPageService {
 
     // 나의 모집 지원자 목록 조회
     @Override
+    @MyAuditionApplicantListLogStatus
     public MyAuditionApplicantListDTO getMyVideoAuditionApplicantList(int page, MySettingTablePagination mySettingTablePagination, Long auditionId) {
         MyAuditionApplicantListDTO myAuditionApplicants = new MyAuditionApplicantListDTO();
         mySettingTablePagination.setPage(page);

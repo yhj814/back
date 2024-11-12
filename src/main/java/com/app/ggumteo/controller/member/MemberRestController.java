@@ -33,7 +33,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class MemberRestController {
     private final MyPageService myPageService;
-    private final PostFileService postFileService;
 
     @GetMapping("/member/video/my-page")
     public void read(Long id, Model model){

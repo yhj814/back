@@ -18,7 +18,7 @@
 
     <!-- 마이페이지  -->
     <select id="selectByAuditionPostId" resultType="auditionApplicationDTO">
-        select aa.audition_id, aa_mp.profile_name, a.audition_field, aa.confirm_status
+        select aa.id, aa.audition_id, aa_mp.profile_name, a.audition_field, aa.confirm_status
         from
             tbl_audition_application aa
                 join tbl_audition a on aa.audition_id = a.id
@@ -50,7 +50,7 @@
         select a.id, a.audition_field, a.audition_career, a.expected_amount,
                a.audition_deadline, a.audition_personnel, a.audition_location, a.audition_status,
                p.post_title, p.post_content, p.created_date,
-               aa_mp.profile_name, aa_mp.profile_email
+               mp.profile_name, mp.profile_email
         from tbl_audition_application aa
                  join tbl_audition a on aa.audition_id = a.id
                  join tbl_post p on a.id = p.id and p.post_type = #{postType}

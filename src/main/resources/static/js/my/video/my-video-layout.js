@@ -932,7 +932,7 @@ const showMyAuditionList = ({myAuditionPosts, myAuditionPagination}) => {
                             >`
         if (myAuditionPost.auditionStatus === 'YES') {
            text += `<button class="sri_btn_xs"
-                                title="클릭하면 입사지원할 수 있는 창이 뜹니다."> 
+                                title="클릭하면 입사지원할 수 있는 창이 뜹니다.">
                                 <span
                                     class="sri_btn_immediately"
                                     >모집중</span>
@@ -958,11 +958,11 @@ const showMyAuditionList = ({myAuditionPosts, myAuditionPagination}) => {
                             >`
         if (myAuditionPost.auditionCareer === '') {
             text +=  `<span
-                                >신입</span
+                                >·신입</span
                             >`
         } else {
             text += `<span
-                                >경력</span
+                                >·경력</span
                             >`
         }
         text +=          `</div>
@@ -1007,7 +1007,7 @@ const showMyAuditionList = ({myAuditionPosts, myAuditionPagination}) => {
                             class="corp_affiliate"
                             >${myAuditionPost.profileEmail}</span
                         >
-        
+
                         <div
                             class="btn-wrapper"
                             id="toggleReplyBtn"
@@ -1066,7 +1066,7 @@ const showMyAuditionList = ({myAuditionPosts, myAuditionPagination}) => {
                             </button>
                         </div>
                     </div>
-        
+
                     <div
                         class="similar_recruit"
                         style="display: none"
@@ -1076,7 +1076,6 @@ const showMyAuditionList = ({myAuditionPosts, myAuditionPagination}) => {
                 <div
                     class="reply"
                     id="replySection1"
-                    style="display: none"
                 >
                     <div class="item_recruit">
                         <div
@@ -1089,7 +1088,7 @@ const showMyAuditionList = ({myAuditionPosts, myAuditionPagination}) => {
                                         224,
                                         224
                                     );
-                                display: block;
+                                    display: none;
                             "
                         >
 <!--                            지원자 목록 & 페이징-->
@@ -1103,7 +1102,7 @@ const showMyAuditionList = ({myAuditionPosts, myAuditionPagination}) => {
 
 
     if (myAuditionPagination.prev) {
-        pagingText += `<a href="${myAuditionPagination.startPage - 1}" class="btnPrev page_move track_event" 
+        pagingText += `<a href="${myAuditionPagination.startPage - 1}" class="btnPrev page_move track_event"
                         page="10" title="이전">이전</a>
         `
     }
@@ -1112,7 +1111,7 @@ const showMyAuditionList = ({myAuditionPosts, myAuditionPagination}) => {
             pagingText += `<span class="page">${i}</span>`
         }else{
             pagingText += `<a href="${i}" page="${i}" class="page page_move track_event">
-                            <span>${i}</span></a>`
+                            ${i}</a>`
         }
     }
 
@@ -1161,32 +1160,60 @@ const showMyAuditionApplicantList = ({myAuditionApplicants, mySettingTablePagina
                         <a  href="" class="sub-span">
                            이력서 보기
                         </a>
-                    </div>
-                    <div class="center-text setting-td with-text primary size-s"
+                    </div>`
+            if(myAuditionApplicant.auditionField == 1){
+                text +=    `<div class="center-text setting-td with-text primary size-s"
                          style="margin-bottom: 35px;">
-                         ${myAuditionApplicant.auditionField}
-                    </div>
+                         배우`
+            }
+            if(myAuditionApplicant.auditionField == 2){
+                text +=  `<div class="center-text setting-td with-text primary size-s"
+                         style="margin-bottom: 35px;">
+                         스텝`
+            }
+            if(myAuditionApplicant.auditionField == 3){
+                text +=   `<div class="center-text setting-td with-text primary size-s"
+                         style="margin-bottom: 35px;">
+                         감독`
+            }
+            if(myAuditionApplicant.auditionField == 4){
+                text +=   `<div class="center-text setting-td with-text primary size-s"
+                         style="margin-bottom: 35px;">
+                         기타`
+            }
+
+        text +=    `</div>
                     <div class="center-text setting-td with-btn size-m">
                         <div class="btn-group choice-group">`
+
         if(myAuditionApplicant.confirmStatus === "YES") {
+
             text += `<div class="btn-choice btn-public active">`
+
         } else {
+
             text += `<div class="btn-choice btn-public ${myAuditionApplicant.id}">`
+
         }
+
         text += `<input checked="" class="radio-value"
-                  name="is_secret_employment" type="radio"
-                  value="false"/>미확인 </div>`
+                  name="is_secret_employment" type="radio"/>확인</div>`
+
         if(myAuditionApplicant.confirmStatus === "NO") {
+
             text += `<div class="btn-choice btn-secret active">`
+
         } else {
+
             text += `<div class="btn-choice btn-secret">`
+
         }
+
             text +=     `<input
                                 class="radio-value"
                                 name="is_secret_employment"
                                 type="radio"
-                                value="true"
-                            />확인
+                            />미확인
                         </div>
                     </div>
                 </div>
@@ -1196,7 +1223,7 @@ const showMyAuditionApplicantList = ({myAuditionApplicants, mySettingTablePagina
     });
     text += `    </div>`;
 
-    text += `<ul class="pagination theme-yozm mypage-page back-or-next">`;
+    text += `<ul class="pagination theme-yozm mypage-page back-or-next" style="margin-bottom: 20px">`;
 
     if(mySettingTablePagination.prev){
         text += `
@@ -1217,17 +1244,17 @@ const showMyAuditionApplicantList = ({myAuditionApplicants, mySettingTablePagina
 
     return text;
 }
+
+// 내가 신청한 모집 목록, 페이징
+const myApplicationAuditionListLayout = document.getElementById("my-application-audition-list");
+const myApplicationAuditionListPaging = document.getElementById("my-application-audition-list-paging");
+
 //
-// // 내가 신청한 모집 목록, 페이징
-// const myBuyWorkListLayout = document.getElementById("my-buy-work-list");
-// const myBuyWorkListPaging = document.getElementById("my-buy-work-list-paging");
-//
-//
-// const showMyBuyWorkList = ({myBuyWorkPosts, myWorkAndFundingPagination}) => {
+// const showMyApplicationAuditionList = ({myApplicationAuditionPosts, myAuditionPagination}) => {
 //     let text = ``;
 //     let pagingText = ``;
 //
-//     myBuyWorkPosts.forEach((myBuyWorkPost) => {
+//     myApplicationAuditionPosts.forEach((myApplicationAuditionPost) => {
 //         text += ` <div class="list-item">
 //                     <div class="products-list">
 //                         <div class="flex-box">

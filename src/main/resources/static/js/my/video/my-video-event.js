@@ -197,15 +197,16 @@ myAuditionListLayout.addEventListener('click', async (e) => {
         console.log("myAuditionId : ", myAuditionId)
 
         const auditionApplicantTable = document.querySelector(`.audition-applicant-${myAuditionId}`);
-        console.log("auditionApplicantTable : ", auditionApplicantTable)
+        console.log("auditionApplicantTable.children : ", auditionApplicantTable.children)
+        console.log("auditionApplicantTable.children.length : ", auditionApplicantTable.children.length)
         if (
             auditionApplicantTable.style.display === "none"
         ) {
             if(auditionApplicantTable.children.length == 0) {
-                console.log("들어옴3")
                 globalThis.myAuditionApplicantPage = 1;
                 auditionApplicantTable.innerHTML = await myPageService.getMyVideoAuditionApplicantList(globalThis.myAuditionApplicantPage, myAuditionId, showMyAuditionApplicantList);
 
+                console.log("auditionApplicantTable-block", auditionApplicantTable)
                 // 구매자 테이블을 클릭했을 때
                 auditionApplicantTable.addEventListener('click', async (e) => {
                     e.preventDefault();
@@ -218,24 +219,22 @@ myAuditionListLayout.addEventListener('click', async (e) => {
                     }
 
                     if(e.target.classList[1] === "btn-public") {
-                        const ApplicationAuditionId = e.target.classList[2];
+                        const auditionApplicantId = e.target.classList[2];
                         const confirmOk = "YES";
 
                         if(e.target.nextElementSibling.classList[2] === "active") {
                             e.target.classList.add("active");
                             e.target.nextElementSibling.classList.remove("active")
                             await myPageService.updateConfirmStatus({
-                                id: ApplicationAuditionId, confirmStatus: confirmOk
+                                id: auditionApplicantId,
+                                confirmStatus : confirmOk
                             });
                         }
                     }
                 });
             }
-            // 2. 작품 구매자 테이블의 자식요소[배열]의 길이가 0이 아니라면 (=목록이 불러진 상태라면)
-            // 작품 구매자 테이블에 목록을 추가하지 말고 작품 구매자 테이블을 화면에 보여줘라.
             auditionApplicantTable.style.display = "block";
-        } else {// 작품 구매자 테이블이 화면에 나타나있다면
-            // 작품 구매자 테이블을 화면에서 숨겨라
+        } else {
             auditionApplicantTable.style.display = "none";
         }
     }

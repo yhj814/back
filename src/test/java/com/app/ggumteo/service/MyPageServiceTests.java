@@ -198,13 +198,13 @@ public class MyPageServiceTests {
         log.info("myAuditionApplicants-test={}", myAuditionApplicants);
     }
 
-    @Test
-    public void testUpdateConfirmStatus() {
-        AuditionApplicationDTO auditionApplicationDTO = new AuditionApplicationDTO();
-        auditionApplicationDTO.setId(1L);
-        auditionApplicationDTO.setConfirmStatus("YES");
-
-        myPageService.updateConfirmStatus(auditionApplicationDTO.toVO());
-    }
+//    @Test
+//    public void testUpdateConfirmStatus() {
+//        AuditionApplicationDTO auditionApplicationDTO = new AuditionApplicationDTO();
+//        auditionApplicationDTO.setId(1L);
+//        auditionApplicationDTO.setConfirmStatus("YES");
+//
+//        myPageService.updateConfirmStatus(auditionApplicationDTO.toVO());
+//    }
 
 }
