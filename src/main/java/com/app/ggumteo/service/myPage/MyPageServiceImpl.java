@@ -231,21 +231,21 @@ public class MyPageServiceImpl implements MyPageService {
 
     // 나의 모집 지원자 목록 조회
     @Override
-    public MyAuditionApplicantListDTO getMyVideoAuditionApplicantList(int page, MySettingTablePagination mySettingTablePagination, Long auditionPostId) {
+    public MyAuditionApplicantListDTO getMyVideoAuditionApplicantList(int page, MySettingTablePagination mySettingTablePagination, Long auditionId) {
         MyAuditionApplicantListDTO myAuditionApplicants = new MyAuditionApplicantListDTO();
         mySettingTablePagination.setPage(page);
-        mySettingTablePagination.setTotal(auditionApplicationDAO.getTotal(auditionPostId));
+        mySettingTablePagination.setTotal(auditionApplicationDAO.getTotal(auditionId));
         mySettingTablePagination.progress();
         myAuditionApplicants.setMySettingTablePagination(mySettingTablePagination);
-        myAuditionApplicants.setMyAuditionApplicants(auditionApplicationDAO.findByAuditionPostId(mySettingTablePagination, auditionPostId));
+        myAuditionApplicants.setMyAuditionApplicants(auditionApplicationDAO.findByAuditionPostId(mySettingTablePagination, auditionId));
 
         return myAuditionApplicants;
     }
 
     // 나의 모집 게시글 한개당 지원자 전체 갯수
     @Override
-    public int getMyVideoAuditionApplicantsTotal(Long auditionPostId) {
-        return auditionApplicationDAO.getTotal(auditionPostId);
+    public int getMyVideoAuditionApplicantsTotal(Long auditionId) {
+        return auditionApplicationDAO.getTotal(auditionId);
     }
 
     // 확인 여부

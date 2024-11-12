@@ -19,10 +19,10 @@ public interface AuditionApplicationMapper {
 
     //    나의 모집 지원자 목록 조회
     public List<AuditionApplicationDTO> selectByAuditionPostId(
-            @Param("mySettingTablePagination") MySettingTablePagination mySettingTablePagination, Long AuditionPostId);
+            @Param("mySettingTablePagination") MySettingTablePagination mySettingTablePagination, Long auditionId);
 
     //    나의 모집  게시물 하나의 지원자 전체 갯수
-    public int selectCount(Long AuditionPostId);
+    public int selectCount(Long auditionId);
 
     //    확인 여부 체크
     public void updateConfirmStatus(AuditionApplicationVO auditionApplicationVO);

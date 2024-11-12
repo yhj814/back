@@ -27,13 +27,13 @@ public class AuditionApplicationDAO {
 //*********** 마이페이지 **************
 
     //    나의 모집 지원자 목록 조회
-    public List<AuditionApplicationDTO> findByAuditionPostId(MySettingTablePagination mySettingTablePagination, Long auditionPostId) {
-        return auditionApplicationMapper.selectByAuditionPostId(mySettingTablePagination, auditionPostId);
+    public List<AuditionApplicationDTO> findByAuditionPostId(MySettingTablePagination mySettingTablePagination, Long auditionId) {
+        return auditionApplicationMapper.selectByAuditionPostId(mySettingTablePagination, auditionId);
     }
 
     //    나의 모집 게시물 하나의 지원자 전체 갯수
-    public int getTotal(Long auditionPostId){
-        return auditionApplicationMapper.selectCount(auditionPostId);
+    public int getTotal(Long auditionId){
+        return auditionApplicationMapper.selectCount(auditionId);
     }
 
     //    확인 여부 체크

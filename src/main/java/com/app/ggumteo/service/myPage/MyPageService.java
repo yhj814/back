@@ -96,10 +96,10 @@ public interface MyPageService {
 
     // 나의 모집 지원자 목록 조회
     public MyAuditionApplicantListDTO getMyVideoAuditionApplicantList
-    (int page, MySettingTablePagination mySettingTablePagination, Long auditionPostId);
+    (int page, MySettingTablePagination mySettingTablePagination, Long auditionId);
 
     // 나의 모집 게시물 하나의 지원자 전체 갯수
-    public int getMyVideoAuditionApplicantsTotal(Long auditionPostId);
+    public int getMyVideoAuditionApplicantsTotal(Long auditionId);
 
     // 확인 여부
     public void updateConfirmStatus(AuditionApplicationVO auditionApplicationVO);

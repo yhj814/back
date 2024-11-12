@@ -17,12 +17,12 @@
     </select>
 
     <!-- 마이페이지  -->
-    <select id="selectByAuditionPostId" resultType="buyWorkDTO">
+    <select id="selectByAuditionPostId" resultType="auditionApplicationDTO">
         select aa.audition_id, aa_mp.profile_name, a.audition_field, aa.confirm_status
         from
             tbl_audition_application aa
-                join tbl_audition a on aa.audition_id = a.id and aa.audition_id = #{auditionPostId}
-                join tbl_post p on a.id = p.id
+                join tbl_audition a on aa.audition_id = a.id
+                join tbl_post p on a.id = p.id and a.id = #{auditionId}
                 join tbl_member_profile mp on p.member_profile_id = mp.id
                 join tbl_member m on mp.member_id = m.id
                 join tbl_member_profile aa_mp on aa.member_profile_id = aa_mp.id
@@ -34,7 +34,7 @@
         select count(*) from
             tbl_audition_application aa
                 join tbl_audition a on aa.audition_id = a.id
-                join tbl_post p on a.id = p.id and a.id = #{auditionPostId}
+                join tbl_post p on a.id = p.id and a.id = #{auditionId}
                 join tbl_member_profile mp on p.member_profile_id = mp.id
                 join tbl_member m on mp.member_id = m.id
                 join tbl_member_profile aa_mp on aa.member_profile_id = aa_mp.id
