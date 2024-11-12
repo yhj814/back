@@ -677,7 +677,7 @@ img {
     opacity: 0.6;
     border-radius: 4px;
     background-color: #000;
-    display: none;
+    display: block;
 }
 .btn-edit-item {
     display: inline-block;
@@ -905,7 +905,7 @@ img {
     position: absolute;
 }
 .product-add {
-    padding: 16px;
+    padding: 0px;
     border-radius: 8px;
     box-shadow: 0 1px 4px 0 rgba(230, 235, 240, 0.8);
     border: solid 1px #e6ebf0;

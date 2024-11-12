@@ -176,6 +176,8 @@ public class FundingServiceImpl implements FundingService{
         log.info("삭제할 파일 IDs: {}", deletedFileIds);
         log.info("삭제할 펀딩 상품 IDs: {}", fundingDTO.getFundingProductIds());
         log.info("새로운 썸네일 파일명: {}", fundingDTO.getThumbnailFileName());
+        log.info("Service에서 받은 펀딩 상품 목록: {}", fundingDTO.getFundingProducts());
+
 
         // 기존 데이터를 다시 조회하여 최신 정보를 가져옴
         FundingDTO currentFunding = fundingDAO.findFundingId(fundingDTO.getId());
@@ -236,18 +238,18 @@ public class FundingServiceImpl implements FundingService{
         List<FundingProductVO> updatedProducts = fundingDTO.getFundingProducts();
         if (updatedProducts != null) {
             for (FundingProductVO product : updatedProducts) {
+                log.info("Updating product - ID: {}, Name: {}, Price: {}, Amount: {}", product.getId(), product.getProductName(), product.getProductPrice(), product.getProductAmount());
                 if (product.getId() != null) {
-                    // 기존 펀딩 상품 업데이트
                     fundingDAO.updateFundingProduct(product);
                     log.info("펀딩 상품 업데이트 완료: {}", product);
                 } else {
-                    // 새로운 펀딩 상품 삽입
                     product.setFundingId(fundingDTO.getId());
                     fundingDAO.saveFundingProduct(product);
                     log.info("새로운 펀딩 상품 삽입 완료: {}", product);
                 }
             }
         }
+
 
         // 기존 파일 삭제
         if (deletedFileIds != null && !deletedFileIds.isEmpty()) {

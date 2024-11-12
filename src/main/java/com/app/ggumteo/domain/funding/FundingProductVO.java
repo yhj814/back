@@ -6,11 +6,11 @@ import org.springframework.stereotype.Component;
 @Component
 @Getter
 @Setter
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class FundingProductVO {
-
     private Long id; // 펀딩 상품 ID
     private String productName; // 상품명
     private int productPrice; // 상품 가격

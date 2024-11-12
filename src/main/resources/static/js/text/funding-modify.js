@@ -8,11 +8,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const textareaElement = document.querySelector(".textarea__border textarea");
     const textareaBorder = document.querySelector(".textarea__border");
 
-    // 썸네일 관련 요소
-    const thumbnailUploadInput = document.getElementById("thumbnail-upload");
-    const previewContainer = document.getElementById("preview-container");
-    const thumbnailPreview = previewContainer.querySelector("img");
-
     // 이미지 및 파일 관련 요소
     const existingFilesContainer = document.getElementById("existing-files-container");
     const imgBoxContainer = document.getElementById("img-box-container");
@@ -25,7 +20,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // 상태 추적 변수
     let thumbnailFileId = form.querySelector('input[name="thumbnailFileId"]').value || null;
     let deletedFileIds = []; // 삭제할 파일 ID 배열
-    let deletedProductIds = []; // 삭제할 상품 ID 배열
+    let fundingProductIds = []; // 삭제할 상품 ID 배열
     let uploadedThumbnailFileName = null;
     let isThumbnailChanged = false; // 썸네일 변경 여부
 
@@ -34,6 +29,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (thumbnailAddButton) {
         thumbnailAddButton.addEventListener("click", function () {
             console.log("썸네일 변경 버튼 클릭");
+            const thumbnailUploadInput = document.getElementById("thumbnail-upload");
             if (thumbnailUploadInput) {
                 thumbnailUploadInput.click();
             }
@@ -41,6 +37,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // 썸네일 파일 선택 시 서버로 업로드 및 미리보기 업데이트
+    const thumbnailUploadInput = document.getElementById("thumbnail-upload");
     if (thumbnailUploadInput) {
         thumbnailUploadInput.addEventListener("change", function () {
             const file = thumbnailUploadInput.files[0];
@@ -48,8 +45,11 @@ document.addEventListener("DOMContentLoaded", function () {
                 console.log("썸네일 파일 선택:", file.name);
                 const reader = new FileReader();
                 reader.onload = function (e) {
-                    thumbnailPreview.src = e.target.result;
-                    console.log("썸네일 미리보기 업데이트");
+                    const thumbnailPreview = document.querySelector("#preview-container img");
+                    if (thumbnailPreview) {
+                        thumbnailPreview.src = e.target.result;
+                        console.log("썸네일 미리보기 업데이트");
+                    }
                 };
                 reader.readAsDataURL(file);
 
@@ -115,19 +115,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // 폼 제출 시 썸네일과 삭제할 파일 정보 포함
     form.addEventListener("submit", function () {
+        // event.preventDefault(); // 테스트를 위해 실제 전송 막기
+        // const formData = new FormData(form);
+        //
+        // formData.forEach((value, key) => {
+        //     console.log(`${key}: ${value}`);
+        // });
+        const hiddenInputs = form.querySelectorAll(".existing-product.hidden input, .new-product.hidden input");
+        hiddenInputs.forEach(input => input.removeAttribute("required"));
         console.log("폼 제출 시 삭제할 파일 IDs:", deletedFileIds); // 삭제할 파일 ID 로그 출력
 
-        if (deletedFileIds.length > 0) {
-            const hiddenInput = document.getElementById("deletedFileIds");
-            hiddenInput.value = deletedFileIds.join(",");
-            console.log("deletedFileIds 필드에 값 설정:", hiddenInput.value);
-        }
-
-        if (deletedProductIds.length > 0) {
-            const hiddenInput = document.getElementById("deletedProductIds");
-            hiddenInput.value = deletedProductIds.join(",");
-            console.log("deletedProductIds 필드에 값 설정:", deletedProductIds.join(","));
-        }
+        console.log("폼 제출 시 삭제할 상품 IDs:", fundingProductIds);
 
         console.log("폼 제출 시 업로드된 썸네일 파일명:", uploadedThumbnailFileName);
     });
@@ -295,6 +293,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const fileUpload = imgBox.querySelector('input[type="file"]');
         const preview = imgBox.querySelector("img");
         const videoPreview = imgBox.querySelector("video");
+        const imgBoxDiv = imgBox.querySelector(".img-box"); // For general clicks
 
         if (btnDeleteImage) {
             btnDeleteImage.addEventListener("click", function () {
@@ -306,28 +305,29 @@ document.addEventListener("DOMContentLoaded", function () {
                 console.log("삭제 버튼 클릭, fileId:", fileId, "fileName:", fileName);
 
                 // 기존 파일일 경우 삭제할 ID에 추가 (중복 방지)
-                if (fileId && !deletedFileIds.includes(fileId)) {
-                    deletedFileIds.push(fileId);
-                    const deletedFileIdsInput = document.getElementById("deletedFileIds");
-                    if (deletedFileIdsInput) {
-                        deletedFileIdsInput.value = deletedFileIds.join(",");
-                        console.log("deletedFileIds 필드 업데이트:", deletedFileIds.join(","));
-                    }
+                if (fileId && !fundingProductIds.includes(fileId)) {
+                    fundingProductIds.push(fileId);
+
+                    // 기존의 hidden input 제거 (중복 방지)
+                    const existingHiddenInputs = form.querySelectorAll('input[name="fundingProductIds[]"]');
+                    existingHiddenInputs.forEach(input => input.remove());
+
+                    // fundingProductIds 배열을 순회하며 각 ID에 대해 숨겨진 입력 필드 추가
+                    fundingProductIds.forEach(id => {
+                        const hiddenInput = document.createElement('input');
+                        hiddenInput.type = 'hidden';
+                        hiddenInput.name = 'fundingProductIds[]';
+                        hiddenInput.value = id;
+                        form.appendChild(hiddenInput);
+                        console.log("fundingProductIds[] 추가:", id);
+                    });
                 } else {
-                    console.log("이미 삭제된 파일 ID:", fileId);
+                    console.log("이미 삭제된 상품 ID:", fileId);
                 }
 
-                // 새로 업로드된 파일일 경우 처리 (필요 시 추가 로직)
-                if (fileName && imgBox.classList.contains("new-file")) {
-                    console.log("새로 업로드된 파일 삭제:", fileName);
-                }
-
-                // UI에서 해당 이미지 박스 숨기기
-                imgBox.classList.add("hidden"); // display: none; 대신 .hidden 클래스 추가
-                console.log("이미지 박스 숨김");
-
-                // 삭제 버튼 비활성화
-                this.disabled = true;
+                // UI에서 해당 상품 요소 숨기기
+                productElement.classList.add("hidden"); // display: none; 대신 .hidden 클래스 추가
+                console.log("상품 요소 숨김");
 
                 // 폼 유효성 검사
                 checkFormCompletion();
@@ -337,6 +337,13 @@ document.addEventListener("DOMContentLoaded", function () {
         if (btnChangeImage && fileUpload) {
             btnChangeImage.addEventListener("click", function () {
                 console.log("이미지 변경 버튼 클릭");
+                fileUpload.click();
+            });
+        }
+
+        if (imgBoxDiv && fileUpload) {
+            imgBoxDiv.addEventListener("click", function () {
+                console.log("img-box 클릭");
                 fileUpload.click();
             });
         }
@@ -387,6 +394,22 @@ document.addEventListener("DOMContentLoaded", function () {
                                 // 파일명을 input 요소에 저장 (삭제 시 사용)
                                 fileUpload.setAttribute('data-file-name', fileName);
                                 console.log("숨겨진 필드 'fileNames' 추가:", fileName);
+
+                                // 파일 업로드 후 특정 div 요소 제거 및 img-edit-box 표시
+                                ["img-box-title", "img-box-text", "img-box-help"].forEach(selector => {
+                                    const element = imgBox.querySelector(`.${selector}`);
+                                    if (element) {
+                                        element.remove();
+                                        console.log(`'${selector}' 요소 제거`);
+                                    }
+                                });
+
+                                // img-edit-box 표시
+                                const imgEditBox = imgBox.querySelector(".img-edit-box");
+                                if (imgEditBox) {
+                                    imgEditBox.style.display = "block";
+                                    console.log("'img-edit-box' 표시");
+                                }
                             } else {
                                 console.error('파일 업로드 실패.');
                             }
@@ -407,14 +430,12 @@ document.addEventListener("DOMContentLoaded", function () {
                 const productId = this.getAttribute("data-product-id");
                 console.log("상품 삭제 버튼 클릭, productId:", productId);
 
-                if (productId && !deletedProductIds.includes(productId)) {
-                    // 삭제할 상품 ID를 hidden input에 추가
-                    deletedProductIds.push(productId);
-                    const deletedProductIdsInput = document.getElementById("deletedProductIds");
-                    if (deletedProductIdsInput) {
-                        deletedProductIdsInput.value = deletedProductIds.join(",");
-                        console.log("deletedProductIds 필드 업데이트:", deletedProductIds.join(","));
-                    }
+                if (productId && !fundingProductIds.includes(productId)) {
+                    fundingProductIds.push(productId);
+
+                    // fundingProductIds 배열을 콤마로 구분된 문자열로 변환하여 hidden 필드에 설정
+                    document.getElementById("fundingProductIds").value = fundingProductIds.join(",");
+                    console.log("fundingProductIds 업데이트:", fundingProductIds.join(","));
                 } else {
                     console.log("이미 삭제된 상품 ID:", productId);
                 }
@@ -432,9 +453,6 @@ document.addEventListener("DOMContentLoaded", function () {
     // 기존 펀딩 상품에 이벤트 리스너 설정
     document.querySelectorAll(".existing-product").forEach(setupProductDeleteListener);
 
-    // 기존 파일 삭제 버튼에 이벤트 리스너 설정 (중복 제거)
-    document.querySelectorAll(".img-box-list").forEach(setupEventListeners);
-
     // 새로운 이미지 박스 추가 함수
     function addNewImageBox() {
         const timestamp = Date.now();
@@ -450,15 +468,15 @@ document.addEventListener("DOMContentLoaded", function () {
                     <div class="default-img">
                         <!-- 이미지 미리보기 -->
                         <img
-                            id="preview-${timestamp}"
                             src="https://www.wishket.com/static/renewal/img/partner/profile/icon_btn_add_portfolio_image.png"
                             class="img-tag"
                             alt="new-file-${timestamp}"
                         />
-                        <video id="video-preview-${timestamp}" class="video-tag" style="display: none;" controls></video>
+                        <video class="video-tag" style="display: none;" controls></video>
                         <div class="img-box-title">작품 영상, 이미지 등록</div>
                         <div class="img-box-text">작품 결과물 혹은 설명을 돕는 이미지를 선택해 주세요.</div>
                         <div class="img-box-help"><span>· 이미지 최적 사이즈: 가로 720px</span></div>
+                        <!-- 숨겨진 파일 첨부 기능 -->
                         <input type="file" name="newFiles" accept="image/*,video/*" style="display: none;" />
                     </div>
                 </div>
@@ -469,65 +487,46 @@ document.addEventListener("DOMContentLoaded", function () {
         console.log("새로운 이미지 박스 추가:", newImgBox);
         checkFormCompletion();
     }
-
-    // 펀딩 상품 추가 함수
-    function addNewProductBox(index) {
+    let newProductIndex = 0;
+    // 새로운 상품 추가 함수
+    function addNewProductBox() {
         const newProduct = document.createElement("div");
-        newProduct.classList.add("existing-product", "new-product"); // 'new-product' 클래스 추가
+        newProduct.classList.add("new-product");
         newProduct.innerHTML = `
-            <div class="add-box">
-                <!-- 기존 상품 ID (새로운 상품에는 없음) -->
-                <!-- <input type="hidden" name="existingProducts[__${index}__].id" value=""> -->
-
-                <div class="product-name">
-                    상품명 <span class="star">*</span>
-                </div>
-                <input
-                        type="text"
-                        class="product-name-input"
-                        name="newProducts[${index}].productName"
-                        placeholder="등록할 상품명을 입력해주세요."
-                        required
-                />
-                <div class="product-price">
-                    상품가격 <span class="star">*</span>
-                </div>
-                <input
-                        type="number"
-                        class="product-price-input"
-                        name="newProducts[${index}].productPrice"
-                        placeholder="등록할 상품가격을 입력해주세요."
-                        required
-                />
-                <div class="product-quantity">
-                    상품수량 <span class="star">*</span>
-                </div>
-                <input
-                        type="number"
-                        class="product-quantity-input"
-                        name="newProducts[${index}].productQuantity"
-                        placeholder="등록할 상품수량을 입력해주세요."
-                        required
-                />
-                <div class="product-cancel">
-                    <img src="/images/video/cancel.png" alt="취소 아이콘" />
-                    <button class="delete-existing-product-btn" type="button">삭제</button>
-                </div>
+        <div class="add-box">
+            <div class="product-name">상품명 <span class="star">*</span></div>
+            <input type="text" class="product-name-input"
+                   name="newProducts[${newProductIndex}].productName"
+                   placeholder="등록할 상품명을 입력해주세요." required />
+            
+            <div class="product-price">상품가격 <span class="star">*</span></div>
+            <input type="number" class="product-price-input"
+                   name="newProducts[${newProductIndex}].productPrice"
+                   placeholder="등록할 상품가격을 입력해주세요." required />
+            
+            <div class="product-quantity">상품수량 <span class="star">*</span></div>
+            <input type="number" class="product-quantity-input"
+                   name="newProducts[${newProductIndex}].productAmount"
+                   placeholder="등록할 상품수량을 입력해주세요." required />
+            
+            <div class="product-cancel">
+                <button class="delete-existing-product-btn" type="button">삭제</button>
             </div>
-        `;
-        existingProductsContainer.appendChild(newProduct);
-
-        // 이벤트 리스너 설정
-        setupProductDeleteListener(newProduct);
-
-        console.log("새로운 상품 추가:", newProduct);
+        </div>
+    `;
+        document.getElementById("new-products-container").appendChild(newProduct);
+        newProductIndex++; // 인덱스 증가
         checkFormCompletion();
     }
 
-    // 펀딩 상품 추가 버튼 클릭 시 새로운 상품 추가
-    let newProductIndex = 1; // 새로운 상품 인덱스
-    productAddButton.addEventListener("click", () => {
-        console.log("펀딩 상품 추가 버튼 클릭");
+    document.querySelector(".product-div-add").addEventListener("click", () => {
+        addNewProductBox();
+    });
+
+// 새 상품 추가 버튼 클릭 시 새로운 상품 박스 추가
+
+    document.querySelector(".product-div-add").addEventListener("click", () => {
+        console.log("새 상품 추가 버튼 클릭");
         addNewProductBox(newProductIndex);
         newProductIndex++;
     });

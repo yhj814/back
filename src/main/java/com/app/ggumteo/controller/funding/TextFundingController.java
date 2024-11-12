@@ -27,9 +27,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/text/funding/*")
@@ -227,12 +226,14 @@ public class TextFundingController {
             @ModelAttribute FundingDTO fundingDTO,
             @RequestParam(value = "fileNames", required = false) List<String> fileNames,
             @RequestParam(value = "deletedFileIds", required = false) List<Long> deletedFileIds,
+            @RequestParam(value = "fundingProductIds", required = false) String fundingProductIds,
             @RequestParam(value = "thumbnailFileName", required = false) String thumbnailFileName) {
         try {
             log.info("수정 요청 - 펀딩 정보: {}", fundingDTO);
             log.info("삭제할 파일 IDs: {}", deletedFileIds);
-            log.info("삭제할 펀딩 상품 IDs: {}", fundingDTO.getFundingProductIds());
+            log.info("삭제할 펀딩 상품 IDs: {}", fundingProductIds); // 콤마로 구분된 문자열
             log.info("새로운 썸네일 파일명: {}", thumbnailFileName);
+            log.info("펀딩 상품 목록: {}", fundingDTO.getFundingProducts());
 
             // 세션에서 로그인 사용자 정보 가져오기
             MemberVO member = (MemberVO) session.getAttribute("member");
@@ -254,6 +255,14 @@ public class TextFundingController {
                 fundingDTO.setThumbnailFileName(thumbnailFileName);
             }
 
+            // 콤마로 구분된 fundingProductIds를 Long 리스트로 변환 후 DTO에 설정
+            if (fundingProductIds != null && !fundingProductIds.isEmpty()) {
+                List<Long> productIdsToDelete = Arrays.stream(fundingProductIds.split(","))
+                        .map(Long::parseLong)
+                        .collect(Collectors.toList());
+                fundingDTO.setFundingProductIds(productIdsToDelete);
+            }
+
             // 서비스에서 펀딩 수정 로직 실행
             fundingService.updateFunding(fundingDTO, deletedFileIds);
 
@@ -264,6 +273,7 @@ public class TextFundingController {
             return "redirect:/text/funding/modify/" + fundingDTO.getId();
         }
     }
+
 
     @PostMapping("order")
     public ResponseEntity<?> completeOrder(@RequestBody Map<String, Object> orderData) {

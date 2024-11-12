@@ -43,7 +43,7 @@ public class FundingDTO {
     private List<String> fileNames; // 업로드된 파일 이름 목록
     private List<Long> fundingProductIds; // 삭제할 펀딩 상품의 id
     private List<Long> fileIds; // 업로드된 파일 ID 목록
-
+    private List<FundingProductVO> newProducts; // 새로 추가된 상품 리스트
 
 
     public FundingVO toVO() {

@@ -19,7 +19,7 @@
                         <input type="hidden" name="thumbnailFileId" th:value="${funding.thumbnailFileId}" />
                         <input type="hidden" name="id" th:value="${funding.id}" />
                         <input type="hidden" name="deletedFileIds" id="deletedFileIds" value="" />
-                        <input type="hidden" name="deletedProductIds" id="deletedProductIds" value="" />
+                        <input type="hidden" name="fundingProductIds" id="fundingProductIds" value="" />
                         <div class="write-add-view">
                             <div class="subtitle-1 write-add-title">
                                 펀딩글 수정하기
@@ -259,7 +259,7 @@
                                     </div>
                                     <div id="img-box-container">
                                         <div class="img-box-list">
-                                            <div class="img-edit-box">
+                                            <div class="img-edit-box" style="display: none">
                                                 <div class="btn-edit-item change-image-btn">이미지 변경</div>
                                                 <div class="btn-edit-item delete-existing-file-btn">이미지 삭제</div>
                                             </div>
@@ -268,49 +268,16 @@
                                                     <div class="default-img">
                                                         <!-- 이미지 미리보기 -->
                                                         <img
-                                                                id="preview"
                                                                 src="https://www.wishket.com/static/renewal/img/partner/profile/icon_btn_add_portfolio_image.png"
                                                                 class="img-tag"
+                                                                alt="new-file-${timestamp}"
                                                         />
-                                                        <video
-                                                                id="video-preview"
-                                                                class="video-tag"
-                                                                style="display: none;"
-                                                                controls
-                                                        ></video>
-                                                        <div class="img-box-title">
-                                                            작품 영상,
-                                                            이미지 등록
-                                                        </div>
-                                                        <div class="img-box-text">
-                                                            작품 결과물
-                                                            혹은 설명을
-                                                            돕는
-                                                            이미지를
-                                                            선택해
-                                                            주세요.
-                                                        </div>
-                                                        <div class="img-box-help">
-                                                                <span
-                                                                        style="
-                                                                        margin-left: 26px;
-                                                                    "
-                                                                >
-                                                                    · 이미지
-                                                                    최적
-                                                                    사이즈:
-                                                                    가로
-                                                                    720px
-                                                                </span>
-                                                        </div>
+                                                        <video class="video-tag" style="display: none;" controls></video>
+                                                        <div class="img-box-title">작품 영상, 이미지 등록</div>
+                                                        <div class="img-box-text">작품 결과물 혹은 설명을 돕는 이미지를 선택해 주세요.</div>
+                                                        <div class="img-box-help"><span>· 이미지 최적 사이즈: 가로 720px</span></div>
                                                         <!-- 숨겨진 파일 첨부 기능 -->
-                                                        <input
-                                                                id="file-upload"
-                                                                type="file"
-                                                                name="newFiles"
-                                                                accept="image/*,video/*"
-                                                                style="display: none;"
-                                                        />
+                                                        <input type="file" name="newFiles" accept="image/*,video/*" style="display: none;" />
                                                     </div>
                                                 </div>
                                             </div>
@@ -334,86 +301,26 @@
                                         <div th:each="product, iterStat : ${funding.fundingProducts}" class="existing-product">
                                             <div class="add-box">
                                                 <!-- 기존 상품 ID -->
-                                                <input type="hidden" name="existingProducts[__${iterStat.index}__].id" th:value="${product.id}" />
+                                                <input type="hidden" th:name="|fundingProducts[${iterStat.index}].id|" th:value="${product.id}" />
 
-                                                <div class="product-name">
-                                                    상품명 <span class="star">*</span>
-                                                </div>
-                                                <input
-                                                        type="text"
-                                                        class="product-name-input"
-                                                        name="existingProducts[__${iterStat.index}__].productName"
-                                                        th:value="${product.productName}"
-                                                        required
-                                                />
-                                                <div class="product-price">
-                                                    상품가격 <span class="star">*</span>
-                                                </div>
-                                                <input
-                                                        type="number"
-                                                        class="product-price-input"
-                                                        name="existingProducts[__${iterStat.index}__].productPrice"
-                                                        th:value="${product.productPrice}"
-                                                        required
-                                                />
-                                                <div class="product-quantity">
-                                                    상품수량 <span class="star">*</span>
-                                                </div>
-                                                <input
-                                                        type="number"
-                                                        class="product-quantity-input"
-                                                        name="existingProducts[__${iterStat.index}__].productQuantity"
-                                                        th:value="${product.productAmount}"
-                                                        required
-                                                />
-                                                <div class="product-cancel">
-                                                    <img src="/images/video/cancel.png" alt="취소 아이콘" />
-                                                    <button class="delete-existing-product-btn" type="button" th:attr="data-product-id=${product.id}">
-                                                        삭제
-                                                    </button>
-                                                </div>
+                                                <!-- 상품명 -->
+                                                <div class="product-name">상품명 <span class="star">*</span></div>
+                                                <input type="text" class="product-name-input" th:name="|fundingProducts[${iterStat.index}].productName|" th:value="${product.productName}" required />
+
+                                                <!-- 상품가격 -->
+                                                <div class="product-price">상품가격 <span class="star">*</span></div>
+                                                <input type="number" class="product-price-input" th:name="|fundingProducts[${iterStat.index}].productPrice|" th:value="${product.productPrice}" required />
+
+                                                <!-- 상품수량 -->
+                                                <div class="product-quantity">상품수량 <span class="star">*</span></div>
+                                                <input type="number" class="product-quantity-input" th:name="|fundingProducts[${iterStat.index}].productAmount|" th:value="${product.productAmount}" required />
                                             </div>
                                         </div>
                                     </div>
+                                    <div id="new-products-container"></div>
 
                                     <!-- 새로운 상품 추가 -->
                                     <div class="product-add">
-                                        <div class="add-box">
-                                            <div class="product-name">
-                                                상품명 <span class="star">*</span>
-                                            </div>
-                                            <input
-                                                    type="text"
-                                                    class="product-name-input"
-                                                    name="newProducts[0].productName"
-                                                    placeholder="등록할 상품명을 입력해주세요."
-                                                    required
-                                            />
-                                            <div class="product-price">
-                                                상품가격 <span class="star">*</span>
-                                            </div>
-                                            <input
-                                                    type="number"
-                                                    class="product-price-input"
-                                                    name="newProducts[0].productPrice"
-                                                    placeholder="등록할 상품가격을 입력해주세요."
-                                                    required
-                                            />
-                                            <div class="product-quantity">
-                                                상품수량 <span class="star">*</span>
-                                            </div>
-                                            <input
-                                                    type="number"
-                                                    class="product-quantity-input"
-                                                    name="newProducts[0].productQuantity"
-                                                    placeholder="등록할 상품수량을 입력해주세요."
-                                                    required
-                                            />
-                                            <div class="product-cancel">
-                                                <img src="/images/video/cancel.png" alt="취소 아이콘" />
-                                                <button class="product-cancel-btn" type="button">취소</button>
-                                            </div>
-                                        </div>
                                     </div>
                                     <div class="product-div-add">
                                         <img src="https://www.wishket.com/static/renewal/img/partner/profile/btn_icon_add.png" />
@@ -440,7 +347,6 @@
                                                     accept="image/*"
                                                     name="newThumbnailFile"
                                                     style="display: none"
-                                                    onchange="previewImage(event)"
                                             />
                                             <button
                                                     class="btn work-thumbnail-add-btn"
