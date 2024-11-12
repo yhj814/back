@@ -162,23 +162,24 @@ public class TextFundingController {
     public String detail(@PathVariable("id") Long id, Model model) {
         try {
             // 펀딩 상세 정보 조회 (기본 정보 포함)
-            List<FundingDTO> fundingDTOList = fundingService.findFundingById(id);
-            List<PostFileDTO> postFiles = fundingService.findFilesByPostId(id);
-
-            if (fundingDTOList.isEmpty()) {
-                log.warn("No funding found for ID: {}", id);
-                return "redirect:/text/funding/funding-list";
-            }
-
-            FundingDTO fundingDTO = fundingDTOList.get(0);
+            FundingDTO fundingDTO = fundingService.findFundingById(id);
             log.info("Retrieved FundingDTO: {}", fundingDTO);
 
-            // 펀딩 상품 정보 조회 추가
+            // 펀딩 상품 정보 조회
             List<FundingProductVO> fundingProducts = fundingService.findFundingProductsByFundingId(id);
             fundingDTO.setFundingProducts(fundingProducts); // 상품 목록을 FundingDTO에 설정
+            log.info("펀딩 상품 목록: {}", fundingProducts);
+
+            // 관련 파일 조회
+            List<PostFileDTO> postFiles = fundingService.findFilesByPostId(id);
+            log.info("Retrieved PostFileDTO list: {}", postFiles);
+
+            // 같은 장르의 관련 펀딩 조회
             String genreType = fundingDTO.getGenreType();
             List<FundingDTO> relatedFundings = fundingService.findRelatedFundingByGenre(genreType, id);
+            log.info("Retrieved related fundings: {}", relatedFundings);
 
+            // 모델에 데이터 추가
             model.addAttribute("funding", fundingDTO);
             model.addAttribute("postFiles", postFiles);
             model.addAttribute("relatedFundings", relatedFundings);
@@ -186,30 +187,83 @@ public class TextFundingController {
             return "text/funding/funding-detail";  // 상세 페이지 뷰로 이동
         } catch (Exception e) {
             log.error("펀딩 상세 조회 중 오류 발생", e);
-            return "redirect:/text/funding/funding-list";
-        }
-    }
-
-    // 작품 수정 폼으로 이동
-    @GetMapping("modify/{id}")
-    public String updateForm(@PathVariable("id") Long id, Model model) {
-        FundingDTO funding = fundingService.findFundingId(id);  // funding 객체 조회
-        List<PostFileDTO> existingFiles = postFileService.findFilesByPostId(id); // 기존 파일 조회
-        log.info("Fetched funding: {}", funding);  // funding 객체를 로그로 출력해 확인
-
-        if (funding != null) {  // funding이 null이 아닌지 확인
-            model.addAttribute("funding", funding);
-            model.addAttribute("existingFiles", existingFiles);
-            return "text/funding/funding-modify";
-        } else {
-            // funding가 null인 경우 처리 (예: 에러 페이지로 이동)
-            model.addAttribute("error", "작품을 찾을 수 없습니다.");
+            model.addAttribute("error", "펀딩 상세 조회 중 오류가 발생했습니다.");
             return "text/funding/error";
         }
     }
 
 
+    @GetMapping("modify/{id}")
+    public String updateForm(@PathVariable("id") Long id, Model model) {
+        try {
+            // 단일 펀딩 객체 조회
+            FundingDTO funding = fundingService.findFundingById(id);
+            log.info("펀딩 정보: {}", funding);
 
+            // 기존 파일 조회
+            List<PostFileDTO> existingFiles = fundingService.findFilesByPostId(id);
+            log.info("기존 파일 목록: {}", existingFiles);
+
+            // 펀딩 상품 정보 조회
+            List<FundingProductVO> fundingProducts = fundingService.findFundingProductsByFundingId(id);
+            funding.setFundingProducts(fundingProducts);
+            log.info("펀딩 상품 목록: {}", fundingProducts);
+
+            // 모델에 데이터 추가
+            model.addAttribute("funding", funding);
+            model.addAttribute("existingFiles", existingFiles);
+
+            return "text/funding/funding-modify";  // 수정 페이지 뷰로 이동
+        } catch (Exception e) {
+            log.error("펀딩 수정 폼 로드 중 오류 발생", e);
+            model.addAttribute("error", "펀딩 수정 폼을 로드하는 중 오류가 발생했습니다.");
+            return "text/funding/error";
+        }
+    }
+
+    // 펀딩 수정 요청 처리
+    @PostMapping("modify")
+    public String updateFunding(
+            @ModelAttribute FundingDTO fundingDTO,
+            @RequestParam(value = "fileNames", required = false) List<String> fileNames,
+            @RequestParam(value = "deletedFileIds", required = false) List<Long> deletedFileIds,
+            @RequestParam(value = "thumbnailFileName", required = false) String thumbnailFileName) {
+        try {
+            log.info("수정 요청 - 펀딩 정보: {}", fundingDTO);
+            log.info("삭제할 파일 IDs: {}", deletedFileIds);
+            log.info("삭제할 펀딩 상품 IDs: {}", fundingDTO.getFundingProductIds());
+            log.info("새로운 썸네일 파일명: {}", thumbnailFileName);
+
+            // 세션에서 로그인 사용자 정보 가져오기
+            MemberVO member = (MemberVO) session.getAttribute("member");
+            if (member == null) {
+                log.error("세션에 멤버 정보가 없습니다.");
+                return "redirect:/main";  // 로그인 페이지로 리다이렉트
+            }
+
+            // 펀딩 타입 설정
+            fundingDTO.setPostType(PostType.FUNDINGTEXT.name());
+
+            // 파일명 리스트를 DTO에 설정
+            if (fileNames != null && !fileNames.isEmpty()) {
+                fundingDTO.setFileNames(fileNames);
+            }
+
+            // 썸네일 파일명 설정
+            if (thumbnailFileName != null && !thumbnailFileName.isEmpty()) {
+                fundingDTO.setThumbnailFileName(thumbnailFileName);
+            }
+
+            // 서비스에서 펀딩 수정 로직 실행
+            fundingService.updateFunding(fundingDTO, deletedFileIds);
+
+            log.info("펀딩 수정 완료: 펀딩 ID {}", fundingDTO.getId());
+            return "redirect:/text/funding/detail/" + fundingDTO.getId();
+        } catch (Exception e) {
+            log.error("펀딩 수정 중 오류 발생", e);
+            return "redirect:/text/funding/modify/" + fundingDTO.getId();
+        }
+    }
 
     @PostMapping("order")
     public ResponseEntity<?> completeOrder(@RequestBody Map<String, Object> orderData) {
