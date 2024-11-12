@@ -2,6 +2,7 @@ package com.app.ggumteo.service.myPage;
 
 import com.app.ggumteo.aspect.annotation.*;
 import com.app.ggumteo.constant.PostType;
+import com.app.ggumteo.controller.member.MemberRestController;
 import com.app.ggumteo.domain.admin.AdminAnswerDTO;
 import com.app.ggumteo.domain.audition.*;
 import com.app.ggumteo.domain.buy.*;
@@ -45,6 +46,7 @@ public class MyPageServiceImpl implements MyPageService {
     private final AuditionApplicationDAO auditionApplicationDAO;
     private final InquiryDAO inquiryDAO;
     private final MemberProfileDAO memberProfileDAO;
+    private final MemberRestController memberRestController;
 
     //    회원 정보 조회
     @Override

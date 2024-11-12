@@ -193,10 +193,10 @@ myAuditionListLayout.addEventListener('click', async (e) => {
     console.log("들어옴1")
     if(e.target.id === "my-audition-applicant-btn" ) {
         console.log("e.target : ", e.target)
-        const myAuditionPostId = e.target.classList[1];
-        console.log("myAuditionPostId : ", myAuditionPostId)
+        const myAuditionId = e.target.classList[1];
+        console.log("myAuditionId : ", myAuditionId)
 
-        const auditionApplicantTable = document.querySelector(`.audition-applicant-${myAuditionPostId}`);
+        const auditionApplicantTable = document.querySelector(`.audition-applicant-${myAuditionId}`);
         console.log("auditionApplicantTable : ", auditionApplicantTable)
         if (
             auditionApplicantTable.style.display === "none"
@@ -204,7 +204,7 @@ myAuditionListLayout.addEventListener('click', async (e) => {
             if(auditionApplicantTable.children.length == 0) {
                 console.log("들어옴3")
                 globalThis.myAuditionApplicantPage = 1;
-                auditionApplicantTable.innerHTML = await myPageService.getMyVideoAuditionApplicantList(globalThis.myAuditionApplicantPage, myAuditionPostId, showMyAuditionApplicantList);
+                auditionApplicantTable.innerHTML = await myPageService.getMyVideoAuditionApplicantList(globalThis.myAuditionApplicantPage, myAuditionId, showMyAuditionApplicantList);
 
                 // 구매자 테이블을 클릭했을 때
                 auditionApplicantTable.addEventListener('click', async (e) => {
@@ -214,7 +214,7 @@ myAuditionListLayout.addEventListener('click', async (e) => {
                         // 클릭한 링크(의 번호)를 페이지 변수?에 담아라
                         globalThis.myAuditionApplicantPage = e.target.getAttribute("href");
                         // 구매자 테이블 html 을
-                        auditionApplicantTable.innerHTML = await myPageService.getMyVideoAuditionApplicantList(globalThis.myAuditionApplicantPage, myAuditionPostId, showMyAuditionApplicantList);
+                        auditionApplicantTable.innerHTML = await myPageService.getMyVideoAuditionApplicantList(globalThis.myAuditionApplicantPage, myAuditionId, showMyAuditionApplicantList);
                     }
 
                     if(e.target.classList[1] === "btn-public") {

@@ -149,12 +149,12 @@ public class MemberRestController {
     // 나의 모집 지원자 목록
     // SELECT
     @ResponseBody
-    @GetMapping("/members/video/my/audition/{auditionPostId}/Applicants/{page}")
-    public MyAuditionApplicantListDTO getMyVideoAuditionApplicantList(@PathVariable("auditionPostId") Long auditionPostId
+    @GetMapping("/members/video/my/audition/{auditionId}/applicants/{page}")
+    public MyAuditionApplicantListDTO getMyVideoAuditionApplicantList(@PathVariable("auditionId") Long auditionId
             , @PathVariable("page") int page, MySettingTablePagination mySettingTablePagination) {
 
-        log.info("auditionPostId={}", auditionPostId);
-        return myPageService.getMyVideoAuditionApplicantList(page, mySettingTablePagination, auditionPostId);
+        log.info("auditionPostId={}", auditionId);
+        return myPageService.getMyVideoAuditionApplicantList(page, mySettingTablePagination, auditionId);
     }
 
     // 나의 모집 확인여부

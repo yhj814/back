@@ -104,9 +104,9 @@ const myPageService = (() => {
         }
     }
 
-    const getMyVideoAuditionApplicantList = async (page, auditionPostId, callback) => {
+    const getMyVideoAuditionApplicantList = async (page, auditionId, callback) => {
         page = page || 1;
-        const response = await fetch(`/members/video/my/audition/${auditionPostId}/Applicants/${page}`);
+        const response = await fetch(`/members/video/my/audition/${auditionId}/applicants/${page}`);
         const myAuditionApplicants = await response.json();
 
         console.log("myAuditionApplicants : ", myAuditionApplicants)
