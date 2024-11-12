@@ -118,7 +118,7 @@
                                                         class="funding-end-date"
                                                     >
                                                         펀딩마감 날짜
-                                                        <span class="end-date" th:text="${funding.endDate.substring(0, 10)}"></span>
+                                                        <span class="end-date" th:text="${funding.endDate != null} ? ${funding.endDate.substring(0, 10)} : 'N/A'"></span>
                                                     </div>
                                                 </div>
                                             </div>

@@ -1022,3 +1022,6 @@ input:hover {
 .active {
     background-color: #00a878;
 }
+.hidden {
+    display: none;
+}

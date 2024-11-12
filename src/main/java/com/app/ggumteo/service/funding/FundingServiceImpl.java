@@ -28,7 +28,9 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 
 @Service
@@ -146,12 +148,18 @@ public class FundingServiceImpl implements FundingService{
 
     @Override
     public FundingDTO findFundingById(Long id) {
-        FundingDTO funding = fundingDAO.findFundingId(id);
+        FundingDTO funding = fundingDAO.findByFundingId(id);
         if (funding == null) {
             throw new RuntimeException("펀딩을 찾을 수 없습니다: ID " + id);
         }
+
+        // endDate 값 로그 출력
+        log.info("FundingDTO retrieved: {}", funding);
+        log.info("Funding endDate: {}", funding.getEndDate());
+
         return funding;
     }
+
 
 
     @Override
@@ -314,6 +322,10 @@ public class FundingServiceImpl implements FundingService{
     public void updateFundingStatusToEnded() {
         fundingDAO.updateFundingStatusToEnded();
     }
+
+
+
+
     @Override
     public List<FundingDTO> findRelatedFundingByGenre(String genreType, Long fundingId) {
         return fundingDAO.findRelatedFundingByGenre(genreType, fundingId);

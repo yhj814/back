@@ -87,12 +87,16 @@
             f.id, f.genre_type, f.target_price, f.converge_price, f.funding_status, f.investor_number, f.funding_content, f.file_content,
             p.post_title, p.post_content, p.member_profile_id, p.created_date, p.updated_date,
             mp.profile_nickname, mp.profile_email, mp.profile_etc, m.profile_img_url as profileImgUrl,
+        fl.file_name as thumbnailFileName,       <!-- 썸네일 파일 이름 -->
+        fl.file_path as thumbnailFilePath,       <!-- 썸네일 파일 경로 -->
+        f.thumbnail_file_id as thumbnailFileId,  <!-- 썸네일 파일 ID -->
             if(f.target_price > 0, round((f.converge_price / f.target_price) * 100, 1), 0) as funding_percentage,
-            date_add(p.created_date, interval 1 month) as endDate
+            date_format(date_add(p.created_date, interval 1 month), '%Y-%m-%d') as endDate
         from tbl_funding f
                  join tbl_post p on f.id = p.id
                  join tbl_member_profile mp on p.member_profile_id = mp.id
                  join tbl_member m on mp.member_id = m.id
+        left join tbl_file fl on f.thumbnail_file_id = fl.id
         where f.id = #{id}
     </select>
 

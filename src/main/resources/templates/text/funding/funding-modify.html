@@ -17,9 +17,9 @@
                     <form action="/text/funding/modify" id="write-form" method="post" enctype="multipart/form-data">
                         <!-- 기존 데이터 전송을 위한 숨겨진 필드 -->
                         <input type="hidden" name="thumbnailFileId" th:value="${funding.thumbnailFileId}" />
-                        <div th:if="${funding != null}">
-                            <input type="hidden" name="id" th:value="${funding.id}" />
-                        </div>
+                        <input type="hidden" name="id" th:value="${funding.id}" />
+                        <input type="hidden" name="deletedFileIds" id="deletedFileIds" value="" />
+                        <input type="hidden" name="deletedProductIds" id="deletedProductIds" value="" />
                         <div class="write-add-view">
                             <div class="subtitle-1 write-add-title">
                                 펀딩글 수정하기
@@ -102,6 +102,36 @@
                                                         <span class="arrow"></span>
                                                     </span>
                                                 <span class="category-span">드라마</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div></div>
+                                </div>
+
+                                <!-- 펀딩 상태 수정 -->
+                                <div class="detail-box-wrapper">
+                                    <div class="write-category">
+                                        펀딩 상태 변경
+                                        <span class="star">*</span>
+                                    </div>
+                                    <div class="work-detail">
+                                        <!-- 펀딩 상태 라디오 버튼 -->
+                                        <div class="project-category-box">
+                                            <label for="fundingStatusOngoing" class="checkbox-partner">
+                                                <span>
+                                                    <input type="radio" name="fundingStatus" value="펀딩 중" th:checked="${funding.fundingStatus == '펀딩 중'}" required />
+                                                    <span class="arrow"></span>
+                                                </span>
+                                                <span class="category-span">펀딩 중</span>
+                                            </label>
+                                        </div>
+                                        <div class="project-category-box">
+                                            <label for="fundingStatusCompleted" class="checkbox-partner">
+                                                <span>
+                                                    <input type="radio" name="fundingStatus" value="펀딩 완료" th:checked="${funding.fundingStatus == '펀딩 완료'}" required />
+                                                    <span class="arrow"></span>
+                                                </span>
+                                                <span class="category-span">펀딩 완료</span>
                                             </label>
                                         </div>
                                     </div>
@@ -194,12 +224,12 @@
                                         <!-- 썸네일 파일은 제외하고 기존 파일들 표시 -->
                                         <div th:each="file : ${existingFiles}" th:if="${file.fileName != funding.thumbnailFileName}" class="img-box-list existing-file">
                                             <div class="img-edit-box" style="margin-top: 10px;width: 88px;margin-left: 635px;display: block;">
-                                                <div type="button" class="btn-edit-item delete-existing-file-btn" data-file-id="${file.id}">
+                                                <div type="button" class="btn-edit-item delete-existing-file-btn" th:attr="data-file-id=${file.fileId}">
                                                     이미지 삭제
                                                 </div>
                                             </div>
                                             <div class="img-content-box">
-                                                <img th:src="@{'/text/funding/display?fileName=' + ${file.filePath} + '/' + ${file.fileName}}" alt="Uploaded Image" />
+                                                <img th:src="@{'/text/funding/display?fileName=' + ${file.filePath} + '/' + ${file.fileName}}" th:alt="${file.fileName}" />
                                             </div>
                                         </div>
                                         <div class="img-caption-box" style="display: block;">
@@ -230,12 +260,8 @@
                                     <div id="img-box-container">
                                         <div class="img-box-list">
                                             <div class="img-edit-box">
-                                                <div class="btn-edit-item">
-                                                    이미지 변경
-                                                </div>
-                                                <div class="btn-edit-item">
-                                                    이미지 삭제
-                                                </div>
+                                                <div class="btn-edit-item change-image-btn">이미지 변경</div>
+                                                <div class="btn-edit-item delete-existing-file-btn">이미지 삭제</div>
                                             </div>
                                             <div class="img-content-box">
                                                 <div class="center-text img-box">
@@ -249,15 +275,17 @@
                                                         <video
                                                                 id="video-preview"
                                                                 class="video-tag"
+                                                                style="display: none;"
                                                                 controls
                                                         ></video>
                                                         <div class="img-box-title">
-                                                            영상, 이미지
-                                                            등록
+                                                            작품 영상,
+                                                            이미지 등록
                                                         </div>
                                                         <div class="img-box-text">
-                                                            결과물 혹은
-                                                            설명을 돕는
+                                                            작품 결과물
+                                                            혹은 설명을
+                                                            돕는
                                                             이미지를
                                                             선택해
                                                             주세요.
@@ -340,7 +368,7 @@
                                                 />
                                                 <div class="product-cancel">
                                                     <img src="/images/video/cancel.png" alt="취소 아이콘" />
-                                                    <button class="delete-existing-product-btn" type="button" data-product-id="${product.id}">
+                                                    <button class="delete-existing-product-btn" type="button" th:attr="data-product-id=${product.id}">
                                                         삭제
                                                     </button>
                                                 </div>
@@ -418,6 +446,7 @@
                                                     class="btn work-thumbnail-add-btn"
                                                     style="width: 100%"
                                                     type="button"
+
                                             >
                                                 펀딩 표지 수정
                                             </button>
@@ -426,18 +455,25 @@
                                             </p>
                                             <div class="help-text">
                                                 펀딩 표지를 등록하지 않으면<br />
-                                                꿈터에서 제공하는 기본이미지가 적용됩니다
+                                                꿈터에서 제공하는
+                                                기본이미지가 적용됩니다
                                             </div>
                                         </div>
                                         <!-- 오른쪽 부분 -->
                                         <div class="right-box">
+
                                             <div class="sample-box">
-                                                <div class="thumbnail-sample-part" id="preview-container">
-                                                    <div class="preview-img sample">
+                                                <div
+                                                        class="thumbnail-sample-part"
+                                                        id="preview-container"
+                                                >
+                                                    <div
+                                                            class="preview-img sample"
+                                                    >
                                                         <img
                                                                 id="preview-image"
-                                                                th:src="@{'/text/display?fileName=' + ${funding.thumbnailFilePath} + '/' + ${funding.thumbnailFileName}}"
-                                                                alt="Preview"
+                                                                th:src="@{'/text/display?fileName=/' + ${funding.thumbnailFilePath} + '/' + ${funding.thumbnailFileName}}"
+                                                                alt="Thumbnail Image"
                                                         />
                                                     </div>
                                                     <div class="preview"></div>
@@ -459,20 +495,19 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <!-- 폼 하단 버튼 -->
-                        <div class="write-footer">
-                            <div class="button-box">
-                                <button class="btn btn-back">
-                                    취소</button
-                                ><button
-                                    class="btn btn-submit"
-                                    type="submit"
-                            >
-                                수정
-                            </button>
+                            <!-- 폼 하단 버튼 -->
+                            <div class="write-footer">
+                                <div class="button-box">
+                                    <button class="btn btn-back">
+                                        취소</button
+                                    ><button
+                                        class="btn btn-submit"
+                                        type="submit"
+                                >
+                                    수정
+                                </button>
+                                </div>
                             </div>
-                        </div>
                     </form>
                 </div>
             </div>

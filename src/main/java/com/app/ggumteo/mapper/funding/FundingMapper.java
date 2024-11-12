@@ -68,7 +68,7 @@ public interface FundingMapper {
     public void updateFundingProduct(FundingProductVO fundingProductVO);
 
     // 펀딩 상세 조회
-    public List<FundingDTO> selectFundingById(@Param("id") Long id);
+    FundingDTO selectFundingById(@Param("id") Long id);
 
     // 다중 파일 조회 (작품 상세보기)
     public List<PostFileDTO> selectFilesByPostId(@Param("postId") Long postId);
