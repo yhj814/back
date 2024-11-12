@@ -48,7 +48,7 @@
                 join tbl_post_file pfl on p.id = pfl.post_id
                 join tbl_file fl on pfl.id = fl.id
         order by f.id desc
-            limit #{workAndFundingPagination.startRow}, #{workAndFundingPagination.rowCount};
+            limit #{myWorkAndFundingPagination.startRow}, #{myWorkAndFundingPagination.rowCount};
     </select>
 
     <select id="selectCountBuyFundingListByMember">

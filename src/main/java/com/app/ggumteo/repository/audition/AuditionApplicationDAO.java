@@ -3,8 +3,9 @@ package com.app.ggumteo.repository.audition;
 import com.app.ggumteo.domain.audition.AuditionApplicationDTO;
 import com.app.ggumteo.domain.audition.AuditionApplicationVO;
 import com.app.ggumteo.mapper.audition.AuditionApplicationMapper;
+import com.app.ggumteo.pagination.MyAuditionPagination;
 import com.app.ggumteo.pagination.MySettingTablePagination;
-import com.app.ggumteo.pagination.WorkAndFundingPagination;
+import com.app.ggumteo.pagination.MyWorkAndFundingPagination;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -41,9 +42,9 @@ public class AuditionApplicationDAO {
     }
 
     //   내가 신청한 모집 목록 조회
-    public List<AuditionApplicationDTO> findMyAppliedAuditionList(WorkAndFundingPagination workAndFundingPagination
+    public List<AuditionApplicationDTO> findMyAppliedAuditionList(MyAuditionPagination myAuditionPagination
             , Long memberId, String postType) {
-        return auditionApplicationMapper.selectAppliedAuditionListByMember(workAndFundingPagination, memberId, postType);
+        return auditionApplicationMapper.selectAppliedAuditionListByMember(myAuditionPagination, memberId, postType);
     }
 
     //  내가 신청한 모집 목록 전체 갯수

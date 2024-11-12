@@ -890,8 +890,8 @@ const showMyBuyFundingList = ({myBuyFundingPosts, workAndFundingPagination}) => 
 }
 
 // 나의 모집 목록, 페이징
-const myWorkListLayout = document.getElementById("my-work-list");
-const myWorkListPaging = document.getElementById("my-work-list-paging");
+const myAuditionListLayout = document.getElementById("my-audition-list");
+const myAuditionListPaging = document.getElementById("my-audition-list=paging");
 
 const showMyWorkList = ({myWorkPosts, workAndFundingPagination}) => {
     let text = ``;

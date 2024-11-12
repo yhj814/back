@@ -13,7 +13,7 @@ import com.app.ggumteo.domain.member.MemberVO;
 import com.app.ggumteo.domain.work.MyWorkListDTO;
 import com.app.ggumteo.domain.work.WorkDTO;
 import com.app.ggumteo.pagination.MySettingTablePagination;
-import com.app.ggumteo.pagination.WorkAndFundingPagination;
+import com.app.ggumteo.pagination.MyWorkAndFundingPagination;
 import com.app.ggumteo.repository.inquiry.InquiryDAO;
 import com.app.ggumteo.service.myPage.MyPageService;
 import lombok.extern.slf4j.Slf4j;
@@ -44,12 +44,12 @@ public class MyPageServiceTests {
     @Test
     public void testGetMyVideoWorkList() {
         MemberVO memberVO = null;
-        WorkAndFundingPagination workAndFundingPagination = new WorkAndFundingPagination();
+        MyWorkAndFundingPagination myWorkAndFundingPagination = new MyWorkAndFundingPagination();
         memberVO = myPageService.getMember(2L).get();
-        workAndFundingPagination.setTotal(myPageService.getMyVideoWorkPostsTotal(memberVO.getId(), PostType.WORKVIDEO.name()));
-        workAndFundingPagination.progress();
+        myWorkAndFundingPagination.setTotal(myPageService.getMyVideoWorkPostsTotal(memberVO.getId(), PostType.WORKVIDEO.name()));
+        myWorkAndFundingPagination.progress();
         MyWorkListDTO myWorkPosts = myPageService.getMyVideoWorkList
-                (1, workAndFundingPagination, memberVO.getId(), PostType.WORKVIDEO.name());
+                (1, myWorkAndFundingPagination, memberVO.getId(), PostType.WORKVIDEO.name());
 
         log.info(" myWorkPosts.toString()-test={}", myWorkPosts.toString());
     }
@@ -83,11 +83,11 @@ public class MyPageServiceTests {
     @Test
     public void testGetMyFundingPosts() {
         MemberVO memberVO = null;
-        WorkAndFundingPagination workAndFundingPagination = new WorkAndFundingPagination();
+        MyWorkAndFundingPagination myWorkAndFundingPagination = new MyWorkAndFundingPagination();
         memberVO = myPageService.getMember(1L).get();
-        workAndFundingPagination.setTotal(myPageService.getMyFundingPostsTotal(memberVO.getId(), PostType.FUNDINGVIDEO.name()));
-        workAndFundingPagination.progress();
-        MyFundingListDTO myFundingPosts = myPageService.getMyVideoFundingList(1, workAndFundingPagination, memberVO.getId(), PostType.FUNDINGVIDEO.name());
+        myWorkAndFundingPagination.setTotal(myPageService.getMyFundingPostsTotal(memberVO.getId(), PostType.FUNDINGVIDEO.name()));
+        myWorkAndFundingPagination.progress();
+        MyFundingListDTO myFundingPosts = myPageService.getMyVideoFundingList(1, myWorkAndFundingPagination, memberVO.getId(), PostType.FUNDINGVIDEO.name());
 
         log.info("GetMyFundingPosts-test={}", myFundingPosts.toString());
     }
@@ -116,12 +116,12 @@ public class MyPageServiceTests {
     @Test
     public void testGetFundingListPaidByMemberTotal() {
         MemberVO memberVO = null;
-        WorkAndFundingPagination workAndFundingPagination = new WorkAndFundingPagination();
+        MyWorkAndFundingPagination myWorkAndFundingPagination = new MyWorkAndFundingPagination();
         memberVO = myPageService.getMember(1L).get();
-        workAndFundingPagination.setTotal(myPageService.getMyBuyFundingListTotal(memberVO.getId(), PostType.FUNDINGVIDEO.name()));
-        workAndFundingPagination.progress();
+        myWorkAndFundingPagination.setTotal(myPageService.getMyBuyFundingListTotal(memberVO.getId(), PostType.FUNDINGVIDEO.name()));
+        myWorkAndFundingPagination.progress();
         MyBuyFundingListDTO fundingPostsPaidByMember = myPageService
-                .getMyBuyFundingList(1, workAndFundingPagination, memberVO.getId(), PostType.FUNDINGVIDEO.name());
+                .getMyBuyFundingList(1, myWorkAndFundingPagination, memberVO.getId(), PostType.FUNDINGVIDEO.name());
 
         log.info(fundingPostsPaidByMember.toString());
     }
@@ -129,11 +129,11 @@ public class MyPageServiceTests {
     @Test
     public void testGetMyInquiryHistoryList() {
         MemberVO memberVO = null;
-        WorkAndFundingPagination workAndFundingPagination = new WorkAndFundingPagination();
+        MyWorkAndFundingPagination myWorkAndFundingPagination = new MyWorkAndFundingPagination();
         memberVO = myPageService.getMember(1L).get();
-        workAndFundingPagination.setTotal(myPageService.getMyInquiryHistoriesTotal(memberVO.getId()));
-        workAndFundingPagination.progress();
-        MyInquiryHistoryListDTO myInquiryHistories = myPageService.getMyInquiryHistoryList(1, workAndFundingPagination, memberVO.getId());
+        myWorkAndFundingPagination.setTotal(myPageService.getMyInquiryHistoriesTotal(memberVO.getId()));
+        myWorkAndFundingPagination.progress();
+        MyInquiryHistoryListDTO myInquiryHistories = myPageService.getMyInquiryHistoryList(1, myWorkAndFundingPagination, memberVO.getId());
 
         log.info(myInquiryHistories.toString());
     }

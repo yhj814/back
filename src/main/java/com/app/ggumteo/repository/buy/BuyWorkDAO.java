@@ -4,7 +4,7 @@ import com.app.ggumteo.domain.buy.BuyWorkDTO;
 import com.app.ggumteo.domain.buy.BuyWorkVO;
 import com.app.ggumteo.mapper.buy.BuyWorkMapper;
 import com.app.ggumteo.pagination.MySettingTablePagination;
-import com.app.ggumteo.pagination.WorkAndFundingPagination;
+import com.app.ggumteo.pagination.MyWorkAndFundingPagination;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
@@ -43,9 +43,9 @@ public class BuyWorkDAO {
     };
 
     //   내가 구매한 작품 목록 조회
-    public List<BuyWorkDTO> findMyBuyWorkList(WorkAndFundingPagination workAndFundingPagination
+    public List<BuyWorkDTO> findMyBuyWorkList(MyWorkAndFundingPagination myWorkAndFundingPagination
             , Long memberId, String postType) {
-        return buyWorkMapper.selectBuyWorkListByMember(workAndFundingPagination, memberId, postType);
+        return buyWorkMapper.selectBuyWorkListByMember(myWorkAndFundingPagination, memberId, postType);
     }
 
     //  내가 구매한 작품 목록 전체 갯수

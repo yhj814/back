@@ -4,7 +4,7 @@ import com.app.ggumteo.domain.buy.BuyFundingProductDTO;
 import com.app.ggumteo.domain.buy.BuyFundingProductVO;
 import com.app.ggumteo.mapper.buy.BuyFundingProductMapper;
 import com.app.ggumteo.pagination.MySettingTablePagination;
-import com.app.ggumteo.pagination.WorkAndFundingPagination;
+import com.app.ggumteo.pagination.MyWorkAndFundingPagination;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -31,9 +31,9 @@ public class BuyFundingProductDAO {
     }
 
 //   결제한 펀딩 목록 조회
-    public List<BuyFundingProductDTO> findMyBuyFundingList(WorkAndFundingPagination workAndFundingPagination
-            ,Long memberId, String postType) {
-        return buyFundingProductMapper.selectBuyFundingListByMember(workAndFundingPagination, memberId, postType);
+    public List<BuyFundingProductDTO> findMyBuyFundingList(MyWorkAndFundingPagination myWorkAndFundingPagination
+            , Long memberId, String postType) {
+        return buyFundingProductMapper.selectBuyFundingListByMember(myWorkAndFundingPagination, memberId, postType);
     }
 
 //  내가 결제한 펀딩 목록 전체 갯수

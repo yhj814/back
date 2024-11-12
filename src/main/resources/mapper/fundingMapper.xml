@@ -22,7 +22,7 @@
         select "id", "genre_type", "post_title", "post_content", "post_type", "member_profile_id", "created_date", "updated_date", "profile_nickname", "member_id", "profile_img_url", "thumbnail_file_name", "thumbnail_file_path", "thumbnail_file_id"
         from view_my_funding
         where post_type = #{postType} and member_id = #{memberId}
-        limit #{workAndFundingPagination.startRow}, #{workAndFundingPagination.rowCount};
+        limit #{myWorkAndFundingPagination.startRow}, #{myWorkAndFundingPagination.rowCount};
     </select>
 
     <select id="selectCount">

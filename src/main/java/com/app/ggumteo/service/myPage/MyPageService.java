@@ -10,8 +10,9 @@ import com.app.ggumteo.domain.member.MemberProfileVO;
 import com.app.ggumteo.domain.member.MemberVO;
 import com.app.ggumteo.domain.work.MyWorkListDTO;
 import com.app.ggumteo.domain.work.WorkDTO;
+import com.app.ggumteo.pagination.MyAuditionPagination;
 import com.app.ggumteo.pagination.MySettingTablePagination;
-import com.app.ggumteo.pagination.WorkAndFundingPagination;
+import com.app.ggumteo.pagination.MyWorkAndFundingPagination;
 
 import java.util.Optional;
 
@@ -23,7 +24,7 @@ public interface MyPageService {
 
     // 내 작품 게시물 전체 조회
     public MyWorkListDTO getMyVideoWorkList(
-            int page , WorkAndFundingPagination workAndFundingPagination, Long memberId, String postType);
+            int page , MyWorkAndFundingPagination myWorkAndFundingPagination, Long memberId, String postType);
 
     // 내 작품 게시물 전체 개수
     public int getMyVideoWorkPostsTotal(Long memberId, String postType);
@@ -43,7 +44,7 @@ public interface MyPageService {
 
     // 내가 구매한 작품 목록 조회
     public MyBuyWorkListDTO getMyBuyVideoWorkList(
-            int page, WorkAndFundingPagination workAndFundingPagination, Long memberId, String postType);
+            int page, MyWorkAndFundingPagination myWorkAndFundingPagination, Long memberId, String postType);
 
     // 내가 구매한 작품 목록 전체 갯수
     public int getMyBuyWorkListTotal(Long memberId, String postType);
@@ -55,7 +56,7 @@ public interface MyPageService {
 
     // 내 펀딩 게시물 전체 조회
     public MyFundingListDTO getMyVideoFundingList(
-            int page , WorkAndFundingPagination workAndFundingPagination, Long memberId, String postType);
+            int page , MyWorkAndFundingPagination myWorkAndFundingPagination, Long memberId, String postType);
 
     // 내 펀딩 게시물 전체 개수
     public int getMyFundingPostsTotal(Long memberId, String postType);
@@ -75,7 +76,7 @@ public interface MyPageService {
 
     // 내가 결제한 펀딩 목록 조회
     public MyBuyFundingListDTO getMyBuyFundingList(
-            int page, WorkAndFundingPagination workAndFundingPagination, Long memberId, String postType);
+            int page, MyWorkAndFundingPagination myWorkAndFundingPagination, Long memberId, String postType);
 
     // 내가 결제한 펀딩 목록 전체 갯수
     public int getMyBuyFundingListTotal(Long memberId, String postType);
@@ -85,7 +86,7 @@ public interface MyPageService {
 
     // 나의 모집 게시물 전체 조회
     public MyAuditionListDTO getMyVideoAuditionList(
-            int page , WorkAndFundingPagination workAndFundingPagination, Long memberId, String postType);
+            int page , MyAuditionPagination myAuditionPagination, Long memberId, String postType);
 
     // 나의 모집 게시물 전체 개수
     public int getMyVideoAuditionPostsTotal(Long memberId, String postType);
@@ -105,7 +106,7 @@ public interface MyPageService {
 
     // 내가 신청한 모집 목록 조회
     public MyApplicationAuditionListDTO getMyVideoApplicationAuditionList(
-            int page, WorkAndFundingPagination workAndFundingPagination, Long memberId, String postType);
+            int page, MyAuditionPagination myAuditionPagination, Long memberId, String postType);
 
     // 내가 신청한 모집  목록 전체 갯수
     public int getMyApplicationAuditionListTotal(Long memberId, String postType);
@@ -115,7 +116,7 @@ public interface MyPageService {
 
     // 마이페이지 - 문의 내역 조회
     public MyInquiryHistoryListDTO getMyInquiryHistoryList(
-            int page, WorkAndFundingPagination workAndFundingPagination, Long memberId);
+            int page, MyWorkAndFundingPagination myWorkAndFundingPagination, Long memberId);
 
     // 마이페이지 - 문의 내역 전체 갯수
     public int getMyInquiryHistoriesTotal(Long memberId);

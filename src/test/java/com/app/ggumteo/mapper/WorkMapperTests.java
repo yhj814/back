@@ -8,7 +8,7 @@ import com.app.ggumteo.mapper.buy.BuyWorkMapper;
 import com.app.ggumteo.mapper.member.MemberMapper;
 import com.app.ggumteo.mapper.work.WorkMapper;
 import com.app.ggumteo.pagination.MySettingTablePagination;
-import com.app.ggumteo.pagination.WorkAndFundingPagination;
+import com.app.ggumteo.pagination.MyWorkAndFundingPagination;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,12 +29,12 @@ public class WorkMapperTests {
     @Test
     public void testSelectByMemberId() {
         MemberVO memberVO = null;
-        WorkAndFundingPagination workAndFundingPagination = new WorkAndFundingPagination();
+        MyWorkAndFundingPagination myWorkAndFundingPagination = new MyWorkAndFundingPagination();
         memberVO = memberMapper.selectById(2L).get();
-        workAndFundingPagination.setTotal(workMapper.selectCount(memberVO.getId(), PostType.WORKVIDEO.name()));
-        workAndFundingPagination.progress();
+        myWorkAndFundingPagination.setTotal(workMapper.selectCount(memberVO.getId(), PostType.WORKVIDEO.name()));
+        myWorkAndFundingPagination.progress();
         workMapper.selectByMemberId(
-                        workAndFundingPagination, memberVO.getId(), PostType.WORKVIDEO.name()).stream()
+                        myWorkAndFundingPagination, memberVO.getId(), PostType.WORKVIDEO.name()).stream()
                 .map(WorkDTO::toString).forEach(log::info);
     }
 

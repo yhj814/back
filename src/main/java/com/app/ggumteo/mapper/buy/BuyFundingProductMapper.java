@@ -3,7 +3,7 @@ package com.app.ggumteo.mapper.buy;
 import com.app.ggumteo.domain.buy.BuyFundingProductDTO;
 import com.app.ggumteo.domain.buy.BuyFundingProductVO;
 import com.app.ggumteo.pagination.MySettingTablePagination;
-import com.app.ggumteo.pagination.WorkAndFundingPagination;
+import com.app.ggumteo.pagination.MyWorkAndFundingPagination;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -23,7 +23,7 @@ public interface BuyFundingProductMapper {
 
 //   내가 결제한 펀딩 목록 조회
     public List<BuyFundingProductDTO> selectBuyFundingListByMember
-    (@Param("workAndFundingPagination") WorkAndFundingPagination workAndFundingPagination
+    (@Param("myWorkAndFundingPagination") MyWorkAndFundingPagination myWorkAndFundingPagination
             , @Param("memberId") Long memberId, @Param("postType") String postType);
 
 //  내가 결제한 펀딩 목록 전체 갯수

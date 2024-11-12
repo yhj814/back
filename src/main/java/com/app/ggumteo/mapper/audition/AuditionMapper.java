@@ -4,9 +4,9 @@ import com.app.ggumteo.constant.PostType;
 import com.app.ggumteo.domain.audition.AuditionDTO;
 import com.app.ggumteo.domain.audition.AuditionVO;
 import com.app.ggumteo.domain.file.PostFileDTO;
-import com.app.ggumteo.domain.work.WorkDTO;
 import com.app.ggumteo.pagination.AuditionPagination;
-import com.app.ggumteo.pagination.WorkAndFundingPagination;
+import com.app.ggumteo.pagination.MyAuditionPagination;
+import com.app.ggumteo.pagination.MyWorkAndFundingPagination;
 import com.app.ggumteo.search.Search;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -57,7 +57,7 @@ public interface AuditionMapper {
 //************ 마이페이지 **************
 
     // 내 작품 게시물 전체 조회
-    public List<AuditionDTO> selectByMemberId(@Param("workAndFundingPagination") WorkAndFundingPagination workAndFundingPagination
+    public List<AuditionDTO> selectByMemberId(@Param("myAuditionPagination") MyAuditionPagination myAuditionPagination
             , @Param("memberId") Long memberId, @Param("postType") String postType);
 
     // 내 작품 게시물 전체 갯수

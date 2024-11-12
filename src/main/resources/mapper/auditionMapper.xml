@@ -147,7 +147,7 @@
                  join tbl_member_profile mp on p.member_profile_id = mp.id
                  join tbl_member m on mp.member_id = m.id and m.id = #{memberId}
         order by a.id desc
-            limit #{workAndFundingPagination.startRow}, #{workAndFundingPagination.rowCount}
+            limit #{myAuditionPagination.startRow}, #{myAuditionPagination.rowCount}
     </select>
 
     <!-- 내 작품 게시글 전체 갯수  -->

@@ -2,8 +2,9 @@ package com.app.ggumteo.mapper.audition;
 
 import com.app.ggumteo.domain.audition.AuditionApplicationDTO;
 import com.app.ggumteo.domain.audition.AuditionApplicationVO;
+import com.app.ggumteo.pagination.MyAuditionPagination;
 import com.app.ggumteo.pagination.MySettingTablePagination;
-import com.app.ggumteo.pagination.WorkAndFundingPagination;
+import com.app.ggumteo.pagination.MyWorkAndFundingPagination;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -28,7 +29,7 @@ public interface AuditionApplicationMapper {
 
     //    내가 신청한 모집 목록 조회
     public List<AuditionApplicationDTO> selectAppliedAuditionListByMember
-    (@Param("workAndFundingPagination") WorkAndFundingPagination workAndFundingPagination
+    (@Param("myAuditionPagination") MyAuditionPagination myAuditionPagination
             , @Param("memberId") Long memberId, @Param("postType") String postType);
 
     //    내가 신청한 모집 목록 전체 갯수

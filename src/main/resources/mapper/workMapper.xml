@@ -209,7 +209,7 @@
                  join tbl_member m on mp.member_id = m.id and m.id = #{memberId}
                  join tbl_file fl on w.thumbnail_file_id = fl.id
         order by w.id desc
-        limit #{workAndFundingPagination.startRow}, #{workAndFundingPagination.rowCount}
+        limit #{myWorkAndFundingPagination.startRow}, #{myWorkAndFundingPagination.rowCount}
     </select>
 
     <!-- 내 작품 게시글 전체 갯수  -->

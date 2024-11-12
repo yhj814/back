@@ -3,10 +3,8 @@ package com.app.ggumteo.mapper.funding;
 import com.app.ggumteo.domain.file.PostFileDTO;
 import com.app.ggumteo.domain.funding.FundingDTO;
 import com.app.ggumteo.domain.funding.FundingProductVO;
-import com.app.ggumteo.domain.post.PostDTO;
-import com.app.ggumteo.domain.work.WorkDTO;
 import com.app.ggumteo.pagination.Pagination;
-import com.app.ggumteo.pagination.WorkAndFundingPagination;
+import com.app.ggumteo.pagination.MyWorkAndFundingPagination;
 import com.app.ggumteo.search.Search;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -17,7 +15,7 @@ import java.util.Optional;
 @Mapper
 public interface FundingMapper {
 //    내 펀딩 게시물 전체 조회
-    public List<FundingDTO> selectByMemberId(@Param("workAndFundingPagination") WorkAndFundingPagination workAndFundingPagination
+    public List<FundingDTO> selectByMemberId(@Param("myWorkAndFundingPagination") MyWorkAndFundingPagination myWorkAndFundingPagination
             , @Param("memberId") Long memberId, @Param("postType") String postType);
 
 //    내 펀딩 게시물 전체 갯수

@@ -11,8 +11,9 @@ import com.app.ggumteo.domain.inquiry.MyInquiryHistoryListDTO;
 import com.app.ggumteo.domain.member.MemberProfileVO;
 import com.app.ggumteo.domain.member.MemberVO;
 import com.app.ggumteo.domain.work.MyWorkListDTO;
+import com.app.ggumteo.pagination.MyAuditionPagination;
 import com.app.ggumteo.pagination.MySettingTablePagination;
-import com.app.ggumteo.pagination.WorkAndFundingPagination;
+import com.app.ggumteo.pagination.MyWorkAndFundingPagination;
 import com.app.ggumteo.service.file.PostFileService;
 import com.app.ggumteo.service.myPage.MyPageService;
 import lombok.RequiredArgsConstructor;
@@ -48,9 +49,9 @@ public class MemberRestController {
     @ResponseBody
     @GetMapping("/members/{memberId}/video/my/work/{page}")
     public MyWorkListDTO getMyVideoWorkList(@PathVariable("memberId") Long memberId
-            , @PathVariable("page") int page, WorkAndFundingPagination workAndFundingPagination, String postType) {
+            , @PathVariable("page") int page, MyWorkAndFundingPagination myWorkAndFundingPagination, String postType) {
 
-        return myPageService.getMyVideoWorkList(page, workAndFundingPagination, memberId, postType);
+        return myPageService.getMyVideoWorkList(page, myWorkAndFundingPagination, memberId, postType);
     }
 
     // 내 영상 작품 구매자 목록
@@ -77,9 +78,9 @@ public class MemberRestController {
     @ResponseBody
     @GetMapping("/members/{memberId}/video/my/buy/work/{page}")
     public MyBuyWorkListDTO getMyBuyVideoWorkList(@PathVariable("memberId") Long memberId
-            , @PathVariable("page") int page, WorkAndFundingPagination workAndFundingPagination, String postType) {
+            , @PathVariable("page") int page, MyWorkAndFundingPagination myWorkAndFundingPagination, String postType) {
 
-        return myPageService.getMyBuyVideoWorkList(page, workAndFundingPagination, memberId, postType);
+        return myPageService.getMyBuyVideoWorkList(page, myWorkAndFundingPagination, memberId, postType);
     }
 
     // 내가 구매한 영상 작품 결제 내역 삭제
@@ -97,10 +98,10 @@ public class MemberRestController {
     @ResponseBody
     @GetMapping("/members/{memberId}/video/my/funding/{page}")
     public MyFundingListDTO getMyVideoFundingList(@PathVariable("memberId") Long memberId
-            , @PathVariable("page") int page, WorkAndFundingPagination workAndFundingPagination, String postType) {
+            , @PathVariable("page") int page, MyWorkAndFundingPagination myWorkAndFundingPagination, String postType) {
 
         log.info("memberId={}", memberId);
-        return myPageService.getMyVideoFundingList(page, workAndFundingPagination, memberId, postType);
+        return myPageService.getMyVideoFundingList(page, myWorkAndFundingPagination, memberId, postType);
     }
 
     // 내 영상 펀딩 구매자 목록
@@ -127,9 +128,9 @@ public class MemberRestController {
     @ResponseBody
     @GetMapping("/members/{memberId}/video/my/buy/funding/{page}")
     public MyBuyFundingListDTO getMyBuyFundingList(@PathVariable("memberId") Long memberId
-            , @PathVariable("page") int page, WorkAndFundingPagination workAndFundingPagination, String postType) {
+            , @PathVariable("page") int page, MyWorkAndFundingPagination myWorkAndFundingPagination, String postType) {
 
-        return myPageService.getMyBuyFundingList(page, workAndFundingPagination, memberId, postType);
+        return myPageService.getMyBuyFundingList(page, myWorkAndFundingPagination, memberId, postType);
     }
 
 
@@ -140,9 +141,9 @@ public class MemberRestController {
     @ResponseBody
     @GetMapping("/members/{memberId}/video/my/audition/{page}")
     public MyAuditionListDTO getMyVideoAuditionList(@PathVariable("memberId") Long memberId
-            , @PathVariable("page") int page, WorkAndFundingPagination workAndFundingPagination, String postType) {
+            , @PathVariable("page") int page, MyAuditionPagination myAuditionPagination, String postType) {
 
-        return myPageService.getMyVideoAuditionList(page, workAndFundingPagination, memberId, postType);
+        return myPageService.getMyVideoAuditionList(page, myAuditionPagination, memberId, postType);
     }
 
     // 나의 모집 지원자 목록
@@ -169,9 +170,9 @@ public class MemberRestController {
     @ResponseBody
     @GetMapping("/members/{memberId}/video/my/application/audition/{page}")
     public MyApplicationAuditionListDTO getMyVideoApplicationAuditionList(@PathVariable("memberId") Long memberId
-            , @PathVariable("page") int page, WorkAndFundingPagination workAndFundingPagination, String postType) {
+            , @PathVariable("page") int page, MyAuditionPagination myAuditionPagination, String postType) {
 
-        return myPageService.getMyVideoApplicationAuditionList(page, workAndFundingPagination, memberId, postType);
+        return myPageService.getMyVideoApplicationAuditionList(page, myAuditionPagination, memberId, postType);
     }
 
 //************************************************************************************************
@@ -181,9 +182,9 @@ public class MemberRestController {
     @ResponseBody
     @GetMapping("/members/{memberId}/inquiry/{page}")
     public MyInquiryHistoryListDTO getMyInquiryHistoryList(@PathVariable("memberId") Long memberId
-            , @PathVariable("page") int page, WorkAndFundingPagination workAndFundingPagination) {
+            , @PathVariable("page") int page, MyWorkAndFundingPagination myWorkAndFundingPagination) {
 
-        return myPageService.getMyInquiryHistoryList(page, workAndFundingPagination, memberId);
+        return myPageService.getMyInquiryHistoryList(page, myWorkAndFundingPagination, memberId);
     }
 
     // 내 문의 답변 조회

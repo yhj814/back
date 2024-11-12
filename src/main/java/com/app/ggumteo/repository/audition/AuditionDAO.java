@@ -4,11 +4,10 @@ import com.app.ggumteo.constant.PostType;
 import com.app.ggumteo.domain.audition.AuditionDTO;
 import com.app.ggumteo.domain.audition.AuditionVO;
 import com.app.ggumteo.domain.file.PostFileDTO;
-import com.app.ggumteo.domain.work.WorkDTO;
 import com.app.ggumteo.mapper.audition.AuditionMapper;
 import com.app.ggumteo.pagination.AuditionPagination;
-import com.app.ggumteo.pagination.Pagination;
-import com.app.ggumteo.pagination.WorkAndFundingPagination;
+import com.app.ggumteo.pagination.MyAuditionPagination;
+import com.app.ggumteo.pagination.MyWorkAndFundingPagination;
 import com.app.ggumteo.search.Search;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -53,8 +52,8 @@ public class AuditionDAO {
 //************ 마이페이지 **************
 
     // 내 작품 게시물 전체 조회
-    public List<AuditionDTO> findByMemberId(WorkAndFundingPagination workAndFundingPagination, Long memberId, String postType) {
-        return auditionMapper.selectByMemberId(workAndFundingPagination, memberId, postType);
+    public List<AuditionDTO> findByMemberId(MyAuditionPagination myAuditionPagination, Long memberId, String postType) {
+        return auditionMapper.selectByMemberId(myAuditionPagination, memberId, postType);
     }
 
     // 내 작품 게시물 전체 갯수

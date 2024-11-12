@@ -59,7 +59,7 @@
                  join tbl_member_profile aa_mp on aa.member_profile_id = aa_mp.id
                  join tbl_member aa_m on aa_mp.member_id = aa_m.id and aa_m.id = #{memberId}
         order by a.id desc
-            limit #{workAndFundingPagination.startRow}, #{workAndFundingPagination.rowCount};
+            limit #{myAuditionPagination.startRow}, #{myAuditionPagination.rowCount};
     </select>
 
     <select id="selectCountAppliedAuditionListByMember">

@@ -50,7 +50,7 @@
                  join tbl_member bw_m on bw_mp.member_id = bw_m.id and bw_m.id = #{memberId}
                  join tbl_file fl on w.thumbnail_file_id = fl.id
         order by w.id desc
-            limit #{workAndFundingPagination.startRow}, #{workAndFundingPagination.rowCount};
+            limit #{myWorkAndFundingPagination.startRow}, #{myWorkAndFundingPagination.rowCount};
     </select>
 
     <select id="selectCountBuyWorkListByMember">
