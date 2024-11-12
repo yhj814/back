@@ -1249,140 +1249,144 @@ const showMyAuditionApplicantList = ({myAuditionApplicants, mySettingTablePagina
 const myApplicationAuditionListLayout = document.getElementById("my-application-audition-list");
 const myApplicationAuditionListPaging = document.getElementById("my-application-audition-list-paging");
 
-//
-// const showMyApplicationAuditionList = ({myApplicationAuditionPosts, myAuditionPagination}) => {
-//     let text = ``;
-//     let pagingText = ``;
-//
-//     myApplicationAuditionPosts.forEach((myApplicationAuditionPost) => {
-//         text += ` <div class="list-item">
-//                     <div class="products-list">
-//                         <div class="flex-box">
-//                             <div class="products-text">
-//                                 <a
-//                                     ><p
-//                                         class="my-products-title"
-//                                     >
-//                                         ${myBuyWorkPost.postTitle}
-//                                     </p></a
-//                                 >
-//                                 <div
-//                                     class="my-products-info"
-//                                 >
-//                                     <a
-//                                         ><p
-//                                             class="btn smooth my-products-category"
-//                                         >
-//                                            ${myBuyWorkPost.genreType}
-//                                         </p></a
-//                                     >
-//                                     <div
-//                                         class="divider"
-//                                     ></div>
-//                                     <div class="flex-box">
-//                                         <img
-//                                             class="time"
-//                                             src="/images/member/clock.png"
-//                                         />
-//                                         <div
-//                                             class="timeandcontent smooth"
-//                                         >
-//                                              ${timeForToday(myBuyWorkPost.createdDate)}
-//                                         </div>
-//                                     </div>
-//                                 </div>
-//                                 <a
-//                                     ><p
-//                                         class="timeandcontent content products-description"
-//                                     >
-//                                          ${myBuyWorkPost.postContent}
-//                                     </p></a
-//                                 >
-//                             </div>
-//                             <div class="btn products-image">
-//                                 <a
-//                                     ><img
-//                                         src="/text/display?fileName=${myBuyWorkPost.thumbnailFilePath}/t_${myBuyWorkPost.thumbnailFileName}"
-//                                 /></a>
-//                             </div>
-//                         </div>
-//                         <div
-//                             class="flex-box products-author-box"
-//                         >
-//                             <div
-//                                 class="author-info flex-box"
-//                             >
-//                                 <img
-//                                     class="author-image"
-//                                     src=${myBuyWorkPost.profileImgUrl}
-//                                 />
-//                                 <p class="author-name">
-//                                      ${myBuyWorkPost.profileNickName}
-//                                 </p>
-//                                 <div
-//                                     class="divider"
-//                                     style="
-//                                         margin-left: 10px;
-//                                         margin-right: 10px;
-//                                     "
-//                                 ></div>
-//
-//                                 <div
-//                                     class="timeandcontent smooth"
-//                                 >
-//                                     ${myBuyWorkPost.workPrice}
-//                                 </div>
-//                             </div>
-//                             <div class="flex-box">
-//                                 <div class="btn-wrapper">
-//                                     <button
-//                                         class="btn btn-action icon-delete-read-products"
-//                                         type="button"
-//                                     >
-//                                         <div
-//                                             id="buy-work-delete-btn"
-//                                             class="icon-my-delete ${myBuyWorkPost.id}"
-//                                         ></div>
-//                                         <p
-//                                             class="action-tooltip bottom-action"
-//                                         >
-//                                             구매내역 삭제
-//                                         </p>
-//                                     </button>
-//                                 </div>
-//                             </div>
-//                         </div>
-//                     </div>
-//                 </div>`
-//     });
-//
-//     myBuyWorkListLayout.innerHTML = text;
-//
-//     if(myWorkAndFundingPagination.prev){
-//         pagingText += `
-//             <li class="page-item">
-//                 <a href="${myWorkAndFundingPagination.startPage - 1}" class="page-link back"></a>
-//             </li>
-//         `
-//     }
-//     for(let i=myWorkAndFundingPagination.startPage; i<=myWorkAndFundingPagination.endPage; i++){
-//         if(myWorkAndFundingPagination.page === i){
-//             pagingText += `<li class="page-item"><div class="page-link active">${i}</div></li>`
-//         }else{
-//             pagingText += `<li class="page-item"><a href="${i}" class="page-link">${i}</a></li>`
-//         }
-//     }
-//
-//     if(myWorkAndFundingPagination.next) {
-//         pagingText += `
-//             <li class="page-item">
-//                 <a href="${myWorkAndFundingPagination.endPage + 1}" class="page-link next"></a>
-//             </li>
-//         `
-//     }
-//
-//     myBuyWorkListPaging.innerHTML = pagingText;
-// }
+
+const showMyApplicationAuditionList = ({myApplicationAuditionPosts, myAuditionPagination}) => {
+    let text = ``;
+    let pagingText = ``;
+
+    myApplicationAuditionPosts.forEach((myApplicationAuditionPost) => {
+        text += `<div class="item">
+                        <div class="item_recruit">
+                            <div class="area_job">
+                                <h2 class="job_tit">
+                                    <a
+                                        target="_blank"
+                                        title="[역삼역] 단편영화 배우모집합니다."
+                                        href=""
+                                    >
+                                        <span>
+                                            [역삼역]
+                                            단편영화
+                                            배우
+                                            모집합니다.
+                                            <b>배우</b>
+                                            채용
+                                        </span>
+                                    </a>
+                                </h2>
+                                <div class="job_date">
+                                    <span class="date"
+                                        >~
+                                        11/07(목)</span
+                                    >
+                                    <button
+                                        class="sri_btn_xs"
+                                        title="클릭하면 입사지원할 수 있는 창이 뜹니다."
+                                    >
+                                        <span
+                                            class="sri_btn_immediately"
+                                            >모집중</span
+                                        >
+                                    </button>
+                                </div>
+                                <div
+                                    class="job_condition"
+                                >
+                                    <span
+                                        ><a
+                                            target="_blank"
+                                            href=""
+                                            >서울</a
+                                        >
+                                        <a
+                                            target="_blank"
+                                            href=""
+                                            >강남구</a
+                                        ></span
+                                    >
+                                    <span
+                                        >신입·경력</span
+                                    >
+                                </div>
+                                <div class="job_sector">
+                                    <b
+                                        ><a
+                                            target="_blank"
+                                            href=""
+                                            >200000원</a
+                                        ></b
+                                    >,
+                                    <b
+                                        ><a
+                                            target="_blank"
+                                            href=""
+                                            >5명</a
+                                        ></b
+                                    >,
+
+                                    <span
+                                        class="job_day"
+                                        >등록일
+                                        24/10/08</span
+                                    >
+                                </div>
+                            </div>
+                            <div class="area_corp">
+                                <strong
+                                    class="corp_name"
+                                    style="
+                                        margin-top: 5px;
+                                    "
+                                >
+                                    <a
+                                        href=""
+                                        target="_blank"
+                                        class=""
+                                    >
+                                        홍길동
+                                    </a>
+                                </strong>
+                                <span
+                                    class="corp_affiliate"
+                                    >홍길동@gmail.com</span
+                                >
+                            </div>
+
+                            <div
+                                class="similar_recruit"
+                                style="display: none"
+                            ></div>
+                        </div>
+                    </div>`
+    });
+
+    myApplicationAuditionListLayout.innerHTML = text;
+
+    if(myAuditionPagination.prev){
+        pagingText += `
+            <li class="page-item">
+                <a href="${myWorkAndFundingPagination.startPage - 1}" class="page-link back"></a>
+            </li>
+        `
+    }
+    for(let i=myAuditionPagination.startPage; i<=myAuditionPagination.endPage; i++){
+        if(myAuditionPagination.page === i){
+            pagingText += `<li class="page-item"><div class="page-link active">${i}</div></li>`
+        }else{
+            pagingText += `<li class="page-item"><a href="${i}" class="page-link">${i}</a></li>`
+        }
+    }
+
+    if(myAuditionPagination.next) {
+        pagingText += `
+            <li class="page-item">
+                <a href="${myAuditionPagination.endPage + 1}" class="page-link next"></a>
+            </li>
+        `
+    }
+
+    myApplicationAuditionListPaging.innerHTML = pagingText;
+}
 
 // 문의내역, 페이징
 const myInquiryHistoryListLayout = document.getElementById("my-inquiry-history-list");
