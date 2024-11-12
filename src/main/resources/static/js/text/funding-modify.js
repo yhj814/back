@@ -15,7 +15,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // 펀딩 상품 관련 요소
     const existingProductsContainer = document.getElementById("existing-products-container");
+    const newProductsContainer = document.getElementById("new-products-container"); // 새로운 상품 컨테이너
     const productAddButton = document.querySelector(".product-div-add");
+
+    // 인덱스 관리: 기존 상품 수를 기준으로 새로운 인덱스 시작
+    let existingProductCount = existingProductsContainer.querySelectorAll(".existing-product").length;
+    let newProductIndex = existingProductCount; // 기존 상품 수로 초기화
 
     // 상태 추적 변수
     let thumbnailFileId = form.querySelector('input[name="thumbnailFileId"]').value || null;
@@ -113,27 +118,47 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // 폼 제출 시 썸네일과 삭제할 파일 정보 포함
-    form.addEventListener("submit", function () {
-        // event.preventDefault(); // 테스트를 위해 실제 전송 막기
-        // const formData = new FormData(form);
-        //
-        // formData.forEach((value, key) => {
-        //     console.log(`${key}: ${value}`);
-        // });
-        const hiddenInputs = form.querySelectorAll(".existing-product.hidden input, .new-product.hidden input");
-        hiddenInputs.forEach(input => input.removeAttribute("required"));
-        console.log("폼 제출 시 삭제할 파일 IDs:", deletedFileIds); // 삭제할 파일 ID 로그 출력
+    // 폼 제출 시 데이터 추출 및 디버깅
+    form.addEventListener("submit", function (event) {
+        event.preventDefault(); // 폼의 기본 제출 동작을 막음
 
-        console.log("폼 제출 시 삭제할 상품 IDs:", fundingProductIds);
+        // 폼 데이터 추출
+        const formData = new FormData(form);
 
-        console.log("폼 제출 시 업로드된 썸네일 파일명:", uploadedThumbnailFileName);
+        // FormData 객체를 일반 객체로 변환
+        const data = {};
+        formData.forEach((value, key) => {
+            // fundingProducts는 배열 형태로 변환
+            if (key.startsWith("fundingProducts")) {
+                const match = key.match(/fundingProducts\[(\d+)\]\.(\w+)/);
+                if (match) {
+                    const index = match[1];
+                    const field = match[2];
+                    if (!data.fundingProducts) data.fundingProducts = [];
+                    if (!data.fundingProducts[index]) data.fundingProducts[index] = {};
+                    data.fundingProducts[index][field] = value;
+                }
+            } else {
+                data[key] = value;
+            }
+        });
+
+        // 삭제할 파일 IDs, 삭제할 상품 IDs는 별도로 추가
+        data.deletedFileIds = deletedFileIds;
+        data.fundingProductIds = fundingProductIds;
+        data.thumbnailFileName = uploadedThumbnailFileName;
+
+        // 추출된 데이터 로그 출력
+        console.log("제출할 데이터:", data);
+
+
+        form.submit();
     });
 
     // 폼 유효성 검사 함수
     function checkFormCompletion() {
         // 파일 업로드가 필수가 아닌 경우
-        const isAnyFileUploaded = existingFilesContainer.querySelectorAll('.existing-file:not(.hidden)').length > 0;
+        const isAnyFileUploaded = existingFilesContainer.querySelectorAll('.existing-file:not([style*="display: none"])').length > 0;
 
         const isInputValid = inputElement && inputElement.value.trim() !== "";
         const isTextareaValid = textareaElement && textareaElement.value.trim() !== "";
@@ -141,10 +166,10 @@ document.addEventListener("DOMContentLoaded", function () {
         const isFundingStatusSelected = Array.from(form.querySelectorAll('input[name="fundingStatus"]')).some(radio => radio.checked);
 
         // 기존 상품 중 삭제되지 않은 상품 수
-        const existingProductCount = existingProductsContainer.querySelectorAll('.existing-product:not(.hidden)').length;
+        const existingProductCount = existingProductsContainer.querySelectorAll('.existing-product:not([style*="display: none"])').length;
 
         // 새로운 추가된 상품 수
-        const newProductCount = existingProductsContainer.querySelectorAll('.existing-product.new-product').length;
+        const newProductCount = newProductsContainer.querySelectorAll('.new-product').length;
 
         // 전체 상품 수 (기존에서 삭제되지 않은 상품 + 새로운 상품)
         const totalProductCount = existingProductCount + newProductCount;
@@ -305,29 +330,18 @@ document.addEventListener("DOMContentLoaded", function () {
                 console.log("삭제 버튼 클릭, fileId:", fileId, "fileName:", fileName);
 
                 // 기존 파일일 경우 삭제할 ID에 추가 (중복 방지)
-                if (fileId && !fundingProductIds.includes(fileId)) {
-                    fundingProductIds.push(fileId);
+                if (fileId && !deletedFileIds.includes(fileId)) {
+                    deletedFileIds.push(fileId);
 
-                    // 기존의 hidden input 제거 (중복 방지)
-                    const existingHiddenInputs = form.querySelectorAll('input[name="fundingProductIds[]"]');
-                    existingHiddenInputs.forEach(input => input.remove());
-
-                    // fundingProductIds 배열을 순회하며 각 ID에 대해 숨겨진 입력 필드 추가
-                    fundingProductIds.forEach(id => {
-                        const hiddenInput = document.createElement('input');
-                        hiddenInput.type = 'hidden';
-                        hiddenInput.name = 'fundingProductIds[]';
-                        hiddenInput.value = id;
-                        form.appendChild(hiddenInput);
-                        console.log("fundingProductIds[] 추가:", id);
-                    });
+                    // 삭제할 파일 ID를 숨겨진 필드에 추가
+                    document.getElementById("deletedFileIds").value = deletedFileIds.join(",");
+                    console.log("삭제할 파일 ID 추가:", fileId);
                 } else {
-                    console.log("이미 삭제된 상품 ID:", fileId);
+                    console.log("이미 삭제된 파일 ID:", fileId);
                 }
 
-                // UI에서 해당 상품 요소 숨기기
-                productElement.classList.add("hidden"); // display: none; 대신 .hidden 클래스 추가
-                console.log("상품 요소 숨김");
+                imgBox.classList.add("hidden"); // 'hidden' 클래스 추가
+                console.log("이미지 요소 숨김");
 
                 // 폼 유효성 검사
                 checkFormCompletion();
@@ -430,18 +444,22 @@ document.addEventListener("DOMContentLoaded", function () {
                 const productId = this.getAttribute("data-product-id");
                 console.log("상품 삭제 버튼 클릭, productId:", productId);
 
-                if (productId && !fundingProductIds.includes(productId)) {
-                    fundingProductIds.push(productId);
+                if (productId) {
+                    if (!fundingProductIds.includes(productId)) {
+                        fundingProductIds.push(productId);
 
-                    // fundingProductIds 배열을 콤마로 구분된 문자열로 변환하여 hidden 필드에 설정
-                    document.getElementById("fundingProductIds").value = fundingProductIds.join(",");
-                    console.log("fundingProductIds 업데이트:", fundingProductIds.join(","));
+                        // fundingProductIds 배열을 콤마로 구분된 문자열로 변환하여 hidden 필드에 설정
+                        document.getElementById("fundingProductIds").value = fundingProductIds.join(",");
+                        console.log("fundingProductIds 업데이트:", fundingProductIds.join(","));
+                    } else {
+                        console.log("이미 삭제된 상품 ID:", productId);
+                    }
                 } else {
-                    console.log("이미 삭제된 상품 ID:", productId);
+                    console.log("신규 상품 삭제, productId 없음");
                 }
 
-                // UI에서 해당 상품 요소 숨기기
-                productElement.classList.add("hidden"); // display: none; 대신 .hidden 클래스 추가
+                // UI에서 해당 상품 요소 숨기기 (display: none 설정)
+                productElement.style.display = "none";
                 console.log("상품 요소 숨김");
 
                 // 폼 유효성 검사
@@ -460,7 +478,7 @@ document.addEventListener("DOMContentLoaded", function () {
         newImgBox.classList.add("img-box-list", "new-file"); // 'new-file' 클래스 추가 (선택 사항)
         newImgBox.innerHTML = `
             <div class="img-content-box">
-                <div class="img-edit-box">
+                <div class="img-edit-box" style="display: none">
                     <div class="btn-edit-item change-image-btn">이미지 변경</div>
                     <div class="btn-edit-item delete-existing-file-btn">이미지 삭제</div>
                 </div>
@@ -487,48 +505,47 @@ document.addEventListener("DOMContentLoaded", function () {
         console.log("새로운 이미지 박스 추가:", newImgBox);
         checkFormCompletion();
     }
-    let newProductIndex = 0;
+
     // 새로운 상품 추가 함수
     function addNewProductBox() {
         const newProduct = document.createElement("div");
         newProduct.classList.add("new-product");
         newProduct.innerHTML = `
-        <div class="add-box">
-            <div class="product-name">상품명 <span class="star">*</span></div>
-            <input type="text" class="product-name-input"
-                   name="newProducts[${newProductIndex}].productName"
-                   placeholder="등록할 상품명을 입력해주세요." required />
-            
-            <div class="product-price">상품가격 <span class="star">*</span></div>
-            <input type="number" class="product-price-input"
-                   name="newProducts[${newProductIndex}].productPrice"
-                   placeholder="등록할 상품가격을 입력해주세요." required />
-            
-            <div class="product-quantity">상품수량 <span class="star">*</span></div>
-            <input type="number" class="product-quantity-input"
-                   name="newProducts[${newProductIndex}].productAmount"
-                   placeholder="등록할 상품수량을 입력해주세요." required />
-            
-            <div class="product-cancel">
-                <button class="delete-existing-product-btn" type="button">삭제</button>
+            <div class="add-box">
+                <!-- 상품명 -->
+                <div class="product-name">상품명 <span class="star">*</span></div>
+                <input type="text" class="product-name-input"
+                       name="fundingProducts[${newProductIndex}].productName"
+                       placeholder="등록할 상품명을 입력해주세요." required />
+                
+                <!-- 상품가격 -->
+                <div class="product-price">상품가격 <span class="star">*</span></div>
+                <input type="number" class="product-price-input"
+                       name="fundingProducts[${newProductIndex}].productPrice"
+                       placeholder="등록할 상품가격을 입력해주세요." required />
+                
+                <!-- 상품수량 -->
+                <div class="product-quantity">상품수량 <span class="star">*</span></div>
+                <input type="number" class="product-quantity-input"
+                       name="fundingProducts[${newProductIndex}].productAmount"
+                       placeholder="등록할 상품수량을 입력해주세요." required />
+                
+                <!-- 삭제 버튼 -->
+                <div class="product-cancel">
+                    <button class="delete-existing-product-btn" type="button">삭제</button>
+                </div>
             </div>
-        </div>
-    `;
-        document.getElementById("new-products-container").appendChild(newProduct);
+        `;
+        newProductsContainer.appendChild(newProduct);
+        setupProductDeleteListener(newProduct); // 삭제 버튼 이벤트 리스너 설정
         newProductIndex++; // 인덱스 증가
         checkFormCompletion();
     }
 
-    document.querySelector(".product-div-add").addEventListener("click", () => {
-        addNewProductBox();
-    });
-
-// 새 상품 추가 버튼 클릭 시 새로운 상품 박스 추가
-
-    document.querySelector(".product-div-add").addEventListener("click", () => {
+    // 새로운 상품 추가 버튼 클릭 시 상품 추가
+    productAddButton.addEventListener("click", () => {
         console.log("새 상품 추가 버튼 클릭");
-        addNewProductBox(newProductIndex);
-        newProductIndex++;
+        addNewProductBox();
     });
 
     // 인풋 및 텍스트에어리어 이벤트 리스너 설정

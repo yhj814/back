@@ -314,6 +314,15 @@
                                                 <!-- 상품수량 -->
                                                 <div class="product-quantity">상품수량 <span class="star">*</span></div>
                                                 <input type="number" class="product-quantity-input" th:name="|fundingProducts[${iterStat.index}].productAmount|" th:value="${product.productAmount}" required />
+                                                <div class="product-cancel">
+                                                    <button
+                                                            class="delete-existing-product-btn"
+                                                            type="button"
+                                                            th:attr="data-product-id=${product.id}"
+                                                    >
+                                                        삭제
+                                                    </button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>

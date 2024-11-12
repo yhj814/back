@@ -76,7 +76,7 @@ public interface FundingMapper {
     // 펀딩 상품 정보 조회
     public List<FundingProductVO> selectFundingProductsByFundingId(@Param("fundingId") Long fundingId);
 
-    // 같은 장르의 펀딩 게시글 조회 (최대 3개)
+    // 같은 장르의 펀딩 게시글 조회 (최대 5개)
     public List<FundingDTO> selectRelatedFundingByGenre(
             @Param("genreType") String genreType,
             @Param("fundingId") Long fundingId

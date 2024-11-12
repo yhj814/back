@@ -15,5 +15,6 @@ public class FundingProductVO {
     private String productName; // 상품명
     private int productPrice; // 상품 가격
     private int productAmount; // 상품 수량
+    private String status; // 상품 삭제, 게시중 구분하기
     private Long fundingId; // 펀딩 ID와 연결
 }
