@@ -478,12 +478,12 @@
                                             </div>
                                             <div class="img-content-box">
                                                 <!-- 이미지 파일일 경우 img 태그 사용 -->
-                                                <div th:if="${#strings.endsWith(file.filePath, '.jpg') or #strings.endsWith(file.filePath, '.jpeg') or #strings.endsWith(file.filePath, '.png') or #strings.endsWith(file.filePath, '.gif')}">
-                                                    <img th:src="@{'/audition/video/display?fileName=' + ${file.filePath}}" alt="Uploaded Image" />
+                                                <div th:if="${file.fileName.endsWith('.jpg') or file.fileName.endsWith('.jpeg') or file.fileName.endsWith('.png') or file.fileName.endsWith('.gif')}">
+                                                    <img th:src="@{'/audition/video/display?fileName=' + ${file.filePath} + '/' + ${file.fileName}}" alt="Uploaded Image" />
                                                 </div>
                                                 <!-- 비디오 파일일 경우 video 태그 사용 -->
-                                                <div th:if="${#strings.endsWith(file.filePath, '.mp4') or #strings.endsWith(file.filePath, '.mov') or #strings.endsWith(file.filePath, '.avi')}">
-                                                    <video controls th:src="@{'/audition/video/display?fileName=' + ${file.filePath}}" alt="Uploaded Video"></video>
+                                                <div th:if="${file.fileName.endsWith('.mp4') or file.fileName.endsWith('.avi') or file.fileName.endsWith('.mkv')}">
+                                                    <video controls th:src="@{'/audition/video/display?fileName=' + ${file.filePath} + '/' + ${file.fileName}}" alt="Uploaded Video"></video>
                                                 </div>
                                             </div>
                                         </div>
@@ -561,9 +561,7 @@
 </main>
 <footer th:replace="~{footer.html :: footer}"></footer>
 </body>
-<!--<script src="/js/audition/write-file.js"></script>-->
 <script src="/js/audition/audition-modify.js"></script>
-<!--<script src="/js/audition/write-input.js"></script>-->
 <script th:src="@{/js/header/header-logout.js}"></script>
 <script th:src="@{/js/header/header-login.js}"></script>
 <script th:src="@{/js/header/logout-click.js}"></script>

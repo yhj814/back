@@ -6,11 +6,19 @@
         <title>모집 신청하기</title>
         <link
             rel="stylesheet"
-            href="/css/audition/video/application2.css"
+            href="/css/audition/video/application-layout.css"
         />
+        <link rel="stylesheet" th:href="@{/css/header/logout.css}">
+        <link rel="stylesheet" th:href="@{/css/header/login.css}">
+        <link rel="stylesheet" th:href="@{/css/footer/footer.css}">
     </head>
     <body>
-        <header class="header"></header>
+    <th:block th:if="${isLoggedIn}">
+        <div th:replace="~{header-login :: header}"></div>
+    </th:block>
+    <th:block th:if="${!isLoggedIn}">
+        <div th:replace="~{header-logout :: header}"></div>
+    </th:block>
         <main>
             <div id="wrap">
                 <div class="container">
@@ -366,8 +374,11 @@
                 </div>
             </div>
         </main>
-        <footer></footer>
+        <footer th:replace="~{footer.html :: footer}"></footer>
     </body>
     <script src="/js/audition/application-layout.js"></script>
     <script src="/js/audition/application-file.js"></script>
+    <script th:src="@{/js/header/header-logout.js}"></script>
+    <script th:src="@{/js/header/header-login.js}"></script>
+    <script th:src="@{/js/header/logout-click.js}"></script>
 </html>

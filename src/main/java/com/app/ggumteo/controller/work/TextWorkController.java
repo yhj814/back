@@ -100,6 +100,7 @@ public class TextWorkController {
             HttpSession session) {
         try {
             MemberVO member = (MemberVO) session.getAttribute("member");
+            MemberProfileDTO memberProfile = (MemberProfileDTO) session.getAttribute("memberProfile");
             if (member == null) {
                 log.error("세션에 멤버 정보가 없습니다.");
                 return ResponseEntity.status(400).body(Collections.singletonMap("error", "세션에 멤버 정보가 없습니다."));
