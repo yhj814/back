@@ -119,7 +119,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // 폼 제출 시 데이터 추출 및 디버깅
     form.addEventListener("submit", function (event) {
-        event.preventDefault(); // 폼의 기본 제출 동작을 막음
+        // event.preventDefault(); // 폼의 기본 제출 동작을 막음
 
         // 폼 데이터 추출
         const formData = new FormData(form);
