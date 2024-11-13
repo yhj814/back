@@ -40,11 +40,21 @@ public class AlarmIntercepter implements HandlerInterceptor {
 
         if (memberProfile != null) {
             Long memberProfileId = memberProfile.getId();
+
+            // 읽지 않은 알람 목록 설정
             var unreadAlarms = alarmService.getUnreadAlarmsByMemberId(memberProfileId);
             request.setAttribute("unreadAlarms", unreadAlarms);
 
+            // 모든 알람 목록 설정
             var allAlarms = alarmService.getAlarmsByMemberId(memberProfileId);
             request.setAttribute("allAlarms", allAlarms);
+
+            // subType별 읽지 않은 알람 수 설정
+            int unreadVideoAlarmsCount = alarmService.countUnreadAlarmsBySubtype(memberProfileId, "VIDEO");
+            int unreadTextAlarmsCount = alarmService.countUnreadAlarmsBySubtype(memberProfileId, "TEXT");
+
+            request.setAttribute("unreadVideoAlarmsCount", unreadVideoAlarmsCount);
+            request.setAttribute("unreadTextAlarmsCount", unreadTextAlarmsCount);
 
             log.info("로그인 된 사용자. memberProfileId: {}", memberProfileId);
         } else {

@@ -5,8 +5,6 @@ import com.app.ggumteo.domain.audition.AuditionApplicationDTO;
 import com.app.ggumteo.domain.audition.AuditionDTO;
 import com.app.ggumteo.domain.file.AuditionApplicationFileVO;
 import com.app.ggumteo.domain.file.FileVO;
-import com.app.ggumteo.domain.file.PostFileVO;
-import com.app.ggumteo.domain.notification.ApplyAuditionNotificationVO;
 import com.app.ggumteo.mapper.audition.AuditionApplicationMapper;
 import com.app.ggumteo.mapper.notification.ApplyAuditionNotificationMapper;
 import com.app.ggumteo.repository.audition.AuditionApplicationDAO;
@@ -67,32 +65,37 @@ public class AuditionApplicationServiceImpl implements AuditionApplicationServic
             log.warn("AuditionDTO is null for auditionId: {}", auditionId);
         }
 
+        // 신청 ID 가져오기
+        Long auditionApplicationId = auditionApplicationDTO.getId();
+
         // 업로드된 파일 처리
-//        List<String> fileNames = auditionApplicationDTO.getFileNames();
-//        if (fileNames != null && !fileNames.isEmpty()) {
-//            for (String fileName : fileNames) {
-//                // 기존 메서드 사용
-//                FileVO fileVO = new FileVO();
-//                fileVO.setFileName(fileName);
-//                fileVO.setFilePath(getPath());
-//                File file = new File("C:/upload/" + getPath() + "/" + fileName);
-//                fileVO.setFileSize(String.valueOf(file.length()));
-//
-//                try {
-//                    fileVO.setFileType(Files.probeContentType(file.toPath()));
-//                } catch (IOException e) {
-//                    log.error("파일의 콘텐츠 타입을 결정하는 중 오류 발생", e);
-//                    fileVO.setFileType("unknown");  // 기본값 설정 또는 예외 처리
-//                }
-//
-//                // 파일 정보 데이터베이스에 저장
-//                fileDAO.save(fileVO);
-//
-//                // 파일과 게시글의 연관 관계 설정
-//                AuditionApplicationFileVO auditionApplicationFileVO = new AuditionApplicationFileVO(auditionId, fileVO.getId());
-//                auditionApplicationFileDAO.insertAuditionApplicationFile(auditionApplicationFileVO);
-//            }
-//        }
+        List<String> fileNames = auditionApplicationDTO.getFileNames();
+        if (fileNames != null && !fileNames.isEmpty()) {
+            for (String fileName : fileNames) {
+                // 파일 VO 생성 및 설정
+                FileVO fileVO = new FileVO();
+                fileVO.setFileName(fileName);
+                fileVO.setFilePath(getPath());
+                File file = new File("C:/upload/" + getPath() + "/" + fileName);
+                fileVO.setFileSize(String.valueOf(file.length()));
+
+                try {
+                    fileVO.setFileType(Files.probeContentType(file.toPath()));
+                } catch (IOException e) {
+                    log.error("파일의 콘텐츠 타입을 결정하는 중 오류 발생", e);
+                    fileVO.setFileType("unknown");  // 기본값 설정 또는 예외 처리
+                }
+
+                // 파일 정보 데이터베이스에 저장
+                fileDAO.save(fileVO);
+                log.info("Saved FileVO with ID: {}", fileVO.getId());
+
+                // 파일과 신청의 연관 관계 설정
+                AuditionApplicationFileVO auditionApplicationFileVO = new AuditionApplicationFileVO(fileVO.getId(), auditionApplicationId);
+                auditionApplicationFileDAO.insertAuditionApplicationFile(auditionApplicationFileVO);
+                log.info("Linked FileVO ID: {} with AuditionApplicationID: {}", fileVO.getId(), auditionApplicationId);
+            }
+        }
 
         log.info("Completed write method for AuditionApplicationDTO ID: {}", auditionApplicationDTO.getId());
     }
@@ -106,6 +109,3 @@ public class AuditionApplicationServiceImpl implements AuditionApplicationServic
         return LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd"));
     }
 }
-
-
-
