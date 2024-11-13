@@ -120,7 +120,7 @@ public class VideoFundingController {
             Model model) {
 
 
-        search.setPostType(PostType.FUNDINGTEXT.name());
+        search.setPostType(PostType.FUNDINGVIDEO.name());
         log.info("Received Search Parameters: {}", search);
         log.info("Received page: {}", page);
 
