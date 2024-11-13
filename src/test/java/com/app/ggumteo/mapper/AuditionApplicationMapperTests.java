@@ -39,7 +39,7 @@ public class AuditionApplicationMapperTests {
         auditionApplicationDTO.setConfirmStatus("NO");
 
         // When: Service를 통해 AuditionApplication과 Notification 삽입
-        auditionApplicationService.write(auditionApplicationDTO, null);
+        auditionApplicationService.write(auditionApplicationDTO);
 
         // Then: ID가 자동 생성되었는지 검증
         Assertions.assertNotNull(auditionApplicationDTO.getId());
