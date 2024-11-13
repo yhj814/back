@@ -642,7 +642,7 @@ ul, ol {
 .selected-file-viewer {
     position: relative;
     padding: 9px 13px;
-    width: 204px;
+    width: 203px;
     display: inline-block;
     border: 1px solid #e0e0e0;
     background-color: #fff;
@@ -702,6 +702,6 @@ ul, ol {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    color: #3ba3c7;
+    color: #00a878;
     font-weight: 500;
 }
