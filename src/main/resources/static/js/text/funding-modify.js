@@ -33,7 +33,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const thumbnailAddButton = document.querySelector(".work-thumbnail-add-btn");
     if (thumbnailAddButton) {
         thumbnailAddButton.addEventListener("click", function () {
-            console.log("썸네일 변경 버튼 클릭");
             const thumbnailUploadInput = document.getElementById("thumbnail-upload");
             if (thumbnailUploadInput) {
                 thumbnailUploadInput.click();
@@ -89,7 +88,7 @@ document.addEventListener("DOMContentLoaded", function () {
                                 form.appendChild(hiddenInput);
                             }
                             hiddenInput.value = fileName;
-                            console.log("숨겨진 필드 'thumbnailFileName' 설정:", fileName);
+
 
                             // 썸네일 변경 여부를 표시하는 숨겨진 입력 필드 설정
                             let thumbnailChangedInput = document.getElementById('thumbnailChanged');
@@ -101,7 +100,7 @@ document.addEventListener("DOMContentLoaded", function () {
                                 form.appendChild(thumbnailChangedInput);
                             }
                             thumbnailChangedInput.value = 'true';
-                            console.log("숨겨진 필드 'thumbnailChanged' 설정: true");
+
 
                             isThumbnailChanged = true; // 썸네일 변경 여부 설정
 
@@ -187,11 +186,11 @@ document.addEventListener("DOMContentLoaded", function () {
         ) {
             submitButton.disabled = false;
             submitButton.classList.add("active");
-            console.log("폼 유효성 검사 통과, 제출 버튼 활성화");
+
         } else {
             submitButton.disabled = true;
             submitButton.classList.remove("active");
-            console.log("폼 유효성 검사 실패, 제출 버튼 비활성화");
+
         }
     }
 
@@ -208,7 +207,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 input.style.borderColor = "#00a878";
                 input.style.borderWidth = "1px";
                 input.style.borderStyle = "solid";
-                console.log("인풋 포커스");
+
             }
         });
 
@@ -219,11 +218,11 @@ document.addEventListener("DOMContentLoaded", function () {
                 input.style.borderColor = "#e52929";
                 input.style.borderWidth = "1px";
                 input.style.borderStyle = "solid";
-                console.log("인풋 블러, 에러 상태");
+
             } else {
                 input.classList.remove("error");
                 input.style.border = "1px solid #e0e0e0";
-                console.log("인풋 블러, 정상 상태");
+
             }
         });
 
@@ -233,7 +232,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 input.style.borderColor = "#00a878";
                 input.style.borderWidth = "1px";
                 input.style.borderStyle = "solid";
-                console.log("인풋 입력, 에러 제거");
+
             }
             label.classList.add("label-effect");
             checkFormCompletion();
@@ -244,21 +243,21 @@ document.addEventListener("DOMContentLoaded", function () {
                 input.style.borderColor = "#00a878";
                 input.style.borderWidth = "1px";
                 input.style.borderStyle = "solid";
-                console.log("인풋 마우스오버");
+
             }
         });
 
         input.addEventListener("mouseout", function () {
             if (!input.value && !input.classList.contains("error")) {
                 input.style.border = "1px solid #e0e0e0";
-                console.log("인풋 마우스아웃");
+
             }
         });
 
         input.addEventListener("keydown", function (event) {
             if (event.key === "Enter") {
                 event.preventDefault();
-                console.log("인풋 엔터 키 방지");
+
             }
         });
     }
@@ -277,18 +276,18 @@ document.addEventListener("DOMContentLoaded", function () {
             } else {
                 border.style.borderColor = "#00a878";
             }
-            console.log("텍스트에어리어 포커스");
+
         });
 
         textarea.addEventListener("blur", function () {
             if (!textarea.value) {
                 border.classList.add("error");
                 border.style.borderColor = "#e52929";
-                console.log("텍스트에어리어 블러, 에러 상태");
+
             } else {
                 border.classList.remove("error");
                 border.style.border = "1px solid #e0e0e0";
-                console.log("텍스트에어리어 블러, 정상 상태");
+
             }
             border.classList.remove("active");
             checkFormCompletion();
@@ -298,7 +297,7 @@ document.addEventListener("DOMContentLoaded", function () {
             if (border.classList.contains("error")) {
                 border.classList.remove("error");
                 border.style.borderColor = "#00a878";
-                console.log("텍스트에어리어 입력, 에러 제거");
+
             }
             checkFormCompletion();
         });
@@ -306,7 +305,7 @@ document.addEventListener("DOMContentLoaded", function () {
         textarea.addEventListener("mouseover", function () {
             if (border.classList.contains("error")) {
                 border.style.borderColor = "#e52929";
-                console.log("텍스트에어리어 마우스오버");
+
             }
         });
     }
@@ -326,7 +325,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 const imgElement = imgBox.querySelector("img");
                 const fileName = imgElement ? imgElement.getAttribute("alt") : null;
 
-                // 중요 로그: 삭제 버튼 클릭 시 fileId와 fileName 확인
+                //삭제 버튼 클릭 시 fileId와 fileName 확인
                 console.log("삭제 버튼 클릭, fileId:", fileId, "fileName:", fileName);
 
                 // 기존 파일일 경우 삭제할 ID에 추가 (중복 방지)
@@ -341,7 +340,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
 
                 imgBox.classList.add("hidden"); // 'hidden' 클래스 추가
-                console.log("이미지 요소 숨김");
+
 
                 // 폼 유효성 검사
                 checkFormCompletion();
@@ -350,14 +349,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (btnChangeImage && fileUpload) {
             btnChangeImage.addEventListener("click", function () {
-                console.log("이미지 변경 버튼 클릭");
                 fileUpload.click();
             });
         }
 
         if (imgBoxDiv && fileUpload) {
             imgBoxDiv.addEventListener("click", function () {
-                console.log("img-box 클릭");
                 fileUpload.click();
             });
         }
@@ -407,7 +404,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
                                 // 파일명을 input 요소에 저장 (삭제 시 사용)
                                 fileUpload.setAttribute('data-file-name', fileName);
-                                console.log("숨겨진 필드 'fileNames' 추가:", fileName);
 
                                 // 파일 업로드 후 특정 div 요소 제거 및 img-edit-box 표시
                                 ["img-box-title", "img-box-text", "img-box-help"].forEach(selector => {
@@ -422,7 +418,6 @@ document.addEventListener("DOMContentLoaded", function () {
                                 const imgEditBox = imgBox.querySelector(".img-edit-box");
                                 if (imgEditBox) {
                                     imgEditBox.style.display = "block";
-                                    console.log("'img-edit-box' 표시");
                                 }
                             } else {
                                 console.error('파일 업로드 실패.');
@@ -460,7 +455,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 // UI에서 해당 상품 요소 숨기기 (display: none 설정)
                 productElement.style.display = "none";
-                console.log("상품 요소 숨김");
 
                 // 폼 유효성 검사
                 checkFormCompletion();
@@ -502,7 +496,6 @@ document.addEventListener("DOMContentLoaded", function () {
         `;
         imgBoxContainer.appendChild(newImgBox);
         setupEventListeners(newImgBox); // 이벤트 리스너 설정
-        console.log("새로운 이미지 박스 추가:", newImgBox);
         checkFormCompletion();
     }
 
@@ -544,7 +537,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // 새로운 상품 추가 버튼 클릭 시 상품 추가
     productAddButton.addEventListener("click", () => {
-        console.log("새 상품 추가 버튼 클릭");
         addNewProductBox();
     });
 
@@ -557,7 +549,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // 새로운 이미지 박스 추가 버튼 클릭 시 이미지 박스 추가
     addImageButton.addEventListener("click", () => {
-        console.log("새로운 이미지 추가 버튼 클릭");
         addNewImageBox();
     });
 

@@ -45,6 +45,7 @@ public class FundingDTO {
     private List<Long> fileIds; // 업로드된 파일 ID 목록
     private List<FundingProductVO> newProducts; // 새로 추가된 상품 리스트
     private String status; // 상품 삭제, 게시중 구분하기
+    private String fileType;
 
 
     public FundingVO toVO() {

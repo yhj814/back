@@ -7,9 +7,7 @@ import com.app.ggumteo.domain.file.PostFileDTO;
 import com.app.ggumteo.domain.funding.FundingDTO;
 import com.app.ggumteo.domain.funding.FundingProductVO;
 import com.app.ggumteo.domain.member.MemberProfileDTO;
-import com.app.ggumteo.domain.member.MemberProfileVO;
 import com.app.ggumteo.domain.member.MemberVO;
-import com.app.ggumteo.domain.work.WorkDTO;
 import com.app.ggumteo.exception.SessionNotFoundException;
 import com.app.ggumteo.pagination.Pagination;
 import com.app.ggumteo.search.Search;
@@ -28,14 +26,17 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Controller
-@RequestMapping("/text/funding/*")
+@RequestMapping("/video/funding/*")
 @RequiredArgsConstructor
 @Slf4j
-public class TextFundingController {
+public class VideoFundingController {
     private final HttpSession session;
     private final PostFileService postFileService;
     private final FundingService fundingService;
@@ -56,8 +57,6 @@ public class TextFundingController {
             log.info("비로그인 상태입니다.");
         }
     }
-
-
     @PostMapping("upload")
     @ResponseBody
     public String upload(@RequestParam("file") MultipartFile file) {
@@ -71,15 +70,16 @@ public class TextFundingController {
         }
     }
 
-
     @GetMapping("write")
     public String goToWriteForm() {
-        return "text/funding/funding-write";
+        return "video/funding/funding-write";
     }
+
 
     @PostMapping("write")
     @ResponseBody
 //    json으로 데이터를 반환하기위해 responsebody 씀
+    // 일반 컨트롤러는 html 페이지 반환
     public FundingDTO write(
             @ModelAttribute FundingDTO fundingDTO,
             @RequestParam(value = "thumbnailFileName", required = false) String thumbnailFileName,
@@ -90,7 +90,7 @@ public class TextFundingController {
             throw new SessionNotFoundException("세션에 멤버 정보가 없습니다.");
         }
 
-        fundingDTO.setPostType(PostType.FUNDINGTEXT.name());
+        fundingDTO.setPostType(PostType.FUNDINGVIDEO.name());
         fundingDTO.setMemberProfileId(member.getId());
 
         // 파일명 리스트를 DTO에 설정
@@ -109,6 +109,9 @@ public class TextFundingController {
         log.info("펀딩 작성 완료: {}", fundingDTO);
         return fundingDTO;
     }
+
+
+
 
     @GetMapping("list")
     public String list(

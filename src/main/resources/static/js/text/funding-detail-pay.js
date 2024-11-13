@@ -12,11 +12,25 @@ document.addEventListener("DOMContentLoaded", function() {
     console.log("Profile Name:", profileName);
     console.log("Profile Phone:", profilePhone);
     console.log("Profile Email:", profileEmail);
-
+// 펀딩 상태가 '펀딩 완료'인지 확인
+    const isFundingCompleted = document.querySelector('.funding-status-end') !== null;
     // 모든 상품에 클릭 이벤트를 추가합니다.
     const productElements = document.querySelectorAll(".funding-product");
 
     productElements.forEach((productElement) => {
+        if (isFundingCompleted) {
+            // 펀딩이 완료된 경우, 모든 클릭 이벤트 비활성화
+            productElement.classList.add("disabled"); // 비활성화 스타일 적용
+            productElement.style.pointerEvents = "none"; // 클릭 이벤트 차단
+
+            // '펀딩 완료' 표시 추가
+            const productNameSpan = productElement.querySelector(".product-name span");
+            if (productNameSpan && !productNameSpan.innerText.includes("(펀딩 완료)")) {
+                productNameSpan.innerText += " (펀딩 완료)";
+            }
+
+            return; // 클릭 이벤트 추가하지 않음
+        }
 
         // 요소가 존재하는지 확인하고 남은 수량을 가져옵니다. 요소가 없으면 기본값 0 설정
         const productAmountElement = productElement.querySelector(".product-number .number");
@@ -30,6 +44,7 @@ document.addEventListener("DOMContentLoaded", function() {
             productElement.querySelector(".product-name span").innerText += " (품절)"; // '품절' 표시 추가
             return; // 수량이 0인 상품은 클릭 이벤트를 추가하지 않음
         }
+
         productElement.addEventListener("click", function() {
             // 상품 정보를 데이터 속성으로 저장하고 이를 통해 가져옵니다.
             const productName = productElement.querySelector(".product-name span").innerText;

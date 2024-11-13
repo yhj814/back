@@ -76,6 +76,24 @@ public class FundingServiceImpl implements FundingService{
             File file = new File("C:/upload/" + getPath() + "/" + thumbnailFileName);
             thumbnailFileVO.setFileSize(String.valueOf(file.length()));
 
+            // 파일 타입 설정
+            String extension = thumbnailFileName.substring(thumbnailFileName.lastIndexOf(".") + 1).toLowerCase();
+            String fileType;
+            switch (extension) {
+                case "png":
+                case "jpg":
+                case "jpeg":
+                    fileType = "image";
+                    break;
+                case "mp4":
+                case "avi":
+                    fileType = "video";
+                    break;
+                default:
+                    fileType = "other";
+            }
+            thumbnailFileVO.setFileType(fileType); // FileVO에 file_type 설정
+
             // 파일 정보 데이터베이스에 저장
             fileDAO.save(thumbnailFileVO);
 
@@ -111,6 +129,24 @@ public class FundingServiceImpl implements FundingService{
                     File file = new File("C:/upload/" + getPath() + "/" + fileName);
                     fileVO.setFileSize(String.valueOf(file.length()));
 
+                    // 파일 타입 설정
+                    String extension = fileName.substring(fileName.lastIndexOf(".") + 1).toLowerCase();
+                    String fileType;
+                    switch (extension) {
+                        case "png":
+                        case "jpg":
+                        case "jpeg":
+                            fileType = "image";
+                            break;
+                        case "mp4":
+                        case "avi":
+                            fileType = "video";
+                            break;
+                        default:
+                            fileType = "other";
+                    }
+                    fileVO.setFileType(fileType); // FileVO에 file_type 설정
+
                     // 파일 정보 데이터베이스에 저장
                     fileDAO.save(fileVO);
 
@@ -121,6 +157,8 @@ public class FundingServiceImpl implements FundingService{
             }
         }
     }
+
+
     private String getPath() {
         return LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd"));
     }
