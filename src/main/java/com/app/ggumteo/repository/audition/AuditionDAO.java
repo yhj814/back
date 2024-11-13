@@ -4,15 +4,16 @@ import com.app.ggumteo.constant.PostType;
 import com.app.ggumteo.domain.audition.AuditionDTO;
 import com.app.ggumteo.domain.audition.AuditionVO;
 import com.app.ggumteo.domain.file.PostFileDTO;
-import com.app.ggumteo.domain.work.WorkDTO;
 import com.app.ggumteo.mapper.audition.AuditionMapper;
 import com.app.ggumteo.pagination.AuditionPagination;
-import com.app.ggumteo.pagination.Pagination;
+import com.app.ggumteo.pagination.MyAuditionPagination;
+import com.app.ggumteo.pagination.MyWorkAndFundingPagination;
 import com.app.ggumteo.search.Search;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
@@ -47,4 +48,21 @@ public class AuditionDAO {
 //    다중 파일 조회
     public List<PostFileDTO> findFilesByAuditionId(Long postId) {return auditionMapper.selectFilesByPostId(postId);}
 
+
+//************ 마이페이지 **************
+
+    // 내 작품 게시물 전체 조회
+    public List<AuditionDTO> findByMemberId(MyAuditionPagination myAuditionPagination, Long memberId, String postType) {
+        return auditionMapper.selectByMemberId(myAuditionPagination, memberId, postType);
+    }
+
+    // 내 작품 게시물 전체 갯수
+    public int getTotal(Long memberId, String postType){
+        return auditionMapper.selectCount(memberId, postType);
+    }
+
+    // 작품 정보 조회
+    public Optional<AuditionDTO> findByIdAndPostType(Long id, String postType) {
+        return auditionMapper.selectByIdAndPostType(id, postType);
+    };
 }

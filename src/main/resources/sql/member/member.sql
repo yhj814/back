@@ -21,4 +21,12 @@ use gb;
 
 create database gb;
 
-delete from tbl_member;
+select * from tbl_member;
+select * from tbl_member_profile;
+
+select mp.profile_name, mp.profile_nickname, mp.profile_gender, mp.profile_age, mp.profile_email,
+       mp.profile_phone, mp.profile_etc, mp.member_id, mp.created_date, mp.updated_date,
+       m.id, m.member_status
+from tbl_member_profile mp
+         join tbl_member m on mp.member_id = m.id
+                              and m.member_status = 'YES' and m.id = 1;

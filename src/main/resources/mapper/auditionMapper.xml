@@ -136,5 +136,33 @@
         order by pf.id
     </select>
 
+    <!-- 마이페이지 -->
+
+    <select id="selectByMemberId">
+        select a.id, a.audition_field, a.audition_career, a.expected_amount,
+               a.audition_deadline, a.audition_personnel, a.audition_location, a.audition_status,
+               p.post_title, p.post_content, p.created_date, mp.profile_name, mp.profile_email, m.id
+        from tbl_audition a
+                 join tbl_post p on a.id = p.id and p.post_type = #{postType}
+                 join tbl_member_profile mp on p.member_profile_id = mp.id
+                 join tbl_member m on mp.member_id = m.id and m.id = #{memberId}
+        order by a.id desc
+            limit #{myAuditionPagination.startRow}, #{myAuditionPagination.rowCount}
+    </select>
+
+    <!-- 내 작품 게시글 전체 갯수  -->
+    <select id="selectCount">
+        select count(*) from tbl_audition a
+            join tbl_post p on a.id = p.id and p.post_type = #{postType}
+            join tbl_member_profile mp on p.member_profile_id = mp.id
+            join tbl_member m on mp.member_id = m.id and m.id = #{memberId}
+    </select>
+
+    <!--  내 작품 정보 조회  -->
+    <select id="selectByIdAndPostType" resultType="auditionDTO">
+        select a.id, a.audition_status, p.post_type
+        from tbl_audition a join tbl_post p
+        on a.id = p.id and a.id = #{id} and p.post_type = #{postType}
+    </select>
 
 </mapper>
