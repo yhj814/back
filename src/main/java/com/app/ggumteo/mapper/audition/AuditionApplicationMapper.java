@@ -2,6 +2,7 @@ package com.app.ggumteo.mapper.audition;
 
 import com.app.ggumteo.domain.audition.AuditionApplicationDTO;
 import com.app.ggumteo.domain.audition.AuditionApplicationVO;
+import com.app.ggumteo.domain.audition.AuditionDTO;
 import com.app.ggumteo.pagination.MyAuditionPagination;
 import com.app.ggumteo.pagination.MySettingTablePagination;
 import com.app.ggumteo.pagination.MyWorkAndFundingPagination;
@@ -14,6 +15,8 @@ import java.util.List;
 public interface AuditionApplicationMapper {
 
     void insert(AuditionApplicationDTO auditionApplicationDTO);
+
+    AuditionDTO findAuditionByauditionId(@Param("auditionId") Long auditionId);
 
     int countApplicantsByAuditionId(@Param("auditionId") Long auditionId);
 

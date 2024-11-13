@@ -22,7 +22,7 @@ public class AuditionApplicationDAO {
     }
 
     public AuditionDTO findByAuditionId(Long auditionId) {
-        return auditionApplicationMapper.findByAuditionId(auditionId);
+        return auditionApplicationMapper.findAuditionByauditionId(auditionId);
     }
 
     public int countApplicantsByAuditionId(Long auditionId) {
