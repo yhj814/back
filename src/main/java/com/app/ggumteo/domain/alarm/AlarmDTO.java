@@ -15,5 +15,6 @@ public class AlarmDTO {
     private String message;
     private boolean isRead;
     private String alarmType;
+    private String subType;
     private String createDate;
 }

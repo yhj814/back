@@ -1,5 +1,6 @@
 package com.app.ggumteo.service.audition;
 
+import com.app.ggumteo.constant.AlarmSubType;
 import com.app.ggumteo.domain.audition.AuditionApplicationDTO;
 import com.app.ggumteo.domain.audition.AuditionDTO;
 import com.app.ggumteo.domain.file.AuditionApplicationFileVO;
@@ -63,7 +64,7 @@ public class AuditionApplicationServiceImpl implements AuditionApplicationServic
             log.info("Creating alarm for hostMemberProfileId: {}", hostMemberProfileId);
 
             // 알림 생성
-            alarmService.createApplyAuditionAlarm(hostMemberProfileId, auditionApplicationDTO.getId(), message);
+            alarmService.createApplyAuditionAlarm(hostMemberProfileId, auditionApplicationDTO.getId(), message, AlarmSubType.);
             log.info("Alarm created for AuditionApplicationId: {}", auditionApplicationDTO.getId());
         } else {
             log.warn("AuditionDTO is null for auditionId: {}", auditionId);
