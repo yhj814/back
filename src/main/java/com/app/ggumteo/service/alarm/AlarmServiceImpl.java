@@ -1,5 +1,6 @@
 package com.app.ggumteo.service.alarm;
 
+import com.app.ggumteo.constant.AlarmSubType;
 import com.app.ggumteo.domain.alarm.AlarmDTO;
 import com.app.ggumteo.repository.alarm.AlarmDAO;
 import lombok.RequiredArgsConstructor;
@@ -28,11 +29,12 @@ public class AlarmServiceImpl implements AlarmService {
      * @param memberProfileId        회원 프로필 ID
      * @param auditionApplicationId  오디션 신청 ID
      * @param message                알림 메시지
+     * @param subType                알림 서브 타입 (AlarmSubType Enum)
      */
     @Override
-    public void createApplyAuditionAlarm(Long memberProfileId, Long auditionApplicationId, String message) {
-        log.info("Creating Apply Audition Alarm. MemberProfileId: {}, AuditionApplicationId: {}", memberProfileId, auditionApplicationId);
-        alarmDAO.saveApplyAuditionAlarm(memberProfileId, auditionApplicationId, message);
+    public void createApplyAuditionAlarm(Long memberProfileId, Long auditionApplicationId, String message, AlarmSubType subType) {
+        log.info("Creating Apply Audition Alarm. MemberProfileId: {}, AuditionApplicationId: {}, SubType: {}", memberProfileId, auditionApplicationId, subType);
+        alarmDAO.saveApplyAuditionAlarm(memberProfileId, auditionApplicationId, message, subType.name());
         log.info("Successfully created Apply Audition Alarm for MemberProfileId: {}, AuditionApplicationId: {}", memberProfileId, auditionApplicationId);
     }
 
@@ -42,11 +44,12 @@ public class AlarmServiceImpl implements AlarmService {
      * @param memberProfileId 회원 프로필 ID
      * @param replyId         댓글 ID
      * @param message         알림 메시지
+     * @param subType         알림 서브 타입 (AlarmSubType Enum)
      */
     @Override
-    public void createReplyAlarm(Long memberProfileId, Long replyId, String message) {
-        log.info("Creating Reply Alarm. MemberProfileId: {}, ReplyId: {}", memberProfileId, replyId);
-        alarmDAO.saveReplyAlarm(memberProfileId, replyId, message);
+    public void createReplyAlarm(Long memberProfileId, Long replyId, String message, AlarmSubType subType) {
+        log.info("Creating Reply Alarm. MemberProfileId: {}, ReplyId: {}, SubType: {}", memberProfileId, replyId, subType);
+        alarmDAO.saveReplyAlarm(memberProfileId, replyId, message, subType.name());
         log.info("Successfully created Reply Alarm for MemberProfileId: {}, ReplyId: {}", memberProfileId, replyId);
     }
 
@@ -56,11 +59,12 @@ public class AlarmServiceImpl implements AlarmService {
      * @param memberProfileId 회원 프로필 ID
      * @param buyWorkId       구매 작업 ID
      * @param message         알림 메시지
+     * @param subType         알림 서브 타입 (AlarmSubType Enum)
      */
     @Override
-    public void createWorkAlarm(Long memberProfileId, Long buyWorkId, String message) {
-        log.info("Creating Work Alarm. MemberProfileId: {}, BuyWorkId: {}", memberProfileId, buyWorkId);
-        alarmDAO.saveWorkAlarm(memberProfileId, buyWorkId, message);
+    public void createWorkAlarm(Long memberProfileId, Long buyWorkId, String message, AlarmSubType subType) {
+        log.info("Creating Work Alarm. MemberProfileId: {}, BuyWorkId: {}, SubType: {}", memberProfileId, buyWorkId, subType);
+        alarmDAO.saveWorkAlarm(memberProfileId, buyWorkId, message, subType.name());
         log.info("Successfully created Work Alarm for MemberProfileId: {}, BuyWorkId: {}", memberProfileId, buyWorkId);
     }
 
@@ -70,11 +74,12 @@ public class AlarmServiceImpl implements AlarmService {
      * @param memberProfileId    회원 프로필 ID
      * @param buyFundingId       구매 펀딩 상품 ID
      * @param message            알림 메시지
+     * @param subType            알림 서브 타입 (AlarmSubType Enum)
      */
     @Override
-    public void createFundingAlarm(Long memberProfileId, Long buyFundingId, String message) {
-        log.info("Creating Funding Product Alarm. MemberProfileId: {}, BuyFundingId: {}", memberProfileId, buyFundingId);
-        alarmDAO.saveFundingProductAlarm(memberProfileId, buyFundingId, message);
+    public void createFundingAlarm(Long memberProfileId, Long buyFundingId, String message, AlarmSubType subType) {
+        log.info("Creating Funding Product Alarm. MemberProfileId: {}, BuyFundingId: {}, SubType: {}", memberProfileId, buyFundingId, subType);
+        alarmDAO.saveFundingProductAlarm(memberProfileId, buyFundingId, message, subType.name());
         log.info("Successfully created Funding Product Alarm for MemberProfileId: {}, BuyFundingId: {}", memberProfileId, buyFundingId);
     }
 
