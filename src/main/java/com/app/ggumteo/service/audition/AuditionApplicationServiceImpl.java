@@ -5,6 +5,8 @@ import com.app.ggumteo.domain.audition.AuditionApplicationDTO;
 import com.app.ggumteo.domain.audition.AuditionDTO;
 import com.app.ggumteo.domain.file.AuditionApplicationFileVO;
 import com.app.ggumteo.domain.file.FileVO;
+import com.app.ggumteo.domain.file.PostFileVO;
+import com.app.ggumteo.domain.notification.ApplyAuditionNotificationVO;
 import com.app.ggumteo.mapper.audition.AuditionApplicationMapper;
 import com.app.ggumteo.mapper.notification.ApplyAuditionNotificationMapper;
 import com.app.ggumteo.repository.audition.AuditionApplicationDAO;

@@ -10,6 +10,7 @@ import com.app.ggumteo.domain.funding.MyFundingListDTO;
 import com.app.ggumteo.domain.inquiry.MyInquiryHistoryListDTO;
 import com.app.ggumteo.domain.member.MemberProfileVO;
 import com.app.ggumteo.domain.member.MemberVO;
+import com.app.ggumteo.domain.post.PostVO;
 import com.app.ggumteo.domain.work.MyWorkListDTO;
 import com.app.ggumteo.pagination.MyAuditionPagination;
 import com.app.ggumteo.pagination.MySettingTablePagination;
@@ -36,8 +37,8 @@ public class MemberRestController {
 
     @GetMapping("/member/video/my-page")
     public void read(Long id, Model model){
-        MemberVO memberDTO = myPageService.getMember(id).orElseThrow();
-        model.addAttribute("member", memberDTO);
+        MemberVO memberVO = myPageService.getMember(id).orElseThrow();
+        model.addAttribute("member", memberVO);
     }
     //    http://localhost:10000/member/video/my-page?id=15
 

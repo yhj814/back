@@ -11,8 +11,8 @@ import org.springframework.stereotype.Component;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BuyWorkDTO {
-    private Long id; // 작품 ID
-    private Long workId; // 작품 상품 ID
+    private Long id; // ID
+    private Long workId; // 작품 ID
     private String workSendStatus; // 발송 여부
     private Long memberProfileId; // 회원 프로필 ID
     private String profileName;

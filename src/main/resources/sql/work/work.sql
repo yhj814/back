@@ -27,3 +27,10 @@ from tbl_work w
          join tbl_member m on mp.member_id = m.id and m.id = 1
          join tbl_file fl on w.thumbnail_file_id = fl.id
 order by w.id desc;
+
+
+select count(*) as workPostCount from tbl_work w
+join tbl_post p on w.id = p.id
+join tbl_member_profile mp on p.member_profile_id = mp.id
+join tbl_member m on mp.member_id = m.id
+and p.post_type = 'WORKVIDEO' and m.id = 1;

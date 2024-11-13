@@ -50,7 +50,7 @@ const showMyWorkList = ({myWorkPosts, myWorkAndFundingPagination}) => {
                 <div class="products-list">
                     <div class="flex-box">
                         <div class="products-text">
-                            <a href=""
+                            <a href="/video/detail/${myWorkPost.id}"
                                 ><p
                                     class="my-products-title"
                                 >
@@ -90,10 +90,8 @@ const showMyWorkList = ({myWorkPosts, myWorkAndFundingPagination}) => {
                                 </p></a
                             >
                         </div>
-                        <div class="btn products-image">
-                            <a 
-                                ><img src="/text/display?fileName=${myWorkPost.thumbnailFilePath}/t_${myWorkPost.thumbnailFileName}"
-                            </a>
+                        <div class="products-image">
+                            <img src="/text/display?fileName=${myWorkPost.thumbnailFilePath}/t_${myWorkPost.thumbnailFileName}">
                         </div>
                     </div>
                     <div
@@ -125,10 +123,12 @@ const showMyWorkList = ({myWorkPosts, myWorkAndFundingPagination}) => {
                                     <div
                                         class="edit-my-off"
                                     >
-                                        <div
+                                        <img
                                             id="my-work-buyer-btn"
                                             class="icon-my-edit-off ${myWorkPost.id}"
-                                        ></div>
+                                            src="/images/member/icon-open-btn.png"
+                                            width="24px"
+                                        >
                                     </div>
                                     <div
                                         class="edit-my-on"
@@ -147,13 +147,15 @@ const showMyWorkList = ({myWorkPosts, myWorkAndFundingPagination}) => {
                                     class="btn btn-action icon-delete-read-products"
                                     type="button"
                                 >
-                                    <div
+                                    <a href="/video/modify/${myWorkPost.id}"><img
                                         class="icon-my-delete"
-                                    ></div>
+                                        src="/images/member/icon-update-btn.png"
+                                        width="24px"
+                                    ></a>
                                     <p
                                         class="action-tooltip bottom-action"
                                     >
-                                        삭제
+                                        수정
                                     </p>
                                 </button>
                             </div>
@@ -198,7 +200,6 @@ const showMyWorkList = ({myWorkPosts, myWorkAndFundingPagination}) => {
 
     myWorkListPaging.innerHTML = pagingText;
 }
-// 나의 작품 - 삭제 버튼 누를 때 모달창/삭제
 
 // 나의 작품 - 구매자 목록, 페이징
 const showMyWorkBuyerList = ({myWorkBuyers, mySettingTablePagination}) => {
@@ -308,7 +309,7 @@ const showMyBuyWorkList = ({myBuyWorkPosts, myWorkAndFundingPagination}) => {
                     <div class="products-list">
                         <div class="flex-box">
                             <div class="products-text">
-                                <a
+                                <a href="/video/detail/${myBuyWorkPost.workId}"
                                     ><p
                                         class="my-products-title"
                                     >
@@ -318,13 +319,11 @@ const showMyBuyWorkList = ({myBuyWorkPosts, myWorkAndFundingPagination}) => {
                                 <div
                                     class="my-products-info"
                                 >
-                                    <a
-                                        ><p
+                                    <p
                                             class="btn smooth my-products-category"
                                         >
                                            ${myBuyWorkPost.genreType}
-                                        </p></a
-                                    >
+                                        </p>
                                     <div
                                         class="divider"
                                     ></div>
@@ -339,20 +338,16 @@ const showMyBuyWorkList = ({myBuyWorkPosts, myWorkAndFundingPagination}) => {
                                              ${timeForToday(myBuyWorkPost.createdDate)}
                                         </div>
                                     </div>
-                                </div>
-                                <a
-                                    ><p
+                                </div><p
                                         class="timeandcontent content products-description"
                                     >
                                          ${myBuyWorkPost.postContent}
-                                    </p></a
-                                >
+                                    </p>
                             </div>
                             <div class="btn products-image">
-                                <a
-                                    ><img
+                                <img
                                         src="/text/display?fileName=${myBuyWorkPost.thumbnailFilePath}/t_${myBuyWorkPost.thumbnailFileName}"
-                                /></a>
+                                />
                             </div>
                         </div>
                         <div
@@ -388,10 +383,12 @@ const showMyBuyWorkList = ({myBuyWorkPosts, myWorkAndFundingPagination}) => {
                                         class="btn btn-action icon-delete-read-products"
                                         type="button"
                                     >
-                                        <div
-                                            id="buy-work-delete-btn"
-                                            class="icon-my-delete ${myBuyWorkPost.id}"
-                                        ></div>
+                                        <img
+                                                id="buy-work-delete-btn"
+                                                class="icon-my-delete ${myBuyWorkPost.workId}"
+                                                src="/images/member/icon-delete-btn.png"
+                                                width="24px"
+                                            >
                                         <p
                                             class="action-tooltip bottom-action"
                                         >
@@ -400,6 +397,35 @@ const showMyBuyWorkList = ({myBuyWorkPosts, myWorkAndFundingPagination}) => {
                                     </button>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="delete-modal modal-${myBuyWorkPost.workId}" style="display: none;">
+                    <div class="modal">
+                        <div class="modal-header">
+                            <div>
+                                <div class="blank"></div>
+                                <div class="header-title">
+                                    <p>구매내역 삭제</p>
+                                </div>
+                                <div class="close-btn-wrapper">
+                                    <button class="close-btn">
+                                        <span class="icon-close"><svg viewBox="0 0 24 24" color="#000000" class="close"><path fill-rule="evenodd" clip-rule="evenodd" fill="#000000" d="M4.61321 4.6137C4.96469 4.26223 5.53453 4.26223 5.88601 4.6137L11.9996 10.7273L18.1132 4.6137C18.4647 4.26223 19.0345 4.26223 19.386 4.6137C19.7375 4.96517 19.7375 5.53502 19.386 5.88649L13.2724 12.0001L19.386 18.1137C19.7375 18.4652 19.7375 19.035 19.386 19.3865C19.0345 19.738 18.4647 19.738 18.1132 19.3865L11.9996 13.2729L5.88601 19.3865C5.53453 19.738 4.96469 19.738 4.61321 19.3865C4.26174 19.035 4.26174 18.4652 4.61321 18.1137L10.7268 12.0001L4.61321 5.88649C4.26174 5.53502 4.26174 4.96517 4.61321 4.6137Z"></path></svg></span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-content">
+                            <form>
+                                <div class="delete-question">
+                                    <p>정말 삭제하시겠습니까?</p>
+                                </div>
+                                <div class="submit-btn">
+                                    <button type="submit" ${myBuyWorkPost.id}>
+                                        <span>네, 삭제하겠습니다.</span>
+                                    </button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>`
@@ -521,47 +547,49 @@ const showMyFundingList = ({myFundingPosts, myWorkAndFundingPagination}) => {
                                 >
                                     구매한 사람들
                                 </p>
-                                <div
-                                    class="edit-my-off"
-                                >
+                                <div class="edit-my-off">
+                                        <img
+                                            id="my-funding-buyer-btn"
+                                            class="icon-my-edit-off ${myFundingPost.id}"
+                                            src="/images/member/icon-open-btn.png"
+                                            width="24px"
+                                        >
+                                    </div>
                                     <div
-                                        id="my-funding-buyer-btn"
-                                        class="icon-my-edit-off ${myFundingPost.id}"
-                                    ></div>
-                                </div>
-                                <div
-                                    class="edit-my-on"
-                                    style="
-                                        display: none;
-                                    "
+                                        class="edit-my-on"
+                                        style="
+                                            display: none;
+                                        "
+                                    >
+                                        <div
+                                            class="icon-my-edit-on"
+                                        ></div>
+                                    </div>
+                                </button>
+                            </div>
+                            <div class="btn-wrapper">
+                                <button
+                                    class="btn btn-action icon-delete-read-products"
+                                    type="button"
                                 >
-                                    <div
-                                        class="icon-my-edit-on"
-                                    ></div>
-                                </div>
-                            </button>
-                        </div>
-                        <div class="btn-wrapper">
-                            <button
-                                class="btn btn-action icon-delete-read-products"
-                                type="button"
-                            >
-                                <div
-                                    class="icon-my-delete"
-                                ></div>
-                                <p
-                                    class="action-tooltip bottom-action"
-                                >
-                                    삭제
-                                </p>
-                            </button>
+                                    <a href="/video/funding/modify/${myFundingPost.id}"><img
+                                        class="icon-my-delete"
+                                        src="/images/member/icon-update-btn.png"
+                                        width="24px"
+                                    ></a>
+                                    <p
+                                        class="action-tooltip bottom-action"
+                                    >
+                                        수정
+                                    </p>
+                                </button>
+                            </div>
                         </div>
                     </div>
+                    <div class="setting-table funding-buyer-${myFundingPost.id}" style="border-top: 1px solid rgb(224, 224, 224); display: none;">
+                     </div>    
                 </div>
-                <div class="setting-table funding-buyer-${myFundingPost.id}" style="border-top: 1px solid rgb(224, 224, 224); display: none;">
-                 </div>    
             </div>
-        </div>
             `;
     });
     myFundingListLayout.innerHTML = text;
@@ -843,9 +871,11 @@ const showMyBuyFundingList = ({myBuyFundingPosts, myWorkAndFundingPagination}) =
                                             class="btn btn-action icon-delete-read-products"
                                             type="button"
                                         >
-                                            <div
+                                            <img
                                                 class="icon-my-delete"
-                                            ></div>
+                                                src="/images/member/icon-delete-btn.png"
+                                                width="24px"
+                                            >
                                             <p
                                                 class="action-tooltip bottom-action"
                                             >
@@ -994,7 +1024,7 @@ const showMyAuditionList = ({myAuditionPosts, myAuditionPagination}) => {
                             id="toggleReplyBtn"
                             data-reply="1"
                             style="
-                                left: -90px;
+                                left: -100px;
                                 bottom: 12px;
                             "
                         >
@@ -1014,10 +1044,12 @@ const showMyAuditionList = ({myAuditionPosts, myAuditionPagination}) => {
                                     지원자
                                     상세보기
                                 </p>
-                                    <div
+                                    <img
                                         id="my-audition-applicant-btn"
                                         class="icon-my-edit-off ${myAuditionPost.id}"
-                                    ></div>
+                                        src="/images/member/icon-open-btn.png"
+                                        width="24px"
+                                    >
                                 <div
                                     class="edit-my-on"
                                     style="
@@ -1036,13 +1068,15 @@ const showMyAuditionList = ({myAuditionPosts, myAuditionPagination}) => {
                                     class="btn btn-action icon-delete-read-products"
                                     type="button"
                             >
-                                <div
+                                <a href="/audition/video/modify/${myAuditionPost.id}"><img
                                         class="icon-my-delete"
-                                ></div>
+                                        src="/images/member/icon-update-btn.png"
+                                        width="24px"
+                                ></a>
                                 <p
                                         class="action-tooltip bottom-action"
                                 >
-                                    삭제
+                                    수정
                                 </p>
                             </button>
                         </div>
