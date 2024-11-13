@@ -96,20 +96,20 @@
                                                <span class="date" th:text="'~' +${audition.auditionDeadLine}"
                                                ></span
                                                >
-                                                <button class="sri-btn-xs" th:if="${audition.auditionStatus == '모집중'}">
+                                                <button class="sri-btn-xs" th:if="${audition.auditionStatus == 'YES'}">
                                                     <span
                                                             class="sri-btn-immediately"
-                                                            th:text="${audition.auditionStatus}"
+                                                            th:text="모집중"
                                                     ></span
                                                     >
                                                 </button>
                                                 <button
                                                         class="sri-btn-xs sri-btn-sm"
-                                                        th:if="${audition.auditionStatus == '모집완료'}"
+                                                        th:if="${audition.auditionStatus == 'NO'}"
                                                 >
                                                     <span
                                                             class="sri-btn-immediately btn-gray"
-                                                            th:text="${audition.auditionStatus}"
+                                                            th:text="모집완료"
                                                     ></span
                                                     >
                                                 </button>
