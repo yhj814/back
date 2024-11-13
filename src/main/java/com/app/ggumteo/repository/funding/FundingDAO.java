@@ -3,11 +3,9 @@ package com.app.ggumteo.repository.funding;
 import com.app.ggumteo.domain.file.PostFileDTO;
 import com.app.ggumteo.domain.funding.FundingDTO;
 import com.app.ggumteo.domain.funding.FundingProductVO;
-import com.app.ggumteo.domain.funding.FundingVO;
-import com.app.ggumteo.domain.work.WorkDTO;
 import com.app.ggumteo.mapper.funding.FundingMapper;
+import com.app.ggumteo.pagination.MyWorkAndFundingPagination;
 import com.app.ggumteo.pagination.Pagination;
-import com.app.ggumteo.pagination.WorkAndFundingPagination;
 import com.app.ggumteo.search.Search;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,8 +21,8 @@ public class FundingDAO {
     private final FundingMapper fundingMapper;
 
 //    내 펀딩 게시물 전체 조회
-    public List<FundingDTO> findByMemberId(WorkAndFundingPagination workAndFundingPagination, Long memberId, String postType) {
-        return fundingMapper.selectByMemberId(workAndFundingPagination, memberId, postType);
+    public List<FundingDTO> findByMemberId(MyWorkAndFundingPagination myWorkAndFundingPagination, Long memberId, String postType) {
+        return fundingMapper.selectByMemberId(myWorkAndFundingPagination, memberId, postType);
     }
 
 //    내 펀딩 게시물 전체 개수

@@ -2,10 +2,7 @@ package com.app.ggumteo.repository;
 
 import com.app.ggumteo.domain.inquiry.InquiryDTO;
 import com.app.ggumteo.domain.member.MemberVO;
-import com.app.ggumteo.mapper.inquiry.InquiryMapper;
-import com.app.ggumteo.mapper.member.MemberMapper;
-import com.app.ggumteo.pagination.AdminPagination;
-import com.app.ggumteo.pagination.WorkAndFundingPagination;
+import com.app.ggumteo.pagination.MyWorkAndFundingPagination;
 import com.app.ggumteo.repository.inquiry.InquiryDAO;
 import com.app.ggumteo.repository.member.MemberDAO;
 import lombok.extern.slf4j.Slf4j;
@@ -25,11 +22,11 @@ public class InquiryDAOTests {
     @Test
     public void testSelectInquiryHistoryByMember() {
         MemberVO memberVO = null;
-        WorkAndFundingPagination workAndFundingPagination = new WorkAndFundingPagination();
+        MyWorkAndFundingPagination myWorkAndFundingPagination = new MyWorkAndFundingPagination();
         memberVO = memberDAO.findById(1L).get();
-        workAndFundingPagination.setTotal(inquiryDAO.getTotalInquiryHistoryByMember(memberVO.getId()));
-        workAndFundingPagination.progress();
-        inquiryDAO.findInquiryHistoryByMember(workAndFundingPagination, memberVO.getId())
+        myWorkAndFundingPagination.setTotal(inquiryDAO.getTotalInquiryHistoryByMember(memberVO.getId()));
+        myWorkAndFundingPagination.progress();
+        inquiryDAO.findInquiryHistoryByMember(myWorkAndFundingPagination, memberVO.getId())
                 .stream().map(InquiryDTO::toString).forEach(log::info);
     }
 }

@@ -1,5 +1,6 @@
 package com.app.ggumteo.aspect;
 
+import com.app.ggumteo.domain.audition.MyAuditionApplicantListDTO;
 import com.app.ggumteo.domain.buy.MyBuyFundingListDTO;
 import com.app.ggumteo.domain.buy.MyFundingBuyerListDTO;
 import com.app.ggumteo.domain.buy.MyWorkBuyerListDTO;
@@ -56,6 +57,13 @@ public class LogAspect {
 
     @AfterReturning(value = "@annotation(com.app.ggumteo.aspect.annotation.MyWorkBuyerListLogStatus)", returning = "returnValue")
     public void afterReturningMyFundingBuyerList(JoinPoint joinPoint, MyWorkBuyerListDTO returnValue) {
+        log.info("method: {}", joinPoint.getSignature().getName());
+        log.info("arguments: {}", Arrays.stream(joinPoint.getArgs()).map(String::valueOf).collect(Collectors.joining(", ")));
+        log.info("returnValue: {}", returnValue);
+    }
+
+    @AfterReturning(value = "@annotation(com.app.ggumteo.aspect.annotation.MyAuditionApplicantListLogStatus)", returning = "returnValue")
+    public void afterReturningMyFundingBuyerList(JoinPoint joinPoint, MyAuditionApplicantListDTO returnValue) {
         log.info("method: {}", joinPoint.getSignature().getName());
         log.info("arguments: {}", Arrays.stream(joinPoint.getArgs()).map(String::valueOf).collect(Collectors.joining(", ")));
         log.info("returnValue: {}", returnValue);

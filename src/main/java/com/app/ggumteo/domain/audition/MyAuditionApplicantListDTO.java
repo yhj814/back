@@ -1,4 +1,4 @@
-package com.app.ggumteo.domain.buy;
+package com.app.ggumteo.domain.audition;
 
 import com.app.ggumteo.pagination.MySettingTablePagination;
 import lombok.Getter;
@@ -10,7 +10,7 @@ import java.util.List;
 
 @Component
 @Getter @Setter @ToString
-public class MyFundingBuyerListDTO {
-    private List<BuyFundingProductDTO> myFundingBuyers;
+public class MyAuditionApplicantListDTO {
+    private List<AuditionApplicationDTO> myAuditionApplicants;
     private MySettingTablePagination mySettingTablePagination;
 }

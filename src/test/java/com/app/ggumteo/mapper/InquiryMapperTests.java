@@ -6,7 +6,7 @@ import com.app.ggumteo.domain.member.MemberVO;
 import com.app.ggumteo.mapper.inquiry.InquiryMapper;
 import com.app.ggumteo.mapper.member.MemberMapper;
 import com.app.ggumteo.pagination.AdminPagination;
-import com.app.ggumteo.pagination.WorkAndFundingPagination;
+import com.app.ggumteo.pagination.MyWorkAndFundingPagination;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,11 +32,11 @@ public class InquiryMapperTests {
     @Test
     public void testSelectInquiryHistoryByMember() {
         MemberVO memberVO = null;
-        WorkAndFundingPagination workAndFundingPagination = new WorkAndFundingPagination();
+        MyWorkAndFundingPagination myWorkAndFundingPagination = new MyWorkAndFundingPagination();
         memberVO = memberMapper.selectById(1L).get();
-        workAndFundingPagination.setTotal(inquiryMapper.selectCountInquiryHistoryByMember(memberVO.getId()));
-        workAndFundingPagination.progress();
-        inquiryMapper.selectInquiryHistoryByMember(workAndFundingPagination, memberVO.getId())
+        myWorkAndFundingPagination.setTotal(inquiryMapper.selectCountInquiryHistoryByMember(memberVO.getId()));
+        myWorkAndFundingPagination.progress();
+        inquiryMapper.selectInquiryHistoryByMember(myWorkAndFundingPagination, memberVO.getId())
                 .stream().map(InquiryDTO::toString).forEach(log::info);
     }
 

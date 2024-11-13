@@ -2,8 +2,8 @@ package com.app.ggumteo.mapper.buy;
 
 import com.app.ggumteo.domain.buy.BuyFundingProductDTO;
 import com.app.ggumteo.domain.buy.BuyFundingProductVO;
-import com.app.ggumteo.pagination.SettingTablePagination;
-import com.app.ggumteo.pagination.WorkAndFundingPagination;
+import com.app.ggumteo.pagination.MySettingTablePagination;
+import com.app.ggumteo.pagination.MyWorkAndFundingPagination;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -13,7 +13,7 @@ import java.util.List;
 public interface BuyFundingProductMapper {
 //    펀딩 구매자 목록 조회
     public List<BuyFundingProductDTO> selectByFundingPostId(
-            @Param("settingTablePagination") SettingTablePagination settingTablePagination ,Long fundingPostId);
+            @Param("mySettingTablePagination") MySettingTablePagination mySettingTablePagination, Long fundingPostId);
 
 //    내 펀딩 게시물 하나의 구매자 전체 갯수
     public int selectCount(Long fundingPostId);
@@ -23,7 +23,7 @@ public interface BuyFundingProductMapper {
 
 //   내가 결제한 펀딩 목록 조회
     public List<BuyFundingProductDTO> selectBuyFundingListByMember
-    (@Param("workAndFundingPagination") WorkAndFundingPagination workAndFundingPagination
+    (@Param("myWorkAndFundingPagination") MyWorkAndFundingPagination myWorkAndFundingPagination
             , @Param("memberId") Long memberId, @Param("postType") String postType);
 
 //  내가 결제한 펀딩 목록 전체 갯수

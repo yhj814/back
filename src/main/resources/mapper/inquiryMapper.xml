@@ -155,7 +155,7 @@
                 join tbl_member m on mp.member_id = m.id and mp.member_id = #{memberId}
                 and p.post_type = 'INQUIRY'
         order by i.id desc
-            limit #{workAndFundingPagination.startRow}, #{workAndFundingPagination.rowCount};
+            limit #{myWorkAndFundingPagination.startRow}, #{myWorkAndFundingPagination.rowCount};
     </select>
 
     <!--내 문의 내역 목록 전체 갯수-->
