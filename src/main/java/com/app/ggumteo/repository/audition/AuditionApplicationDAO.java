@@ -17,7 +17,7 @@ public class AuditionApplicationDAO {
     }
 
     public AuditionDTO findByAuditionId(Long auditionId) {
-        return auditionApplicationMapper.findAuditionByauditionId(auditionId);
+        return auditionApplicationMapper.findByAuditionId(auditionId);
     }
 
     public int countApplicantsByAuditionId(Long auditionId) {

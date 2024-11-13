@@ -11,7 +11,7 @@ public interface AuditionApplicationMapper {
 
     void insert(AuditionApplicationDTO auditionApplicationDTO);
 
-    AuditionDTO findAuditionByauditionId(@Param("auditionId") Long auditionId);
+    AuditionDTO findByAuditionId(@Param("auditionId") Long auditionId);
 
     int countApplicantsByAuditionId(@Param("auditionId") Long auditionId);
 }
