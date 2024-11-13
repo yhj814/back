@@ -37,6 +37,7 @@ import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.view.RedirectView;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -93,11 +94,9 @@ public class TextWorkController {
         return "text/write";
     }
 
-   @PostMapping("write")
-    @ResponseBody
-    //    json으로 데이터를 반환하기위해 responsebody 씀
-    public WorkDTO write(
-           @ModelAttribute WorkDTO workDTO,
+    @PostMapping("write")
+    public RedirectView write(
+            @ModelAttribute WorkDTO workDTO,
             @RequestParam(value = "thumbnailFileName", required = false) String thumbnailFileName,
             @RequestParam(value = "fileNames", required = false) List<String> fileNames) {
         MemberVO member = (MemberVO) session.getAttribute("member");
@@ -125,14 +124,8 @@ public class TextWorkController {
         workService.write(workDTO);
 
         log.info("작품 작성 완료: {}", workDTO);
-        return workDTO;
+        return new RedirectView("/text/list");
     }
-
-
-
-
-
-
 
 
     // 작품 수정 폼으로 이동
@@ -152,13 +145,14 @@ public class TextWorkController {
             return "text/error";
         }
     }
+
     // 작품 업데이트 요청 처리
     @PostMapping("modify")
-    public String updateWork(
+    public RedirectView updateWork(
             @ModelAttribute WorkDTO workDTO,
             @RequestParam(value = "fileNames", required = false) List<String> fileNames,
             @RequestParam(value = "deletedFileIds", required = false) List<Long> deletedFileIds,
-            @RequestParam(value = "thumbnailFileName", required = false) String thumbnailFileName) {  // RedirectAttributes 제거
+            @RequestParam(value = "thumbnailFileName", required = false) String thumbnailFileName) {
         try {
             log.info("수정 요청 - 작품 정보: {}", workDTO);
 
@@ -180,13 +174,12 @@ public class TextWorkController {
 
             // 서비스에서 작품 업데이트 로직 실행
             workService.updateWork(workDTO, deletedFileIds);
-            return "redirect:/text/list";
+            return new RedirectView("/text/detail/" + workDTO.getId());
         } catch (Exception e) {
             log.error("Error updating work: ", e);
-            return "redirect:/text/modify/" + workDTO.getId();
+            return new RedirectView("/text/modify/" + workDTO.getId());
         }
     }
-
 
 
 

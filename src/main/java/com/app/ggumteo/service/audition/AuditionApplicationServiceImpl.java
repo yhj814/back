@@ -64,7 +64,7 @@ public class AuditionApplicationServiceImpl implements AuditionApplicationServic
             log.info("Creating alarm for hostMemberProfileId: {}", hostMemberProfileId);
 
             // 알림 생성
-            alarmService.createApplyAuditionAlarm(hostMemberProfileId, auditionApplicationDTO.getId(), message, AlarmSubType.);
+            alarmService.createApplyAuditionAlarm(hostMemberProfileId, auditionApplicationDTO.getId(), message, AlarmSubType.TEXT);
             log.info("Alarm created for AuditionApplicationId: {}", auditionApplicationDTO.getId());
         } else {
             log.warn("AuditionDTO is null for auditionId: {}", auditionId);
