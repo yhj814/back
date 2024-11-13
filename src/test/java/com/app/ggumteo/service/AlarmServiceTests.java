@@ -1,5 +1,6 @@
 package com.app.ggumteo.service;
 
+import com.app.ggumteo.constant.AlarmSubType;
 import com.app.ggumteo.domain.alarm.AlarmDTO;
 import com.app.ggumteo.domain.audition.AuditionApplicationDTO;
 import com.app.ggumteo.repository.alarm.AlarmDAO;
@@ -31,20 +32,20 @@ public class AlarmServiceTests {
     private AlarmService alarmService;
 
     @Test
-    public void testAddApplyAuditionAlarm() {alarmService.createApplyAuditionAlarm(1L,8L,"새로운 모집 신청이 왔습니다.");}
+    public void testAddApplyAuditionAlarm() {alarmService.createApplyAuditionAlarm(1L,8L,"새로운 모집 신청이 왔습니다.", AlarmSubType.TEXT);}
 
     @Test
     public void testNewReplyAlarm() {
-        alarmService.createReplyAlarm(1L, 1L, "새로운 댓글이 달렸습니다.");
+        alarmService.createReplyAlarm(1L, 1L, "새로운 댓글이 달렸습니다.", AlarmSubType.TEXT);
     }
 
     @Test
     public void testNewFundingAlarm() {
-        alarmService.createFundingAlarm(1L, 1L, "등록한 펀딩이 후원되었습니다.");
+        alarmService.createFundingAlarm(1L, 1L, "등록한 펀딩이 후원되었습니다.", AlarmSubType.TEXT);
     }
 
     @Test
     public void testNewWorkAlarm() {
-        alarmService.createWorkAlarm(1L, 1L, "등록한 작품이 판매 되었습니다.");
+        alarmService.createWorkAlarm(1L, 1L, "등록한 작품이 판매 되었습니다.", AlarmSubType.TEXT);
     }
 }

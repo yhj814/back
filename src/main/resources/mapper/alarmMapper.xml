@@ -6,26 +6,26 @@
 
     <!-- Insert Apply Audition Notification -->
     <insert id="insertApplyAuditionAlarm" parameterType="map">
-        INSERT INTO tbl_apply_audition_notification (member_profile_id, audition_application_id, message, is_read, create_date)
-        VALUES (#{memberProfileId}, #{auditionApplicationId}, #{message}, FALSE, CURRENT_TIMESTAMP)
+        INSERT INTO tbl_apply_audition_notification (member_profile_id, audition_application_id, message, is_read, create_date, sub_type)
+        VALUES (#{memberProfileId}, #{auditionApplicationId}, #{message}, FALSE, CURRENT_TIMESTAMP, #{subType})
     </insert>
 
     <!-- Insert Reply Notification -->
     <insert id="insertReplyAlarm" parameterType="map">
-        INSERT INTO tbl_reply_notification (reply_id, member_profile_id, message, is_read, create_date)
-        VALUES (#{replyId}, #{memberProfileId}, #{message}, FALSE, CURRENT_TIMESTAMP)
+        INSERT INTO tbl_reply_notification (reply_id, member_profile_id, message, is_read, create_date, sub_type)
+        VALUES (#{replyId}, #{memberProfileId}, #{message}, FALSE, CURRENT_TIMESTAMP, #{subType})
     </insert>
 
     <!-- Insert Work Notification -->
     <insert id="insertWorkAlarm" parameterType="map">
-        INSERT INTO tbl_work_notification (member_profile_id, buy_work_id, message, is_read, create_date)
-        VALUES (#{memberProfileId}, #{buyWorkId}, #{message}, FALSE, CURRENT_TIMESTAMP)
+        INSERT INTO tbl_work_notification (member_profile_id, buy_work_id, message, is_read, create_date, sub_type)
+        VALUES (#{memberProfileId}, #{buyWorkId}, #{message}, FALSE, CURRENT_TIMESTAMP, #{subType})
     </insert>
 
     <!-- Insert Funding Product Notification -->
     <insert id="insertFundingProductAlarm" parameterType="map">
-        INSERT INTO tbl_funding_product_notification (member_profile_id, buy_funding_product_id, message, is_read, create_date)
-        VALUES (#{memberProfileId}, #{buyFundingProductId}, #{message}, FALSE, CURRENT_TIMESTAMP)
+        INSERT INTO tbl_funding_product_notification (member_profile_id, buy_funding_product_id, message, is_read, create_date, sub_type)
+        VALUES (#{memberProfileId}, #{buyFundingProductId}, #{message}, FALSE, CURRENT_TIMESTAMP, #{subType})
     </insert>
 
     <!-- Select Statements -->
