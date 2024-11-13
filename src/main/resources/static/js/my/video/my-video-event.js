@@ -111,14 +111,17 @@ myBuyWorkListPaging.addEventListener("click", (e)=>{
 });
 
 // 구매한 작품 결제 내역 삭제
-myBuyWorkListLayout.addEventListener('click', async (e) => {
+myBuyWorkListLayout.addEventListener('click', (e) => {
     // 클릭한 타겟이 '결제 내역 삭제' 버튼이라면
     if(e.target.id === "buy-work-delete-btn" ) {
         console.log("들어옴")
-        const buyWorkId = e.target.classList[1];
-        console.log(buyWorkId)
-        await myPageService.removeBuyWorkPost(buyWorkId);
-        await myPageService.getMyBuyVideoWorkList(globalThis.myBuyWorkPage, memberId, showMyBuyWorkList);
+        const myBuyWorkPostId = e.target.classList[1];
+        console.log("myBuyWorkPostId : ", myBuyWorkPostId)
+        const deleteModal = document.querySelector(`.modal-${myBuyWorkPostId}`)
+        console.log("deleteModal : ", deleteModal)
+        deleteModal.style.display = "flex";
+        // await myPageService.removeBuyWorkPost(buyWorkId);
+        // await myPageService.getMyBuyVideoWorkList(globalThis.myBuyWorkPage, memberId, showMyBuyWorkList);
     }
 });
 
