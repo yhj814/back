@@ -314,6 +314,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     // 폼 제출 시 처리
+    // 폼 제출 시 처리
     submitButton.addEventListener("click", function (event) {
         event.preventDefault(); // 폼 기본 제출 방지
 
@@ -324,26 +325,27 @@ document.addEventListener("DOMContentLoaded", function () {
             console.log(pair[0] + ', ' + pair[1]);
         }
 
-        fetch("/video/write", {
+        // 폼 데이터 전송
+        fetch("/video/write", { // 엔드포인트 변경
             method: "POST",
             body: formData
         })
             .then((response) => {
                 if (response.ok) {
-                    return response.json();
+                    return response.json(); // 성공 시 WorkDTO 객체
                 } else {
-                    console.error('서버 응답 상태:', response.status);
-                    throw new Error('서버 오류 발생');
+                    return response.json().then(errorData => {
+                        throw new Error(errorData.error || "저장 중 오류가 발생했습니다.");
+                    });
                 }
             })
             .then((data) => {
-                if (data.success) {
-                    window.location.href = "/video/list";
-                } else {
-                    alert("저장 중 오류가 발생했습니다.");
-                }
+                // 성공적으로 WorkDTO가 반환됨
+                console.log("WorkDTO:", data);
+                window.location.href = "/video/list"; // 성공 시 리스트 페이지로 이동
             })
             .catch((error) => {
+                alert(error.message);
                 console.error("에러 발생:", error);
             });
     });

@@ -417,23 +417,24 @@ document.addEventListener("DOMContentLoaded", function () {
         })
             .then((response) => {
                 if (response.ok) {
-                    return response.json();
+                    return response.json(); // 성공 시 FundingDTO 객체
                 } else {
-                    console.error('서버 응답 상태:', response.status);
-                    throw new Error('서버 오류 발생');
+                    return response.json().then(errorData => {
+                        throw new Error(errorData.error || "저장 중 오류가 발생했습니다.");
+                    });
                 }
             })
             .then((data) => {
-                if (data.success) {
-                    window.location.href = "/text/funding/list"; // 성공 시 리스트 페이지로 이동
-                } else {
-                    alert("저장 중 오류가 발생했습니다.");
-                }
+                // 성공적으로 FundingDTO가 반환됨
+                console.log("FundingDTO:", data);
+                window.location.href = "/text/funding/list"; // 성공 시 리스트 페이지로 이동
             })
             .catch((error) => {
+                alert(error.message);
                 console.error("에러 발생:", error);
             });
     });
+
 
     // **버튼 활성화 확인 함수**
     function checkFormCompletion() {

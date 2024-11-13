@@ -2,6 +2,7 @@ package com.app.ggumteo.repository.audition;
 
 import com.app.ggumteo.domain.audition.AuditionApplicationDTO;
 import com.app.ggumteo.domain.audition.AuditionApplicationVO;
+import com.app.ggumteo.domain.audition.AuditionDTO;
 import com.app.ggumteo.mapper.audition.AuditionApplicationMapper;
 import com.app.ggumteo.pagination.MyAuditionPagination;
 import com.app.ggumteo.pagination.MySettingTablePagination;
@@ -18,6 +19,10 @@ public class AuditionApplicationDAO {
 
     public void save(AuditionApplicationDTO auditionApplicationDTO) {
         auditionApplicationMapper.insert(auditionApplicationDTO);
+    }
+
+    public AuditionDTO findByAuditionId(Long auditionId) {
+        return auditionApplicationMapper.findAuditionByauditionId(auditionId);
     }
 
     public int countApplicantsByAuditionId(Long auditionId) {

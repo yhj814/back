@@ -123,7 +123,7 @@ public class PostFileServiceImpl implements PostFileService {
             // 썸네일 생성 (필요한 경우)
             if (file.getContentType() != null && file.getContentType().startsWith("image")) {
                 try (FileOutputStream thumbnail = new FileOutputStream(new File(rootPath, "t_" + uniqueFileName))) {
-                    Thumbnailator.createThumbnail(file.getInputStream(), thumbnail, 100, 100);
+                    Thumbnailator.createThumbnail(file.getInputStream(), thumbnail, 300, 300);
                 }
             }
 
