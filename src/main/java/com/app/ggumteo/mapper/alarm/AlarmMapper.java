@@ -9,13 +9,13 @@ import java.util.List;
 @Mapper
 public interface AlarmMapper {
 
-    void insertApplyAuditionAlarm(@Param("memberProfileId") Long memberProfileId, @Param("auditionApplicationId") Long auditionApplicationId, @Param("message") String message);
+    void insertApplyAuditionAlarm(@Param("memberProfileId") Long memberProfileId, @Param("auditionApplicationId") Long auditionApplicationId, @Param("message") String message, @Param("subType") String subType);
 
-    void insertReplyAlarm(@Param("memberProfileId") Long memberProfileId, @Param("replyId") Long replyId, @Param("message") String message);
+    void insertReplyAlarm(@Param("memberProfileId") Long memberProfileId, @Param("replyId") Long replyId, @Param("message") String message, @Param("subType") String subType);
 
-    void insertWorkAlarm(@Param("memberProfileId") Long memberProfileId, @Param("buyWorkId") Long buyWorkId, @Param("message") String message);
+    void insertWorkAlarm(@Param("memberProfileId") Long memberProfileId, @Param("buyWorkId") Long buyWorkId, @Param("message") String message, @Param("subType") String subType);
 
-    void insertFundingProductAlarm(@Param("memberProfileId") Long memberProfileId, @Param("buyFundingProductId") Long buyFundingProductId, @Param("message") String message);
+    void insertFundingProductAlarm(@Param("memberProfileId") Long memberProfileId, @Param("buyFundingProductId") Long buyFundingProductId, @Param("message") String message, @Param("subType") String subType);
 
     public List<AlarmDTO> selectAlarmsByMemberId(@Param("memberProfileId") Long memberProfileId);
 

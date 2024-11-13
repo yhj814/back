@@ -25,8 +25,8 @@ public class AlarmDAO {
      * @param auditionApplicationId  오디션 신청 ID
      * @param message                알림 메시지
      */
-    public void saveApplyAuditionAlarm(Long memberProfileId, Long auditionApplicationId, String message) {
-        alarmMapper.insertApplyAuditionAlarm(memberProfileId, auditionApplicationId, message);
+    public void saveApplyAuditionAlarm(Long memberProfileId, Long auditionApplicationId, String message, String subType) {
+        alarmMapper.insertApplyAuditionAlarm(memberProfileId, auditionApplicationId, message, subType);
         log.info("Saved Apply Audition Alarm for MemberProfileId: {}, AuditionApplicationId: {}", memberProfileId, auditionApplicationId);
     }
 
@@ -37,8 +37,8 @@ public class AlarmDAO {
      * @param replyId         댓글 ID
      * @param message         알림 메시지
      */
-    public void saveReplyAlarm(Long memberProfileId, Long replyId, String message) {
-        alarmMapper.insertReplyAlarm(memberProfileId, replyId, message);
+    public void saveReplyAlarm(Long memberProfileId, Long replyId, String message, String subType) {
+        alarmMapper.insertReplyAlarm(memberProfileId, replyId, message, subType);
         log.info("Saved Reply Alarm for MemberProfileId: {}, ReplyId: {}", memberProfileId, replyId);
     }
 
@@ -49,8 +49,8 @@ public class AlarmDAO {
      * @param buyWorkId       구매 작업 ID
      * @param message         알림 메시지
      */
-    public void saveWorkAlarm(Long memberProfileId, Long buyWorkId, String message) {
-        alarmMapper.insertWorkAlarm(memberProfileId, buyWorkId, message);
+    public void saveWorkAlarm(Long memberProfileId, Long buyWorkId, String message, String subType) {
+        alarmMapper.insertWorkAlarm(memberProfileId, buyWorkId, message, subType);
         log.info("Saved Work Alarm for MemberProfileId: {}, BuyWorkId: {}", memberProfileId, buyWorkId);
     }
 
@@ -61,8 +61,8 @@ public class AlarmDAO {
      * @param buyFundingProductId    구매 펀딩 상품 ID
      * @param message                알림 메시지
      */
-    public void saveFundingProductAlarm(Long memberProfileId, Long buyFundingProductId, String message) {
-        alarmMapper.insertFundingProductAlarm(memberProfileId, buyFundingProductId, message);
+    public void saveFundingProductAlarm(Long memberProfileId, Long buyFundingProductId, String message, String subType) {
+        alarmMapper.insertFundingProductAlarm(memberProfileId, buyFundingProductId, message, subType);
         log.info("Saved Funding Product Alarm for MemberProfileId: {}, BuyFundingProductId: {}", memberProfileId, buyFundingProductId);
     }
 

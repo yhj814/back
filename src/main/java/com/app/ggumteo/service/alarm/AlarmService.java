@@ -1,18 +1,19 @@
 package com.app.ggumteo.service.alarm;
 
+import com.app.ggumteo.constant.AlarmSubType;
 import com.app.ggumteo.domain.alarm.AlarmDTO;
 
 import java.util.List;
 
 public interface AlarmService {
 
-    public void createApplyAuditionAlarm(Long memberProfileId, Long auditionApplicationId, String message);
+    public void createApplyAuditionAlarm(Long memberProfileId, Long auditionApplicationId, String message, AlarmSubType subType);
 
-    public void createReplyAlarm(Long memberProfileId, Long replyId, String message);
+    public void createReplyAlarm(Long memberProfileId, Long replyId, String message, AlarmSubType subType);
 
-    public void createWorkAlarm(Long memberProfileId, Long buyWorkId, String message);
+    public void createWorkAlarm(Long memberProfileId, Long buyWorkId, String message, AlarmSubType subType);
 
-    public void createFundingAlarm(Long memberProfileId, Long buyFundingId, String message);
+    public void createFundingAlarm(Long memberProfileId, Long buyFundingId, String message, AlarmSubType subType);
 
     public List<AlarmDTO> getAlarmsByMemberId(Long memberProfileId);
 
