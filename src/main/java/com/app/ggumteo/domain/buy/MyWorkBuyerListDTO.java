@@ -1,6 +1,6 @@
 package com.app.ggumteo.domain.buy;
 
-import com.app.ggumteo.pagination.SettingTablePagination;
+import com.app.ggumteo.pagination.MySettingTablePagination;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -12,5 +12,5 @@ import java.util.List;
 @Getter @Setter @ToString
 public class MyWorkBuyerListDTO {
     private List<BuyWorkDTO> myWorkBuyers;
-    private SettingTablePagination settingTablePagination;
+    private MySettingTablePagination mySettingTablePagination;
 }

@@ -17,3 +17,18 @@ select *from tbl_audition_application;
 
 insert into tbl_audition_application
 values (34,1,'.',57,now(),default);
+
+
+select a.id, a.audition_field, a.audition_career, a.expected_amount,
+       a.audition_deadline, a.audition_personnel, a.audition_location, a.audition_status,
+       p.post_title, p.post_content, p.created_date,
+       mp.profile_name, mp.profile_email
+from tbl_audition_application aa
+         join tbl_audition a on aa.audition_id = a.id
+         join tbl_post p on a.id = p.id
+         join tbl_member_profile mp on p.member_profile_id = mp.id
+         join tbl_member m on mp.member_id = m.id
+         join tbl_member_profile aa_mp on aa.member_profile_id = aa_mp.id
+         join tbl_member aa_m on aa_mp.member_id = aa_m.id and aa_m.id = 1
+order by a.id desc
+limit 0, 2;

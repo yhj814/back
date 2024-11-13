@@ -24,6 +24,8 @@ public class BuyWorkDTO {
     private String postContent; // 게시글 내용
     private String genreType; // 장르 타입
     private String profileNickName; // 작품 게시글 올린 사람의 프로필 닉네임
+    private String thumbnailFileName; // 썸네일 파일 경로
+    private String thumbnailFilePath; // 썸네일 파일 경로(수정 전)
 
     public BuyWorkVO toVO(){
         return new BuyWorkVO(id, workId, workSendStatus, memberProfileId, createdDate);
