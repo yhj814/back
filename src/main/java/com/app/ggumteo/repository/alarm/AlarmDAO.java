@@ -120,4 +120,17 @@ public class AlarmDAO {
         }
         return updatedRows;
     }
+
+    /**
+     * 특정 회원의 특정 subType에 대한 읽지 않은 알람 수를 조회합니다.
+     *
+     * @param memberProfileId 회원 프로필 ID
+     * @param subType         알람 서브 타입
+     * @return 읽지 않은 알람 수
+     */
+    public int countUnreadAlarmsBySubtype(Long memberProfileId, String subType) {
+        int count = alarmMapper.countUnreadAlarmsBySubtype(memberProfileId, subType);
+        log.info("Unread alarms count for MemberProfileId: {}, SubType: {}: {}", memberProfileId, subType, count);
+        return count;
+    }
 }

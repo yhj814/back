@@ -42,36 +42,62 @@ public class AuditionApplicationServiceImpl implements AuditionApplicationServic
 
     @Override
     @Transactional
-    public void write(AuditionApplicationDTO auditionApplicationDTO) {
+    public void write(AuditionApplicationDTO auditionApplicationDTO, AlarmSubType subType) {
         log.info("Starting write method for AuditionApplicationDTO: {}", auditionApplicationDTO);
 
-        // auditionApplication 테이블에 신청 정보 삽입
+        // 신청 정보 저장
         auditionApplicationDAO.save(auditionApplicationDTO);
         log.info("Saved AuditionApplicationDTO with ID: {}", auditionApplicationDTO.getId());
 
-        // auditionId 가져오기
+        // 오디션 정보 조회
         Long auditionId = auditionApplicationDTO.getAuditionId();
-        log.info("Retrieved auditionId from AuditionApplicationDTO: {}", auditionId);
-
-        // AuditionDTO 조회
         AuditionDTO audition = auditionApplicationDAO.findByAuditionId(auditionId);
         log.info("Fetched AuditionDTO: {}", audition);
 
-        // 알림 생성 조건 확인
+        // 알람 생성 조건 확인
         if (audition != null) {
             Long hostMemberProfileId = audition.getMemberProfileId();
             String message = "새로운 오디션 신청이 들어왔습니다.";
             log.info("Creating alarm for hostMemberProfileId: {}", hostMemberProfileId);
 
-            // 알림 생성
-            alarmService.createApplyAuditionAlarm(hostMemberProfileId, auditionApplicationDTO.getId(), message, AlarmSubType.TEXT);
+            // 알람 생성
+            alarmService.createApplyAuditionAlarm(hostMemberProfileId, auditionApplicationDTO.getId(), message, subType);
             log.info("Alarm created for AuditionApplicationId: {}", auditionApplicationDTO.getId());
         } else {
             log.warn("AuditionDTO is null for auditionId: {}", auditionId);
         }
 
-        // 파일 처리 로직 (생략)
-        // ...
+        // 신청 ID 가져오기
+        Long auditionApplicationId = auditionApplicationDTO.getId();
+
+        // 업로드된 파일 처리
+        List<String> fileNames = auditionApplicationDTO.getFileNames();
+        if (fileNames != null && !fileNames.isEmpty()) {
+            for (String fileName : fileNames) {
+                // 파일 VO 생성 및 설정
+                FileVO fileVO = new FileVO();
+                fileVO.setFileName(fileName);
+                fileVO.setFilePath(getPath());
+                File file = new File("C:/upload/" + getPath() + "/" + fileName);
+                fileVO.setFileSize(String.valueOf(file.length()));
+
+                try {
+                    fileVO.setFileType(Files.probeContentType(file.toPath()));
+                } catch (IOException e) {
+                    log.error("파일의 콘텐츠 타입을 결정하는 중 오류 발생", e);
+                    fileVO.setFileType("unknown");  // 기본값 설정 또는 예외 처리
+                }
+
+                // 파일 정보 데이터베이스에 저장
+                fileDAO.save(fileVO);
+                log.info("Saved FileVO with ID: {}", fileVO.getId());
+
+                // 파일과 신청의 연관 관계 설정
+                AuditionApplicationFileVO auditionApplicationFileVO = new AuditionApplicationFileVO(fileVO.getId(), auditionApplicationId);
+                auditionApplicationFileDAO.insertAuditionApplicationFile(auditionApplicationFileVO);
+                log.info("Linked FileVO ID: {} with AuditionApplicationID: {}", fileVO.getId(), auditionApplicationId);
+            }
+        }
 
         log.info("Completed write method for AuditionApplicationDTO ID: {}", auditionApplicationDTO.getId());
     }
@@ -85,6 +111,3 @@ public class AuditionApplicationServiceImpl implements AuditionApplicationServic
         return LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd"));
     }
 }
-
-
-

@@ -1,6 +1,8 @@
 package com.app.ggumteo.controller.audition;
 
+import com.app.ggumteo.constant.AlarmSubType;
 import com.app.ggumteo.constant.PostType;
+import com.app.ggumteo.constant.RedirectPaths;
 import com.app.ggumteo.domain.audition.AuditionApplicationDTO;
 import com.app.ggumteo.domain.audition.AuditionApplicationVO;
 import com.app.ggumteo.domain.audition.AuditionDTO;
@@ -302,14 +304,13 @@ public class VideoAuditionController {
         auditionApplicationDTO.setMemberProfileId(memberProfile.getId());
         auditionApplicationDTO.setFileNames(fileNames);
 
-        // 신청 데이터 저장
-        auditionApplicationService.write(auditionApplicationDTO);
+        // 신청 데이터 저장 및 알람 생성
+        // subType을 VIDEO로 설정하여 서비스 메서드 호출
+        auditionApplicationService.write(auditionApplicationDTO, AlarmSubType.VIDEO);
 
-        return "redirect:/audition/video/detail/{id}"; // 신청 성공 후 상세 페이지로 이동
+        log.info("Audition application processed and alarm created.");
+
+        return "reditect:/audition/video/detail" + id; // 상세 페이지로 포워드
     }
-
-
-
-
 
 }

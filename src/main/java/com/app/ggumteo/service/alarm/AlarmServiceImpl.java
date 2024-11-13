@@ -149,4 +149,11 @@ public class AlarmServiceImpl implements AlarmService {
             return false;
         }
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public int countUnreadAlarmsBySubtype(Long memberProfileId, String subType) {
+        log.info("Counting unread alarms for MemberProfileId: {}, SubType: {}", memberProfileId, subType);
+        return alarmDAO.countUnreadAlarmsBySubtype(memberProfileId, subType);
+    }
 }

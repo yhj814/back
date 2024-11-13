@@ -227,4 +227,21 @@
         </choose>
     </update>
 
+    <!-- Count Unread Alarms by SubType -->
+    <select id="countUnreadAlarmsBySubtype" resultType="int">
+        SELECT COUNT(*) FROM (
+                                 SELECT id FROM tbl_apply_audition_notification
+                                 WHERE member_profile_id = #{memberProfileId} AND sub_type = #{subType} AND is_read = 0
+                                 UNION ALL
+                                 SELECT id FROM tbl_reply_notification
+                                 WHERE member_profile_id = #{memberProfileId} AND sub_type = #{subType} AND is_read = 0
+                                 UNION ALL
+                                 SELECT id FROM tbl_work_notification
+                                 WHERE member_profile_id = #{memberProfileId} AND sub_type = #{subType} AND is_read = 0
+                                 UNION ALL
+                                 SELECT id FROM tbl_funding_product_notification
+                                 WHERE member_profile_id = #{memberProfileId} AND sub_type = #{subType} AND is_read = 0
+                             ) AS unread_alarms
+    </select>
+
 </mapper>
