@@ -56,6 +56,10 @@ document.addEventListener("DOMContentLoaded", function () {
                     globalThis.myAuditionPage = 1;
                     myPageService.getMyVideoAuditionList(globalThis.myAuditionPage, memberId, showMyAuditionList);
 
+
+                    globalThis.myApplicationAuditionPage = 1;
+                    myPageService.getMyVideoApplicationAuditionList(globalThis.myApplicationAuditionPage, memberId, showMyApplicationAuditionList);
+
                     globalThis.myInquiryHistoryPage = 1;
                     myPageService.getMyInquiryHistoryList(globalThis.myInquiryHistoryPage, memberId, showMyInquiryHistoryList);
                 }

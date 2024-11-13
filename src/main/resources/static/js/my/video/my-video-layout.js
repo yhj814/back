@@ -50,7 +50,7 @@ const showMyWorkList = ({myWorkPosts, myWorkAndFundingPagination}) => {
                 <div class="products-list">
                     <div class="flex-box">
                         <div class="products-text">
-                            <a
+                            <a href=""
                                 ><p
                                     class="my-products-title"
                                 >
@@ -62,7 +62,7 @@ const showMyWorkList = ({myWorkPosts, myWorkAndFundingPagination}) => {
                             >
                                 <a
                                     ><p
-                                        class="btn smooth my-products-category"
+                                        class="smooth my-products-category"
                                     >
                                          ${myWorkPost.genreType}
                                     </p></a
@@ -153,7 +153,7 @@ const showMyWorkList = ({myWorkPosts, myWorkAndFundingPagination}) => {
                                     <p
                                         class="action-tooltip bottom-action"
                                     >
-                                        수정
+                                        삭제
                                     </p>
                                 </button>
                             </div>
@@ -198,6 +198,7 @@ const showMyWorkList = ({myWorkPosts, myWorkAndFundingPagination}) => {
 
     myWorkListPaging.innerHTML = pagingText;
 }
+// 나의 작품 - 삭제 버튼 누를 때 모달창/삭제
 
 // 나의 작품 - 구매자 목록, 페이징
 const showMyWorkBuyerList = ({myWorkBuyers, mySettingTablePagination}) => {
@@ -247,7 +248,7 @@ const showMyWorkBuyerList = ({myWorkBuyers, mySettingTablePagination}) => {
         if(myWorkBuyer.workSendStatus === "NO") {
             text += `<div class="btn-choice btn-secret active">`
         } else {
-            text += `<div class="btn-choice btn-secret">`
+            text += `<div class="btn-choice btn-secret ${myWorkBuyer.id}">`
         }
              text +=          `<input
                                         class="radio-value"
@@ -551,7 +552,7 @@ const showMyFundingList = ({myFundingPosts, myWorkAndFundingPagination}) => {
                                 <p
                                     class="action-tooltip bottom-action"
                                 >
-                                    수정
+                                    삭제
                                 </p>
                             </button>
                         </div>
@@ -908,7 +909,7 @@ const showMyAuditionList = ({myAuditionPosts, myAuditionPagination}) => {
                         <h2 class="job_tit">
                             <a
                                 target="_blank"
-                                title="[역삼역] 단편영화 배우모집합니다."
+                                title="${myAuditionPost.postTitle}"
                                 href=""
                             >
                                 <span>
@@ -931,8 +932,7 @@ const showMyAuditionList = ({myAuditionPosts, myAuditionPagination}) => {
                                 ${myAuditionPost.auditionDeadLine} </span
                             >`
         if (myAuditionPost.auditionStatus === 'YES') {
-           text += `<button class="sri_btn_xs"
-                                title="클릭하면 입사지원할 수 있는 창이 뜹니다.">
+           text += `<button class="sri_btn_xs">
                                 <span
                                     class="sri_btn_immediately"
                                     >모집중</span>
@@ -950,11 +950,7 @@ const showMyAuditionList = ({myAuditionPosts, myAuditionPagination}) => {
                             class="job_condition"
                         >
                             <span
-                                ><a
-                                    target="_blank"
-                                    href=""
-                                    >${myAuditionPost.auditionLocation}</a
-                                ></span
+                                >${myAuditionPost.auditionLocation}</span
                             >`
         if (myAuditionPost.auditionCareer === '') {
             text +=  `<span
@@ -968,18 +964,10 @@ const showMyAuditionList = ({myAuditionPosts, myAuditionPagination}) => {
         text +=          `</div>
                         <div class="job_sector">
                             <b
-                                ><a
-                                    target="_blank"
-                                    href=""
-                                    >${myAuditionPost.expectedAmount}</a
-                                ></b
+                                >${myAuditionPost.expectedAmount}</b
                             >,
                             <b
-                                ><a
-                                    target="_blank"
-                                    href=""
-                                    >${myAuditionPost.auditionPersonnel}</a
-                                ></b
+                                >${myAuditionPost.auditionPersonnel}</b
                             >
                             <span
                                 class="job_day"
@@ -994,14 +982,7 @@ const showMyAuditionList = ({myAuditionPosts, myAuditionPagination}) => {
                             style="
                                 margin-top: 43px;
                             "
-                        >
-                            <a
-                                href=""
-                                target="_blank"
-                                class=""
-                            >
-                                ${myAuditionPost.profileName}
-                            </a>
+                        >${myAuditionPost.profileName}
                         </strong>
                         <span
                             class="corp_affiliate"
@@ -1061,7 +1042,7 @@ const showMyAuditionList = ({myAuditionPosts, myAuditionPagination}) => {
                                 <p
                                         class="action-tooltip bottom-action"
                                 >
-                                    수정
+                                    삭제
                                 </p>
                             </button>
                         </div>
@@ -1205,7 +1186,7 @@ const showMyAuditionApplicantList = ({myAuditionApplicants, mySettingTablePagina
 
         } else {
 
-            text += `<div class="btn-choice btn-secret">`
+            text += `<div class="btn-choice btn-secret ${myAuditionApplicant.id}">`
 
         }
 
@@ -1259,97 +1240,84 @@ const showMyApplicationAuditionList = ({myApplicationAuditionPosts, myAuditionPa
                         <div class="item_recruit">
                             <div class="area_job">
                                 <h2 class="job_tit">
-                                    <a
-                                        target="_blank"
-                                        title="[역삼역] 단편영화 배우모집합니다."
-                                        href=""
-                                    >
-                                        <span>
-                                            [역삼역]
-                                            단편영화
-                                            배우
-                                            모집합니다.
-                                            <b>배우</b>
-                                            채용
-                                        </span>
-                                    </a>
-                                </h2>
-                                <div class="job_date">
-                                    <span class="date"
-                                        >~
-                                        11/07(목)</span
-                                    >
-                                    <button
-                                        class="sri_btn_xs"
-                                        title="클릭하면 입사지원할 수 있는 창이 뜹니다."
-                                    >
-                                        <span
-                                            class="sri_btn_immediately"
-                                            >모집중</span
-                                        >
-                                    </button>
-                                </div>
-                                <div
-                                    class="job_condition"
-                                >
-                                    <span
-                                        ><a
-                                            target="_blank"
-                                            href=""
-                                            >서울</a
-                                        >
-                                        <a
-                                            target="_blank"
-                                            href=""
-                                            >강남구</a
-                                        ></span
-                                    >
-                                    <span
-                                        >신입·경력</span
-                                    >
-                                </div>
-                                <div class="job_sector">
-                                    <b
-                                        ><a
-                                            target="_blank"
-                                            href=""
-                                            >200000원</a
-                                        ></b
-                                    >,
-                                    <b
-                                        ><a
-                                            target="_blank"
-                                            href=""
-                                            >5명</a
-                                        ></b
-                                    >,
-
-                                    <span
-                                        class="job_day"
-                                        >등록일
-                                        24/10/08</span
-                                    >
-                                </div>
-                            </div>
-                            <div class="area_corp">
-                                <strong
-                                    class="corp_name"
-                                    style="
-                                        margin-top: 5px;
-                                    "
-                                >
-                                    <a
-                                        href=""
-                                        target="_blank"
-                                        class=""
-                                    >
-                                        홍길동
-                                    </a>
-                                </strong>
+                                     <a
+                                target="_blank"
+                                title="${myApplicationAuditionPost.postTitle}"
+                                href=""
+                            >
+                                <span>
+                                    ${myApplicationAuditionPost.postTitle} / `
+        if (myApplicationAuditionPost.auditionField == 1) {
+            text += `<b>배우</b> 채용`
+        } else if (myApplicationAuditionPost.auditionField == 2) {
+            text += `<b>스텝</b> 채용`
+        } else if (myApplicationAuditionPost.auditionField == 3) {
+            text += `<b>감독</b> 채용`
+        } else if (myApplicationAuditionPost.auditionField == 4) {
+            text += `<b>기타</b> 채용`
+        }
+        text += `</span>
+                            </a>
+                        </h2>
+                        <div class="job_date">
+                            <span class="date"
+                                >~
+                                ${myApplicationAuditionPost.auditionDeadLine} </span
+                            >`
+        if (myApplicationAuditionPost.auditionStatus === 'YES') {
+            text += `<button class="sri_btn_xs">
                                 <span
-                                    class="corp_affiliate"
-                                    >홍길동@gmail.com</span
-                                >
+                                    class="sri_btn_immediately"
+                                    >모집중</span>
+                            </button>`
+        }
+        else {
+            text += `<button class="sri_btn_xs">
+                                <span class="btn-complete">
+                                    모집완료</span>
+                     </button>`
+        }
+
+        text +=  `</div>
+                        <div
+                            class="job_condition"
+                        >
+                            <span
+                                >${myApplicationAuditionPost.auditionLocation}</span
+                            >`
+        if (myApplicationAuditionPost.auditionCareer === '') {
+            text +=  `<span
+                                >·신입</span
+                            >`
+        } else {
+            text += `<span
+                                >·경력</span
+                            >`
+        }
+        text +=          `</div>
+                        <div class="job_sector">
+                            <b
+                                >${myApplicationAuditionPost.expectedAmount}</b
+                            >,
+                            <b
+                                >${myApplicationAuditionPost.auditionPersonnel}</b
+                            >
+                            <span
+                                class="job_day"
+                                >등록일
+                                ${myApplicationAuditionPost.createdDate}</span
+                            >
+                        </div>
+                    </div>
+                    <div class="area_corp">
+                        <strong
+                            class="corp_name"
+                        >${myApplicationAuditionPost.profileName}
+                        </strong>
+                        <span
+                            class="corp_affiliate"
+                            >${myApplicationAuditionPost.profileEmail}</span
+                        >
                             </div>
 
                             <div
@@ -1362,26 +1330,23 @@ const showMyApplicationAuditionList = ({myApplicationAuditionPosts, myAuditionPa
 
     myApplicationAuditionListLayout.innerHTML = text;
 
-    if(myAuditionPagination.prev){
-        pagingText += `
-            <li class="page-item">
-                <a href="${myWorkAndFundingPagination.startPage - 1}" class="page-link back"></a>
-            </li>
+    if (myAuditionPagination.prev) {
+        pagingText += `<a href="${myAuditionPagination.startPage - 1}" class="btnPrev page_move track_event"
+                        page="10" title="이전">이전</a>
         `
     }
     for(let i=myAuditionPagination.startPage; i<=myAuditionPagination.endPage; i++){
         if(myAuditionPagination.page === i){
-            pagingText += `<li class="page-item"><div class="page-link active">${i}</div></li>`
+            pagingText += `<span class="page">${i}</span>`
         }else{
-            pagingText += `<li class="page-item"><a href="${i}" class="page-link">${i}</a></li>`
+            pagingText += `<a href="${i}" page="${i}" class="page page_move track_event">
+                            ${i}</a>`
         }
     }
 
     if(myAuditionPagination.next) {
-        pagingText += `
-            <li class="page-item">
-                <a href="${myAuditionPagination.endPage + 1}" class="page-link next"></a>
-            </li>
+        pagingText += `<a href="${myAuditionPagination.endPage + 1}" class="btnNext page_move track_event"
+                          page="11" title="다음">다음</a>
         `
     }
 

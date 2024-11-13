@@ -59,11 +59,24 @@ myWorkListLayout.addEventListener('click', async (e) => {
                         const buyWorkId = e.target.classList[2];
                         const sendYes = "YES";
 
-                        if(e.target.nextElementSibling.classList[2] === "active") {
+                        if(e.target.nextElementSibling.classList[2] === "active" ||
+                            e.target.nextElementSibling.classList[3] === "active") {
                             e.target.classList.add("active");
                             e.target.nextElementSibling.classList.remove("active")
                             await myPageService.updateWorkSendStatus({
                                 id: buyWorkId, workSendStatus: sendYes
+                            });
+                        }
+                    } else if(e.target.classList[1] === "btn-secret") {
+                        const buyWorkId = e.target.classList[2];
+                        const sendNo = "NO";
+
+                        if(e.target.previousElementSibling .classList[2] === "active" ||
+                            e.target.previousElementSibling .classList[3] === "active") {
+                            e.target.classList.add("active");
+                            e.target.previousElementSibling.classList.remove("active")
+                            await myPageService.updateWorkSendStatus({
+                                id: buyWorkId, workSendStatus: sendNo
                             });
                         }
                     }
@@ -77,6 +90,8 @@ myWorkListLayout.addEventListener('click', async (e) => {
         } else {// 작품 구매자 테이블이 화면에 나타나있다면
                 // 작품 구매자 테이블을 화면에서 숨겨라
             workBuyerTable.style.display = "none";
+            globalThis.myWorkBuyerPage = 1;
+            workBuyerTable.innerHTML = await myPageService.getMyVideoWorkBuyerList(globalThis.myWorkBuyerPage, myWorkPostId, showMyWorkBuyerList);
 
             console.log("9 : ", globalThis.myWorkBuyerPage);
         }
@@ -190,15 +205,11 @@ myAuditionListPaging.addEventListener("click", (e)=>{
 
 // 나의 모집 지원자 목록
 myAuditionListLayout.addEventListener('click', async (e) => {
-    console.log("들어옴1")
-    if(e.target.id === "my-audition-applicant-btn" ) {
-        console.log("e.target : ", e.target)
-        const myAuditionId = e.target.classList[1];
-        console.log("myAuditionId : ", myAuditionId)
 
+    if(e.target.id === "my-audition-applicant-btn" ) {
+        const myAuditionId = e.target.classList[1];
         const auditionApplicantTable = document.querySelector(`.audition-applicant-${myAuditionId}`);
-        console.log("auditionApplicantTable.children : ", auditionApplicantTable.children)
-        console.log("auditionApplicantTable.children.length : ", auditionApplicantTable.children.length)
+
         if (
             auditionApplicantTable.style.display === "none"
         ) {
@@ -206,15 +217,10 @@ myAuditionListLayout.addEventListener('click', async (e) => {
                 globalThis.myAuditionApplicantPage = 1;
                 auditionApplicantTable.innerHTML = await myPageService.getMyVideoAuditionApplicantList(globalThis.myAuditionApplicantPage, myAuditionId, showMyAuditionApplicantList);
 
-                console.log("auditionApplicantTable-block", auditionApplicantTable)
-                // 구매자 테이블을 클릭했을 때
                 auditionApplicantTable.addEventListener('click', async (e) => {
                     e.preventDefault();
-                    // 만약 a 태그를 클릭한다면
                     if(e.target.tagName === 'A') {
-                        // 클릭한 링크(의 번호)를 페이지 변수?에 담아라
                         globalThis.myAuditionApplicantPage = e.target.getAttribute("href");
-                        // 구매자 테이블 html 을
                         auditionApplicantTable.innerHTML = await myPageService.getMyVideoAuditionApplicantList(globalThis.myAuditionApplicantPage, myAuditionId, showMyAuditionApplicantList);
                     }
 
@@ -222,7 +228,8 @@ myAuditionListLayout.addEventListener('click', async (e) => {
                         const auditionApplicantId = e.target.classList[2];
                         const confirmOk = "YES";
 
-                        if(e.target.nextElementSibling.classList[2] === "active") {
+                        if(e.target.nextElementSibling.classList[2] === "active" ||
+                            e.target.nextElementSibling.classList[3] === "active") {
                             e.target.classList.add("active");
                             e.target.nextElementSibling.classList.remove("active")
                             await myPageService.updateConfirmStatus({
@@ -231,14 +238,43 @@ myAuditionListLayout.addEventListener('click', async (e) => {
                             });
                         }
                     }
+
+                    if(e.target.classList[1] === "btn-secret") {
+                        const auditionApplicantId = e.target.classList[2];
+                        const confirmNo = "NO";
+
+                        if(e.target.previousElementSibling .classList[2] === "active"  ||
+                            e.target.previousElementSibling .classList[3] === "active") {
+                            e.target.classList.add("active");
+                            e.target.previousElementSibling.classList.remove("active")
+                            await myPageService.updateConfirmStatus({
+                                id: auditionApplicantId, confirmStatus: confirmNo
+                            });
+                        }
+                    }
+
                 });
             }
             auditionApplicantTable.style.display = "block";
         } else {
             auditionApplicantTable.style.display = "none";
+            globalThis.myAuditionApplicantPage = 1;
+            auditionApplicantTable.innerHTML = await myPageService.getMyVideoAuditionApplicantList(globalThis.myAuditionApplicantPage, myAuditionId, showMyAuditionApplicantList);
         }
     }
 
+});
+
+// 내가 신청한 모집
+globalThis.myApplicationAuditionPage = 1;
+myPageService.getMyVideoApplicationAuditionList(globalThis.myApplicationAuditionPage, memberId, showMyApplicationAuditionList);
+
+myApplicationAuditionListPaging.addEventListener("click", (e)=>{
+    e.preventDefault();
+    if(e.target.tagName === "A") {
+        globalThis.myApplicationAuditionPage = e.target.getAttribute("href");
+        myPageService.getMyVideoApplicationAuditionList(globalThis.myApplicationAuditionPage, memberId, showMyApplicationAuditionList);
+    }
 });
 
 // 문의 내역
