@@ -11,9 +11,9 @@ import org.springframework.stereotype.Component;
 public class AlarmDTO {
     private Long id;
     private Long memberProfileId;
+    private Long dataId;
     private String message;
+    private boolean isRead;
+    private String alarmType;
     private String createDate;
-    private Boolean isRead;
-
-    public AlarmVO toVO() {return new AlarmVO(id, memberProfileId, message, createDate, isRead);}
 }

@@ -93,7 +93,7 @@ public class TextWorkController {
         return "text/write";
     }
 
-    @PostMapping("write")
+   @PostMapping("write")
     @ResponseBody
     //    json으로 데이터를 반환하기위해 responsebody 씀
     public WorkDTO write(
@@ -127,6 +127,8 @@ public class TextWorkController {
         log.info("작품 작성 완료: {}", workDTO);
         return workDTO;
     }
+
+
 
 
 

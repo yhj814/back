@@ -1,6 +1,7 @@
 package com.app.ggumteo.controller.audition;
 
 import com.app.ggumteo.constant.PostType;
+import com.app.ggumteo.domain.audition.AuditionApplicationDTO;
 import com.app.ggumteo.domain.audition.AuditionDTO;
 import com.app.ggumteo.domain.file.AuditionApplicationFileDTO;
 import com.app.ggumteo.domain.file.FileVO;
@@ -105,7 +106,7 @@ public class TextAuditionController {
             }
 
             auditionDTO.setPostType(PostType.AUDITIONTEXT.name());
-            auditionDTO.setAuditionStatus("모집중");
+            auditionDTO.setAuditionStatus("YES");
             auditionDTO.setMemberProfileId(memberProfile.getId());
             auditionDTO.setMemberId(member.getId());
 
@@ -231,5 +232,69 @@ public class TextAuditionController {
         model.addAttribute("postFiles", postFiles);
 
         return "/audition/text/detail";
+    }
+
+    @GetMapping("/application/{id}")
+    public String application(@PathVariable("id") Long id, Model model) {
+        // 세션에서 멤버 정보 가져오기
+        MemberVO member = (MemberVO) session.getAttribute("member");
+        MemberProfileDTO memberProfile = (MemberProfileDTO) session.getAttribute("memberProfile");
+
+        log.info("application 메서드 - 사용자 ID: {}, 프로필 ID: {}, 프로필 이름: {}",
+                member != null ? member.getId() : "null",
+                memberProfile != null ? memberProfile.getId() : "null",
+                memberProfile != null ? memberProfile.getProfileName() : "null");
+
+        if (member == null || memberProfile == null) {
+            model.addAttribute("error", "로그인이 필요합니다.");
+            return "redirect:/login"; // 로그인 페이지로 리다이렉트
+        }
+
+        // URL에서 전달받은 id를 사용하여 auditionDTO 조회
+        AuditionDTO audition = auditionService.findAuditionById(id);
+        if (audition == null) {
+            model.addAttribute("error", "해당 오디션 정보를 찾을 수 없습니다.");
+            return "/error"; // 오류 페이지로 이동
+        }
+
+        // 모델에 필요한 데이터 추가
+        model.addAttribute("memberProfile", memberProfile);
+        model.addAttribute("audition", audition);
+        model.addAttribute("id", id);
+
+        log.info("오디션 ID: {}", id);
+
+        return "audition/text/application"; // 신청서 작성 페이지로 이동
+    }
+
+
+    @PostMapping("/application/{id}")
+    public String submitApplication(
+            @PathVariable("id") Long id,
+            @RequestParam(value = "fileNames", required = false) List<String> fileNames,
+            AuditionApplicationDTO auditionApplicationDTO,
+            Model model) {
+        // 세션에서 멤버 정보 가져오기
+        MemberVO member = (MemberVO) session.getAttribute("member");
+        MemberProfileDTO memberProfile = (MemberProfileDTO) session.getAttribute("memberProfile");
+
+        if (member == null || memberProfile == null) {
+            model.addAttribute("error", "로그인이 필요합니다.");
+            return "redirect:/login"; // 로그인 페이지로 리다이렉트
+        }
+
+        log.info("submitApplication 메서드 - 사용자 ID: {}, 프로필 ID: {}", member.getId(), memberProfile.getId());
+        log.info("받아온 Audition ID: {}", id);
+        log.info("받아온 fileNames: {}", fileNames);
+
+        // 신청 데이터 설정
+        auditionApplicationDTO.setAuditionId(id);
+        auditionApplicationDTO.setMemberProfileId(memberProfile.getId());
+        auditionApplicationDTO.setFileNames(fileNames);
+
+        // 신청 데이터 저장
+        auditionApplicationService.write(auditionApplicationDTO);
+
+        return "redirect:/audition/text/detail/{id}"; // 신청 성공 후 상세 페이지로 이동
     }
 }
