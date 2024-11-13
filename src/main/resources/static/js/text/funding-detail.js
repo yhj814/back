@@ -2,6 +2,8 @@
 var modal = document.getElementById("report-modal");
 var btn = document.querySelector(".report");
 var span = document.getElementsByClassName("close")[0];
+const isFundingCompleted = document.querySelector('.funding-status-end') !== null;
+
 
 // 버튼을 클릭하면 모달을 보여줌
 btn.addEventListener("click", () => {

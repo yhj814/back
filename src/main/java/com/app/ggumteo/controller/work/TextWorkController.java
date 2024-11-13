@@ -15,6 +15,7 @@ import com.app.ggumteo.domain.post.PostVO;
 import com.app.ggumteo.domain.reply.ReplyDTO;
 import com.app.ggumteo.domain.work.WorkDTO;
 import com.app.ggumteo.domain.work.WorkVO;
+import com.app.ggumteo.exception.SessionNotFoundException;
 import com.app.ggumteo.mapper.post.PostMapper;
 import com.app.ggumteo.mapper.work.WorkMapper;
 import com.app.ggumteo.pagination.Pagination;
@@ -92,38 +93,42 @@ public class TextWorkController {
         return "text/write";
     }
 
-    @PostMapping("write")
-    public ResponseEntity<?> write(
-            @ModelAttribute WorkDTO workDTO,
+   @PostMapping("write")
+    @ResponseBody
+    //    json으로 데이터를 반환하기위해 responsebody 씀
+    public WorkDTO write(
+           @ModelAttribute WorkDTO workDTO,
             @RequestParam(value = "thumbnailFileName", required = false) String thumbnailFileName,
-            @RequestParam(value = "fileNames", required = false) List<String> fileNames,
-            HttpSession session) {
-        try {
-            MemberVO member = (MemberVO) session.getAttribute("member");
-            MemberProfileDTO memberProfile = (MemberProfileDTO) session.getAttribute("memberProfile");
-            if (member == null) {
-                log.error("세션에 멤버 정보가 없습니다.");
-                return ResponseEntity.status(400).body(Collections.singletonMap("error", "세션에 멤버 정보가 없습니다."));
-            }
-
-            workDTO.setPostType(PostType.WORKTEXT.name());
-            workDTO.setMemberProfileId(member.getId());
-
-            // 파일명 리스트를 DTO에 설정
-            workDTO.setFileNames(fileNames);
-
-            // 썸네일 파일명 설정
-            workDTO.setThumbnailFileName(thumbnailFileName);
-
-            // 서비스 계층으로 로직 이동
-            workService.write(workDTO);
-
-            return ResponseEntity.ok(Collections.singletonMap("success", true));
-        } catch (Exception e) {
-            log.error("글 저장 중 오류 발생", e);
-            return ResponseEntity.status(500).body(Collections.singletonMap("error", "저장 중 오류가 발생했습니다."));
+            @RequestParam(value = "fileNames", required = false) List<String> fileNames) {
+        MemberVO member = (MemberVO) session.getAttribute("member");
+        if (member == null) {
+            log.error("세션에 멤버 정보가 없습니다.");
+            throw new SessionNotFoundException("세션에 멤버 정보가 없습니다.");
         }
+
+        workDTO.setPostType(PostType.WORKTEXT.name());
+        workDTO.setMemberProfileId(member.getId());
+
+        // 파일명 리스트를 DTO에 설정
+        if (fileNames != null && !fileNames.isEmpty()) {
+            workDTO.setFileNames(fileNames);
+            // 파일 타입 설정은 서비스 계층에서 처리
+        }
+
+        // 썸네일 파일명 설정
+        if (thumbnailFileName != null && !thumbnailFileName.isEmpty()) {
+            workDTO.setThumbnailFileName(thumbnailFileName);
+            // 썸네일 파일 타입 설정은 서비스 계층에서 처리
+        }
+
+        // 서비스 계층으로 로직 이동
+        workService.write(workDTO);
+
+        log.info("작품 작성 완료: {}", workDTO);
+        return workDTO;
     }
+
+
 
 
 
