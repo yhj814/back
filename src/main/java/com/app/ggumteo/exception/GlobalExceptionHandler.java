@@ -23,14 +23,5 @@ public class GlobalExceptionHandler {
         return Collections.singletonMap("error", ex.getMessage());
     }
 
-    // 일반적인 예외 처리
-    @ExceptionHandler(Exception.class)
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    @ResponseBody
-    public Map<String, String> handleGeneralException(Exception ex) {
-        log.error("Internal server error: {}", ex.getMessage());
-        return Collections.singletonMap("error", "저장 중 오류가 발생했습니다.");
-    }
-
 
 }
