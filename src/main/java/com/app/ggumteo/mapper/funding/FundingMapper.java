@@ -68,7 +68,7 @@ public interface FundingMapper {
     public void updateFundingProduct(FundingProductVO fundingProductVO);
 
     // 펀딩 상세 조회
-    public List<FundingDTO> selectFundingById(@Param("id") Long id);
+    FundingDTO selectFundingById(@Param("id") Long id);
 
     // 다중 파일 조회 (작품 상세보기)
     public List<PostFileDTO> selectFilesByPostId(@Param("postId") Long postId);
@@ -76,7 +76,7 @@ public interface FundingMapper {
     // 펀딩 상품 정보 조회
     public List<FundingProductVO> selectFundingProductsByFundingId(@Param("fundingId") Long fundingId);
 
-    // 같은 장르의 펀딩 게시글 조회 (최대 3개)
+    // 같은 장르의 펀딩 게시글 조회 (최대 5개)
     public List<FundingDTO> selectRelatedFundingByGenre(
             @Param("genreType") String genreType,
             @Param("fundingId") Long fundingId

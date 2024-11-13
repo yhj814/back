@@ -28,7 +28,9 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 
 @Service
@@ -74,6 +76,24 @@ public class FundingServiceImpl implements FundingService{
             File file = new File("C:/upload/" + getPath() + "/" + thumbnailFileName);
             thumbnailFileVO.setFileSize(String.valueOf(file.length()));
 
+            // 파일 타입 설정
+            String extension = thumbnailFileName.substring(thumbnailFileName.lastIndexOf(".") + 1).toLowerCase();
+            String fileType;
+            switch (extension) {
+                case "png":
+                case "jpg":
+                case "jpeg":
+                    fileType = "image";
+                    break;
+                case "mp4":
+                case "avi":
+                    fileType = "video";
+                    break;
+                default:
+                    fileType = "other";
+            }
+            thumbnailFileVO.setFileType(fileType); // FileVO에 file_type 설정
+
             // 파일 정보 데이터베이스에 저장
             fileDAO.save(thumbnailFileVO);
 
@@ -109,6 +129,24 @@ public class FundingServiceImpl implements FundingService{
                     File file = new File("C:/upload/" + getPath() + "/" + fileName);
                     fileVO.setFileSize(String.valueOf(file.length()));
 
+                    // 파일 타입 설정
+                    String extension = fileName.substring(fileName.lastIndexOf(".") + 1).toLowerCase();
+                    String fileType;
+                    switch (extension) {
+                        case "png":
+                        case "jpg":
+                        case "jpeg":
+                            fileType = "image";
+                            break;
+                        case "mp4":
+                        case "avi":
+                            fileType = "video";
+                            break;
+                        default:
+                            fileType = "other";
+                    }
+                    fileVO.setFileType(fileType); // FileVO에 file_type 설정
+
                     // 파일 정보 데이터베이스에 저장
                     fileDAO.save(fileVO);
 
@@ -119,6 +157,8 @@ public class FundingServiceImpl implements FundingService{
             }
         }
     }
+
+
     private String getPath() {
         return LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd"));
     }
@@ -146,12 +186,18 @@ public class FundingServiceImpl implements FundingService{
 
     @Override
     public FundingDTO findFundingById(Long id) {
-        FundingDTO funding = fundingDAO.findFundingId(id);
+        FundingDTO funding = fundingDAO.findByFundingId(id);
         if (funding == null) {
             throw new RuntimeException("펀딩을 찾을 수 없습니다: ID " + id);
         }
+
+        // endDate 값 로그 출력
+        log.info("FundingDTO retrieved: {}", funding);
+        log.info("Funding endDate: {}", funding.getEndDate());
+
         return funding;
     }
+
 
 
     @Override
@@ -168,6 +214,8 @@ public class FundingServiceImpl implements FundingService{
         log.info("삭제할 파일 IDs: {}", deletedFileIds);
         log.info("삭제할 펀딩 상품 IDs: {}", fundingDTO.getFundingProductIds());
         log.info("새로운 썸네일 파일명: {}", fundingDTO.getThumbnailFileName());
+        log.info("Service에서 받은 펀딩 상품 목록: {}", fundingDTO.getFundingProducts());
+
 
         // 기존 데이터를 다시 조회하여 최신 정보를 가져옴
         FundingDTO currentFunding = fundingDAO.findFundingId(fundingDTO.getId());
@@ -228,18 +276,18 @@ public class FundingServiceImpl implements FundingService{
         List<FundingProductVO> updatedProducts = fundingDTO.getFundingProducts();
         if (updatedProducts != null) {
             for (FundingProductVO product : updatedProducts) {
+                log.info("Updating product - ID: {}, Name: {}, Price: {}, Amount: {}", product.getId(), product.getProductName(), product.getProductPrice(), product.getProductAmount());
                 if (product.getId() != null) {
-                    // 기존 펀딩 상품 업데이트
                     fundingDAO.updateFundingProduct(product);
                     log.info("펀딩 상품 업데이트 완료: {}", product);
                 } else {
-                    // 새로운 펀딩 상품 삽입
                     product.setFundingId(fundingDTO.getId());
                     fundingDAO.saveFundingProduct(product);
                     log.info("새로운 펀딩 상품 삽입 완료: {}", product);
                 }
             }
         }
+
 
         // 기존 파일 삭제
         if (deletedFileIds != null && !deletedFileIds.isEmpty()) {
@@ -314,6 +362,10 @@ public class FundingServiceImpl implements FundingService{
     public void updateFundingStatusToEnded() {
         fundingDAO.updateFundingStatusToEnded();
     }
+
+
+
+
     @Override
     public List<FundingDTO> findRelatedFundingByGenre(String genreType, Long fundingId) {
         return fundingDAO.findRelatedFundingByGenre(genreType, fundingId);

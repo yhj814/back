@@ -1,6 +1,7 @@
 package com.app.ggumteo.service.audition;
 
 import com.app.ggumteo.domain.audition.AuditionApplicationDTO;
+import com.app.ggumteo.domain.audition.AuditionDTO;
 import com.app.ggumteo.domain.file.AuditionApplicationFileVO;
 import com.app.ggumteo.domain.file.FileVO;
 import com.app.ggumteo.domain.file.PostFileVO;
@@ -11,6 +12,7 @@ import com.app.ggumteo.repository.audition.AuditionApplicationDAO;
 import com.app.ggumteo.repository.file.AuditionApplicationFileDAO;
 import com.app.ggumteo.repository.file.FileDAO;
 import com.app.ggumteo.repository.notification.ApplyAuditionNotificationDAO;
+import com.app.ggumteo.service.alarm.AlarmService;
 import com.app.ggumteo.service.file.AuditionApplicationFileService;
 import com.app.ggumteo.service.file.AuditionApplicationFileServiceImpl;
 import lombok.RequiredArgsConstructor;
@@ -35,6 +37,7 @@ public class AuditionApplicationServiceImpl implements AuditionApplicationServic
     private final ApplyAuditionNotificationDAO applyAuditionNotificationDAO;
     private final FileDAO fileDAO;
     private final AuditionApplicationFileDAO auditionApplicationFileDAO;
+    private final AlarmService alarmService;
 
     @Override
     @Transactional
@@ -47,9 +50,18 @@ public class AuditionApplicationServiceImpl implements AuditionApplicationServic
         log.info("Generated auditionApplicationId: {}", auditionApplicationId);
 
         // 알림 테이블에 알림 추가
-        ApplyAuditionNotificationVO notificationVO = new ApplyAuditionNotificationVO();
-        notificationVO.setAuditionApplicationId(auditionApplicationId); // ID 설정
-        applyAuditionNotificationDAO.save(notificationVO);
+        // 알림 생성: 오디션 주최자에게 알림 전송
+        Long auditionId = auditionApplicationDTO.getAuditionId(); // 오디션 ID
+        // 오디션 정보를 조회하여 주최자의 프로필 ID를 가져옵니다.
+        AuditionDTO audition = auditionApplicationDAO.findByAuditionId(auditionId);
+        if (audition != null) {
+            Long hostMemberProfileId = audition.getMemberProfileId(); // 주최자의 프로필 ID
+            String message = "새로운 오디션 신청이 들어왔습니다.";
+            alarmService.createApplyAuditionAlarm(hostMemberProfileId, auditionApplicationId, message);
+            log.info("Notification created for HostMemberProfileId: {}, AuditionApplicationId: {}", hostMemberProfileId, auditionApplicationId);
+        } else {
+            log.warn("해당 오디션을 찾을 수 없습니다. AuditionId: {}", auditionId);
+        }
 
         log.info("Notification saved with auditionApplicationId: {}", auditionApplicationId);
 

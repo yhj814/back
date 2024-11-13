@@ -38,6 +38,11 @@ public class FundingDAO {
     }
 
 
+
+
+
+
+
     // 펀딩 삽입 메서드
     public void save(FundingDTO fundingDTO) {
         if (fundingDTO.getFundingStatus() == null) {
@@ -75,7 +80,7 @@ public class FundingDAO {
         fundingMapper.updateFundingStatusToEnded();
     }
     // 펀딩 상세보기
-    public List<FundingDTO> findByFundingId(Long id) {
+    public FundingDTO findByFundingId(Long id) {
         return fundingMapper.selectFundingById(id);
     }
 

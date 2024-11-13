@@ -14,18 +14,9 @@ import org.springframework.stereotype.Component;
 public class AlarmVO {
     private Long id;
     private Long memberProfileId;
+    private Long dataId;
     private String message;
-    private String createdDate;
-    private Boolean isRead;
-
-
-    public AlarmDTO toDTO() {
-        AlarmDTO alarmDTO = new AlarmDTO();
-        alarmDTO.setId(id);
-        alarmDTO.setMemberProfileId(memberProfileId);
-        alarmDTO.setMessage(message);
-        alarmDTO.setIsRead(isRead);
-        alarmDTO.setCreateDate(createdDate);
-        return alarmDTO;
-    }
+    private boolean isRead;
+    private String alarmType;
+    private String createDate;
 }
