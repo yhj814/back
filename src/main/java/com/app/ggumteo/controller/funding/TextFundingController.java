@@ -79,9 +79,7 @@ public class TextFundingController {
     }
 
     @PostMapping("write")
-    @ResponseBody
-//    json으로 데이터를 반환하기위해 responsebody 씀
-    public FundingDTO write(
+    public RedirectView write(
             @ModelAttribute FundingDTO fundingDTO,
             @RequestParam(value = "thumbnailFileName", required = false) String thumbnailFileName,
             @RequestParam(value = "fileNames", required = false) List<String> fileNames) {
@@ -108,8 +106,9 @@ public class TextFundingController {
         fundingService.write(fundingDTO);
 
         log.info("펀딩 작성 완료: {}", fundingDTO);
-        return fundingDTO;
+        return new RedirectView("/text/funding/list");
     }
+
 
     @GetMapping("list")
     public String list(

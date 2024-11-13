@@ -397,42 +397,16 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // **폼 제출 시 처리**
+    // 폼 제출 시 처리
     submitButton.addEventListener("click", function (event) {
-        event.preventDefault(); // 폼 기본 제출 방지
-
-        const formData = new FormData(form); // 폼 데이터 전체를 포함
-
-        // 상품 데이터는 이미 fundingProducts[index].fieldName으로 이름이 지정되어 있으므로 추가 작업 불필요
-
-        // 폼 데이터 확인용 로그 추가
-        for (let pair of formData.entries()) {
-            console.log(pair[0] + ', ' + pair[1]);
+        // 폼 제출 버튼이 비활성화된 경우 제출 방지
+        if (submitButton.disabled) {
+            event.preventDefault();
+            return;
         }
 
-        // 폼 데이터 전송
-        fetch("/video/funding/write", { // 올바른 엔드포인트로 유지
-            method: "POST",
-            body: formData
-        })
-            .then((response) => {
-                if (response.ok) {
-                    return response.json(); // 성공 시 FundingDTO 객체
-                } else {
-                    return response.json().then(errorData => {
-                        throw new Error(errorData.error || "저장 중 오류가 발생했습니다.");
-                    });
-                }
-            })
-            .then((data) => {
-                // 성공적으로 FundingDTO가 반환됨
-                console.log("FundingDTO:", data);
-                window.location.href = "/video/funding/list"; // 성공 시 리스트 페이지로 이동
-            })
-            .catch((error) => {
-                alert(error.message);
-                console.error("에러 발생:", error);
-            });
+        // 폼 제출
+        form.submit();
     });
 
 

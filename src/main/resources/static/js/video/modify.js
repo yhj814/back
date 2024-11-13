@@ -79,7 +79,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // 폼 제출 시 썸네일과 삭제할 파일 정보 포함
     const writeForm = document.getElementById("write-form");
-    writeForm.addEventListener("submit", function () {
+    writeForm.addEventListener("submit", function (event) {
+        // 폼 제출 버튼이 비활성화된 경우 제출 방지
+        if (submitButton.disabled) {
+            event.preventDefault();
+            return;
+        }
+
         console.log("폼 제출 시 삭제할 파일 IDs:", deletedFileIds); // 삭제할 파일 ID 로그 출력
 
         if (deletedFileIds.length > 0) {
@@ -100,6 +106,7 @@ document.addEventListener("DOMContentLoaded", function () {
         console.log("폼 제출 시 업로드된 파일들:", uploadedFiles);
     });
 
+
     // 인풋 포커스 효과 설정
     setupInputEffects(inputElement, labelInputPartner);
     setupTextareaEffects(textareaElement, textareaBorder);
@@ -113,6 +120,27 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     // 함수 정의
+    // 버튼 활성화 확인 함수
+    const submitButton = document.querySelector(".btn-submit");
+    function checkFormCompletion() {
+        const isInputValid = inputElement && inputElement.value.trim() !== "";
+        const isTextareaValid = textareaElement && textareaElement.value.trim() !== "";
+
+        if (isInputValid && isTextareaValid) {
+            submitButton.disabled = false;
+            submitButton.classList.add("active");
+        } else {
+            submitButton.disabled = true;
+            submitButton.classList.remove("active");
+        }
+    }
+    // 각 입력 필드에 이벤트 리스너 추가
+    if (inputElement) {
+        inputElement.addEventListener("input", checkFormCompletion);
+    }
+    if (textareaElement) {
+        textareaElement.addEventListener("input", checkFormCompletion);
+    }
 
     // 인풋 효과 설정 함수
     function setupInputEffects(input, label) {

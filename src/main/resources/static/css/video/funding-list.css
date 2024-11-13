@@ -338,7 +338,7 @@ li:last-child > .page-link {
 .content-meta-elem.meta-icon {
     width: 16px;
     height: 16px;
-    margin-right: -100px !important;
+    margin-right: -45px !important;
     margin-top: 2px;
 }
 .content-meta-elem {
@@ -405,4 +405,8 @@ li:last-child > .page-link {
     font-size: 12px;
     line-height: 20px;
     font-weight: 400;
+}
+.upload-time {
+    margin-right: 17px;
+    color: #9e9e9e;
 }
