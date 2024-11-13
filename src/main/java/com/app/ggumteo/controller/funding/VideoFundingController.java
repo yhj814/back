@@ -228,7 +228,8 @@ public class VideoFundingController {
             @RequestParam(value = "fileNames", required = false) List<String> fileNames,
             @RequestParam(value = "deletedFileIds", required = false) List<Long> deletedFileIds,
             @RequestParam(value = "fundingProductIds", required = false) String fundingProductIds,
-            @RequestParam(value = "thumbnailFileName", required = false) String thumbnailFileName) {
+            @RequestParam(value = "thumbnailFileName", required = false) String thumbnailFileName,
+                Model model) {
         try {
             log.info("수정 요청 - 펀딩 정보: {}", fundingDTO);
             log.info("삭제할 파일 IDs: {}", deletedFileIds);
@@ -240,11 +241,12 @@ public class VideoFundingController {
             MemberVO member = (MemberVO) session.getAttribute("member");
             if (member == null) {
                 log.error("세션에 멤버 정보가 없습니다.");
-                return "redirect:/main";  // 로그인 페이지로 리다이렉트
+                model.addAttribute("errorMessage", "펀딩을 수정하려면 먼저 로그인하세요.");
+                return "/main";  // 로그인 뷰로 이동
             }
 
             // 펀딩 타입 설정
-            fundingDTO.setPostType(PostType.FUNDINGTEXT.name());
+            fundingDTO.setPostType(PostType.FUNDINGVIDEO.name());
 
             // 파일명 리스트를 DTO에 설정
             if (fileNames != null && !fileNames.isEmpty()) {
@@ -268,10 +270,28 @@ public class VideoFundingController {
             fundingService.updateFunding(fundingDTO, deletedFileIds);
 
             log.info("펀딩 수정 완료: 펀딩 ID {}", fundingDTO.getId());
-            return "redirect:/video/funding/detail/" + fundingDTO.getId();
+            // 상세 페이지에 필요한 데이터 로드
+            FundingDTO updatedFunding = fundingService.findFundingById(fundingDTO.getId());
+            if (updatedFunding == null) {
+                throw new Exception("펀딩 정보를 찾을 수 없습니다.");
+            }
+
+            List<FundingProductVO> fundingProducts = fundingService.findFundingProductsByFundingId(updatedFunding.getId());
+            updatedFunding.setFundingProducts(fundingProducts);
+            List<PostFileDTO> postFiles = fundingService.findFilesByPostId(updatedFunding.getId());
+            String genreType = updatedFunding.getGenreType();
+            List<FundingDTO> relatedFundings = fundingService.findRelatedFundingByGenre(genreType, updatedFunding.getId());
+
+            // 모델에 데이터 추가
+            model.addAttribute("funding", updatedFunding);
+            model.addAttribute("postFiles", postFiles);
+            model.addAttribute("relatedFundings", relatedFundings);
+
+
+            return "video/funding/funding-detail";
         } catch (Exception e) {
             log.error("펀딩 수정 중 오류 발생", e);
-            return "redirect:/video/funding/modify/" + fundingDTO.getId();
+            return "video/funding/error";
         }
     }
 
