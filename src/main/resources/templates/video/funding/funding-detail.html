@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://js.bootpay.co.kr/bootpay-5.0.1.min.js" type="application/javascript"></script>
+    <title>글 펀딩 상세페이지</title>
+    <link rel="stylesheet" href="/css/video/funding-detail.css" />
+</head>
+<body class="ggumteo-funding" th:attr="data-work-id=${funding.id},data-member-id=${session.memberProfile.id},
+               data-profile-name=${session.memberProfile.profileName},
+               data-profile-phone=${session.memberProfile.profilePhone},
+               data-profile-email=${session.memberProfile.profileEmail}">
+<div class="funding-detail-page">
+    <div class="container">
+        <div class="content-wrapper">
+            <div class="ggumteo-funding-wrapper">
+                <!-- 왼쪽 div -->
+                <div class="left-side">
+                    <div class="header">
+                        <div class="funding-status-div">
+                            <div style="display: flex">
+                                <div th:if="${funding.fundingStatus == '펀딩 중'}" class="funding-status">
+                                    펀딩중
+                                </div>
+                                <div th:if="${funding.fundingStatus == '펀딩 완료'}" class="funding-status-end">
+                                    펀딩완료
+                                </div>
+                            </div>
+                        </div>
+                        <div class="header-title" th:text="${funding.postTitle}">
+                            펀딩글 타이틀
+                            <button class="btn report">
+                                <div class="report-img">
+                                    <img
+                                            src="/images/video/report.jpg"
+                                    />
+                                </div>
+                                <div class="report-div">신고하기</div>
+                            </button>
+                        </div>
+                        <div class="funding-category" th:text="${funding.genreType}"></div>
+                        <div class="header-subtitle">
+                            <div class="header-subtitle-content">
+                                <span class="funding-persent" th:text="${funding.fundingPercentage + ' %'}"></span>
+                                진행중
+                            </div>
+                        </div>
+                    </div>
+                    <div class="funding-content-wrapper">
+                        <!-- 펀딩내용 -->
+                        <div class="content-title">펀딩작품 설명</div>
+                        <!-- 펀딩내용설명 -->
+                        <div class="funding-content" th:text="${funding.postContent}"></div>
+                        <!-- 펀딩내용 이미지 -->
+                        <div class="funding-img" th:each="file : ${postFiles}" th:if="${file.fileName != funding.thumbnailFileName}">
+                            <img th:src="@{'/video/funding/display?fileName=/' + ${file.filePath} + '/' + ${file.fileName}}" />
+                        </div>
+                        <!-- 이미지설명 -->
+                        <div class="funding-img-content" th:text="${funding.fileContent}">
+                            글 작성할때 이미지 첨부하면 쓸
+                            설명글!!!!!!!!!
+                        </div>
+                    </div>
+                </div>
+                <!-- 오른쪽 div -->
+                <div class="right-side">
+                    <div class="right-side-wrapper">
+                        <!-- 펀딩설명 -->
+                        <div class="funding-box">
+                            <div class="funding-box-title">
+                                꿈터에서 진행중인 펀딩과정
+                            </div>
+                            <!-- 펀딩제목및,간단한소개,펀딩시작날짜 -->
+                            <div class="ggumteo-process">
+                                <div class="process-subject">
+                                    <div
+                                            class="process-subject-icon"
+                                    ></div>
+                                    펀딩 소개(고정)
+                                </div>
+                                <div class="process-content">
+                                    <div class="process-bar"></div>
+                                    <div class="process-content-detail">
+                                        <div class="funding-intro" th:text="${funding.fundingContent}">
+                                            펀딩 소개글(입력해야함)
+                                        </div>
+                                        <div
+                                                class="funding-intro-detail"
+                                        >
+                                            <div class="funding-start-date">
+                                                펀딩시작 날짜
+                                                <span class="start-date" th:text="${funding.createdDate.substring(0, 10)}"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- 펀딩투자자모집 및 투자자수, 남은일수 -->
+                            <div class="ggumteo-process">
+                                <div class="process-subject">
+                                    <div
+                                            class="process-subject-icon"
+                                    ></div>
+                                    펀딩 현황(고정)
+                                </div>
+                                <div class="process-content">
+                                    <div class="process-bar"></div>
+                                    <div class="process-content-detail">
+                                        <div class="funding-investor">
+                                            목표 투자자수 :
+                                            <span class="investor-number" th:text="${funding.investorNumber + '명'}"></span>
+                                        </div>
+                                        <div
+                                                class="funding-intro-detail"
+                                        >
+                                            <div
+                                                    class="funding-end-date"
+                                            >
+                                                펀딩마감 날짜
+                                                <span class="end-date" th:text="${funding.endDate != null} ? ${funding.endDate.substring(0, 10)} : 'N/A'"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- 펀딩 목표 금액 현재 달성한 금액 및 목표금액까지의 퍼센트   -->
+                            <div class="ggumteo-process">
+                                <div class="process-subject">
+                                    <div
+                                            class="process-subject-icon"
+                                    ></div>
+                                    펀딩 금액(고정)
+                                </div>
+                                <div class="process-content">
+                                    <div class="process-bar"></div>
+                                    <div class="process-content-detail">
+                                        <div class="funding-money">
+                                            목표금액 :
+                                            <span
+                                                    class="investor-number"
+                                                    th:text="${funding.targetPrice}"
+                                            >1,000,000(입력)</span
+                                            >원
+                                        </div>
+                                        <div
+                                                class="funding-intro-detail"
+                                        >
+                                            <div
+                                                    class="funding-today-money"
+                                            >
+                                                현재까지 금액 :
+                                                <span
+                                                        class="today-money"
+                                                        th:text="${funding.convergePrice}"
+                                                >500,000</span
+                                                >원
+                                            </div>
+                                        </div>
+                                        <div
+                                                class="funding-persent-div"
+                                        >
+                                            <!-- 타이틀아래에 있는 퍼센트와 같아야함 -->
+                                            <span class="funding-persent" th:text="${funding.fundingPercentage + ' %'}"></span>
+                                            <span>진행중</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--  펀딩 프로젝트 창작자 소개란 -->
+                            <div class="ggumteo-process">
+                                <div class="process-subject">
+                                    <div
+                                            class="process-subject-icon"
+                                    ></div>
+                                    펀딩 창작자 소개(고정)
+                                </div>
+                                <div class="process-content">
+                                    <div class="process-bar"></div>
+                                    <div class="process-content-detail">
+                                        <div class="funding-writer">
+                                            <div class="writer-profile">
+                                                <img th:src="${funding.profileImgUrl}"
+                                                     class="profile-img"
+                                                />
+                                            </div>
+                                            <div
+                                                    class="writer-profile-name"
+                                            >
+                                                <div
+                                                        class="profile-name"
+                                                        th:text="${funding.profileNickname}"
+                                                >
+                                                    작성자이름
+                                                </div>
+                                                <div
+                                                        class="write-intro"
+                                                        th:text="${funding.profileEtc}"
+                                                >
+                                                            <span
+                                                            >작성자 소개
+                                                                <br />
+                                                            </span>
+                                                    마이페이지 내정보
+                                                    추가사항 내용
+                                                </div>
+                                                <div
+                                                        class="writer-email"
+                                                >
+                                                            <span
+                                                            >연락할경로 :
+                                                            </span>
+                                                    <span class="email"
+                                                          th:text="${funding.profileEmail}"
+                                                    >test1234@gmail.com</span
+                                                    >
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- 펀딩가격별 상품들 -->
+                        <div class="funding-product-container">
+                            <div th:each="product : ${funding.fundingProducts}" class="funding-product" th:attr="data-product-id=${product.id}">
+                                <div class="product-header-title">
+                                    가격별 상품소개
+                                </div>
+                                <div class="product-info">
+                                    <div>
+                                        <div class="product-name">
+                                            상품명: <span th:text="${product.productName}" style="
+                                                                    word-break: break-word; /* 긴 단어 자동 줄바꿈 */
+                                                                        white-space: pre-wrap; /* 줄바꿈 허용 */
+                                                                                ">상품명</span>
+                                        </div>
+                                        <div class="product-price">
+                                            <span class="price" th:text="${product.productPrice}">10,000</span>원
+                                        </div>
+                                        <div class="product-number">
+                                            남은 수량: <span class="number" th:text="${product.productAmount}">100</span>개
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 같은 장르에 다른펀딩 -->
+        <div class="similar-list-container">
+            <div class="similar-list">
+                <div class="more-info-box">
+                    <div class="similar-header-title">
+                        <div class="same-category-funding-list">
+                            같은 장르에 다른 펀딩목록들
+                        </div>
+                    </div>
+                    <div class="content-list" th:each="relatedFunding : ${relatedFundings}">
+                        <a th:href="@{'/video/funding/detail/' + ${relatedFunding.id}}" class="similar-link">
+                            <div class="link-box">
+                                <div class="img-box">
+                                    <img th:src="@{'/video/funding/display?fileName=/' + ${relatedFunding.thumbnailFilePath} + '/' + ${relatedFunding.thumbnailFileName}}"
+                                         class="similar-thumbnail-image"
+                                         alt="유사한 펀딩 썸네일"/>
+                                </div>
+                                <div class="similar-thumbnail-title" th:text="${relatedFunding.postTitle}">
+                                    유사한 펀딩 목록 제목
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 신고 모달창 -->
+        <div id="report-modal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2>작품 신고</h2>
+                <br />
+                <br />
+                <form>
+                    <label for="reason"
+                    >신고하려는 이유를 적어주세요:</label
+                    ><br />
+                    <br />
+                    <textarea
+                            id="reason"
+                            name="reason"
+                            rows="4"
+                            cols="50"
+                    ></textarea
+                    ><br /><br />
+                    <button class="report-submit" type="submit">
+                        신고하기
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script src="/js/video/funding-detail.js"></script>
+<script src="/js/video/funding-detail-pay.js"></script>
+</html>

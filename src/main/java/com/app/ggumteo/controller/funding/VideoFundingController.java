@@ -143,7 +143,7 @@ public class VideoFundingController {
         model.addAttribute("pagination", pagination);
         model.addAttribute("search", search);
 
-        return "text/funding/funding-list";
+        return "video/funding/funding-list";
     }
 
     @GetMapping("display")
@@ -184,11 +184,11 @@ public class VideoFundingController {
             model.addAttribute("postFiles", postFiles);
             model.addAttribute("relatedFundings", relatedFundings);
 
-            return "text/funding/funding-detail";  // 상세 페이지 뷰로 이동
+            return "video/funding/funding-detail";  // 상세 페이지 뷰로 이동
         } catch (Exception e) {
             log.error("펀딩 상세 조회 중 오류 발생", e);
             model.addAttribute("error", "펀딩 상세 조회 중 오류가 발생했습니다.");
-            return "text/funding/error";
+            return "video/funding/error";
         }
     }
 
@@ -213,11 +213,11 @@ public class VideoFundingController {
             model.addAttribute("funding", funding);
             model.addAttribute("existingFiles", existingFiles);
 
-            return "text/funding/funding-modify";  // 수정 페이지 뷰로 이동
+            return "video/funding/funding-modify";  // 수정 페이지 뷰로 이동
         } catch (Exception e) {
             log.error("펀딩 수정 폼 로드 중 오류 발생", e);
             model.addAttribute("error", "펀딩 수정 폼을 로드하는 중 오류가 발생했습니다.");
-            return "text/funding/error";
+            return "video/funding/error";
         }
     }
 
@@ -268,10 +268,10 @@ public class VideoFundingController {
             fundingService.updateFunding(fundingDTO, deletedFileIds);
 
             log.info("펀딩 수정 완료: 펀딩 ID {}", fundingDTO.getId());
-            return "redirect:/text/funding/detail/" + fundingDTO.getId();
+            return "redirect:/video/funding/detail/" + fundingDTO.getId();
         } catch (Exception e) {
             log.error("펀딩 수정 중 오류 발생", e);
-            return "redirect:/text/funding/modify/" + fundingDTO.getId();
+            return "redirect:/video/funding/modify/" + fundingDTO.getId();
         }
     }
 
