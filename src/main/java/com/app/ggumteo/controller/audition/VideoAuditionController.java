@@ -31,6 +31,7 @@ import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.view.RedirectView;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -100,7 +101,7 @@ public class VideoAuditionController {
     }
 
     @PostMapping("write")
-    public String write(AuditionDTO auditionDTO,
+    public RedirectView write(AuditionDTO auditionDTO,
                         @RequestParam(value = "fileNames", required = false) List<String> fileNames,
                         Model model) {
         try {
@@ -110,7 +111,7 @@ public class VideoAuditionController {
             if (member == null || memberProfile == null) {
                 log.error("세션에 사용자 정보가 없습니다.");
                 model.addAttribute("error", "세션에 사용자 정보가 없습니다.");
-                return "/error";
+                return new RedirectView("/main");
             }
 
             auditionDTO.setPostType(PostType.AUDITIONVIDEO.name());
@@ -124,11 +125,11 @@ public class VideoAuditionController {
 
             auditionService.write(auditionDTO);
 
-            return "redirect:/audition/video/detail/" + auditionDTO.getId();
+            return new RedirectView("/audition/video/detail/" + auditionDTO.getId());
         } catch (Exception e) {
             log.error("오류 발생", e);
             model.addAttribute("error", "저장 중 오류가 발생했습니다.");
-            return "/error";
+            return new RedirectView("/error");
         }
     }
 
@@ -151,7 +152,7 @@ public class VideoAuditionController {
 
 
     @PostMapping("/modify")
-    public String updateAudition(
+    public RedirectView updateAudition(
             @ModelAttribute AuditionDTO auditionDTO,
             @RequestParam(value = "fileNames", required = false) List<String> fileNames,
             @RequestParam(value = "deletedFileIds", required = false) List<Long> deletedFileIds,
@@ -178,11 +179,11 @@ public class VideoAuditionController {
 
             model.addAttribute("audition", auditionDTO);
 
-            return "redirect:/audition/video/detail/" + auditionDTO.getId();
+            return new RedirectView("/audition/video/detail/" + auditionDTO.getId());
         } catch (Exception e) {
             log.error("오류 발생: {}", e.getMessage(), e);
             model.addAttribute("error", "업데이트 중 오류가 발생했습니다: " + e.getMessage());
-            return "/audition/video/error";
+            return new RedirectView("/audition/video/error");
         }
     }
 
@@ -281,7 +282,7 @@ public class VideoAuditionController {
 
 
     @PostMapping("/application/{id}")
-    public String submitApplication(
+    public RedirectView submitApplication(
             @PathVariable("id") Long id,
             @RequestParam(value = "fileNames", required = false) List<String> fileNames,
             AuditionApplicationDTO auditionApplicationDTO,
@@ -292,7 +293,7 @@ public class VideoAuditionController {
 
         if (member == null || memberProfile == null) {
             model.addAttribute("error", "로그인이 필요합니다.");
-            return "redirect:/login"; // 로그인 페이지로 리다이렉트
+            return new RedirectView("/main"); // 로그인 페이지로 리다이렉트
         }
 
         log.info("submitApplication 메서드 - 사용자 ID: {}, 프로필 ID: {}", member.getId(), memberProfile.getId());
@@ -310,7 +311,7 @@ public class VideoAuditionController {
 
         log.info("Audition application processed and alarm created.");
 
-        return "reditect:/audition/video/detail" + id; // 상세 페이지로 포워드
+        return new RedirectView("/audition/video/detail" + id); // 상세 페이지로
     }
 
 }
