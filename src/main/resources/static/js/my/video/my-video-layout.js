@@ -370,11 +370,13 @@ const showMyBuyWorkList = ({myBuyWorkPosts, myWorkAndFundingPagination}) => {
                                         margin-right: 10px;
                                     "
                                 ></div>
-    
                                 <div
-                                    class="timeandcontent smooth"
-                                >
-                                    ${myBuyWorkPost.workPrice}
+                                    id="work-price"
+                                    class="timeandcontent smooth" >`
+                            if(myBuyWorkPost.workPrice !== null) {
+                                        text += myBuyWorkPost.workPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                                    }
+                            text += `원
                                 </div>
                             </div>
                             <div class="flex-box">
@@ -384,8 +386,8 @@ const showMyBuyWorkList = ({myBuyWorkPosts, myWorkAndFundingPagination}) => {
                                         type="button"
                                     >
                                         <img
-                                                id="buy-work-delete-btn"
-                                                class="icon-my-delete ${myBuyWorkPost.workId}"
+                                                id="delete-modal-open-btn"
+                                                class="icon-my-delete"
                                                 src="/images/member/icon-delete-btn.png"
                                                 width="24px"
                                             >
@@ -400,7 +402,7 @@ const showMyBuyWorkList = ({myBuyWorkPosts, myWorkAndFundingPagination}) => {
                         </div>
                     </div>
                 </div>
-                <div class="delete-modal modal-${myBuyWorkPost.workId}" style="display: none;">
+                <div class="delete-modal" style="display: none;">
                     <div class="modal">
                         <div class="modal-header">
                             <div>
@@ -409,8 +411,9 @@ const showMyBuyWorkList = ({myBuyWorkPosts, myWorkAndFundingPagination}) => {
                                     <p>구매내역 삭제</p>
                                 </div>
                                 <div class="close-btn-wrapper">
-                                    <button class="close-btn">
-                                        <span class="icon-close"><svg viewBox="0 0 24 24" color="#000000" class="close"><path fill-rule="evenodd" clip-rule="evenodd" fill="#000000" d="M4.61321 4.6137C4.96469 4.26223 5.53453 4.26223 5.88601 4.6137L11.9996 10.7273L18.1132 4.6137C18.4647 4.26223 19.0345 4.26223 19.386 4.6137C19.7375 4.96517 19.7375 5.53502 19.386 5.88649L13.2724 12.0001L19.386 18.1137C19.7375 18.4652 19.7375 19.035 19.386 19.3865C19.0345 19.738 18.4647 19.738 18.1132 19.3865L11.9996 13.2729L5.88601 19.3865C5.53453 19.738 4.96469 19.738 4.61321 19.3865C4.26174 19.035 4.26174 18.4652 4.61321 18.1137L10.7268 12.0001L4.61321 5.88649C4.26174 5.53502 4.26174 4.96517 4.61321 4.6137Z"></path></svg></span>
+                                    <button
+                                        class="delete-modal-close-btn close-btn">
+                                        <span class="delete-modal-close-btn icon-close"><svg viewBox="0 0 24 24" color="#000000" class="delete-modal-close-btn close"><path class="delete-modal-close-btn" fill-rule="evenodd" clip-rule="evenodd" fill="#000000" d="M4.61321 4.6137C4.96469 4.26223 5.53453 4.26223 5.88601 4.6137L11.9996 10.7273L18.1132 4.6137C18.4647 4.26223 19.0345 4.26223 19.386 4.6137C19.7375 4.96517 19.7375 5.53502 19.386 5.88649L13.2724 12.0001L19.386 18.1137C19.7375 18.4652 19.7375 19.035 19.386 19.3865C19.0345 19.738 18.4647 19.738 18.1132 19.3865L11.9996 13.2729L5.88601 19.3865C5.53453 19.738 4.96469 19.738 4.61321 19.3865C4.26174 19.035 4.26174 18.4652 4.61321 18.1137L10.7268 12.0001L4.61321 5.88649C4.26174 5.53502 4.26174 4.96517 4.61321 4.6137Z"></path></svg></span>
                                     </button>
                                 </div>
                             </div>
@@ -420,15 +423,16 @@ const showMyBuyWorkList = ({myBuyWorkPosts, myWorkAndFundingPagination}) => {
                                 <div class="delete-question">
                                     <p>정말 삭제하시겠습니까?</p>
                                 </div>
-                                <div class="submit-btn">
-                                    <button type="submit" ${myBuyWorkPost.id}>
-                                        <span>네, 삭제하겠습니다.</span>
+                                <div class="submit-btn-wrapper">
+                                    <button type="button" class="${myBuyWorkPost.id} btn-test-1">
+                                        <span class="${myBuyWorkPost.id} btn-test-2">네, 삭제하겠습니다.</span>
                                     </button>
                                 </div>
                             </form>
                         </div>
                     </div>
                 </div>`
+
     });
 
     myBuyWorkListLayout.innerHTML = text;
@@ -1172,7 +1176,7 @@ const showMyAuditionApplicantList = ({myAuditionApplicants, mySettingTablePagina
                         <div class="mb4 major-span">
                            ${myAuditionApplicant.profileName}
                         </div>
-                        <a  href="" class="sub-span">
+                        <a  href="" class="sub-span ${myAuditionApplicant.id}" id="resume-open">
                            이력서 보기
                         </a>
                     </div>`
