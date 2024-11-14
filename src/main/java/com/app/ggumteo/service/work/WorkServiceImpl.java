@@ -20,6 +20,7 @@ import com.app.ggumteo.repository.file.PostFileDAO;
 import com.app.ggumteo.repository.post.PostDAO;
 import com.app.ggumteo.repository.work.WorkDAO;
 import com.app.ggumteo.search.Search;
+import com.app.ggumteo.service.alarm.AlarmService;
 import com.app.ggumteo.service.file.PostFileService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -46,6 +47,7 @@ public class WorkServiceImpl implements WorkService {
     private final FileDAO fileDAO;
     private final PostFileDAO postFileDAO;
     private final PostFileService postFileService;  // 파일 저장 서비스 주입
+    private final AlarmService alarmService;
 
 
     @Override

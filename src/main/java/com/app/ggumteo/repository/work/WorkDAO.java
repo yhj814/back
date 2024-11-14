@@ -36,6 +36,9 @@ public class WorkDAO {
         return workMapper.selectById(id);
     }
 
+    public WorkDTO findWorkByIdForReplyAlarm(Long workId) {
+        return workMapper.selectWorkById(workId);}
+
     // 조회수 증가
     public void incrementReadCount(Long id) {
         workMapper.increaseReadCount(id);

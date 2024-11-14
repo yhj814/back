@@ -11,4 +11,15 @@
         delete from tbl_post
         where id = #{id}
     </delete>
+
+    <select id="selectPostById" parameterType="Long" resultType="com.app.ggumteo.domain.post.PostDTO">
+        SELECT
+            id,
+            member_profile_id AS memberProfileId,
+            post_type AS postType
+        FROM
+            tbl_post
+        WHERE
+            id = #{id}
+    </select>
 </mapper>
