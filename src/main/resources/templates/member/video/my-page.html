@@ -2080,11 +2080,11 @@
                                         </div>
                                         <div class="inquiry-add-content-box" id="my-profile">
                                             <!-- 이름 필요하면 넣기 -->
-                                            <form action="/sign-up" method="post" class="form-horizontal has-validation-callback" id="base-edit-form" enctype="multipart/form-data">
+                                            <form th:action="@{/member/video/my-page/update}" method="post" th:object="${memberProfile}" class="form-horizontal has-validation-callback" id="update-form">
                                                 <div class="form-group">
                                                     <label class="control-label required" id="full_name_label"><span></span> 이름</label>
                                                     <div class="control-wrapper">
-                                                        <input class="form-control" id="full_name" placeholder="이름을 입력해 주세요." name="profileName" type="text" value="">
+                                                        <input class="form-control" id="profileName" placeholder="이름을 입력해 주세요." name="profileName" type="text" th:field="*{profileName}">
                                                         <div class="error-message">
                                                             <i class="fa fa-exclamation-circle"></i>
                                                             이 항목을 채워주십시오.
@@ -2094,7 +2094,8 @@
                                                 <div class="form-group">
                                                     <label class="control-label required" id="full_nickname_label"><span></span> 닉네임</label>
                                                     <div class="control-wrapper">
-                                                        <input class="form-control" id="full_nickname" placeholder="사용할 닉네임을 입력해주세요." name="profileNickName" type="text" value="">
+                                                        <input class="form-control" id="full_nickname"
+                                                               placeholder="사용할 닉네임을 입력해주세요." name="profileNickName" type="text" th:field="*{profileNickName}">
                                                         <div class="error-message">
                                                             <i class="fa fa-exclamation-circle"></i>
                                                             이 항목을 채워주십시오.
@@ -2112,10 +2113,10 @@
                                                     <div class="control-wrapper">
                                                         <ul class="list-unstyled" style="margin-bottom: 0">
                                                             <li>
-                                                                <label class="radio-inline" for="gender_1"><input data-exception="yes" id="gender_1" name="profileGender" type="radio" value="남성">남성</label>
+                                                                <label class="radio-inline" for="gender_1"><input data-exception="yes" id="gender_1" name="profileGender" type="radio" th:checked="*{profileGender == '남성'}">남성</label>
                                                             </li>
                                                             <li>
-                                                                <label class="radio-inline" for="gender_2"><input data-exception="yes" id="gender_2" name="profileGender" type="radio" value="여성">여성</label>
+                                                                <label class="radio-inline" for="gender_2"><input data-exception="yes" id="gender_2" name="profileGender" type="radio" th:checked="*{profileGender == '여성'}">여성</label>
                                                             </li>
                                                         </ul>
                                                         <div class="error-message">
@@ -2127,7 +2128,7 @@
                                                 <div class="form-group">
                                                     <label class="control-label" for="date_of_birth" id="date_of_birth_label">나이</label>
                                                     <div class="control-wrapper">
-                                                        <input class="form-control" id="member-age" name="profileAge}" placeholder="만 나이를 입력해주세요." type="text" value="">
+                                                        <input class="form-control" id="member-age" name="profileAge}" placeholder="만 나이를 입력해주세요." type="text" th:field="*{profileAge}">
 
                                                         <div class="error-message">
                                                             <i class="fa fa-exclamation-circle"></i>
@@ -2140,7 +2141,7 @@
 
                                                     <div class="control-wrapper">
                                                         <div class="input-gap loading-icon-wrap">
-                                                            <input class="form-control" data-exception="yes" placeholder="이메일을 입력하세요." name="profileEmail" type="text" value="">
+                                                            <input class="form-control" data-exception="yes" placeholder="이메일을 입력하세요." name="profileEmail" type="text" th:field="*{profileEmail}">
                                                             <button class="btn btn-certification-select" type="button" id="requestEmailCode">인증번호 요청</button>
                                                             <img class="loading-icon" id="loadingGif" src="/images/main/loading.gif" alt="Loading...">
                                                         </div>
@@ -2160,7 +2161,7 @@
                                                         </div>
                                                         <div class="error-message" id="emailVerificationError" style="display: none;"></div>
                                                         <div class="email-timer-container" style="display: none;">
-                                                            <p>인증 유효 시간: <span id="emailTimerDisplay">3:00</span></p>
+                                                            <p>인증번호 유효 시간: <span id="emailTimerDisplay">3:00</span></p>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -2168,7 +2169,7 @@
                                                     <label class="control-label">연락처</label>
                                                     <div class="control-wrapper">
                                                         <div class="input-gap">
-                                                            <input class="form-control" data-exception="yes" placeholder="전화번호를 입력하세요." name="profilePhone" type="text" value="">
+                                                            <input class="form-control" data-exception="yes" placeholder="전화번호를 입력하세요." name="profilePhone" type="text" th:field="*{profilePhone}">
                                                             <button class="btn btn-certification-select" type="button" id="requestVerificationCode">인증번호 요청</button>
                                                         </div>
                                                         <div class="error-message">
@@ -2193,62 +2194,60 @@
 
 
                                                 </div>
-                                                <div class="form-group">
+                                                <div class="form-group etc">
                                                     <label class="control-label">추가 작성사항</label>
                                                     <div class="control-wrapper">
-                                                        <textarea class="form-control form-textarea" placeholder="간단한 자기소개를 입력해주세요." name="profileEtc" value="" style="height: 340px"></textarea>
+                                                        <textarea class="form-control form-textarea" placeholder="간단한 자기소개를 입력해주세요." name="profileEtc" th:value="*{profileEtc}" style="height: 340px"></textarea>
                                                         <div class="error-message">
                                                             <i class="fa fa-exclamation-circle"></i>
                                                             간단한 자기소개를 입력해주세요.
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="form-group" style="margin-top: 360px">
-                                                    <label class="control-label" style="margin-top: 25px;">첨부파일</label>
-                                                    <div class="control-wrapper" style="margin-top: 25px;">
-                                                        <input accept=".pdf, .docx, .doc, .hwp" class="temp-upload-resume" name="profileFile" hidden="" type="file">
+<!--                                                <div class="form-group" style="margin-top: 360px">-->
+<!--                                                    <label class="control-label" style="margin-top: 25px;">첨부파일</label>-->
+<!--                                                    <div class="control-wrapper" style="margin-top: 25px;">-->
+<!--                                                        <input accept=".pdf, .docx, .doc, .hwp" class="temp-upload-resume" name="profileFile" hidden="" type="file">-->
 
-                                                        <div class="selected-file-viewer">
-                                                            <input class="remove-request" hidden="" name="fileContent" type="checkbox">
-                                                            <p class="placeholder-attachment">
-                                                                이력서를 제출해주세요.
-                                                            </p>
-                                                            <div class="tooltip-group">
-                                                                <img class="viewer-file-icon" src="/images/audition/attachment_file_icon@2x.png" style="width: 15px"><a download="" id="resume_download"><p class="file-name-viewer text300 body-2-medium" id="selected_file_name_viewer"></p></a><img class="btn-delete-resume" id="btn_delete_resume" src="/images/audition/chip_btn_delete_normal@2x.png" style="width: 15px">
-                                                            </div>
-                                                        </div>
-                                                        <button class="btn btn-file-select" id="file_select_btn" type="button">
-                                                            <img src="/images/audition/btn_icon_add@2x.png" style="width: 15px">이력서 선택
+<!--                                                        <div class="selected-file-viewer">-->
+<!--                                                            <input class="remove-request" hidden="" name="fileContent" type="checkbox">-->
+<!--                                                            <p class="placeholder-attachment">-->
+<!--                                                                이력서를 제출해주세요.-->
+<!--                                                            </p>-->
+<!--                                                            <div class="tooltip-group">-->
+<!--                                                                <img class="viewer-file-icon" src="/images/audition/attachment_file_icon@2x.png" style="width: 15px"><a download="" id="resume_download"><p class="file-name-viewer text300 body-2-medium" id="selected_file_name_viewer"></p></a><img class="btn-delete-resume" id="btn_delete_resume" src="/images/audition/chip_btn_delete_normal@2x.png" style="width: 15px">-->
+<!--                                                            </div>-->
+<!--                                                        </div>-->
+<!--                                                        <button class="btn btn-file-select" id="file_select_btn" type="button">-->
+<!--                                                            <img src="/images/audition/btn_icon_add@2x.png" style="width: 15px">이력서 선택-->
+<!--                                                        </button>-->
+<!--                                                        <div class="error-message">-->
+<!--                                                            <i class="fa fa-exclamation-circle"></i>-->
+<!--                                                            첨부파일을 선택해주세요.-->
+<!--                                                        </div>-->
+<!--                                                    </div>-->
+<!--                                                </div>-->
+                                                <div class="inquiry-footer">
+                                                    <div class="button-box">
+                                                        <button class="btn btn-gray btn-back" type="button">
+                                                            취소
                                                         </button>
-                                                        <div class="error-message">
-                                                            <i class="fa fa-exclamation-circle"></i>
-                                                            첨부파일을 선택해주세요.
-                                                        </div>
+                                                        <button
+                                                                id="btn-submit"
+                                                            class="btn btn-partner btn-submit">
+                                                        수정
+                                                        </button>
                                                     </div>
+                                                    <!--                                            <div-->
+                                                    <!--                                                class="btn-help-box"-->
+                                                    <!--                                                style="display: none"-->
+                                                    <!--                                            >-->
+                                                    <!--                                                <span class="star"-->
+                                                    <!--                                                    ><b>* 필수 항목</b></span-->
+                                                    <!--                                                >을 모두 작성해 주세요.-->
+                                                    <!--                                            </div>-->
                                                 </div>
                                             </form>
-                                        </div>
-                                        <div class="inquiry-footer">
-                                            <div class="button-box">
-                                                <button
-                                                    class="btn btn-gray btn-back"
-                                                >
-                                                    취소</button
-                                                ><button
-                                                    class="btn btn-partner btn-submit"
-                                                    type="button"
-                                                >
-                                                    수정
-                                                </button>
-                                            </div>
-                                            <div
-                                                class="btn-help-box"
-                                                style="display: none"
-                                            >
-                                                <span class="star"
-                                                    ><b>* 필수 항목</b></span
-                                                >을 모두 작성해 주세요.
-                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -2491,10 +2490,66 @@
     </body>
     <script th:inline="javascript">
         const memberId = [[${member.id}]];
+        // const memberProfile = [[${memberProfile}]];
+        //
+        // const updateBtn = document.getElementById("btn-submit");
+        //
+        // updateBtn.addEventListener('click', (e) => {
+        //     e.preventDefault();
+        //
+        //     let isValid = true;
+        //
+        //     const profileName = document.getElementById("profileName");
+        //     console.log("1 ", profileName.value);
+        //     console.log("2 ",profileName.innerText);
+        //
+        //     // 이메일 필드 유효성 검사
+        //     const emailField = document.querySelector("input[name='profileEmail']");
+        //     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        //     if (!validateField(emailField, emailRegex, "올바른 이메일 주소를 입력해주세요.")) {
+        //         isValid = false;
+        //     }
+        //
+        //     // 전화번호 필드 유효성 검사
+        //     const phoneField = document.querySelector("input[name='profilePhone']");
+        //     const phoneRegex = /^(010|011|016|017|018|019)-\d{3,4}-\d{4}$/;
+        //     if (!validateField(phoneField, phoneRegex, "올바른 전화번호를 입력해주세요.")) {
+        //         isValid = false;
+        //     }
+        //
+        //     // 기타 필드 유효성 검사 (인증번호 필드는 제외)
+        //     document.querySelectorAll(".form-control:not(#emailVerificationCode):not(#verificationCode)").forEach((input) => {
+        //         const errorMessage = input.closest(".input-gap")
+        //             ? input.closest(".input-gap").parentElement.querySelector(".error-message")
+        //             : input.parentElement.querySelector(".error-message");
+        //
+        //         if (!input.value.trim() && !input.matches(".temp-upload-resume") && !input.matches("textarea")) {
+        //             input.classList.add("error");
+        //             if (errorMessage) {
+        //                 errorMessage.style.display = "block";
+        //             }
+        //             isValid = false;
+        //         } else {
+        //             input.classList.remove("error");
+        //             if (errorMessage) {
+        //                 errorMessage.style.display = "none";
+        //             }
+        //         }
+        //     });
+        //
+        //     document.querySelector('input[name="id"]').value = memberProfile.id;
+        //
+        //     // 폼 제출 처리
+        //     if (isValid) {
+        //         document.getElementById("update-form").submit();
+        //     } else {
+        //         alert("예시 형식에 맞게 필수 항목을 모두 작성해 주세요.")
+        //     }
+        //
+        // });
 
         document.getElementById("soft-delete").addEventListener("click", (e) => {
             location.href = `/member/video/my-page/delete?id=${memberId}`;
-            console.log(`/member/video/my-page/delete?id=${memberId}`);
         });
 
     </script>
@@ -2502,4 +2557,6 @@
     <script src="/js/my/video/my-video-service.js"></script>
     <script src="/js/my/video/my-video-layout.js"></script>
     <script src="/js/my/video/my-video-event.js"></script>
+    <script src="/js/main/email-send.js"></script>
+    <script src="/js/main/phone-send.js"></script>
 </html>
