@@ -6,25 +6,34 @@
         <title>글 상세</title>
         <script src="https://js.bootpay.co.kr/bootpay-5.0.1.min.js" type="application/javascript"></script>
         <link rel="stylesheet" href="/css/text/detail.css" />
+        <link rel="stylesheet" th:href="@{/css/header/logout.css}">
+        <link rel="stylesheet" th:href="@{/css/header/login.css}">
+        <link rel="stylesheet" th:href="@{/css/footer/footer.css}">
     </head>
     <body>
-        <div class="main-header">
-            <div class="container">
-                <a class="sub-navigation" href="">
-                    <div>작품</div>
-                </a>
-                <a class="sub-navigation" href="">
-                    <div>펀딩</div>
-                </a>
-                <a class="sub-navigation" href="">
-                    <div>모집</div>
-                </a>
-            </div>
+    <th:block th:if="${isLoggedIn}">
+        <div th:replace="~{header-login :: header}"></div>
+    </th:block>
+    <th:block th:if="${!isLoggedIn}">
+        <div th:replace="~{header-logout :: header}"></div>
+    </th:block>
+    <div class="main-header">
+        <div class="container">
+            <a class="sub-navigation" th:href="@{/text/list}">
+                <div>작품</div>
+            </a>
+            <a class="sub-navigation" th:href="@{/text/funding/list}">
+                <div>펀딩</div>
+            </a>
+            <a class="sub-navigation" th:href="@{/audition/text/list}">
+                <div>모집</div>
+            </a>
         </div>
+    </div>
         <div class="layout" th:attr="data-work-id=${work.id},data-member-id=${session.memberProfile.id},
                data-profile-name=${session.memberProfile.profileName},
                data-profile-phone=${session.memberProfile.profilePhone},
-               data-profile-email=${session.memberProfile.profileEmail}">
+               data-profile-email=${session.memberProfile.profileEmail}" style="background: white">
         <!-- 중간메인내용 -->
             <div class="container-wrapper">
                 <!-- 메인내용 -->
@@ -438,8 +447,12 @@
             </div>
         </div>
     </body>
+    <footer th:replace="~{footer.html :: footer}"></footer>
     <script src="/js/text/detail-work-pay.js"></script>
     <script src="/js/text/detail-work-service.js"></script>
     <script src="/js/text/detail-work-layout.js"></script>
     <script src="/js/text/detail-work-event.js"></script>
+    <script th:src="@{/js/header/header-logout.js}" defer></script>
+    <script th:src="@{/js/header/header-login.js}" defer></script>
+    <script th:src="@{/js/header/logout-click.js}" defer></script>
 </html>
