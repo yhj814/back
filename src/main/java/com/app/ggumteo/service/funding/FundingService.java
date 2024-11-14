@@ -1,5 +1,6 @@
 package com.app.ggumteo.service.funding;
 
+import com.app.ggumteo.domain.buy.BuyFundingProductVO;
 import com.app.ggumteo.domain.file.PostFileDTO;
 import com.app.ggumteo.domain.funding.FundingDTO;
 import com.app.ggumteo.domain.funding.FundingProductVO;
@@ -35,7 +36,7 @@ public interface FundingService {
     // 같은 장르의 펀딩 게시글 조회 (최대 5개)
     List<FundingDTO> findRelatedFundingByGenre(String genreType, Long fundingId);
 
-    void buyFundingProduct(Long fundingProductId, Long memberId, Long fundingId, int productPrice);
+    BuyFundingProductVO buyFundingProduct(Long memberId, Long fundingId, Long fundingProductId, int productPrice);
 
     FundingDTO findFundingId(Long id);
 
