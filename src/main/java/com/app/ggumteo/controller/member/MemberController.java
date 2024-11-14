@@ -14,16 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class MemberController {
 
     @GetMapping("/main")
-    public String mainPage(HttpSession session, Model model) {
-        boolean isLoggedIn = session.getAttribute("member") != null;
-        model.addAttribute("isLoggedIn", isLoggedIn);
-
-        if (isLoggedIn) {
-            log.info("사용자가 로그인한 상태입니다.");
-        } else {
-            log.info("사용자가 로그인하지 않은 상태입니다.");
-        }
-
+    public String mainPage() {
         return "main";  // main.html로 이동
     }
 
