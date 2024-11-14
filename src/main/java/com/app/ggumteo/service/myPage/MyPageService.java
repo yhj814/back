@@ -17,8 +17,6 @@ import com.app.ggumteo.pagination.MyWorkAndFundingPagination;
 import java.util.Optional;
 
 public interface MyPageService {
-    // 회원 정보 조회
-    public Optional<MemberVO> getMember(Long id);
 
 //====작품 ====================================================
 
@@ -128,9 +126,8 @@ public interface MyPageService {
     public Optional<AdminAnswerDTO> getAdminAnswerByInquiryId(Long inquiryId);
 
 //====내 정보 ====================================================
-
     // 마이페이지 - 내 정보 조회
-    public Optional<MemberProfileVO> getMemberProfile(Long memberId);
+    public Optional<MemberVO> getMember(Long id);
 
     // 마이페이지 - 내 정보 수정
     public void updateMemberProfile(MemberProfileVO memberProfileVO);

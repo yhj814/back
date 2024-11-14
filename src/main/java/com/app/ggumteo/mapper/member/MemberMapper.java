@@ -1,6 +1,7 @@
 package com.app.ggumteo.mapper.member;
 
 import com.app.ggumteo.domain.member.MemberProfileDTO;
+import com.app.ggumteo.domain.member.MemberProfileVO;
 import com.app.ggumteo.domain.member.MemberVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;

@@ -42,16 +42,23 @@
             member_id = #{memberId}
     </select>
 
-    <!--  마이페이지 목록 조회할 때 member id 조회가 필요하여 작성함.   -->
+    <!-- 마이페이지 - 내 정보 조회 -->
     <select id="selectById" resultType="memberVO">
-        select id, member_email, profile_img_url
-        from tbl_member
-        where id = #{id} and member_status = 'YES'
+        select mp.profile_name, mp.profile_nickname, mp.profile_gender, mp.profile_age, mp.profile_email,
+               mp.profile_phone, mp.profile_etc, mp.member_id, mp.created_date, mp.updated_date,
+               m.id, m.member_status
+        from tbl_member_profile mp
+                 join tbl_member m on mp.member_id = m.id
+            and m.member_status = 'YES' and m.id = #{id};
     </select>
+
     <!--  마이페이지 - 회원 탈퇴   -->
     <update id="softDeleteMember">
         update tbl_member
         set member_status = 'NO'
         where id = #{id};
     </update>
+
+
+
 </mapper>
