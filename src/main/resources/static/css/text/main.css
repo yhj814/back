@@ -42,6 +42,7 @@ body {
 }
 
 .main-header {
+    background: white;
     height: 48px;
     padding: 0;
     border-bottom: 1px solid #eee;
@@ -187,6 +188,7 @@ a {
     line-height: 32px;
     letter-spacing: normal;
     margin-bottom: 8px;
+    margin-top: 10px;
 }
 .content-meta {
     width: 100%;

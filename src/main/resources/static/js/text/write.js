@@ -382,4 +382,8 @@ document.addEventListener("DOMContentLoaded", function () {
             box.style.backgroundColor = "";
         });
     });
+    document.getElementById("backButton").addEventListener("click", function(event) {
+        event.preventDefault(); // 폼 제출 방지
+        window.location.href = "/text/list";
+    });
 });

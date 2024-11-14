@@ -20,6 +20,19 @@
     <th:block th:if="${!isLoggedIn}">
         <div th:replace="~{header-logout :: header}"></div>
     </th:block>
+    <div class="main-header">
+        <div class="container">
+            <a class="sub-navigation" th:href="@{/video/list}">
+                <div>작품</div>
+            </a>
+            <a class="sub-navigation" th:href="@{/video/funding/list}">
+                <div>펀딩</div>
+            </a>
+            <a class="sub-navigation" th:href="@{/audition/video/list}">
+                <div>모집</div>
+            </a>
+        </div>
+    </div>
         <main class="main">
             <div class="gaia">
                 <div class="detail-detail-view">

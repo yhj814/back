@@ -52,8 +52,9 @@ public class BuyFundingProductDAO {
     }
 
     // 구매 정보 삽입
-    public void insertBuyFundingProduct(Long memberId, Long fundingProductId) {
-        buyFundingProductMapper.insertBuyFundingProduct(memberId, fundingProductId);
+    public BuyFundingProductVO saveBuyFundingProduct(BuyFundingProductVO buyFundingProductVO) {
+        buyFundingProductMapper.insertBuyFundingProduct(buyFundingProductVO);
+        return buyFundingProductVO;
     }
 
 }
