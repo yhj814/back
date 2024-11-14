@@ -4,22 +4,22 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>영상메인</title>
-        <link rel="stylesheet" href="/static/css/video/main.css" />
+        <link rel="stylesheet" href="/css/video/main.css" />
     </head>
     <body>
-        <div class="main-header">
-            <div class="container">
-                <a class="sub-navigation" href="">
-                    <div>작품</div>
-                </a>
-                <a class="sub-navigation" href="">
-                    <div>펀딩</div>
-                </a>
-                <a class="sub-navigation" href="">
-                    <div>모집</div>
-                </a>
-            </div>
+    <div class="main-header">
+        <div class="container">
+            <a class="sub-navigation" th:href="@{/video/list}">
+                <div>작품</div>
+            </a>
+            <a class="sub-navigation" th:href="@{/video/funding/list}">
+                <div>펀딩</div>
+            </a>
+            <a class="sub-navigation" th:href="@{/audition/video/list}">
+                <div>모집</div>
+            </a>
         </div>
+    </div>
         <div class="layout">
             <div class="main-div">
                 <div class="container">
@@ -36,85 +36,62 @@
                         <div class="card-item-link">
                             <div class="card-item">
                                 <div class="card-thumbnail">
-                                    <video class="card-video" controls>
-                                        <source
-                                            src="첨부된_비디오_파일_URL"
-                                            type="video/mp4"
-                                        />
-                                    </video>
+                                    <img class="card-video"
+                                         th:src="@{'/display?fileName=' + ${mostReadVideoWork.thumbnailFilePath} + '/'+ ${mostReadVideoWork.thumbnailFileName}}"/>
+
                                 </div>
                                 <div class="card-main">
                                     <div class="flex-box">
                                         <a
                                             class="card-category content-meta-elem link-text link-underline"
-                                            href=""
+                                            th:text="${mostReadVideoWork.genreType}"
+                                            th:href="@{'/video/detail/' + ${mostReadVideoWork.id}}"
                                         >
-                                            코미디
                                         </a>
                                         <div class="review-box">
                                             <div class="star-box">
                                                 <img
-                                                    src="/static/images/video/icon-review-star-full.png"
+                                                    src="/images/video/icon-review-star-full.png"
                                                 />
                                             </div>
-                                            <span class="review-score"
-                                                >5.0</span
+                                            <span class="review-score" th:text="${mostReadVideoWork.averageRating}"
+                                                ></span
                                             >
                                         </div>
                                     </div>
                                     <h3 class="card-main-h3">
                                         <a
                                             class="card-title link-text link-underline popular-work-title"
-                                            href=""
+                                            th:href="@{'/video/detail/' + ${mostReadVideoWork.id}}"
+                                            th:text="${mostReadVideoWork.postTitle}"
                                         >
-                                            구독자 3억 유튜버, ‘미스터비스트’와
-                                            일하면 어떨까?
                                         </a>
                                     </h3>
                                     <div class="content-meta flex-box">
                                         <img
-                                            src="/static/images/video/icon-clock.png"
+                                            src="/images/video/icon-clock.png"
                                             class="content-meta-elem meta-icon"
                                         />
-                                        <div class="popular-work-time">
-                                            2024.10.26
+                                        <div class="popular-work-time" th:text="${mostReadVideoWork.createdDate.substring(0, 10)}">
                                         </div>
                                     </div>
-                                    <a href="">
+                                    <a th:href="@{'/video/detail/' + ${mostReadVideoWork.id}}">
                                         <p
                                             class="card-description popular-work-content"
+                                            th:text="${mostReadVideoWork.postContent}"
                                         >
-                                            구독자 3.1억 명 이상을 보유한 유튜버
-                                            미스터비스트(mrbeast, 본명 ‘지미
-                                            도널드슨’)는 현재 전 세계 유튜버 중
-                                            가장 많은 구독자 수를 기록하고 있다.
-                                            그의 콘텐츠를 제작하는 영상팀에는
-                                            신입 직원을 위한 온보딩 문서가 하나
-                                            있는데, 이 문서(영어 원문, 한국어
-                                            번역본)가 얼마 전 유출되었다.
-                                            미스터비스트 본인이 쓴 문서로, 그가
-                                            어떤 조직 문화를 지향하는지 잘
-                                            담겨있다. 거의 줄글 느낌에 농담과
-                                            오타도 많아서 (가끔 욕설도 등장)
-                                            미스터비스트의 자유분방함을 가득
-                                            느낄 수 있었다. 이번 글에서는
-                                            미스터비스트의 조직 문화와 그의
-                                            회사에서 일하면 어떤 느낌일지, 과연
-                                            행복하게 일할 수 있을지 등 최근 고소
-                                            논란 내용까지 묶어서 함께 살펴보려
-                                            한다.
                                         </p>
                                     </a>
                                     <div class="author-info flex-box">
                                         <img
-                                            src="/static/images/video/219729_20230718_dd8d72803ba7e434.jpg"
+                                                th:src="@{${mostReadVideoWork.profileImgUrl}}"
                                             class="author-image"
                                         />
                                         <p class="author-name">
                                             <a
                                                 class="link-underline-text popular-work-person"
+                                                th:text="${mostReadVideoWork.profileName}"
                                             >
-                                                맨오브피스
                                             </a>
                                         </p>
                                     </div>
@@ -127,193 +104,43 @@
                             <div class="guide-point-word recent-person-div">
                                 최근 모집공고
                             </div>
-                            <div>
-                                <a
-                                    class="link-text link-underline recent-category"
-                                >
-                                    영상
-                                </a>
-                            </div>
                         </div>
-                        <div class="card-item-link">
-                            <div class="sub-card">
+                        <div th:each="audition : ${latestVideoAuditions}">
+                            <div class="card-item-link">
+                                <div class="sub-card">
                                 <div class="card-main">
                                     <h3 class="card-main-h3">
                                         <a
-                                            href=""
-                                            class="subtitle-2-medium person-card-title link-text link-underline"
-                                        >
-                                            스태프 모집공고 올립니다
-                                        </a>
-                                    </h3>
-                                    <div class="content-meta flex-box">
-                                        <img
-                                            src="/static/images/video/icon-clock.png"
-                                            class="content-meta-elem meta-icon recent-person-img"
-                                        />
-                                        <div class="author-time">
-                                            2024.10.26
-                                        </div>
-                                    </div>
-                                    <a href="">
-                                        <p class="person-card-description">
-                                            모든 서비스에는 목표가 존재합니다.
-                                            특히 비즈니스와 연결된 서비스의
-                                            경우, 대부분 상품 등을 결제하는
-                                            행위가 목표인 경우가 많죠. 그런 만큼
-                                            기획자로서 성공적인 서비스를 설계할
-                                            때 가장 중요한 과제 중 하나는
-                                            사용자가 원활하게 결제할 수 있는
-                                            환경의 조성입니다. 요즘 시대의 결제
-                                            수단은 단순 기능을 넘어 사용자의
-                                            편의성을 높이고 매출 성장에 영향을
-                                            주는 핵심 요소로 작용합니다. 따라서
-                                            각 서비스의 특성과 타깃 사용자에게
-                                            맞는 최적의 결제 수단을 도입하는 것
-                                            역시 기획자로서 갖춰야 할
-                                            능력입니다. 이번 글에서는 다양한
-                                            온라인 결제 수단과 특징을 설명해
-                                            보려고 합니다.
-                                        </p>
-                                    </a>
-                                    <div class="author-info flex-box">
-                                        <img
-                                            src="/static/images/video/248055_20230718_02e200cef51139ed.jpg"
-                                            class="author-image"
-                                        />
-                                        <p class="author-name">
-                                            <a
-                                                class="link-underline-text recent-person"
-                                                href=""
-                                                >Creative Owner</a
-                                            >
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-category">
-                            <a class="link-text link-underline recent-category">
-                                영상
-                            </a>
-                        </div>
-                        <div class="card-item-link">
-                            <div class="sub-card">
-                                <div class="card-main">
-                                    <h3 class="card-main-h3">
-                                        <a
-                                            href=""
-                                            class="subtitle-2-medium person-card-title link-text link-underline"
+                                                th:href="@{'/audition/video/detail/' + ${audition.id}}"
+                                                class="subtitle-2-medium person-card-title link-text link-underline"
+                                                th:text="${audition.postTitle}"
                                         >
                                             배우 모집공고 올립니다
                                         </a>
                                     </h3>
                                     <div class="content-meta flex-box">
                                         <img
-                                            src="/static/images/video/icon-clock.png"
+                                            src="/images/video/icon-clock.png"
                                             class="author-time meta-icon"
                                         />
-                                        <div class="author-time">
-                                            2024.10.26
-                                        </div>
+                                        <div class="author-time" th:text="${audition.createdDate.substring(0, 10)}"></div>
                                     </div>
-                                    <a href="">
-                                        <p class="person-card-description">
-                                            모든 서비스에는 목표가 존재합니다.
-                                            특히 비즈니스와 연결된 서비스의
-                                            경우, 대부분 상품 등을 결제하는
-                                            행위가 목표인 경우가 많죠. 그런 만큼
-                                            기획자로서 성공적인 서비스를 설계할
-                                            때 가장 중요한 과제 중 하나는
-                                            사용자가 원활하게 결제할 수 있는
-                                            환경의 조성입니다. 요즘 시대의 결제
-                                            수단은 단순 기능을 넘어 사용자의
-                                            편의성을 높이고 매출 성장에 영향을
-                                            주는 핵심 요소로 작용합니다. 따라서
-                                            각 서비스의 특성과 타깃 사용자에게
-                                            맞는 최적의 결제 수단을 도입하는 것
-                                            역시 기획자로서 갖춰야 할
-                                            능력입니다. 이번 글에서는 다양한
-                                            온라인 결제 수단과 특징을 설명해
-                                            보려고 합니다.
-                                        </p>
+                                    <a th:href="@{'/audition/video/detail/' + ${audition.id}}">
+                                        <p class="person-card-description" th:text="${audition.postContent}"></p>
                                     </a>
                                     <div class="author-info flex-box">
                                         <img
-                                            src="https://cdn.wishket.com/news_profiles/248055_20230718_02e200cef51139ed.jpg"
-                                            class="author-image"
+                                                th:src="@{${audition.profileImgUrl}}"
+                                                class="author-image"
                                         />
                                         <p class="author-name">
                                             <a
-                                                class="link-underline-text recent-person"
-                                                href=""
-                                                >Creative Owner</a
-                                            >
+                                                    class="link-underline-text recent-person"
+                                                    th:text="${audition.profileName}"
+                                            ></a>
                                         </p>
                                     </div>
                                 </div>
-                                <div></div>
-                            </div>
-                        </div>
-                        <div class="card-category">
-                            <a class="link-text link-underline recent-category">
-                                영상
-                            </a>
-                        </div>
-                        <div class="card-item-link">
-                            <div class="sub-card">
-                                <div class="card-main">
-                                    <h3 class="card-main-h3">
-                                        <a
-                                            href=""
-                                            class="subtitle-2-medium person-card-title link-text link-underline"
-                                        >
-                                            촬영감독 모집공고 올립니다
-                                        </a>
-                                    </h3>
-                                    <div class="content-meta flex-box">
-                                        <img
-                                            src="/static/images/video/icon-clock.png"
-                                            class="content-meta-elem meta-icon"
-                                        />
-                                        <div class="author-time">
-                                            2024.10.26
-                                        </div>
-                                    </div>
-                                    <a href="">
-                                        <p class="person-card-description">
-                                            모든 서비스에는 목표가 존재합니다.
-                                            특히 비즈니스와 연결된 서비스의
-                                            경우, 대부분 상품 등을 결제하는
-                                            행위가 목표인 경우가 많죠. 그런 만큼
-                                            기획자로서 성공적인 서비스를 설계할
-                                            때 가장 중요한 과제 중 하나는
-                                            사용자가 원활하게 결제할 수 있는
-                                            환경의 조성입니다. 요즘 시대의 결제
-                                            수단은 단순 기능을 넘어 사용자의
-                                            편의성을 높이고 매출 성장에 영향을
-                                            주는 핵심 요소로 작용합니다. 따라서
-                                            각 서비스의 특성과 타깃 사용자에게
-                                            맞는 최적의 결제 수단을 도입하는 것
-                                            역시 기획자로서 갖춰야 할
-                                            능력입니다. 이번 글에서는 다양한
-                                            온라인 결제 수단과 특징을 설명해
-                                            보려고 합니다.
-                                        </p>
-                                    </a>
-                                    <div class="author-info flex-box">
-                                        <img
-                                            src="https://cdn.wishket.com/news_profiles/248055_20230718_02e200cef51139ed.jpg"
-                                            class="author-image"
-                                        />
-                                        <p class="author-name">
-                                            <a
-                                                class="link-underline-text recent-person"
-                                                href=""
-                                                >Creative Owner</a
-                                            >
-                                        </p>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -324,7 +151,7 @@
                 <div class="container">
                     <div class="guide-main-contents">
                         <img
-                            src="/static/images/video/funding.png"
+                            src="/images/video/funding.png"
                             class="funding-guide-img"
                         />
                         <div class="funding-guide">
@@ -338,7 +165,7 @@
                             </p>
                         </div>
                         <div class="funding-button-box">
-                            <button>펀딩 하러가기</button>
+                            <button id="fundingButton">펀딩 하러가기</button>
                         </div>
                     </div>
                 </div>
@@ -350,36 +177,34 @@
                     </div>
                     <div class="main-list-row">
                         <div
-                            class="list-item-link other-list popular-funding-list"
+                                class="list-item-link other-list popular-funding-list" th:each="funding : ${topVideoFunding}"
                         >
                             <div class="list-item card-grid">
                                 <div class="list-item-thumbnail">
-                                    <a href="">
-                                        <img
-                                            src="https://yozm.wishket.com/media/news/2765/exhausted-young-male-software-developer-sleeping-by-technology-while-leaning-desk__1_.jpg"
+                                    <a th:href="@{'/video/funding/detail/' + ${funding.id}}">
+                                        <img th:src="@{'/display?fileName=' + ${funding.thumbnailFilePath} + '/'+ ${funding.thumbnailFileName}}"
                                             class="thumbnail-image"
                                         />
                                     </a>
                                 </div>
                                 <div class="item-main">
                                     <h3 class="item-main-h3">
-                                        <a
-                                            href=""
-                                            class="item-title link-text link-underline popular-funding-title"
+                                        <a th:href="@{'/video/funding/detail/' + ${funding.id}}"
+                                           class="item-title link-text link-underline popular-funding-title"
+                                           th:text="${funding.postTitle}"
                                         >
-                                            개발자는 정말로 사라질까?
                                         </a>
                                     </h3>
                                     <div class="content-meta flex-box">
                                         <img
-                                            src="/static/images/video/icon-clock.png"
+                                            src="/images/video/icon-clock.png"
                                             class="content-meta-elem meta-icon"
                                         />
 
                                         <div
                                             class="content-meta-elem popular-funding-before-time"
+                                            th:text="${funding.createdDate.substring(0,10)}"
                                         >
-                                            2024.10.26
                                         </div>
                                         <div
                                             class="content-meta-elem content-meta-sep"
@@ -391,195 +216,28 @@
                                             class="content-meta-elem meta-icon"
                                         />
                                         <div class="popular-funding-text">
-                                            <span class="funding-persent"
-                                                >900</span
+                                            <span class="funding-persent" th:text="${funding.fundingPercentage}"
+                                                ></span
                                             >% 달성
                                         </div>
                                     </div>
-                                    <a href="">
+                                    <a th:href="@{'/video/funding/detail/' + ${funding.id}}">
                                         <p
-                                            class="list-item-description popular-funding-content"
+                                                class="list-item-description popular-funding-content"
+                                                th:text="${funding.postContent}"
                                         >
-                                            추석을 맞아 요즘IT가 글 모음 선물을
-                                            준비했습니다. 이번 주제는 “개발자의
-                                            미래”입니다. 빠르게 성장하는 AI
-                                            도구가 개발의 영역을 침범하고
-                                            있습니다. 누군가는 개발자란 직업의
-                                            종말을, 누군가는 새로운 정의를,
-                                            누군가는 또 다른 직업을 제시합니다.
-                                            사람들이 개발자의 미래를 상상하며
-                                            던지는 질문은 단순합니다. “개발자는
-                                            정말 사라질까요?”
                                         </p>
                                     </a>
                                     <div class="author-info flex-box">
                                         <img
-                                            src="https://cdn.wishket.com/news_profiles/278363_20240116_5c2efa336003f792.png"
-                                            class="author-image popular-funding-writer-img"
+                                                th:src="@{${funding.profileImgUrl}}"
+                                                class="author-image popular-funding-writer-img"
                                         />
                                         <p class="author-name">
                                             <a
-                                                href=""
-                                                class="link-underline-text popular-funding-writer"
-                                                >요즘 IT</a
-                                            >
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div
-                            class="list-item-link other-list popular-funding-list"
-                        >
-                            <div class="list-item card-grid">
-                                <div class="list-item-thumbnail">
-                                    <a href="">
-                                        <img
-                                            src="https://yozm.wishket.com/media/news/2765/exhausted-young-male-software-developer-sleeping-by-technology-while-leaning-desk__1_.jpg"
-                                            class="thumbnail-image"
-                                        />
-                                    </a>
-                                </div>
-                                <div class="item-main">
-                                    <h3 class="item-main-h3">
-                                        <a
-                                            href=""
-                                            class="item-title link-text link-underline popular-funding-title"
-                                        >
-                                            개발자는 정말로 사라질까?
-                                        </a>
-                                    </h3>
-                                    <div class="content-meta flex-box">
-                                        <img
-                                            src="/static/images/video/icon-clock.png"
-                                            class="content-meta-elem meta-icon"
-                                        />
-
-                                        <div
-                                            class="content-meta-elem popular-funding-before-time"
-                                        >
-                                            2024.10.26
-                                        </div>
-                                        <div
-                                            class="content-meta-elem content-meta-sep"
-                                        >
-                                            |
-                                        </div>
-                                        <img
-                                            src="https://yozm.wishket.com/static/renewal/img/news/icon-popularity.png"
-                                            class="content-meta-elem meta-icon"
-                                        />
-                                        <div class="popular-funding-text">
-                                            <span class="funding-persent"
-                                                >900</span
-                                            >% 달성
-                                        </div>
-                                    </div>
-                                    <a href="">
-                                        <p
-                                            class="list-item-description popular-funding-content"
-                                        >
-                                            추석을 맞아 요즘IT가 글 모음 선물을
-                                            준비했습니다. 이번 주제는 “개발자의
-                                            미래”입니다. 빠르게 성장하는 AI
-                                            도구가 개발의 영역을 침범하고
-                                            있습니다. 누군가는 개발자란 직업의
-                                            종말을, 누군가는 새로운 정의를,
-                                            누군가는 또 다른 직업을 제시합니다.
-                                            사람들이 개발자의 미래를 상상하며
-                                            던지는 질문은 단순합니다. “개발자는
-                                            정말 사라질까요?”
-                                        </p>
-                                    </a>
-                                    <div class="author-info flex-box">
-                                        <img
-                                            src="https://cdn.wishket.com/news_profiles/278363_20240116_5c2efa336003f792.png"
-                                            class="author-image popular-funding-writer-img"
-                                        />
-                                        <p class="author-name">
-                                            <a
-                                                href=""
-                                                class="link-underline-text popular-funding-writer"
-                                                >요즘 IT</a
-                                            >
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div
-                            class="list-item-link other-list popular-funding-list"
-                        >
-                            <div class="list-item card-grid">
-                                <div class="list-item-thumbnail">
-                                    <a href="">
-                                        <img
-                                            src="https://yozm.wishket.com/media/news/2765/exhausted-young-male-software-developer-sleeping-by-technology-while-leaning-desk__1_.jpg"
-                                            class="thumbnail-image"
-                                        />
-                                    </a>
-                                </div>
-                                <div class="item-main">
-                                    <h3 class="item-main-h3">
-                                        <a
-                                            href=""
-                                            class="item-title link-text link-underline popular-funding-title"
-                                        >
-                                            개발자는 정말로 사라질까?
-                                        </a>
-                                    </h3>
-                                    <div class="content-meta flex-box">
-                                        <img
-                                            src="/static/images/video/icon-clock.png"
-                                            class="content-meta-elem meta-icon"
-                                        />
-
-                                        <div
-                                            class="content-meta-elem popular-funding-before-time"
-                                        >
-                                            2024.10.26
-                                        </div>
-                                        <div
-                                            class="content-meta-elem content-meta-sep"
-                                        >
-                                            |
-                                        </div>
-                                        <img
-                                            src="https://yozm.wishket.com/static/renewal/img/news/icon-popularity.png"
-                                            class="content-meta-elem meta-icon"
-                                        />
-                                        <div class="popular-funding-text">
-                                            <span class="funding-persent"
-                                                >900</span
-                                            >% 달성
-                                        </div>
-                                    </div>
-                                    <a href="">
-                                        <p
-                                            class="list-item-description popular-funding-content"
-                                        >
-                                            추석을 맞아 요즘IT가 글 모음 선물을
-                                            준비했습니다. 이번 주제는 “개발자의
-                                            미래”입니다. 빠르게 성장하는 AI
-                                            도구가 개발의 영역을 침범하고
-                                            있습니다. 누군가는 개발자란 직업의
-                                            종말을, 누군가는 새로운 정의를,
-                                            누군가는 또 다른 직업을 제시합니다.
-                                            사람들이 개발자의 미래를 상상하며
-                                            던지는 질문은 단순합니다. “개발자는
-                                            정말 사라질까요?”
-                                        </p>
-                                    </a>
-                                    <div class="author-info flex-box">
-                                        <img
-                                            src="https://cdn.wishket.com/news_profiles/278363_20240116_5c2efa336003f792.png"
-                                            class="author-image popular-funding-writer-img"
-                                        />
-                                        <p class="author-name">
-                                            <a
-                                                href=""
-                                                class="link-underline-text popular-funding-writer"
-                                                >요즘 IT</a
+                                                    class="link-underline-text popular-funding-writer"
+                                                    th:text="${funding.profileName}"
+                                            ></a
                                             >
                                         </p>
                                     </div>
@@ -591,5 +249,5 @@
             </div>
         </div>
     </body>
-    <script src="/static/js/video/main.js"></script>
+    <script src="/js/video/main.js"></script>
 </html>
