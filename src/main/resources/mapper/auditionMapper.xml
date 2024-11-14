@@ -28,13 +28,6 @@
                #{auditionCategory}, #{fileContent}, #{auditionStatus})
     </insert>
 
-    <!-- 조회수 증가 -->
-    <update id="increaseReadCount" parameterType="Long">
-        update tbl_work
-        set read_count = read_count + 1
-        where id = #{id}
-    </update>
-
     <!-- 모집 정보 수정 -->
     <update id="updateAudition" parameterType="auditionDTO">
     update tbl_audition
@@ -164,5 +157,52 @@
         from tbl_audition a join tbl_post p
         on a.id = p.id and a.id = #{id} and p.post_type = #{postType}
     </select>
+
+
+
+
+
+
+            <!--메인페이지-->
+    <select id="selectLatestTextAuditionsForMainPage" resultType="auditionDTO">
+        select
+            a.id,
+            p.post_title,
+            p.post_content,
+            p.created_date,
+            mp.profile_nickname as profileName,
+            m.profile_img_url as profileImgUrl
+        from
+            tbl_audition a
+                join tbl_post p on a.id = p.id
+                join tbl_member_profile mp on p.member_profile_id = mp.id
+                join tbl_member m on mp.member_id = m.id
+        where
+            p.post_type = 'AUDITIONTEXT'
+        order by
+            p.created_date desc
+            limit 3
+    </select>
+
+    <select id="selectLatestVideoAuditionsForMainPage" resultType="auditionDTO">
+        select
+            a.id,
+            p.post_title,
+            p.post_content,
+            p.created_date,
+            mp.profile_nickname as profileName,
+            m.profile_img_url as profileImgUrl
+        from
+            tbl_audition a
+                join tbl_post p on a.id = p.id
+                join tbl_member_profile mp on p.member_profile_id = mp.id
+                join tbl_member m on mp.member_id = m.id
+        where
+            p.post_type = 'AUDITIONVIDEO'
+        order by
+            p.created_date desc
+            limit 3
+    </select>
+
 
 </mapper>

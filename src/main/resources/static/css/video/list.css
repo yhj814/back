@@ -127,7 +127,7 @@ a {
     margin-bottom: 40px;
 }
 .text-ggumteo {
-    color: #00a878;
+    color: #2099bb;
     margin-bottom: 8px;
     font-weight: 700;
     font-size: 16px;
@@ -171,7 +171,7 @@ a {
     width: 100%;
     height: inherit;
     padding: 8px 38px 8px 12px;
-    outline-color: #00a878;
+    outline-color: #2099bb;
 }
 .search-btn {
     cursor: pointer;
@@ -295,7 +295,7 @@ a {
     margin-right: 25px;
 }
 .filter-box:hover {
-    border-color: #00a878;
+    border-color: #2099bb;
 }
 .pagination-box {
     display: flex;
@@ -332,12 +332,12 @@ li:first-child > .page-link {
     font-weight: 500;
     color: #616161;
     text-decoration: none;
-    border: 1px solid #00a878;
+    border: 1px solid #2099bb;
 }
 .page-item.active .page-link {
     font-weight: bold;
     color: #ffffff;
-    background-color: #00a878;
+    background-color: #2099bb;
     border-color: black;
     cursor: default;
 }
@@ -359,7 +359,7 @@ li:last-child > .page-link {
 }
 /* 페이지 이동시 페이지 번호에 생기는 스타일 */
 .active {
-    color: #00a878;
+    color: #2099bb;
     border-color: #bdbdbd;
     border-radius: 2px;
 }
@@ -383,7 +383,7 @@ li:last-child > .page-link {
     cursor: pointer;
     height: 36px;
     padding: 5px 12px;
-    border: solid 1px #00a878;
+    border: solid 1px #2099bb;
     background-color: #fff;
     color: #616161;
     font-size: 15px;

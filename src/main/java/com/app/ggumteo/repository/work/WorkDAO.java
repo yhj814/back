@@ -109,4 +109,16 @@ public class WorkDAO {
     public Optional<WorkDTO> findByIdAndPostType(Long id, String postType) {
         return workMapper.selectByIdAndPostType(id, postType);
     }
+
+
+
+
+//    메인페이지
+public WorkDTO selectMostReadTextWorkForMainPage() {
+    return workMapper.selectMostReadTextWorkForMainPage();
+}
+
+    public WorkDTO selectMostReadVideoWorkForMainPage() {
+        return workMapper.selectMostReadVideoWorkForMainPage();
+    }
 }

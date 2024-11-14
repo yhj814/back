@@ -66,4 +66,8 @@ public interface AuditionMapper {
     // 작품 정보 조회
     public Optional<AuditionDTO> selectByIdAndPostType(@Param("id") Long id, @Param("postType") String postType);
 
+
+    //메인페이지
+    List<AuditionDTO> selectLatestTextAuditionsForMainPage();
+    List<AuditionDTO> selectLatestVideoAuditionsForMainPage();
 }

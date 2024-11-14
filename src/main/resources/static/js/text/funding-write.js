@@ -491,4 +491,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // 페이지 로드 시에도 버튼 상태 확인
     checkFormCompletion();
+
+    document.getElementById("backButton").addEventListener("click", function(event) {
+        event.preventDefault(); // 폼 제출 방지
+        window.location.href = "/text/funding/list";
+    });
 });

@@ -74,4 +74,13 @@ public interface WorkMapper {
 
     // 작품 정보 조회
     public Optional<WorkDTO> selectByIdAndPostType(@Param("id") Long id, @Param("postType") String postType);
+
+
+
+
+
+    //메인 페이지
+    WorkDTO selectMostReadTextWorkForMainPage();
+    WorkDTO selectMostReadVideoWorkForMainPage();
+
 }

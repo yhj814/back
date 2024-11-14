@@ -195,6 +195,77 @@
         where id = #{workId}
     </update>
 
+
+<!--    메인페이지-->
+    <select id="selectMostReadTextWorkForMainPage" resultType="workDTO">
+        select
+            w.id,
+            w.genre_type,
+            w.read_count,
+            p.post_title,
+            p.post_content,
+            p.created_date,
+            mp.profile_nickname as profileName,
+            m.profile_img_url as profileImgUrl,
+            f.file_name as thumbnailFileName,
+            f.file_path as thumbnailFilePath,
+            ifnull(round(avg(r.star), 1), 0) as averageRating
+        from
+            tbl_work w
+                join tbl_post p on w.id = p.id
+                join tbl_member_profile mp on p.member_profile_id = mp.id
+                join tbl_member m on mp.member_id = m.id
+                left join tbl_reply r on w.id = r.work_id
+                left join tbl_file f on w.thumbnail_file_id = f.id
+        where
+            p.post_type = 'WORKTEXT'
+        group by
+            w.id
+        order by
+            w.read_count desc
+            limit 1
+    </select>
+
+
+
+    <select id="selectMostReadVideoWorkForMainPage" resultType="workDTO">
+        select
+            w.id,
+            w.genre_type as genre,
+            w.read_count,
+            p.post_title,
+            p.post_content,
+            p.created_date,
+            mp.profile_nickname as profileName,
+            m.profile_img_url as profileImgUrl,
+            f.file_name as thumbnailFileName,
+            f.file_path as thumbnailFilePath,
+            ifnull(round(avg(r.star), 1), 0) as averageRating
+        from
+            tbl_work w
+                join tbl_post p on w.id = p.id
+                join tbl_member_profile mp on p.member_profile_id = mp.id
+                join tbl_member m on mp.member_id = m.id
+                left join tbl_reply r on w.id = r.work_id
+                left join tbl_file f on w.thumbnail_file_id = f.id
+        where
+            p.post_type = 'WORKVIDEO'
+        group by
+            w.id
+        order by
+            w.read_count desc
+            limit 1
+    </select>
+
+
+
+
+
+
+
+
+
+
     <!--  마이페이지  -->
     <!--  내 작품 조회  -->
     <select id="selectByMemberId" resultType="workDTO">

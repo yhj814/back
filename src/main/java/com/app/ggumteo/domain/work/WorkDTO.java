@@ -43,6 +43,7 @@ public class WorkDTO {
     private MultipartFile thumbnailFile;
     private List<String> fileNames;
     private String filePath;
+    private double averageRating;
 
     public WorkVO toVO() {
         return new WorkVO(id, workPrice, genreType, fileContent, readCount, createdDate, updatedDate, thumbnailFileId);
