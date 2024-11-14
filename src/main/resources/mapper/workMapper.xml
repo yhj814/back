@@ -45,7 +45,16 @@
         w.id = #{id}
     </select>
 
-
+    <!-- 댓글 알람용 -->
+    <select id="selectWorkById" parameterType="Long" resultType="com.app.ggumteo.domain.work.WorkDTO">
+        SELECT
+            id,
+            post_id AS postId
+        FROM
+            tbl_work
+        WHERE
+            id = #{id}
+    </select>
 
 
     <!-- 조회수 증가 -->

@@ -1,7 +1,9 @@
 package com.app.ggumteo.controller.funding;
 
 
+import com.app.ggumteo.constant.AlarmSubType;
 import com.app.ggumteo.constant.PostType;
+import com.app.ggumteo.domain.buy.BuyFundingProductVO;
 import com.app.ggumteo.domain.file.FileVO;
 import com.app.ggumteo.domain.file.PostFileDTO;
 import com.app.ggumteo.domain.funding.FundingDTO;
@@ -13,6 +15,7 @@ import com.app.ggumteo.domain.work.WorkDTO;
 import com.app.ggumteo.exception.SessionNotFoundException;
 import com.app.ggumteo.pagination.Pagination;
 import com.app.ggumteo.search.Search;
+import com.app.ggumteo.service.alarm.AlarmService;
 import com.app.ggumteo.service.file.PostFileService;
 import com.app.ggumteo.service.funding.FundingService;
 import jakarta.servlet.http.HttpSession;
@@ -40,6 +43,7 @@ public class TextFundingController {
     private final HttpSession session;
     private final PostFileService postFileService;
     private final FundingService fundingService;
+    private final AlarmService alarmService;
 
     @ModelAttribute
     public void setMemberInfo(HttpSession session, Model model) {
@@ -293,9 +297,32 @@ public class TextFundingController {
             log.info("Received Order Data - Funding ID: {}, Member Profile ID: {}, Product ID: {}, Amount: {}, Product Price: {}", fundingId, memberProfileId, fundingProductId, amount, productPrice);
 
             // 펀딩 주문 처리 로직 실행
-            fundingService.buyFundingProduct(memberProfileId, fundingId, fundingProductId, productPrice);
+            BuyFundingProductVO buyFundingProductVO = fundingService.buyFundingProduct(memberProfileId, fundingId, fundingProductId, productPrice);
 
-            log.info("Order processed successfully for Funding ID: {}", fundingId);
+            log.info("Order processed successfully for Funding ID: {}, BuyFundingProduct ID: {}", fundingId, buyFundingProductVO.getId());
+
+            // 알림 생성
+
+            // 1. Get the funding's author memberProfileId
+            FundingDTO funding = fundingService.findFundingById(fundingId);
+            if (funding == null) {
+                log.error("Funding not found for ID: {}", fundingId);
+                return ResponseEntity.status(400).body(Collections.singletonMap("error", "해당 펀딩을 찾을 수 없습니다."));
+            }
+            Long authorMemberProfileId = funding.getMemberProfileId();
+            if (authorMemberProfileId == null) {
+                log.error("Funding's author memberProfileId is null for Funding ID: {}", fundingId);
+                return ResponseEntity.status(400).body(Collections.singletonMap("error", "펀딩 작성자의 정보를 찾을 수 없습니다."));
+            }
+
+            // 2. Create alarm to the author
+            String message = "새로운 펀딩 상품이 구매되었습니다.";
+            AlarmSubType subType = AlarmSubType.TEXT;
+
+            alarmService.createFundingAlarm(authorMemberProfileId, buyFundingProductVO.getId(), message, subType);
+
+            log.info("Funding alarm created for Funding ID: {}, BuyFundingProduct ID: {}", fundingId, buyFundingProductVO.getId());
+
             return ResponseEntity.ok(Collections.singletonMap("success", true));
         } catch (NumberFormatException e) {
             log.error("주문 데이터 형식 오류", e);

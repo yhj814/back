@@ -4,5 +4,5 @@ import com.app.ggumteo.domain.buy.BuyWorkVO;
 
 public interface BuyWorkService {
 
-    public void savePurchase(BuyWorkVO buyWorkVO);
+    BuyWorkVO savePurchase(BuyWorkVO buyWorkVO);
 }

@@ -1,7 +1,9 @@
 package com.app.ggumteo.mapper.post;
 
+import com.app.ggumteo.domain.post.PostDTO;
 import com.app.ggumteo.domain.post.PostVO;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 @Mapper
 public interface PostMapper {
@@ -13,4 +15,6 @@ public interface PostMapper {
     public Long getLastInsertId();
 
    public void deleteById(Long id);
+
+   public PostDTO selectPostById(@Param("id") Long id);
 }

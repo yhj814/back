@@ -1,6 +1,7 @@
 package com.app.ggumteo.repository.post;
 
 
+import com.app.ggumteo.domain.post.PostDTO;
 import com.app.ggumteo.domain.post.PostVO;
 import com.app.ggumteo.mapper.post.PostMapper;
 import lombok.RequiredArgsConstructor;
@@ -29,5 +30,7 @@ public class PostDAO {
         postMapper.deleteById(id);
     }
 
-
+    public PostDTO findPostById(Long postId) {
+        return postMapper.selectPostById(postId);
+    }
 }
