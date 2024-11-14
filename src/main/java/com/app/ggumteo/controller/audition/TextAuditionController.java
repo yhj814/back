@@ -25,6 +25,7 @@ import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.view.RedirectView;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -95,9 +96,9 @@ public class TextAuditionController {
     }
 
     @PostMapping("write")
-    public String write(AuditionDTO auditionDTO,
-                        @RequestParam(value = "fileNames", required = false) List<String> fileNames,
-                        Model model) {
+    public RedirectView write(AuditionDTO auditionDTO,
+                              @RequestParam(value = "fileNames", required = false) List<String> fileNames,
+                              Model model) {
         try {
             MemberVO member = (MemberVO) session.getAttribute("member");
             MemberProfileDTO memberProfile = (MemberProfileDTO) session.getAttribute("memberProfile");
@@ -105,7 +106,7 @@ public class TextAuditionController {
             if (member == null || memberProfile == null) {
                 log.error("세션에 사용자 정보가 없습니다.");
                 model.addAttribute("error", "세션에 사용자 정보가 없습니다.");
-                return "/error";
+                return new RedirectView("/error");
             }
 
             auditionDTO.setPostType(PostType.AUDITIONTEXT.name());
@@ -119,11 +120,11 @@ public class TextAuditionController {
 
             auditionService.write(auditionDTO);
 
-            return "redirect:/audition/text/detail/" + auditionDTO.getId();
+            return new RedirectView("/audition/text/detail/" + auditionDTO.getId());
         } catch (Exception e) {
             log.error("오류 발생", e);
             model.addAttribute("error", "저장 중 오류가 발생했습니다.");
-            return "/error";
+            return new RedirectView("/error");
         }
     }
 
@@ -146,7 +147,7 @@ public class TextAuditionController {
 
 
     @PostMapping("/modify")
-    public String updateAudition(
+    public RedirectView updateAudition(
             @ModelAttribute AuditionDTO auditionDTO,
             @RequestParam(value = "fileNames", required = false) List<String> fileNames,
             @RequestParam(value = "deletedFileIds", required = false) List<Long> deletedFileIds,
@@ -174,11 +175,11 @@ public class TextAuditionController {
 
             model.addAttribute("audition", auditionDTO);
 
-            return "redirect:/audition/text/detail/" + auditionDTO.getId();
+            return new RedirectView("/audition/text/detail/" + auditionDTO.getId());
         } catch (Exception e) {
             log.error("오류 발생: {}", e.getMessage(), e);
             model.addAttribute("error", "업데이트 중 오류가 발생했습니다: " + e.getMessage());
-            return "/audition/text/error";
+            return new RedirectView("/audition/text/error");
         }
     }
 
@@ -272,18 +273,17 @@ public class TextAuditionController {
 
 
     @PostMapping("/application/{id}")
-    public String submitApplication(
+    public RedirectView submitApplication(
             @PathVariable("id") Long id,
             @RequestParam(value = "fileNames", required = false) List<String> fileNames,
             AuditionApplicationDTO auditionApplicationDTO,
             Model model) {
-        // 세션에서 멤버 정보 가져오기
         MemberVO member = (MemberVO) session.getAttribute("member");
         MemberProfileDTO memberProfile = (MemberProfileDTO) session.getAttribute("memberProfile");
 
         if (member == null || memberProfile == null) {
             model.addAttribute("error", "로그인이 필요합니다.");
-            return "redirect:/login"; // 로그인 페이지로 리다이렉트
+            return new RedirectView("/login");
         }
 
         log.info("submitApplication 메서드 - 사용자 ID: {}, 프로필 ID: {}", member.getId(), memberProfile.getId());
@@ -296,11 +296,10 @@ public class TextAuditionController {
         auditionApplicationDTO.setFileNames(fileNames);
 
         // 신청 데이터 저장 및 알람 생성
-        // subType을 TEXT로 설정하여 서비스 메서드 호출
         auditionApplicationService.write(auditionApplicationDTO, AlarmSubType.TEXT);
 
         log.info("Audition application processed and alarm created.");
 
-        return RedirectPaths.AUDITION_DETAIL + id; // 상세 페이지로 포워드
+        return new RedirectView("/audition/text/detail/" + id);
     }
 }

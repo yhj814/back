@@ -24,6 +24,9 @@ public interface WorkMapper {
     // 작품 ID로 작품 조회
     WorkDTO selectById(Long id);
 
+    // 작품 id로 작품 조회(댓글 알람용)
+    WorkDTO selectWorkById(@Param("id") Long id);
+
     // 조회수 증가
     void increaseReadCount(Long id);
 
