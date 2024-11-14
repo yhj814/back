@@ -54,6 +54,8 @@ body {
 
 header.header {
     min-width: 1080px;
+    margin-bottom: 72px;
+
 }
 
 header.header .sticky {

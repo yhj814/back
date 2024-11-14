@@ -1,5 +1,6 @@
 package com.app.ggumteo.service.funding;
 
+import com.app.ggumteo.domain.buy.BuyFundingProductVO;
 import com.app.ggumteo.domain.file.FileVO;
 import com.app.ggumteo.domain.file.PostFileDTO;
 import com.app.ggumteo.domain.file.PostFileVO;
@@ -370,18 +371,27 @@ public class FundingServiceImpl implements FundingService{
     public List<FundingDTO> findRelatedFundingByGenre(String genreType, Long fundingId) {
         return fundingDAO.findRelatedFundingByGenre(genreType, fundingId);
     }
+
     @Override
-    public void buyFundingProduct(Long memberId, Long fundingId, Long fundingProductId, int productPrice) {
+    public BuyFundingProductVO buyFundingProduct(Long memberId, Long fundingId, Long fundingProductId, int productPrice) {
         log.info("Updating convergePrice for fundingId: {}, fundingProductId: {}, with productPrice: {}", fundingId, fundingProductId, productPrice);
 
-        // 상품 수량 감소 (fundingProductId 사용)
+        // 상품 수량 감소
         buyFundingProductDAO.decrementProductAmount(fundingProductId);
 
-        // 펀딩 금액 증가 (fundingId 사용)
+        // 펀딩 금액 증가
         buyFundingProductDAO.updateConvergePrice(fundingId, productPrice);
 
-        // 구매 내역 삽입 (memberId와 fundingProductId 사용)
-        buyFundingProductDAO.insertBuyFundingProduct(memberId, fundingProductId);
+        // 구매 내역 삽입
+        BuyFundingProductVO buyFundingProductVO = new BuyFundingProductVO();
+        buyFundingProductVO.setMemberProfileId(memberId);
+        buyFundingProductVO.setFundingProductId(fundingProductId);
+        buyFundingProductVO.setFundingSendStatus("NO"); // 기본 상태 설정
+
+        buyFundingProductVO = buyFundingProductDAO.saveBuyFundingProduct(buyFundingProductVO);
+        log.info("BuyFundingProduct saved with ID: {}", buyFundingProductVO.getId());
+
+        return buyFundingProductVO;
     }
 
 

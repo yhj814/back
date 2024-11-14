@@ -49,8 +49,6 @@ public interface BuyFundingProductMapper {
     void decrementProductAmount(@Param("productId") Long fundingProductId);
 
     // 구매 정보 삽입
-    void insertBuyFundingProduct(
-            @Param("memberProfileId") Long memberProfileId,
-            @Param("fundingProductId") Long fundingProductId);
+    void insertBuyFundingProduct(BuyFundingProductVO buyFundingProductVO);
 
 }
