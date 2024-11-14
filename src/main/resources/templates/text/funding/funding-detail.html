@@ -6,11 +6,20 @@
         <script src="https://js.bootpay.co.kr/bootpay-5.0.1.min.js" type="application/javascript"></script>
         <title>글 펀딩 상세페이지</title>
         <link rel="stylesheet" href="/css/text/funding-detail.css" />
+        <link rel="stylesheet" th:href="@{/css/header/logout.css}">
+        <link rel="stylesheet" th:href="@{/css/header/login.css}">
+        <link rel="stylesheet" th:href="@{/css/footer/footer.css}">
     </head>
     <body class="ggumteo-funding" th:attr="data-work-id=${funding.id},data-member-id=${session.memberProfile.id},
                data-profile-name=${session.memberProfile.profileName},
                data-profile-phone=${session.memberProfile.profilePhone},
                data-profile-email=${session.memberProfile.profileEmail}">
+    <th:block th:if="${isLoggedIn}">
+        <div th:replace="~{header-login :: header}"></div>
+    </th:block>
+    <th:block th:if="${!isLoggedIn}">
+        <div th:replace="~{header-logout :: header}"></div>
+    </th:block>
     <div class="main-header">
         <div class="container">
             <a class="sub-navigation" th:href="@{/text/list}">
@@ -316,6 +325,10 @@
             </div>
         </div>
     </body>
+    <footer th:replace="~{footer.html :: footer}"></footer>
     <script src="/js/text/funding-detail.js"></script>
 <script src="/js/text/funding-detail-pay.js"></script>
+    <script th:src="@{/js/header/header-logout.js}" defer></script>
+    <script th:src="@{/js/header/header-login.js}" defer></script>
+    <script th:src="@{/js/header/logout-click.js}" defer></script>
 </html>
