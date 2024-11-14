@@ -5,8 +5,17 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>글 메인</title>
         <link rel="stylesheet" href="/css/text/main.css" />
+        <link rel="stylesheet" th:href="@{/css/header/logout.css}">
+        <link rel="stylesheet" th:href="@{/css/header/login.css}">
+        <link rel="stylesheet" th:href="@{/css/footer/footer.css}">
     </head>
     <body>
+    <th:block th:if="${isLoggedIn}">
+        <div th:replace="~{header-login :: header}"></div>
+    </th:block>
+    <th:block th:if="${!isLoggedIn}">
+        <div th:replace="~{header-logout :: header}"></div>
+    </th:block>
         <div class="main-header">
             <div class="container">
                 <a class="sub-navigation" th:href="@{/text/list}">
@@ -138,7 +147,6 @@
                                                 <a
                                                         class="link-underline-text recent-person"
                                                         th:text="${audition.profileName}"
-                                                        href=""
                                                 ></a>
                                             </p>
                                         </div>
@@ -252,5 +260,9 @@
             </div>
         </div>
     </body>
+    <footer th:replace="~{footer.html :: footer}"></footer>
     <script src="/js/text/main.js"></script>
+    <script th:src="@{/js/header/header-logout.js}" defer></script>
+    <script th:src="@{/js/header/header-login.js}" defer></script>
+    <script th:src="@{/js/header/logout-click.js}" defer></script>
 </html>
