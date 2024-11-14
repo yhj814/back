@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", function () {
         input.addEventListener("blur", function () {
             if (input.value.trim() === "") {
                 input.classList.add("error");
-                input.style.border = "solid 1px #e52929";
+                // input.style.border = "solid 1px #e52929";
                 input.style.position = "relative";
                 input.style.zIndex = "2";
             }

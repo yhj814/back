@@ -195,7 +195,7 @@ footer.footer .footer-contact .footer-cs-tel,
 .label-input-partner > input:hover {
     position: inherit;
     z-index: 15;
-    border-color: #2099bb;
+    border-color: #2099bb;!important;
 }
 
 .label-input-partner > input:focus {
@@ -219,6 +219,11 @@ footer.footer .footer-contact .footer-cs-tel,
 }
 
 .label-input-partner.label-effect > label {
+    transform: translateY(-20px);
+    font-size: 0.688rem;
+}
+
+.label-input-partner.label-effect-placeholder > label {
     transform: translateY(-20px);
     font-size: 0.688rem;
 }
@@ -290,7 +295,7 @@ body.partners_profile .ui-autocomplete.error {
 }
 
 .ui-textarea-partner > .textarea__border:hover {
-    border-color: #2099bb;
+    border-color: #2099bb;!important;
 }
 
 .ui-textarea-partner > .textarea__border.active {
@@ -614,7 +619,7 @@ button {
 }
 
 .default-img:hover {
-    border-color: #888;
+    border-color: #888;!important;
 }
 
 img {
@@ -857,7 +862,7 @@ img {
 .label-input-partner>input:hover{
     position: inherit;
     z-index: 15;
-    border-color: #2099bb;
+    border-color: #2099bb;!important;
 }
 
 .label-input-partner>input:focus{
@@ -938,7 +943,7 @@ z-index: 2;
 
 
 .default-input-partner > input:hover{
-    border-color: #2099bb;
+    border-color: #2099bb;!important;
 }
 
 .default-input-partner > input:focus{
