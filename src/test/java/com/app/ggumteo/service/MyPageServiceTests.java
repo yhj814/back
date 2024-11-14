@@ -33,8 +33,6 @@ import java.util.Optional;
 public class MyPageServiceTests {
     @Autowired
     private MyPageService myPageService;
-    @Autowired
-    private InquiryDAO inquiryDAO;
 
     @Test
     public void testGetMember() {
@@ -152,31 +150,6 @@ public class MyPageServiceTests {
     }
 
     @Test
-    public void testGetMemberProfile() {
-        MemberDTO memberDTO = new MemberDTO();
-
-        Optional<MemberProfileVO> foundMemberProfileInfo =
-                myPageService.getMemberProfile(memberDTO.getId());
-        foundMemberProfileInfo.map(MemberProfileVO::toString).ifPresent(log::info);
-    }
-
-    @Test
-    public void testUpdateMemberProfile() {
-        MemberProfileDTO memberProfileDTO = new MemberProfileDTO();
-        memberProfileDTO.setId(1L);
-        memberProfileDTO.setProfileEmail("modify@gmail.com");
-        memberProfileDTO.setProfileNickName("너구리");
-        memberProfileDTO.setProfileAge(21);
-        memberProfileDTO.setProfileGender("남성");
-        memberProfileDTO.setProfilePhone("01033339999");
-        memberProfileDTO.setProfileEtc("dsfsdfsd");
-
-        myPageService.updateMemberProfile(memberProfileDTO.toVO());
-        log.info("updateMemberProfile-test={}", memberProfileDTO.toString());
-    }
-
-//
-    @Test
     public void testGetAudition() {
     AuditionDTO auditionDTO = new AuditionDTO();
         auditionDTO.setId(33L);
@@ -198,13 +171,35 @@ public class MyPageServiceTests {
         log.info("myAuditionApplicants-test={}", myAuditionApplicants);
     }
 
-//    @Test
-//    public void testUpdateConfirmStatus() {
-//        AuditionApplicationDTO auditionApplicationDTO = new AuditionApplicationDTO();
-//        auditionApplicationDTO.setId(1L);
-//        auditionApplicationDTO.setConfirmStatus("YES");
-//
-//        myPageService.updateConfirmStatus(auditionApplicationDTO.toVO());
-//    }
+    @Test
+    public void testUpdateConfirmStatus() {
+        AuditionApplicationDTO auditionApplicationDTO = new AuditionApplicationDTO();
+        auditionApplicationDTO.setId(1L);
+        auditionApplicationDTO.setConfirmStatus("YES");
+
+        myPageService.updateConfirmStatus(auditionApplicationDTO.toVO());
+    }
+
+    @Test
+    public void testUpdateMemberProfile() {
+        MemberProfileDTO memberProfileDTO = new MemberProfileDTO();
+        memberProfileDTO.setId(2L);
+        memberProfileDTO.setProfileName("수정된 이름");
+        memberProfileDTO.setProfileNickName("수정된 닉네임");
+        memberProfileDTO.setProfileAge(30);
+        memberProfileDTO.setProfileGender("남성");
+        memberProfileDTO.setProfileEmail("000test@gmail.com");
+        memberProfileDTO.setProfilePhone("01045678912");
+        memberProfileDTO.setProfileEtc("추가추가");
+
+        myPageService.updateMemberProfile(memberProfileDTO.toVO());
+
+        log.info("memberProfileDTO={}", memberProfileDTO);
+    }
+
+    @Test
+    public void testSoftDeleteMember() {
+        myPageService.softDeleteMember(5L);
+    }
 
 }

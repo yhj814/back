@@ -1,6 +1,7 @@
 package com.app.ggumteo.mapper.member;
 
 import com.app.ggumteo.domain.member.MemberProfileDTO;
+import com.app.ggumteo.domain.member.MemberProfileVO;
 import com.app.ggumteo.domain.member.MemberVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -25,5 +26,5 @@ public interface MemberMapper {
     public Optional<MemberVO> selectById(Long id);
 
 //   회원 탈퇴
-    public void softDeleteMember(MemberVO memberVO);
+    public void softDeleteMember(Long id);
 }

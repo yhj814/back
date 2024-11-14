@@ -47,11 +47,6 @@ public class MyPageServiceImpl implements MyPageService {
     private final InquiryDAO inquiryDAO;
     private final MemberProfileDAO memberProfileDAO;
 
-    //    회원 정보 조회
-    @Override
-    public Optional<MemberVO> getMember(Long id) {
-        return memberDAO.findById(id);
-    }
 
     //    내 작품 게시물 전체 조회 - 영상
     @Override
@@ -310,10 +305,10 @@ public class MyPageServiceImpl implements MyPageService {
         return inquiryDAO.findAdminAnswerByInquiryId(inquiryId);
     }
 
-    //    마이페이지 - 내 정보 조회
+    //   마이페이지 - 내 정보 조회
     @Override
-    public Optional<MemberProfileVO> getMemberProfile(Long memberId) {
-        return memberProfileDAO.findByMemberId(memberId);
+    public Optional<MemberVO> getMember(Long id) {
+        return memberDAO.findById(id);
     }
 
     //    마이페이지 - 내 정보 수정
@@ -324,7 +319,7 @@ public class MyPageServiceImpl implements MyPageService {
 
     //    마이페이지 - 회원 탈퇴
     @Override
-    public void softDeleteMember(MemberVO memberVO) {
-        memberDAO.softDeleteMember(memberVO);
+    public void softDeleteMember(Long id) {
+        memberDAO.softDeleteMember(id);
     }
 }

@@ -1,18 +1,23 @@
 package com.app.ggumteo.controller.member;
 
+import com.app.ggumteo.constant.PostType;
 import com.app.ggumteo.domain.admin.AdminAnswerDTO;
 import com.app.ggumteo.domain.audition.AuditionApplicationDTO;
 import com.app.ggumteo.domain.audition.MyApplicationAuditionListDTO;
 import com.app.ggumteo.domain.audition.MyAuditionApplicantListDTO;
 import com.app.ggumteo.domain.audition.MyAuditionListDTO;
 import com.app.ggumteo.domain.buy.*;
+import com.app.ggumteo.domain.file.PostFileDTO;
 import com.app.ggumteo.domain.funding.MyFundingListDTO;
 import com.app.ggumteo.domain.inquiry.MyInquiryHistoryListDTO;
 import com.app.ggumteo.domain.member.MemberDTO;
+import com.app.ggumteo.domain.member.MemberProfileDTO;
 import com.app.ggumteo.domain.member.MemberProfileVO;
 import com.app.ggumteo.domain.member.MemberVO;
 import com.app.ggumteo.domain.post.PostVO;
 import com.app.ggumteo.domain.work.MyWorkListDTO;
+import com.app.ggumteo.domain.work.WorkDTO;
+import com.app.ggumteo.exception.SessionNotFoundException;
 import com.app.ggumteo.pagination.MyAuditionPagination;
 import com.app.ggumteo.pagination.MySettingTablePagination;
 import com.app.ggumteo.pagination.MyWorkAndFundingPagination;
@@ -30,6 +35,7 @@ import org.springframework.web.servlet.view.RedirectView;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -37,27 +43,33 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class MemberRestController {
     private final MyPageService myPageService;
+    private final HttpSession session;
 
+    // 로그인 완료 시 - 마이페이지 사용 가능
     @GetMapping("/member/video/my-page")
-    public void goToMyPageForm(Long id, Model model){
-        MemberVO memberVO = myPageService.getMember(id).orElseThrow();
+    public void goToReadForm(Model model, HttpSession session) {
+        MemberVO memberVO = (MemberVO)session.getAttribute("member");
+        MemberProfileDTO memberProfileDTO = (MemberProfileDTO) session.getAttribute("memberProfile");
         model.addAttribute("member", memberVO);
+        model.addAttribute("memberProfile", memberProfileDTO);
     }
-    //    http://localhost:10000/member/video/my-page?id=15
-
-
-//    // 회원 탈퇴
-//    @GetMapping("/member/video/my-page")
-//    public void softDeleteMember(MemberDTO memberDTO, Model model) {
-//        myPageService.softDeleteMember(memberDTO.toVO());
-//        model.addAttribute("member", memberVO);
-//    }
 
     // 회원 탈퇴
-    @PostMapping("/member/video/my-page")
-    public RedirectView softDeleteMember(MemberDTO memberDTO) {
-        myPageService.softDeleteMember(memberDTO.toVO());
+    @GetMapping("/member/video/my-page/delete")
+    public RedirectView softDeleteMember(HttpSession session) {
+        MemberVO memberVO = (MemberVO) session.getAttribute("member");
+        Long id = memberVO.getId();
+        myPageService.softDeleteMember(id);
+        session.invalidate(); // 탈퇴 후 세션 무효화
         return new RedirectView("/main");
+    }
+
+    // 회원 정보 수정
+    @PutMapping("/member/video/my-page/update")
+    public RedirectView update(MemberProfileDTO memberProfileDTO) {
+        log.info(memberProfileDTO.toString());
+        myPageService.updateMemberProfile(memberProfileDTO.toVO());
+        return new RedirectView("/member/video/my-page");
     }
 //************************************************************************************************
 
