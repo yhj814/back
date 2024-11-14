@@ -274,12 +274,12 @@
                 <!-- 같은 장르에 다른펀딩 -->
                 <div class="similar-list-container">
                     <div class="similar-list">
-                        <div class="more-info-box">
-                            <div class="similar-header-title">
-                                <div class="same-category-funding-list">
-                                    같은 장르에 다른 펀딩목록들
-                                </div>
+                        <div class="similar-header-title">
+                            <div class="same-category-funding-list">
+                                같은 장르에 다른 펀딩목록들
                             </div>
+                        </div>
+                        <div class="more-info-box" style="display: flex">
                             <div class="content-list" th:each="relatedFunding : ${relatedFundings}">
                                 <a th:href="@{'/text/funding/detail/' + ${relatedFunding.id}}" class="similar-link">
                                     <div class="link-box">
@@ -326,9 +326,12 @@
         </div>
     </body>
     <footer th:replace="~{footer.html :: footer}"></footer>
+
+
     <script src="/js/text/funding-detail.js"></script>
 <script src="/js/text/funding-detail-pay.js"></script>
     <script th:src="@{/js/header/header-logout.js}" defer></script>
     <script th:src="@{/js/header/header-login.js}" defer></script>
     <script th:src="@{/js/header/logout-click.js}" defer></script>
+
 </html>
