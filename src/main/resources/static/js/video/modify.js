@@ -305,6 +305,28 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
+    const workPriceInput = document.querySelector('input[name="workPrice"]');
+    if (workPriceInput) {
+        workPriceInput.addEventListener("keydown", function (event) {
+            // 숫자 키와 제어 키만 허용
+            if (
+                (event.keyCode < 48 || event.keyCode > 57) && // 숫자 키
+                (event.keyCode < 96 || event.keyCode > 105) && // 숫자 패드 키
+                event.keyCode !== 8 && // Backspace
+                event.keyCode !== 9 && // Tab
+                event.keyCode !== 37 && // 왼쪽 화살표
+                event.keyCode !== 39 && // 오른쪽 화살표
+                event.keyCode !== 46 // Delete
+            ) {
+                event.preventDefault();
+            }
+
+            // 최대 9자리까지 입력 제한
+            if (this.value.length >= 9 && event.keyCode !== 8 && event.keyCode !== 46) {
+                event.preventDefault();
+            }
+        });
+    }
     // 새로운 이미지 박스 추가 함수
     function addNewImageBox() {
         const imgBoxContainer = document.getElementById("img-box-container");

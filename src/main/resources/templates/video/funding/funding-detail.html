@@ -64,7 +64,7 @@
                         <!-- 펀딩내용 -->
                         <div class="content-title">펀딩작품 설명</div>
                         <!-- 펀딩내용설명 -->
-                        <div class="funding-content" th:text="${funding.postContent}"></div>
+                        <div class="funding-content" th:text="${funding.postContent}" style="white-space: pre-wrap"></div>
                         <!-- 펀딩내용 이미지 -->
                         <div class="funding-img" th:each="file : ${postFiles}" th:if="${file.fileName != funding.thumbnailFileName}">
                             <img th:src="@{'/video/funding/display?fileName=/' + ${file.filePath} + '/' + ${file.fileName}}" />

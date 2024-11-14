@@ -551,6 +551,78 @@ document.addEventListener("DOMContentLoaded", function () {
     addImageButton.addEventListener("click", () => {
         addNewImageBox();
     });
+    const investorNumber = document.querySelector('input[name="investorNumber"]');
+    if (investorNumber) {
+        investorNumber.addEventListener("keydown", function (event) {
+            // 숫자 키와 제어 키만 허용
+            if (
+                (event.keyCode < 48 || event.keyCode > 57) && // 숫자 키
+                (event.keyCode < 96 || event.keyCode > 105) && // 숫자 패드 키
+                event.keyCode !== 8 && // Backspace
+                event.keyCode !== 9 && // Tab
+                event.keyCode !== 37 && // 왼쪽 화살표
+                event.keyCode !== 39 && // 오른쪽 화살표
+                event.keyCode !== 46 // Delete
+            ) {
+                event.preventDefault();
+            }
+
+            // 최대 9자리까지 입력 제한
+            if (this.value.length >= 9 && event.keyCode !== 8 && event.keyCode !== 46) {
+                event.preventDefault();
+            }
+        });
+    }
+    const targetPrice = document.querySelector('input[name="targetPrice"]');
+    if (targetPrice) {
+        targetPrice.addEventListener("keydown", function (event) {
+            // 숫자 키와 제어 키만 허용
+            if (
+                (event.keyCode < 48 || event.keyCode > 57) && // 숫자 키
+                (event.keyCode < 96 || event.keyCode > 105) && // 숫자 패드 키
+                event.keyCode !== 8 && // Backspace
+                event.keyCode !== 9 && // Tab
+                event.keyCode !== 37 && // 왼쪽 화살표
+                event.keyCode !== 39 && // 오른쪽 화살표
+                event.keyCode !== 46 // Delete
+            ) {
+                event.preventDefault();
+            }
+
+            // 최대 9자리까지 입력 제한
+            if (this.value.length >= 9 && event.keyCode !== 8 && event.keyCode !== 46) {
+                event.preventDefault();
+            }
+        });
+    }
+    const productPriceInputs = document.querySelectorAll('.product-price-input');
+
+    // 각 입력 필드에 이벤트 리스너를 추가합니다.
+    productPriceInputs.forEach(function(input) {
+        input.addEventListener("input", function () {
+            // 숫자가 아닌 문자는 제거합니다.
+            this.value = this.value.replace(/[^0-9]/g, "");
+
+            // 최대 9자리로 제한합니다.
+            if (this.value.length > 9) {
+                this.value = this.value.slice(0, 9);
+            }
+        });
+    });
+    const productQuantityInputs = document.querySelectorAll('.product-quantity-input');
+
+    // 각 입력 필드에 이벤트 리스너를 추가합니다.
+    productQuantityInputs.forEach(function(input) {
+        input.addEventListener("input", function () {
+            // 숫자가 아닌 문자는 제거합니다.
+            this.value = this.value.replace(/[^0-9]/g, "");
+
+            // 최대 9자리로 제한합니다.
+            if (this.value.length > 9) {
+                this.value = this.value.slice(0, 9);
+            }
+        });
+    });
 
     // 초기 폼 유효성 검사
     checkFormCompletion();

@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>영상 작품올리기</title>
-    <link rel="stylesheet" href="/css/text/write.css" />
+    <link rel="stylesheet" href="/css/video/write.css" />
 </head>
 <body>
 <header></header>
@@ -32,7 +32,7 @@
                                                 type="text"
                                                 th:value="${post?.postTitle}"
                                                 id="postTitle"
-
+                                                maxlength="50"
                                                 required
                                         />
                                         <label for="title"
@@ -179,6 +179,7 @@
                                                 type="number"
                                                 class="required label-input"
                                                 name="workPrice"
+                                                max="999999999"
                                                 style="outline: none"
                                                 placeholder="숫자만 입력해주세요. 무료일 경우 0을 입력해주세요"
                                         />
@@ -324,6 +325,7 @@
                                                     name="fileContent"
                                                     class="img-caption-box-content"
                                                     placeholder="올린 파일에 대한 설명을 입력해주세요."
+                                                    maxlength="50"
                                             />
                                         </div>
                                     </div>

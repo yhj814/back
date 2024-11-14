@@ -286,6 +286,8 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
+
+
     // **기존 img-box-list에 대한 이벤트 리스너 설정 (한 번만 호출)**
     document.querySelectorAll(".img-box-list").forEach(setupEventListeners);
 
@@ -350,6 +352,7 @@ document.addEventListener("DOMContentLoaded", function () {
                             name="fundingProducts[${productIndex}].productName"
                             placeholder="등록할 상품명을 입력해주세요."
                             required
+                            maxlength="20"
                         />
                         <div class="product-price">
                             상품가격 <span class="star">*</span>
@@ -360,6 +363,7 @@ document.addEventListener("DOMContentLoaded", function () {
                             name="fundingProducts[${productIndex}].productPrice"
                             placeholder="등록할 상품가격을 입력해주세요."
                             required
+                            maxlength="8"
                         />
                         <div class="product-quantity">
                             상품수량 <span class="star">*</span>
@@ -370,6 +374,7 @@ document.addEventListener("DOMContentLoaded", function () {
                             name="fundingProducts[${productIndex}].productAmount"
                             placeholder="등록할 상품수량을 입력해주세요."
                             required
+                            maxlength="7"
                         />
                         <div class="product-cancel">
                             <img src="/images/video/cancel.png" alt="취소 아이콘" />
@@ -492,6 +497,79 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // 페이지 로드 시에도 버튼 상태 확인
     checkFormCompletion();
+    const investorNumber = document.querySelector('input[name="investorNumber"]');
+    if (investorNumber) {
+        investorNumber.addEventListener("keydown", function (event) {
+            // 숫자 키와 제어 키만 허용
+            if (
+                (event.keyCode < 48 || event.keyCode > 57) && // 숫자 키
+                (event.keyCode < 96 || event.keyCode > 105) && // 숫자 패드 키
+                event.keyCode !== 8 && // Backspace
+                event.keyCode !== 9 && // Tab
+                event.keyCode !== 37 && // 왼쪽 화살표
+                event.keyCode !== 39 && // 오른쪽 화살표
+                event.keyCode !== 46 // Delete
+            ) {
+                event.preventDefault();
+            }
+
+            // 최대 9자리까지 입력 제한
+            if (this.value.length >= 9 && event.keyCode !== 8 && event.keyCode !== 46) {
+                event.preventDefault();
+            }
+        });
+    }
+    const targetPrice = document.querySelector('input[name="targetPrice"]');
+    if (targetPrice) {
+        targetPrice.addEventListener("keydown", function (event) {
+            // 숫자 키와 제어 키만 허용
+            if (
+                (event.keyCode < 48 || event.keyCode > 57) && // 숫자 키
+                (event.keyCode < 96 || event.keyCode > 105) && // 숫자 패드 키
+                event.keyCode !== 8 && // Backspace
+                event.keyCode !== 9 && // Tab
+                event.keyCode !== 37 && // 왼쪽 화살표
+                event.keyCode !== 39 && // 오른쪽 화살표
+                event.keyCode !== 46 // Delete
+            ) {
+                event.preventDefault();
+            }
+
+            // 최대 9자리까지 입력 제한
+            if (this.value.length >= 9 && event.keyCode !== 8 && event.keyCode !== 46) {
+                event.preventDefault();
+            }
+        });
+    }
+    const productPriceInputs = document.querySelectorAll('.product-price-input');
+
+    // 각 입력 필드에 이벤트 리스너를 추가합니다.
+    productPriceInputs.forEach(function(input) {
+        input.addEventListener("input", function () {
+            // 숫자가 아닌 문자는 제거합니다.
+            this.value = this.value.replace(/[^0-9]/g, "");
+
+            // 최대 9자리로 제한합니다.
+            if (this.value.length > 9) {
+                this.value = this.value.slice(0, 9);
+            }
+        });
+    });
+    const productQuantityInputs = document.querySelectorAll('.product-quantity-input');
+
+    // 각 입력 필드에 이벤트 리스너를 추가합니다.
+    productQuantityInputs.forEach(function(input) {
+        input.addEventListener("input", function () {
+            // 숫자가 아닌 문자는 제거합니다.
+            this.value = this.value.replace(/[^0-9]/g, "");
+
+            // 최대 9자리로 제한합니다.
+            if (this.value.length > 9) {
+                this.value = this.value.slice(0, 9);
+            }
+        });
+    });
+
 
     document.getElementById("backButton").addEventListener("click", function(event) {
         event.preventDefault(); // 폼 제출 방지
