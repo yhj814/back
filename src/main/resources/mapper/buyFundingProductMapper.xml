@@ -80,7 +80,7 @@
     </update>
 
     <!-- 구매 정보 삽입 -->
-    <insert id="insertBuyFundingProduct" parameterType="BuyFundingProductDTO">
+    <insert id="insertBuyFundingProduct" parameterType="BuyFundingProductDTO" useGeneratedKeys="true" keyProperty="id">
         insert into tbl_buy_funding_product (member_profile_id, funding_product_id)
         values (#{memberProfileId}, #{fundingProductId})
     </insert>
