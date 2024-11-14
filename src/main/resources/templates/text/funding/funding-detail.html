@@ -54,7 +54,7 @@
                                 <div class="funding-content" th:text="${funding.postContent}"></div>
                                 <!-- 펀딩내용 이미지 -->
                                 <div class="funding-img" th:each="file : ${postFiles}" th:if="${file.fileName != funding.thumbnailFileName}">
-                                    <img th:src="@{'/text/funding/display?fileName=' + ${file.fileName}}" />
+                                    <img th:src="@{'/text/funding/display?fileName=/' + ${file.filePath} + '/' + ${file.fileName}}" />
                                 </div>
                                 <!-- 이미지설명 -->
                                 <div class="funding-img-content" th:text="${funding.fileContent}">
@@ -118,7 +118,7 @@
                                                         class="funding-end-date"
                                                     >
                                                         펀딩마감 날짜
-                                                        <span class="end-date" th:text="${funding.endDate.substring(0, 10)}"></span>
+                                                        <span class="end-date" th:text="${funding.endDate != null} ? ${funding.endDate.substring(0, 10)} : 'N/A'"></span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -230,7 +230,10 @@
                                         <div class="product-info">
                                             <div>
                                                 <div class="product-name">
-                                                    상품명: <span th:text="${product.productName}">상품명</span>
+                                                    상품명: <span th:text="${product.productName}" style="
+                                                                    word-break: break-word; /* 긴 단어 자동 줄바꿈 */
+                                                                        white-space: pre-wrap; /* 줄바꿈 허용 */
+                                                                                ">상품명</span>
                                                 </div>
                                                 <div class="product-price">
                                                     <span class="price" th:text="${product.productPrice}">10,000</span>원
@@ -259,7 +262,7 @@
                                 <a th:href="@{'/text/funding/detail/' + ${relatedFunding.id}}" class="similar-link">
                                     <div class="link-box">
                                         <div class="img-box">
-                                            <img th:src="@{'/text/funding/display?fileName=' + ${relatedFunding.thumbnailFileName}}"
+                                            <img th:src="@{'/text/funding/display?fileName=/' + ${relatedFunding.thumbnailFilePath} + '/' + ${relatedFunding.thumbnailFileName}}"
                                                  class="similar-thumbnail-image"
                                                  alt="유사한 펀딩 썸네일"/>
                                         </div>

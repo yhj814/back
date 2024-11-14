@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.app.ggumteo.mapper.alarm.AlarmMapper">
+
+    <!-- Insert Apply Audition Notification -->
+    <insert id="insertApplyAuditionAlarm" parameterType="map">
+        INSERT INTO tbl_apply_audition_notification (member_profile_id, audition_application_id, message, is_read, create_date, sub_type)
+        VALUES (#{memberProfileId}, #{auditionApplicationId}, #{message}, FALSE, CURRENT_TIMESTAMP, #{subType})
+    </insert>
+
+    <!-- Insert Reply Notification -->
+    <insert id="insertReplyAlarm" parameterType="map">
+        INSERT INTO tbl_reply_notification (reply_id, member_profile_id, message, is_read, create_date, sub_type)
+        VALUES (#{replyId}, #{memberProfileId}, #{message}, FALSE, CURRENT_TIMESTAMP, #{subType})
+    </insert>
+
+    <!-- Insert Work Notification -->
+    <insert id="insertWorkAlarm" parameterType="map">
+        INSERT INTO tbl_work_notification (member_profile_id, buy_work_id, message, is_read, create_date, sub_type)
+        VALUES (#{memberProfileId}, #{buyWorkId}, #{message}, FALSE, CURRENT_TIMESTAMP, #{subType})
+    </insert>
+
+    <!-- Insert Funding Product Notification -->
+    <insert id="insertFundingProductAlarm" parameterType="map">
+        INSERT INTO tbl_funding_product_notification (member_profile_id, buy_funding_product_id, message, is_read, create_date, sub_type)
+        VALUES (#{memberProfileId}, #{buyFundingProductId}, #{message}, FALSE, CURRENT_TIMESTAMP, #{subType})
+    </insert>
+
+    <!-- Select Statements -->
+
+    <!-- Select All Alarms by Member ID -->
+    <select id="selectAlarmsByMemberId" resultType="alarmDTO">
+        SELECT
+            id,
+            message AS alarmContent,
+            member_profile_id AS memberProfileId,
+            create_date AS createdDate,
+            is_read AS isRead,
+            audition_application_id AS dataId,
+            'audition' AS alarmType
+        FROM tbl_apply_audition_notification
+        WHERE member_profile_id = #{memberProfileId}
+
+        UNION ALL
+
+        SELECT
+            id,
+            message AS alarmContent,
+            member_profile_id AS memberProfileId,
+            create_date AS createdDate,
+            is_read AS isRead,
+            reply_id AS dataId,
+            'reply' AS alarmType
+        FROM tbl_reply_notification
+        WHERE member_profile_id = #{memberProfileId}
+
+        UNION ALL
+
+        SELECT
+            id,
+            message AS alarmContent,
+            member_profile_id AS memberProfileId,
+            create_date AS createdDate,
+            is_read AS isRead,
+            buy_work_id AS dataId,
+            'work' AS alarmType
+        FROM tbl_work_notification
+        WHERE member_profile_id = #{memberProfileId}
+
+        UNION ALL
+
+        SELECT
+            id,
+            message AS alarmContent,
+            member_profile_id AS memberProfileId,
+            create_date AS createdDate,
+            is_read AS isRead,
+            buy_funding_product_id AS dataId,
+            'fundingProduct' AS alarmType
+        FROM tbl_funding_product_notification
+        WHERE member_profile_id = #{memberProfileId}
+
+        ORDER BY createdDate DESC
+            LIMIT 10
+    </select>
+
+    <!-- Select Alarms by Member ID with LIMIT 7 -->
+    <select id="selectAlarmsByMemberId7" resultType="alarmDTO">
+        SELECT
+            id,
+            message AS alarmContent,
+            member_profile_id AS memberProfileId,
+            create_date AS createdDate,
+            is_read AS isRead,
+            audition_application_id AS dataId,
+            'audition' AS alarmType
+        FROM tbl_apply_audition_notification
+        WHERE member_profile_id = #{memberProfileId}
+
+        UNION ALL
+
+        SELECT
+            id,
+            message AS alarmContent,
+            member_profile_id AS memberProfileId,
+            create_date AS createdDate,
+            is_read AS isRead,
+            reply_id AS dataId,
+            'reply' AS alarmType
+        FROM tbl_reply_notification
+        WHERE member_profile_id = #{memberProfileId}
+
+        UNION ALL
+
+        SELECT
+            id,
+            message AS alarmContent,
+            member_profile_id AS memberProfileId,
+            create_date AS createdDate,
+            is_read AS isRead,
+            buy_work_id AS dataId,
+            'work' AS alarmType
+        FROM tbl_work_notification
+        WHERE member_profile_id = #{memberProfileId}
+
+        UNION ALL
+
+        SELECT
+            id,
+            message AS alarmContent,
+            member_profile_id AS memberProfileId,
+            create_date AS createdDate,
+            is_read AS isRead,
+            buy_funding_product_id AS dataId,
+            'fundingProduct' AS alarmType
+        FROM tbl_funding_product_notification
+        WHERE member_profile_id = #{memberProfileId}
+
+        ORDER BY createdDate DESC
+            LIMIT 7
+    </select>
+
+    <!-- Select Unread Alarms by Member ID -->
+    <select id="selectUnreadAlarmsByMemberId" resultType="alarmDTO">
+        SELECT
+            id,
+            message AS alarmContent,
+            member_profile_id AS memberProfileId,
+            create_date AS createdDate,
+            is_read AS isRead,
+            audition_application_id AS dataId,
+            'audition' AS alarmType
+        FROM tbl_apply_audition_notification
+        WHERE member_profile_id = #{memberProfileId} AND is_read = FALSE
+
+        UNION ALL
+
+        SELECT
+            id,
+            message AS alarmContent,
+            member_profile_id AS memberProfileId,
+            create_date AS createdDate,
+            is_read AS isRead,
+            reply_id AS dataId,
+            'reply' AS alarmType
+        FROM tbl_reply_notification
+        WHERE member_profile_id = #{memberProfileId} AND is_read = FALSE
+
+        UNION ALL
+
+        SELECT
+            id,
+            message AS alarmContent,
+            member_profile_id AS memberProfileId,
+            create_date AS createdDate,
+            is_read AS isRead,
+            buy_work_id AS dataId,
+            'work' AS alarmType
+        FROM tbl_work_notification
+        WHERE member_profile_id = #{memberProfileId} AND is_read = FALSE
+
+        UNION ALL
+
+        SELECT
+            id,
+            message AS alarmContent,
+            member_profile_id AS memberProfileId,
+            create_date AS createdDate,
+            is_read AS isRead,
+            buy_funding_product_id AS dataId,
+            'fundingProduct' AS alarmType
+        FROM tbl_funding_product_notification
+        WHERE member_profile_id = #{memberProfileId} AND is_read = FALSE
+
+        ORDER BY createdDate DESC
+            LIMIT 7
+    </select>
+
+    <!-- Update Alarm IsRead -->
+    <update id="updateAlarmIsRead" parameterType="map">
+        <choose>
+            <when test="alarmType == 'audition'">
+                UPDATE tbl_apply_audition_notification
+                SET is_read = TRUE
+                WHERE id = #{id} AND member_profile_id = #{memberProfileId} AND audition_application_id = #{dataId}
+            </when>
+            <when test="alarmType == 'reply'">
+                UPDATE tbl_reply_notification
+                SET is_read = TRUE
+                WHERE id = #{id} AND member_profile_id = #{memberProfileId} AND reply_id = #{dataId}
+            </when>
+            <when test="alarmType == 'work'">
+                UPDATE tbl_work_notification
+                SET is_read = TRUE
+                WHERE id = #{id} AND member_profile_id = #{memberProfileId} AND buy_work_id = #{dataId}
+            </when>
+            <when test="alarmType == 'fundingProduct'">
+                UPDATE tbl_funding_product_notification
+                SET is_read = TRUE
+                WHERE id = #{id} AND member_profile_id = #{memberProfileId} AND buy_funding_product_id = #{dataId}
+            </when>
+            <otherwise>
+                SELECT 1 FROM DUAL WHERE 1 = 0
+            </otherwise>
+        </choose>
+    </update>
+
+    <!-- Count Unread Alarms by SubType -->
+    <select id="countUnreadAlarmsBySubtype" resultType="int">
+        SELECT COUNT(*) FROM (
+                                 SELECT id FROM tbl_apply_audition_notification
+                                 WHERE member_profile_id = #{memberProfileId} AND sub_type = #{subType} AND is_read = 0
+                                 UNION ALL
+                                 SELECT id FROM tbl_reply_notification
+                                 WHERE member_profile_id = #{memberProfileId} AND sub_type = #{subType} AND is_read = 0
+                                 UNION ALL
+                                 SELECT id FROM tbl_work_notification
+                                 WHERE member_profile_id = #{memberProfileId} AND sub_type = #{subType} AND is_read = 0
+                                 UNION ALL
+                                 SELECT id FROM tbl_funding_product_notification
+                                 WHERE member_profile_id = #{memberProfileId} AND sub_type = #{subType} AND is_read = 0
+                             ) AS unread_alarms
+    </select>
+
+</mapper>

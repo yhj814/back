@@ -2,6 +2,9 @@ package com.app.ggumteo.service;
 
 import com.app.ggumteo.constant.PostType;
 import com.app.ggumteo.domain.admin.AdminAnswerDTO;
+import com.app.ggumteo.domain.audition.AuditionApplicationDTO;
+import com.app.ggumteo.domain.audition.AuditionDTO;
+import com.app.ggumteo.domain.audition.MyAuditionApplicantListDTO;
 import com.app.ggumteo.domain.buy.*;
 import com.app.ggumteo.domain.funding.*;
 import com.app.ggumteo.domain.inquiry.InquiryDTO;
@@ -12,8 +15,9 @@ import com.app.ggumteo.domain.member.MemberProfileVO;
 import com.app.ggumteo.domain.member.MemberVO;
 import com.app.ggumteo.domain.work.MyWorkListDTO;
 import com.app.ggumteo.domain.work.WorkDTO;
-import com.app.ggumteo.pagination.SettingTablePagination;
-import com.app.ggumteo.pagination.WorkAndFundingPagination;
+import com.app.ggumteo.pagination.MyAuditionPagination;
+import com.app.ggumteo.pagination.MySettingTablePagination;
+import com.app.ggumteo.pagination.MyWorkAndFundingPagination;
 import com.app.ggumteo.repository.inquiry.InquiryDAO;
 import com.app.ggumteo.service.myPage.MyPageService;
 import lombok.extern.slf4j.Slf4j;
@@ -44,12 +48,12 @@ public class MyPageServiceTests {
     @Test
     public void testGetMyVideoWorkList() {
         MemberVO memberVO = null;
-        WorkAndFundingPagination workAndFundingPagination = new WorkAndFundingPagination();
+        MyWorkAndFundingPagination myWorkAndFundingPagination = new MyWorkAndFundingPagination();
         memberVO = myPageService.getMember(2L).get();
-        workAndFundingPagination.setTotal(myPageService.getMyVideoWorkPostsTotal(memberVO.getId(), PostType.WORKVIDEO.name()));
-        workAndFundingPagination.progress();
+        myWorkAndFundingPagination.setTotal(myPageService.getMyVideoWorkPostsTotal(memberVO.getId(), PostType.WORKVIDEO.name()));
+        myWorkAndFundingPagination.progress();
         MyWorkListDTO myWorkPosts = myPageService.getMyVideoWorkList
-                (1, workAndFundingPagination, memberVO.getId(), PostType.WORKVIDEO.name());
+                (1, myWorkAndFundingPagination, memberVO.getId(), PostType.WORKVIDEO.name());
 
         log.info(" myWorkPosts.toString()-test={}", myWorkPosts.toString());
     }
@@ -57,11 +61,11 @@ public class MyPageServiceTests {
     @Test
     public void testGetMyVideoWorkBuyerList() {
         WorkDTO workDTO = null;
-        SettingTablePagination settingTablePagination = new SettingTablePagination();
+        MySettingTablePagination mySettingTablePagination = new MySettingTablePagination();
         workDTO = myPageService.getWork(5L, PostType.WORKVIDEO.name()).get();
-        settingTablePagination.setTotal(myPageService.getMyVideoWorkBuyersTotal(workDTO.getId()));
-        settingTablePagination.progress();
-        MyWorkBuyerListDTO myWorkBuyers = myPageService.getMyVideoWorkBuyerList(1, settingTablePagination, workDTO.getId());
+        mySettingTablePagination.setTotal(myPageService.getMyVideoWorkBuyersTotal(workDTO.getId()));
+        mySettingTablePagination.progress();
+        MyWorkBuyerListDTO myWorkBuyers = myPageService.getMyVideoWorkBuyerList(1, mySettingTablePagination, workDTO.getId());
 
         log.info("myWorkBuyers.toString()-test={}", myWorkBuyers.toString());
     }
@@ -76,13 +80,18 @@ public class MyPageServiceTests {
     }
 
     @Test
+    public void testDeleteBuyWorkPost() {
+        myPageService.deleteBuyWorkPost(12L);
+    }
+
+    @Test
     public void testGetMyFundingPosts() {
         MemberVO memberVO = null;
-        WorkAndFundingPagination workAndFundingPagination = new WorkAndFundingPagination();
+        MyWorkAndFundingPagination myWorkAndFundingPagination = new MyWorkAndFundingPagination();
         memberVO = myPageService.getMember(1L).get();
-        workAndFundingPagination.setTotal(myPageService.getMyFundingPostsTotal(memberVO.getId(), PostType.FUNDINGVIDEO.name()));
-        workAndFundingPagination.progress();
-        MyFundingListDTO myFundingPosts = myPageService.getMyVideoFundingList(1, workAndFundingPagination, memberVO.getId(), PostType.FUNDINGVIDEO.name());
+        myWorkAndFundingPagination.setTotal(myPageService.getMyFundingPostsTotal(memberVO.getId(), PostType.FUNDINGVIDEO.name()));
+        myWorkAndFundingPagination.progress();
+        MyFundingListDTO myFundingPosts = myPageService.getMyVideoFundingList(1, myWorkAndFundingPagination, memberVO.getId(), PostType.FUNDINGVIDEO.name());
 
         log.info("GetMyFundingPosts-test={}", myFundingPosts.toString());
     }
@@ -90,11 +99,11 @@ public class MyPageServiceTests {
     @Test
     public void testGetMyFundingBuyerList() {
         FundingDTO fundingDTO = null;
-        SettingTablePagination settingTablePagination = new SettingTablePagination();
+        MySettingTablePagination mySettingTablePagination = new MySettingTablePagination();
         fundingDTO = myPageService.getFunding(9L, PostType.FUNDINGVIDEO.name()).get();
-        settingTablePagination.setTotal(myPageService.getMyFundingPostBuyersTotal(fundingDTO.getId()));
-        settingTablePagination.progress();
-        MyFundingBuyerListDTO myFundingBuyers = myPageService.getMyFundingBuyerList(1, settingTablePagination, fundingDTO.getId());
+        mySettingTablePagination.setTotal(myPageService.getMyFundingPostBuyersTotal(fundingDTO.getId()));
+        mySettingTablePagination.progress();
+        MyFundingBuyerListDTO myFundingBuyers = myPageService.getMyFundingBuyerList(1, mySettingTablePagination, fundingDTO.getId());
 
         log.info("GetMyFundingBuyerList-test={}", myFundingBuyers.toString());
   }
@@ -111,12 +120,12 @@ public class MyPageServiceTests {
     @Test
     public void testGetFundingListPaidByMemberTotal() {
         MemberVO memberVO = null;
-        WorkAndFundingPagination workAndFundingPagination = new WorkAndFundingPagination();
+        MyWorkAndFundingPagination myWorkAndFundingPagination = new MyWorkAndFundingPagination();
         memberVO = myPageService.getMember(1L).get();
-        workAndFundingPagination.setTotal(myPageService.getMyBuyFundingListTotal(memberVO.getId(), PostType.FUNDINGVIDEO.name()));
-        workAndFundingPagination.progress();
+        myWorkAndFundingPagination.setTotal(myPageService.getMyBuyFundingListTotal(memberVO.getId(), PostType.FUNDINGVIDEO.name()));
+        myWorkAndFundingPagination.progress();
         MyBuyFundingListDTO fundingPostsPaidByMember = myPageService
-                .getMyBuyFundingList(1, workAndFundingPagination, memberVO.getId(), PostType.FUNDINGVIDEO.name());
+                .getMyBuyFundingList(1, myWorkAndFundingPagination, memberVO.getId(), PostType.FUNDINGVIDEO.name());
 
         log.info(fundingPostsPaidByMember.toString());
     }
@@ -124,11 +133,11 @@ public class MyPageServiceTests {
     @Test
     public void testGetMyInquiryHistoryList() {
         MemberVO memberVO = null;
-        WorkAndFundingPagination workAndFundingPagination = new WorkAndFundingPagination();
+        MyWorkAndFundingPagination myWorkAndFundingPagination = new MyWorkAndFundingPagination();
         memberVO = myPageService.getMember(1L).get();
-        workAndFundingPagination.setTotal(myPageService.getMyInquiryHistoriesTotal(memberVO.getId()));
-        workAndFundingPagination.progress();
-        MyInquiryHistoryListDTO myInquiryHistories = myPageService.getMyInquiryHistoryList(1, workAndFundingPagination, memberVO.getId());
+        myWorkAndFundingPagination.setTotal(myPageService.getMyInquiryHistoriesTotal(memberVO.getId()));
+        myWorkAndFundingPagination.progress();
+        MyInquiryHistoryListDTO myInquiryHistories = myPageService.getMyInquiryHistoryList(1, myWorkAndFundingPagination, memberVO.getId());
 
         log.info(myInquiryHistories.toString());
     }
@@ -145,22 +154,57 @@ public class MyPageServiceTests {
     @Test
     public void testGetMemberProfile() {
         MemberDTO memberDTO = new MemberDTO();
-        memberDTO.setId(2L);
 
         Optional<MemberProfileVO> foundMemberProfileInfo =
                 myPageService.getMemberProfile(memberDTO.getId());
         foundMemberProfileInfo.map(MemberProfileVO::toString).ifPresent(log::info);
     }
 
-//    @Test
-//    public void testUpdateMemberProfile() {
-//        MemberProfileDTO memberProfileDTO = new MemberProfileDTO();
-//        memberProfileDTO.setId(2L);
-//        memberProfileDTO.set
+    @Test
+    public void testUpdateMemberProfile() {
+        MemberProfileDTO memberProfileDTO = new MemberProfileDTO();
+        memberProfileDTO.setId(1L);
+        memberProfileDTO.setProfileEmail("modify@gmail.com");
+        memberProfileDTO.setProfileNickName("너구리");
+        memberProfileDTO.setProfileAge(21);
+        memberProfileDTO.setProfileGender("남성");
+        memberProfileDTO.setProfilePhone("01033339999");
+        memberProfileDTO.setProfileEtc("dsfsdfsd");
+
+        myPageService.updateMemberProfile(memberProfileDTO.toVO());
+        log.info("updateMemberProfile-test={}", memberProfileDTO.toString());
+    }
+
 //
-//        Optional<MemberProfileVO> foundMemberProfileInfo =
-//                myPageService.getMemberProfile(memberDTO.getId());
-//        foundMemberProfileInfo.map(MemberProfileVO::toString).ifPresent(log::info);
+    @Test
+    public void testGetAudition() {
+    AuditionDTO auditionDTO = new AuditionDTO();
+        auditionDTO.setId(33L);
+        auditionDTO.setPostType(PostType.AUDITIONVIDEO.name());
+
+    Optional<AuditionDTO> foundAudition = myPageService.getAudition(auditionDTO.getId(), auditionDTO.getPostType());
+        foundAudition.map(AuditionDTO::toString).ifPresent(log::info);
+}
+
+    @Test
+    public void testGetMyVideoAuditionApplicantList() {
+        AuditionDTO auditionDTO = null;
+        MySettingTablePagination mySettingTablePagination = new MySettingTablePagination();
+        auditionDTO = myPageService.getAudition(33L, PostType.AUDITIONVIDEO.name()).get();
+        mySettingTablePagination.setTotal(myPageService.getMyVideoAuditionApplicantsTotal(auditionDTO.getId()));
+        mySettingTablePagination.progress();
+        MyAuditionApplicantListDTO myAuditionApplicants = myPageService.getMyVideoAuditionApplicantList(1, mySettingTablePagination, auditionDTO.getId());
+
+        log.info("myAuditionApplicants-test={}", myAuditionApplicants);
+    }
+
+//    @Test
+//    public void testUpdateConfirmStatus() {
+//        AuditionApplicationDTO auditionApplicationDTO = new AuditionApplicationDTO();
+//        auditionApplicationDTO.setId(1L);
+//        auditionApplicationDTO.setConfirmStatus("YES");
+//
+//        myPageService.updateConfirmStatus(auditionApplicationDTO.toVO());
 //    }
 
 }

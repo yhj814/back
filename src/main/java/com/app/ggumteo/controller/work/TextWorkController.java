@@ -15,6 +15,7 @@ import com.app.ggumteo.domain.post.PostVO;
 import com.app.ggumteo.domain.reply.ReplyDTO;
 import com.app.ggumteo.domain.work.WorkDTO;
 import com.app.ggumteo.domain.work.WorkVO;
+import com.app.ggumteo.exception.SessionNotFoundException;
 import com.app.ggumteo.mapper.post.PostMapper;
 import com.app.ggumteo.mapper.work.WorkMapper;
 import com.app.ggumteo.pagination.Pagination;
@@ -36,6 +37,7 @@ import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.view.RedirectView;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -93,40 +95,37 @@ public class TextWorkController {
     }
 
     @PostMapping("write")
-    public ResponseEntity<?> write(
+    public RedirectView write(
             @ModelAttribute WorkDTO workDTO,
             @RequestParam(value = "thumbnailFileName", required = false) String thumbnailFileName,
-            @RequestParam(value = "fileNames", required = false) List<String> fileNames,
-            HttpSession session) {
-        try {
-            MemberVO member = (MemberVO) session.getAttribute("member");
-            if (member == null) {
-                log.error("세션에 멤버 정보가 없습니다.");
-                return ResponseEntity.status(400).body(Collections.singletonMap("error", "세션에 멤버 정보가 없습니다."));
-            }
-
-            workDTO.setPostType(PostType.WORKTEXT.name());
-            workDTO.setMemberProfileId(member.getId());
-
-            // 파일명 리스트를 DTO에 설정
-            workDTO.setFileNames(fileNames);
-
-            // 썸네일 파일명 설정
-            workDTO.setThumbnailFileName(thumbnailFileName);
-
-            // 서비스 계층으로 로직 이동
-            workService.write(workDTO);
-
-            return ResponseEntity.ok(Collections.singletonMap("success", true));
-        } catch (Exception e) {
-            log.error("글 저장 중 오류 발생", e);
-            return ResponseEntity.status(500).body(Collections.singletonMap("error", "저장 중 오류가 발생했습니다."));
+            @RequestParam(value = "fileNames", required = false) List<String> fileNames) {
+        MemberVO member = (MemberVO) session.getAttribute("member");
+        if (member == null) {
+            log.error("세션에 멤버 정보가 없습니다.");
+            throw new SessionNotFoundException("세션에 멤버 정보가 없습니다.");
         }
+
+        workDTO.setPostType(PostType.WORKTEXT.name());
+        workDTO.setMemberProfileId(member.getId());
+
+        // 파일명 리스트를 DTO에 설정
+        if (fileNames != null && !fileNames.isEmpty()) {
+            workDTO.setFileNames(fileNames);
+            // 파일 타입 설정은 서비스 계층에서 처리
+        }
+
+        // 썸네일 파일명 설정
+        if (thumbnailFileName != null && !thumbnailFileName.isEmpty()) {
+            workDTO.setThumbnailFileName(thumbnailFileName);
+            // 썸네일 파일 타입 설정은 서비스 계층에서 처리
+        }
+
+        // 서비스 계층으로 로직 이동
+        workService.write(workDTO);
+
+        log.info("작품 작성 완료: {}", workDTO);
+        return new RedirectView("/text/list");
     }
-
-
-
-
 
 
     // 작품 수정 폼으로 이동
@@ -146,16 +145,14 @@ public class TextWorkController {
             return "text/error";
         }
     }
+
     // 작품 업데이트 요청 처리
     @PostMapping("modify")
-    public String updateWork(
+    public RedirectView updateWork(
             @ModelAttribute WorkDTO workDTO,
             @RequestParam(value = "fileNames", required = false) List<String> fileNames,
             @RequestParam(value = "deletedFileIds", required = false) List<Long> deletedFileIds,
-            @RequestParam(value = "thumbnailFileName", required = false) String thumbnailFileName,
-            @ModelAttribute Search search,  // 검색 조건 추가
-            @RequestParam(value = "page", defaultValue = "1") int page,  // 페이지 파라미터 추가
-            Model model) {
+            @RequestParam(value = "thumbnailFileName", required = false) String thumbnailFileName) {
         try {
             log.info("수정 요청 - 작품 정보: {}", workDTO);
 
@@ -177,30 +174,10 @@ public class TextWorkController {
 
             // 서비스에서 작품 업데이트 로직 실행
             workService.updateWork(workDTO, deletedFileIds);
-
-            // 수정 후 리스트 페이지로 이동하기 위해 필요한 데이터 모델에 추가
-            search.setPostType(PostType.WORKTEXT.name());  // 필요한 경우 게시글 타입 설정
-            log.info("Received Search Parameters: {}", search);
-            log.info("Received page: {}", page);
-
-            Pagination pagination = new Pagination();
-            pagination.setPage(page);
-
-            int totalWorks = workService.findTotalWithSearchAndType(search);
-            pagination.setTotal(totalWorks);
-            pagination.progress2();  // 페이지네이션 계산
-
-            List<WorkDTO> works = workService.findAllWithThumbnailAndSearchAndType(search, pagination);
-
-            model.addAttribute("works", works);
-            model.addAttribute("pagination", pagination);
-            model.addAttribute("search", search);
-
-            return "text/list";
+            return new RedirectView("/text/detail/" + workDTO.getId());
         } catch (Exception e) {
             log.error("Error updating work: ", e);
-            model.addAttribute("error", "업데이트 중 오류가 발생했습니다: " + e.getMessage());
-            return "text/list";
+            return new RedirectView("/text/modify/" + workDTO.getId());
         }
     }
 

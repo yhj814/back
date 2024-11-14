@@ -13,7 +13,7 @@
                 join tbl_member m on mp.member_id = m.id
                 join tbl_member_profile bfp_mp on bfp.member_profile_id = bfp_mp.id
         order by f.id desc
-        limit #{settingTablePagination.startRow}, #{settingTablePagination.rowCount};
+        limit #{mySettingTablePagination.startRow}, #{mySettingTablePagination.rowCount};
     </select>
 
     <select id="selectCount">
@@ -48,7 +48,7 @@
                 join tbl_post_file pfl on p.id = pfl.post_id
                 join tbl_file fl on pfl.id = fl.id
         order by f.id desc
-            limit #{workAndFundingPagination.startRow}, #{workAndFundingPagination.rowCount};
+            limit #{myWorkAndFundingPagination.startRow}, #{myWorkAndFundingPagination.rowCount};
     </select>
 
     <select id="selectCountBuyFundingListByMember">

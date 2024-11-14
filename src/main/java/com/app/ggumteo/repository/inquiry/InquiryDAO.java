@@ -5,7 +5,7 @@ import com.app.ggumteo.domain.inquiry.InquiryDTO;
 import com.app.ggumteo.domain.post.PostDTO;
 import com.app.ggumteo.mapper.inquiry.InquiryMapper;
 import com.app.ggumteo.pagination.AdminPagination;
-import com.app.ggumteo.pagination.WorkAndFundingPagination;
+import com.app.ggumteo.pagination.MyWorkAndFundingPagination;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
@@ -73,8 +73,8 @@ public class InquiryDAO {
     }
 
     // 마이페이지 - 문의 내역 목록 조회
-    public List<InquiryDTO> findInquiryHistoryByMember(WorkAndFundingPagination workAndFundingPagination, Long memberId) {
-       return inquiryMapper.selectInquiryHistoryByMember(workAndFundingPagination, memberId);
+    public List<InquiryDTO> findInquiryHistoryByMember(MyWorkAndFundingPagination myWorkAndFundingPagination, Long memberId) {
+       return inquiryMapper.selectInquiryHistoryByMember(myWorkAndFundingPagination, memberId);
     }
 
     // 마이페이지 - 문의 내역 전체 갯수

@@ -1,4 +1,3 @@
-// JavaScript 파일 업로드 관련 코드 수정
 document.getElementById("file_select_btn").addEventListener("click", function () {
     const fileInput = document.querySelector(".temp-upload-resume");
     fileInput.click();
@@ -27,14 +26,30 @@ function handleFileUpload(event) {
         const formData = new FormData();
         formData.append("file", selectedFile);
 
-        fetch("/audition/video/upload-apply", { // 경로 수정
+        fetch("/audition/video/upload-apply", {
             method: "POST",
             body: formData,
         })
-            .then((response) => response.json())
-            .then((data) => {
-                if (data.fileName && data.filePath) {
+            .then((response) => response.text())
+            .then((fileName) => {
+                if (fileName && fileName !== "error") {
                     console.log("파일이 성공적으로 업로드되었습니다.");
+
+                    // 서버로부터 받은 파일명을 숨겨진 입력 필드에 저장
+                    let hiddenInput = document.querySelector('input[name="fileNames"]');
+                    if (!hiddenInput) {
+                        hiddenInput = document.createElement('input');
+                        hiddenInput.type = 'hidden';
+                        hiddenInput.name = 'fileNames';
+                        document.getElementById('base-edit-form').appendChild(hiddenInput);
+                    }
+                    hiddenInput.value = fileName;
+
+                    // 파일 입력 필드에서 name 속성 제거
+                    const fileInput = document.querySelector(".temp-upload-resume");
+                    fileInput.removeAttribute('name');
+                    // 파일명을 input 요소에 저장 (삭제 시 사용)
+                    fileInput.setAttribute('data-file-name', fileName);
                 } else {
                     console.error("파일 업로드 중 오류가 발생했습니다.");
                 }
@@ -42,6 +57,7 @@ function handleFileUpload(event) {
             .catch((error) => {
                 console.error("Error:", error);
             });
+
     }
 }
 
@@ -56,7 +72,19 @@ document.getElementById("btn_delete_resume").addEventListener("click", function 
 
     // 파일명 및 다운로드 링크 초기화
     document.getElementById("selected_file_name_viewer").textContent = "";
-    const resumeDownloadLink = document.getElementById("resume_download");
-    resumeDownloadLink.removeAttribute("download");
-    resumeDownloadLink.removeAttribute("href");
+
+    // 숨겨진 입력 필드 제거
+    const hiddenInput = document.querySelector('input[name="uploadedFileName"]');
+    if (hiddenInput) {
+        hiddenInput.remove();
+    }
 });
+
+// 폼 제출 시 파일 입력 필드 비활성화
+document.getElementById('base-edit-form').addEventListener('submit', function (event) {
+    const fileInputs = this.querySelectorAll('input[type="file"]');
+    fileInputs.forEach(fileInput => {
+        fileInput.disabled = true;
+    });
+});
+

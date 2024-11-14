@@ -10,6 +10,7 @@ import com.app.ggumteo.domain.member.MemberProfileDTO;
 import com.app.ggumteo.domain.member.MemberProfileVO;
 import com.app.ggumteo.domain.member.MemberVO;
 import com.app.ggumteo.domain.work.WorkDTO;
+import com.app.ggumteo.exception.SessionNotFoundException;
 import com.app.ggumteo.pagination.Pagination;
 import com.app.ggumteo.search.Search;
 import com.app.ggumteo.service.file.PostFileService;
@@ -23,13 +24,13 @@ import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.view.RedirectView;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/text/funding/*")
@@ -78,40 +79,36 @@ public class TextFundingController {
     }
 
     @PostMapping("write")
-    public ResponseEntity<?> write(
+    public RedirectView write(
             @ModelAttribute FundingDTO fundingDTO,
             @RequestParam(value = "thumbnailFileName", required = false) String thumbnailFileName,
-            @RequestParam(value = "fileNames", required = false) List<String> fileNames,
-            HttpSession session) {
-        try {
-            MemberVO member = (MemberVO) session.getAttribute("member");
-            if (member == null) {
-                log.error("세션에 멤버 정보가 없습니다.");
-                return ResponseEntity.status(400).body(Collections.singletonMap("error", "세션에 멤버 정보가 없습니다."));
-            }
-
-            fundingDTO.setPostType(PostType.FUNDINGTEXT.name());
-            fundingDTO.setMemberProfileId(member.getId());
-
-            // 파일명 리스트를 DTO에 설정
-            if (fileNames != null && !fileNames.isEmpty()) {
-                fundingDTO.setFileNames(fileNames);
-            }
-
-            // 썸네일 파일명 설정
-            if (thumbnailFileName != null && !thumbnailFileName.isEmpty()) {
-                fundingDTO.setThumbnailFileName(thumbnailFileName);
-            }
-
-            // 서비스 계층으로 로직 이동
-            fundingService.write(fundingDTO);
-
-            return ResponseEntity.ok(Collections.singletonMap("success", true));
-        } catch (Exception e) {
-            log.error("글 저장 중 오류 발생", e);
-            return ResponseEntity.status(500).body(Collections.singletonMap("error", "저장 중 오류가 발생했습니다."));
+            @RequestParam(value = "fileNames", required = false) List<String> fileNames) {
+        MemberVO member = (MemberVO) session.getAttribute("member");
+        if (member == null) {
+            log.error("세션에 멤버 정보가 없습니다.");
+            throw new SessionNotFoundException("세션에 멤버 정보가 없습니다.");
         }
+
+        fundingDTO.setPostType(PostType.FUNDINGTEXT.name());
+        fundingDTO.setMemberProfileId(member.getId());
+
+        // 파일명 리스트를 DTO에 설정
+        if (fileNames != null && !fileNames.isEmpty()) {
+            fundingDTO.setFileNames(fileNames);
+        }
+
+        // 썸네일 파일명 설정
+        if (thumbnailFileName != null && !thumbnailFileName.isEmpty()) {
+            fundingDTO.setThumbnailFileName(thumbnailFileName);
+        }
+
+        // 서비스 계층으로 로직 이동
+        fundingService.write(fundingDTO);
+
+        log.info("펀딩 작성 완료: {}", fundingDTO);
+        return new RedirectView("/text/funding/list");
     }
+
 
     @GetMapping("list")
     public String list(
@@ -127,8 +124,8 @@ public class TextFundingController {
         Pagination pagination = new Pagination();
         pagination.setPage(page);
 
-        int totalWorks = fundingService.findTotalWithSearchAndType(search);
-        pagination.setTotal(totalWorks);
+        int totalFundings = fundingService.findTotalWithSearchAndType(search);
+        pagination.setTotal(totalFundings);
         pagination.progress2();
 
         log.info("Pagination - Page: {}", pagination.getPage());
@@ -137,7 +134,7 @@ public class TextFundingController {
         log.info("Pagination - Row Count: {}", pagination.getRowCount());
 
         List<FundingDTO> fundings = fundingService.findFundingList(search, pagination);
-        log.info("Retrieved works list: {}", fundings);
+        log.info("Retrieved funding list: {}", fundings);
 
         model.addAttribute("fundings", fundings);
         model.addAttribute("pagination", pagination);
@@ -162,23 +159,24 @@ public class TextFundingController {
     public String detail(@PathVariable("id") Long id, Model model) {
         try {
             // 펀딩 상세 정보 조회 (기본 정보 포함)
-            List<FundingDTO> fundingDTOList = fundingService.findFundingById(id);
-            List<PostFileDTO> postFiles = fundingService.findFilesByPostId(id);
-
-            if (fundingDTOList.isEmpty()) {
-                log.warn("No funding found for ID: {}", id);
-                return "redirect:/text/funding/funding-list";
-            }
-
-            FundingDTO fundingDTO = fundingDTOList.get(0);
+            FundingDTO fundingDTO = fundingService.findFundingById(id);
             log.info("Retrieved FundingDTO: {}", fundingDTO);
 
-            // 펀딩 상품 정보 조회 추가
+            // 펀딩 상품 정보 조회
             List<FundingProductVO> fundingProducts = fundingService.findFundingProductsByFundingId(id);
             fundingDTO.setFundingProducts(fundingProducts); // 상품 목록을 FundingDTO에 설정
+            log.info("펀딩 상품 목록: {}", fundingProducts);
+
+            // 관련 파일 조회
+            List<PostFileDTO> postFiles = fundingService.findFilesByPostId(id);
+            log.info("Retrieved PostFileDTO list: {}", postFiles);
+
+            // 같은 장르의 관련 펀딩 조회
             String genreType = fundingDTO.getGenreType();
             List<FundingDTO> relatedFundings = fundingService.findRelatedFundingByGenre(genreType, id);
+            log.info("Retrieved related fundings: {}", relatedFundings);
 
+            // 모델에 데이터 추가
             model.addAttribute("funding", fundingDTO);
             model.addAttribute("postFiles", postFiles);
             model.addAttribute("relatedFundings", relatedFundings);
@@ -186,7 +184,94 @@ public class TextFundingController {
             return "text/funding/funding-detail";  // 상세 페이지 뷰로 이동
         } catch (Exception e) {
             log.error("펀딩 상세 조회 중 오류 발생", e);
-            return "redirect:/text/funding/funding-list";
+            model.addAttribute("error", "펀딩 상세 조회 중 오류가 발생했습니다.");
+            return "text/funding/error";
+        }
+    }
+
+
+    @GetMapping("modify/{id}")
+    public String updateForm(@PathVariable("id") Long id, Model model) {
+        try {
+            // 단일 펀딩 객체 조회
+            FundingDTO funding = fundingService.findFundingById(id);
+            log.info("펀딩 정보: {}", funding);
+
+            // 기존 파일 조회
+            List<PostFileDTO> existingFiles = fundingService.findFilesByPostId(id);
+            log.info("기존 파일 목록: {}", existingFiles);
+
+            // 펀딩 상품 정보 조회
+            List<FundingProductVO> fundingProducts = fundingService.findFundingProductsByFundingId(id);
+            funding.setFundingProducts(fundingProducts);
+            log.info("펀딩 상품 목록: {}", fundingProducts);
+
+            // 모델에 데이터 추가
+            model.addAttribute("funding", funding);
+            model.addAttribute("existingFiles", existingFiles);
+
+            return "text/funding/funding-modify";  // 수정 페이지 뷰로 이동
+        } catch (Exception e) {
+            log.error("펀딩 수정 폼 로드 중 오류 발생", e);
+            model.addAttribute("error", "펀딩 수정 폼을 로드하는 중 오류가 발생했습니다.");
+            return "text/funding/error";
+        }
+    }
+
+    // 펀딩 수정 요청 처리
+    @PostMapping("modify")
+    public RedirectView updateFunding(
+            @ModelAttribute FundingDTO fundingDTO,
+            @RequestParam(value = "fileNames", required = false) List<String> fileNames,
+            @RequestParam(value = "deletedFileIds", required = false) List<Long> deletedFileIds,
+            @RequestParam(value = "fundingProductIds", required = false) String fundingProductIds,
+            @RequestParam(value = "thumbnailFileName", required = false) String thumbnailFileName) {
+        try {
+            log.info("수정 요청 - 펀딩 정보: {}", fundingDTO);
+            log.info("삭제할 파일 IDs: {}", deletedFileIds);
+            log.info("삭제할 펀딩 상품 IDs: {}", fundingProductIds); // 콤마로 구분된 문자열
+            log.info("새로운 썸네일 파일명: {}", thumbnailFileName);
+            log.info("펀딩 상품 목록: {}", fundingDTO.getFundingProducts());
+            log.info("Modify form submitted for Funding ID: {}", fundingDTO.getId());
+
+            // 세션에서 로그인 사용자 정보 가져오기
+            MemberVO member = (MemberVO) session.getAttribute("member");
+            if (member == null) {
+                log.error("세션에 멤버 정보가 없습니다.");
+                throw new SessionNotFoundException("펀딩을 수정하려면 먼저 로그인하세요.");
+            }
+
+            // 펀딩 타입 설정
+            fundingDTO.setPostType(PostType.FUNDINGTEXT.name());
+
+            // 파일명 리스트를 DTO에 설정
+            if (fileNames != null && !fileNames.isEmpty()) {
+                fundingDTO.setFileNames(fileNames);
+            }
+
+            // 썸네일 파일명 설정
+            if (thumbnailFileName != null && !thumbnailFileName.isEmpty()) {
+                fundingDTO.setThumbnailFileName(thumbnailFileName);
+            }
+
+            // 콤마로 구분된 fundingProductIds를 Long 리스트로 변환 후 DTO에 설정
+            if (fundingProductIds != null && !fundingProductIds.isEmpty()) {
+                List<Long> productIdsToDelete = Arrays.stream(fundingProductIds.split(","))
+                        .map(Long::parseLong)
+                        .collect(Collectors.toList());
+                fundingDTO.setFundingProductIds(productIdsToDelete);
+            }
+
+            // 서비스에서 펀딩 수정 로직 실행
+            fundingService.updateFunding(fundingDTO, deletedFileIds);
+
+            log.info("펀딩 수정 완료: 펀딩 ID {}", fundingDTO.getId());
+
+
+            return new RedirectView("/text/funding/detail/" + fundingDTO.getId());
+        } catch (Exception e) {
+            log.error("펀딩 수정 중 오류 발생", e);
+            return new RedirectView("/text/funding/error");
         }
     }
 

@@ -63,6 +63,62 @@
     font-smoothing: antialiased;
 }
 
+/* 기존 상품 스타일 */
+.existing-product {
+    border: 1px solid #e0e0e0;
+    padding: 10px;
+    margin-bottom: 10px;
+    position: relative;
+}
+
+.existing-product .product-cancel {
+    margin-top: 10px;
+}
+
+.delete-existing-product-btn {
+    background-color: #e52929;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.delete-existing-product-btn:hover {
+    background-color: #c52727;
+}
+
+/* 새로운 상품 추가 스타일 */
+.product-add {
+    border: 1px dashed #e0e0e0;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.product-cancel-btn {
+    background-color: #ff5c5c;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.product-cancel-btn:hover {
+    background-color: #ff0000;
+}
+
+/* '추가' 버튼 스타일 */
+.product-div-add {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    color: #00a878;
+    margin-top: 10px;
+}
+
+.product-div-add img {
+    margin-right: 5px;
+}
+
 .main {
     min-width: 1080px;
     height: auto;
@@ -79,11 +135,11 @@
     background-size: cover;
     background-position: center center;
     background-repeat: no-repeat;
-    background-image: url(/static/images/inquiry/inqury-background-img.png;);
+    background-image: url(/images/inquiry/inqury-background-img.png;);
     background-image: -webkit-image-set(
-        url(/static/images/inquiry/inqury-background-img.png) 1x,
-        url(/static/images/inquiry/inqury-background-img.png) 2x,
-        url(/static/images/inquiry/inqury-background-img.png) 3x
+        url(/images/inquiry/inqury-background-img.png) 1x,
+        url(/images/inquiry/inqury-background-img.png) 2x,
+        url(/images/inquiry/inqury-background-img.png) 3x
     );
 }
 
@@ -92,12 +148,17 @@
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center center;
-    background-image: url(/static/images/inquiry/inqury-background-img.png);
+    background-image: url(/images/inquiry/inqury-background-img.png);
     background-image: -webkit-image-set(
-        url(/static/images/inquiry/inqury-background-img.png) 1x,
-        url(/static/images/inquiry/inqury-background-img.png) 2x,
-        url(/static/images/inquiry/inqury-background-img.png) 3x
+        url(/images/inquiry/inqury-background-img.png) 1x,
+        url(/images/inquiry/inqury-background-img.png) 2x,
+        url(/images/inquiry/inqury-background-img.png) 3x
     );
+}
+
+#preview-image {
+    width: 100%;
+    height: 100%;
 }
 
 .container {
@@ -621,7 +682,7 @@ img {
     opacity: 0.6;
     border-radius: 4px;
     background-color: #000;
-    display: none;
+    display: block;
 }
 .btn-edit-item {
     display: inline-block;
@@ -725,7 +786,6 @@ img {
     border-radius: 8px 8px 0 0;
 }
 .sample {
-    padding: 86px;
     border: dashed 2px #e0e0e0;
 }
 .preview-img {
@@ -849,7 +909,7 @@ img {
     position: absolute;
 }
 .product-add {
-    padding: 16px;
+    padding: 0px;
     border-radius: 8px;
     box-shadow: 0 1px 4px 0 rgba(230, 235, 240, 0.8);
     border: solid 1px #e6ebf0;
@@ -939,7 +999,7 @@ img {
 }
 .product-cancel {
     position: relative;
-    display: none;
+    display: block;
 }
 .product-cancel img {
     position: absolute;
@@ -947,14 +1007,14 @@ img {
     width: 22px;
 }
 
-.product-cancel-btn {
-    float: right;
-    cursor: pointer;
-    color: #3ba3c7;
-    font-weight: 500;
-    font-size: 16px;
-    line-height: 26px;
-}
+/*.product-cancel-btn {*/
+/*    float: right;*/
+/*    cursor: pointer;*/
+/*    color: #3ba3c7;*/
+/*    font-weight: 500;*/
+/*    font-size: 16px;*/
+/*    line-height: 26px;*/
+/*}*/
 input {
     border: 2px solid #ccc;
     transition: border-color 0.3s ease;
@@ -965,4 +1025,7 @@ input:hover {
 }
 .active {
     background-color: #00a878;
+}
+.hidden {
+    display: none;
 }

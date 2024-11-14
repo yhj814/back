@@ -41,7 +41,11 @@ public class FundingDTO {
     private String profileEmail;
     private String profileEtc;
     private List<String> fileNames; // 업로드된 파일 이름 목록
-
+    private List<Long> fundingProductIds; // 삭제할 펀딩 상품의 id
+    private List<Long> fileIds; // 업로드된 파일 ID 목록
+    private List<FundingProductVO> newProducts; // 새로 추가된 상품 리스트
+    private String status; // 상품 삭제, 게시중 구분하기
+    private String fileType;
 
 
     public FundingVO toVO() {

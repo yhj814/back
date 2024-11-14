@@ -3,7 +3,7 @@ create table tbl_member_profile (
     profile_name varchar(255) not null,
     profile_nickname varchar(255) not null,
     profile_gender varchar(255) not null,
-    profile_age varchar(255) not null,
+    profile_age int not null,
     profile_email varchar(255) not null,
     profile_phone varchar(255) not null,
     profile_etc varchar(255),

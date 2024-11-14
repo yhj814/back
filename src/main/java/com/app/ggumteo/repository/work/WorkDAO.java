@@ -1,22 +1,17 @@
 package com.app.ggumteo.repository.work;
 
-import com.app.ggumteo.domain.funding.FundingDTO;
 import com.app.ggumteo.domain.post.PostDTO;
 import com.app.ggumteo.domain.work.WorkDTO;
 import com.app.ggumteo.domain.work.WorkVO;
 import com.app.ggumteo.domain.file.PostFileDTO;
 import com.app.ggumteo.mapper.work.WorkMapper;
 import com.app.ggumteo.pagination.Pagination;
-import com.app.ggumteo.pagination.WorkAndFundingPagination;
+import com.app.ggumteo.pagination.MyWorkAndFundingPagination;
 import com.app.ggumteo.search.Search;
 import lombok.RequiredArgsConstructor;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
-import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @Repository
@@ -40,6 +35,9 @@ public class WorkDAO {
     public WorkDTO findWorkById(Long id) {
         return workMapper.selectById(id);
     }
+
+    public WorkDTO findWorkByIdForReplyAlarm(Long workId) {
+        return workMapper.selectWorkById(workId);}
 
     // 조회수 증가
     public void incrementReadCount(Long id) {
@@ -98,9 +96,11 @@ public class WorkDAO {
         workMapper.updateThumbnailFileId(workId, thumbnailFileId);
     }
 
+//************ 마이페이지 **************
+
     // 내 작품 게시물 전체 조회
-    public List<WorkDTO> findByMemberId(WorkAndFundingPagination workAndFundingPagination, Long memberId, String postType) {
-        return workMapper.selectByMemberId(workAndFundingPagination, memberId, postType);
+    public List<WorkDTO> findByMemberId(MyWorkAndFundingPagination myWorkAndFundingPagination, Long memberId, String postType) {
+        return workMapper.selectByMemberId(myWorkAndFundingPagination, memberId, postType);
     }
 
     // 내 작품 게시물 전체 갯수
@@ -111,5 +111,5 @@ public class WorkDAO {
     // 작품 정보 조회
     public Optional<WorkDTO> findByIdAndPostType(Long id, String postType) {
         return workMapper.selectByIdAndPostType(id, postType);
-    };
+    }
 }

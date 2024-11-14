@@ -32,22 +32,20 @@
                                             <div
                                                 class="detail-status-label recruiting-status"
                                             >
-                                                <div style="display: flex"
-                                                     th:if="${audition.auditionStatus == '모집중'}"
-                                                >
+                                                <div style="display: flex">
+                                                    <!-- 모집 중 상태 -->
                                                     <div
                                                             class="status-mark recruiting-mark"
-                                                            th:text="${audition.auditionStatus}"
+                                                            th:if="${audition.auditionStatus == 'YES'}"
+                                                            th:text="'모집중'"
                                                     >
                                                         모집 중
                                                     </div>
-                                                </div>
-                                                <div style="display: flex"
-                                                     th:if="${audition.auditionStatus == '모집완료'}"
-                                                >
+                                                    <!-- 모집 완료 상태 -->
                                                     <div
                                                             class="status-mark recruiting-mark-end"
-                                                            th:text="${audition.auditionStatus}"
+                                                            th:if="${audition.auditionStatus == 'NO'}"
+                                                            th:text="'모집완료'"
                                                     >
                                                         모집 완료
                                                     </div>
@@ -302,14 +300,14 @@
                                         <div class="file-content" th:text="${audition.fileContent}"></div>
                                         <div class="upload-media" th:each="file : ${postFiles}">
                                             <!-- 이미지 파일일 경우 -->
-                                            <div class="media-wrapper" th:if="${#strings.endsWith(file.filePath, '.jpg') or #strings.endsWith(file.filePath, '.jpeg') or #strings.endsWith(file.filePath, '.png') or #strings.endsWith(file.filePath, '.gif')}">
-                                                <img th:src="@{'/audition/text/display?fileName=' + ${file.filePath}}" alt="첨부 이미지" class="center-media" />
+                                            <div class="media-wrapper" th:if="${file.fileName.endsWith('.jpg') or file.fileName.endsWith('.jpeg') or file.fileName.endsWith('.png') or file.fileName.endsWith('.gif')}">
+                                                <img th:src="@{'/audition/text/display?fileName=' + ${file.filePath} + '/' + ${file.fileName}}" alt="첨부 이미지" class="center-media" />
                                             </div>
 
                                             <!-- 동영상 파일일 경우 -->
-                                            <div class="media-wrapper" th:if="${#strings.endsWith(file.filePath, '.mp4') or #strings.endsWith(file.filePath, '.avi') or #strings.endsWith(file.filePath, '.mov') or #strings.endsWith(file.filePath, '.wmv')}">
+                                            <div class="media-wrapper" th:if="${file.fileName.endsWith('.mp4') or file.fileName.endsWith('.avi') or file.fileName.endsWith('.mkv')}">
                                                 <video controls class="center-media">
-                                                    <source th:src="@{'/audition/text/display?fileName=' + ${file.filePath}}" type="video/mp4">
+                                                    <source th:src="@{'/audition/text/display?fileName=' + ${file.filePath} + '/' + ${file.fileName}}" type="video/mp4">
                                                     동영상 형식을 지원하지 않는 브라우저입니다.
                                                 </video>
                                             </div>
@@ -335,7 +333,8 @@
                                                 data-target="#mandatoryModal"
                                                 data-toggle="modal"
                                             >
-                                                모집 지원하기
+                                                <a class="btn-partner"
+                                                   th:href="@{/audition/text/application/{id}(id=${audition.id})}">모집 지원하기</a>
                                             </button>
                                             <button
                                                 class="btn btn-white btn-block btn-8-16 interest-button interest-off ui-tooltip"

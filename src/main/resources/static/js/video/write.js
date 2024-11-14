@@ -11,6 +11,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const textareaElement = document.querySelector(".textarea__border textarea");
     const textareaBorder = document.querySelector(".textarea__border");
     const radioButtons = document.querySelectorAll('input[type="radio"]');
+    const categoryBoxes = document.querySelectorAll(".project-category-box");
 
     // 입력 필드 이벤트 리스너 추가
     function setupInputFieldEvents() {
@@ -51,6 +52,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     inputElement.style.borderStyle = "solid";
                 }
                 labelInputPartner.classList.add("label-effect");
+                checkFormCompletion(); // 입력 값이 변경될 때마다 폼 상태 확인
             });
 
             inputElement.addEventListener("mouseover", function () {
@@ -103,6 +105,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     textareaBorder.classList.remove("error");
                     textareaBorder.style.borderColor = "#00a878";
                 }
+                checkFormCompletion(); // 입력 값이 변경될 때마다 폼 상태 확인
             });
 
             textareaElement.addEventListener("mouseover", function () {
@@ -154,6 +157,8 @@ document.addEventListener("DOMContentLoaded", function () {
                         form.appendChild(thumbnailInput);
                     }
                     thumbnailInput.value = fileName;
+
+                    checkFormCompletion(); // 상태 업데이트
                 } else {
                     console.error('썸네일 파일 업로드 실패.');
                 }
@@ -229,6 +234,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     // 파일명을 input 요소에 저장 (삭제 시 사용)
                     fileInput.setAttribute('data-file-name', fileName);
+
+                    checkFormCompletion(); // 상태 업데이트
                 } else {
                     console.error('파일 업로드 실패.');
                 }
@@ -273,6 +280,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
             // DOM에서 imgBox 제거
             imgBox.remove();
+
+            checkFormCompletion(); // 상태 업데이트
         });
     }
 
@@ -315,42 +324,19 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // 폼 제출 시 처리
     submitButton.addEventListener("click", function (event) {
-        event.preventDefault(); // 폼 기본 제출 방지
-
-        const formData = new FormData(form); // 기존 폼 데이터 포함
-
-        // 폼 데이터 확인용 로그 추가
-        for (let pair of formData.entries()) {
-            console.log(pair[0] + ', ' + pair[1]);
+        // 폼 제출 버튼이 비활성화된 경우 제출 방지
+        if (submitButton.disabled) {
+            event.preventDefault();
+            return;
         }
 
-        fetch("/video/write", {
-            method: "POST",
-            body: formData
-        })
-            .then((response) => {
-                if (response.ok) {
-                    return response.json();
-                } else {
-                    console.error('서버 응답 상태:', response.status);
-                    throw new Error('서버 오류 발생');
-                }
-            })
-            .then((data) => {
-                if (data.success) {
-                    window.location.href = "/video/list";
-                } else {
-                    alert("저장 중 오류가 발생했습니다.");
-                }
-            })
-            .catch((error) => {
-                console.error("에러 발생:", error);
-            });
+        // 폼 제출
+        form.submit();
     });
 
     // 버튼 활성화 확인 함수
     function checkFormCompletion() {
-        const isAnyFileUploaded = uploadedFiles.length > 0;
+        const isAnyFileUploaded = uploadedFiles.length > 0 || thumbnailFileName !== null;
         const isInputValid = inputElement && inputElement.value.trim() !== "";
         const isTextareaValid = textareaElement && textareaElement.value.trim() !== "";
         const isRadioSelected = Array.from(radioButtons).some(radio => radio.checked);
@@ -379,8 +365,6 @@ document.addEventListener("DOMContentLoaded", function () {
     checkFormCompletion();
 
     // 카테고리 박스 클릭 시 라디오 버튼 선택 및 스타일 변경
-    const categoryBoxes = document.querySelectorAll(".project-category-box");
-
     categoryBoxes.forEach((box) => {
         box.addEventListener("click", () => {
             const radioInput = box.querySelector('input[type="radio"]');

@@ -20,8 +20,8 @@
     </sql>
     <!-- 작품 삽입 -->
     <insert id="insert" parameterType="com.app.ggumteo.domain.work.WorkVO">
-        INSERT INTO tbl_work (id, work_price, genre_type, read_count, file_content, thumbnail_file_id)
-        VALUES (#{id}, #{workPrice}, #{genreType}, #{readCount}, #{fileContent}, #{thumbnailFileId})
+        insert into tbl_work (id, work_price, genre_type, read_count, file_content, thumbnail_file_id)
+        values (#{id}, #{workPrice}, #{genreType}, #{readCount}, #{fileContent}, #{thumbnailFileId})
     </insert>
 
 
@@ -45,7 +45,16 @@
         w.id = #{id}
     </select>
 
-
+    <!-- 댓글 알람용 -->
+    <select id="selectWorkById" parameterType="Long" resultType="com.app.ggumteo.domain.work.WorkDTO">
+        SELECT
+            id,
+            post_id AS postId
+        FROM
+            tbl_work
+        WHERE
+            id = #{id}
+    </select>
 
 
     <!-- 조회수 증가 -->
@@ -75,7 +84,7 @@
             post_title = #{postTitle},
             post_content = #{postContent},
             updated_date = current_timestamp
-        where id = #{postId}
+        where id = #{id}
     </update>
 
     <!-- 작품 삭제 -->
@@ -196,30 +205,31 @@
     </update>
 
     <!--  마이페이지  -->
-    <!--    -->
+    <!--  내 작품 조회  -->
     <select id="selectByMemberId" resultType="workDTO">
-        select w.id, w.genre_type, w.thumbnail_file_id,
+        select w.id, w.genre_type, w.thumbnail_file_id as thumbnailFileId,
                p.id, p.post_title, p.post_content, p.post_type, p.member_profile_id,
                p.created_date, mp.profile_nickname,
                mp.member_id, m.profile_img_url,
-               fl.file_name as thumbnail_file_name ,fl.file_path as thumbnail_file_path
+               fl.file_name as thumbnailFileName ,fl.file_path as thumbnailFilePath
         from tbl_work w
                  join tbl_post p on w.id = p.id and p.post_type = #{postType}
                  join tbl_member_profile mp on p.member_profile_id = mp.id
                  join tbl_member m on mp.member_id = m.id and m.id = #{memberId}
-                 join tbl_post_file pfl on p.id = pfl.post_id
-                 join tbl_file fl on pfl.id = fl.id and w.thumbnail_file_id = fl.id
+                 join tbl_file fl on w.thumbnail_file_id = fl.id
         order by w.id desc
-        limit #{workAndFundingPagination.startRow}, #{workAndFundingPagination.rowCount};
+        limit #{myWorkAndFundingPagination.startRow}, #{myWorkAndFundingPagination.rowCount}
     </select>
 
+    <!-- 내 작품 게시글 전체 갯수  -->
     <select id="selectCount">
         select count(*) from tbl_work w
         join tbl_post p on w.id = p.id and p.post_type = #{postType}
         join tbl_member_profile mp on p.member_profile_id = mp.id
-        join tbl_member m on mp.member_id = m.id and m.id = #{memberId};
+        join tbl_member m on mp.member_id = m.id and m.id = #{memberId}
     </select>
 
+    <!--  내 작품 정보 조회  -->
     <select id="selectByIdAndPostType" resultType="workDTO">
         select w.id, w.work_price, w.genre_type, w.file_content, w.read_count
         from tbl_work w join tbl_post p

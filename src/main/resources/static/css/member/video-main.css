@@ -302,7 +302,7 @@ html {
     margin-bottom: 40px;
 }
 
-   .list-item {
+.list-item {
     padding: 25px 0px;
     border-bottom: 1px solid;
 }
@@ -376,7 +376,7 @@ p {
 }
 
 .container.mypage .main-content-container .products-list .products-author-box {
-    width: 562px;
+    width: 560px;
     justify-content: space-between;
     align-items: center;
     margin-top: 8px;
@@ -445,25 +445,15 @@ p {
     left: 50%;
     transform: translateX(-50%);
 }
-.icon-my-edit-off {
+.icon-my-edit-off, .icon-my-delete {
     cursor: pointer;
-    width: 21px;
-    height: 21px;
-    background-image: url(/images/member/plus.png);
 }
 
-.icon-my-delete {
-    cursor: pointer;
-    width: 24px;
-    height: 24px;
-    background-image: url(/images/member/delete.png);
-}
 .container.mypage .main-content-container .products-list .products-image img {
     width: 110px;
     height: 110px;
     border-radius: 8px;
     border: 1px solid #e0e0e0;
-    object-fit: cover;
 }
 .content {
     color: #757575;
@@ -715,6 +705,7 @@ body.partners_profile .edit-menu-box .profile-menu-setting .setting-table .setti
     display: flex;
     align-items: center;
 }
+
 .item_recruit .area_badge {
     display: flex;
     align-items: center;
@@ -772,7 +763,7 @@ a {
     vertical-align: top;
 }
 .item_recruit .area_job .job_date .sri_btn_xs {
-    margin: 1px 0 0 3px;
+    margin-left: 6px;
 }
 .content > .item_recruit .sri_btn_xs {
     background: #fff;
@@ -791,22 +782,18 @@ a {
 .sri_btn_xs span.sri_btn_immediately {
     background: white;
     position: relative;
-    width: 49px;
+    width: 52px;
     border: 1px solid #2099bb;
     color: #2099bb;
 }
 .sri_btn_xs span {
     display: inline-block;
     padding-top: 2px;
-    width: 78px;
     height: 18px;
-    border: 1px solid #dce2ef;
     box-sizing: border-box;
-    color: var(--gray100);
     font-size: 12px !important;
     line-height: 12px;
     vertical-align: top;
-    background: var(--white);
 }
 .item_recruit .area_job .job_condition {
     overflow: hidden;
@@ -1633,8 +1620,8 @@ p {
     background-color: rgba(126, 126, 126, 0.18);
 }
 
-/* 탈퇴하시겠습니까? 모달창 */
-.withdraw-modal {
+/* 탈퇴하시겠습니까?/삭제하시겠습니까? 모달창 */
+.withdraw-modal, .delete-modal {
     display: none;
     position: fixed;
     top: 0px;
@@ -1693,6 +1680,7 @@ p {
     color: rgb(23, 23, 25);
 }
 .close-btn-wrapper {
+    margin: auto 7px;
     display: flex;
     min-width: 64px;
     justify-content: flex-end;
@@ -1718,14 +1706,14 @@ p {
 .modal-content {
     padding: 0px 23px 23px;
 }
-.withdraw-question {
+.withdraw-question, .delete-question {
     display: flex;
     flex-direction: column;
     margin-top: 10px;
     margin-bottom: 25px;
     gap: 30px;
 }
-.withdraw-question > p {
+.withdraw-question > p, .delete-question > p {
     color: #404040;
     font-weight: 600;
     text-align: center;
@@ -2140,7 +2128,8 @@ p {
     }
 }
 
-/*서버 작업 - 스타일 추가*/
+/*******서버 작업 - 스타일 추가*********/
+/*구매자 또는 신청자 목록 스타일 추가*/
 .setting-table.active {
     display: block;
 }
@@ -2407,6 +2396,15 @@ html, button, input, select, textarea {
     margin-top: 20px;
     border-radius: 4px;
     border: none;
+}
+
+/* 모집 완료 스타일 */
+.sri_btn_xs span.btn-complete{
+    border: 1px solid gray;
+    color: gray;
+    background: white;
+    position: relative;
+    width: 52px;
 }
 
 

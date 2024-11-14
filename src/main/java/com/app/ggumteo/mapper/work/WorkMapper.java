@@ -1,12 +1,10 @@
 package com.app.ggumteo.mapper.work;
 
-import com.app.ggumteo.domain.funding.FundingDTO;
-import com.app.ggumteo.domain.post.PostDTO;
 import com.app.ggumteo.domain.work.WorkDTO;
 import com.app.ggumteo.domain.work.WorkVO;
 import com.app.ggumteo.domain.file.PostFileDTO;
 import com.app.ggumteo.pagination.Pagination;
-import com.app.ggumteo.pagination.WorkAndFundingPagination;
+import com.app.ggumteo.pagination.MyWorkAndFundingPagination;
 import com.app.ggumteo.search.Search;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -26,13 +24,14 @@ public interface WorkMapper {
     // 작품 ID로 작품 조회
     WorkDTO selectById(Long id);
 
+    // 작품 id로 작품 조회(댓글 알람용)
+    WorkDTO selectWorkById(@Param("id") Long id);
+
     // 조회수 증가
     void increaseReadCount(Long id);
 
     // 작품 정보 수정 (tbl_work 및 tbl_post 업데이트)
     void updateWork(WorkDTO workDTO);
-
-
     void updatePost(WorkDTO workDTO);
 
     // 작품 삭제
@@ -67,8 +66,10 @@ public interface WorkMapper {
     // 썸네일 파일 ID 업데이트 메소드
     void updateThumbnailFileId(@Param("workId") Long workId, @Param("thumbnailFileId") Long thumbnailFileId);
 
+//************ 마이페이지 **************
+
     // 내 작품 게시물 전체 조회
-    public List<WorkDTO> selectByMemberId(@Param("workAndFundingPagination") WorkAndFundingPagination workAndFundingPagination
+    public List<WorkDTO> selectByMemberId(@Param("myWorkAndFundingPagination") MyWorkAndFundingPagination myWorkAndFundingPagination
             , @Param("memberId") Long memberId, @Param("postType") String postType);
 
     // 내 작품 게시물 전체 갯수

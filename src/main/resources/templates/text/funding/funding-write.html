@@ -13,7 +13,7 @@
                 <div class="header edit-header">
                     <div class="background"></div>
                     <div class="container">
-                        <form action="/text/funding/write" method="post" enctype="multipart/form-data" id="write-form">
+                        <form action="/text/funding/write" method="post" id="write-form">
                         <div class="profile-box write">
 
                                 <div class="write-add-view">
@@ -308,8 +308,7 @@
                                                                 </div>
                                                                 <!-- 숨겨진 파일 첨부 기능 -->
                                                                 <input id="file-upload" type="file" name="fundingFile" accept="image/*,video/*" style="
-                                                                        display: none;
-                                                                    " onchange="previewFile()">
+                                                                        display: none;">
                                                             </div>
                                                         </div>
 
@@ -349,7 +348,7 @@
                                                     <input
                                                         type="text"
                                                         class="product-name-input"
-                                                        name="productName[]"
+                                                        name="fundingProducts[0].productName"
                                                         placeholder="등록할 상품명을 입력해주세요."
                                                     />
                                                     <div class="product-price">
@@ -361,7 +360,7 @@
                                                     <input
                                                         type="number"
                                                         class="product-price-input"
-                                                        name="productPrice[]"
+                                                        name="fundingProducts[0].productPrice"
                                                         placeholder="등록할 상품가격을 입력해주세요."
                                                     />
                                                     <div
@@ -375,7 +374,7 @@
                                                     <input
                                                         type="number"
                                                         class="product-quantity-input"
-                                                        name="productAmount[]"
+                                                        name="fundingProducts[0].productAmount"
                                                         placeholder="등록할 상품수량을 입력해주세요."
                                                     />
                                                 </div>
@@ -403,10 +402,8 @@
                                                     <input
                                                             type="file"
                                                             id="thumbnailFile"
-                                                            name="thumbnailFile"
                                                             accept="image/*"
                                                             style="display: none"
-                                                            onchange="previewImage(event)"
                                                     />
                                                     <button
                                                         class="btn work-thumbnail-add-btn"

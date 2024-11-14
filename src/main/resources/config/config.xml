@@ -44,6 +44,8 @@
         <typeAlias type="com.app.ggumteo.domain.report.FundingReportDTO" alias="fundingReportDTO"/>
         <typeAlias type="com.app.ggumteo.domain.admin.PayWorkDTO" alias="payWorkDTO"/>
         <typeAlias type="com.app.ggumteo.domain.admin.PayFundingDTO" alias="payFundingDTO"/>
+        <typeAlias type="com.app.ggumteo.domain.alarm.AlarmDTO" alias="alarmDTO"/>
+        <typeAlias type="com.app.ggumteo.domain.alarm.AlarmVO" alias="alarmVO"/>
     </typeAliases>
 
 </configuration>

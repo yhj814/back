@@ -39,7 +39,7 @@ function timeForToday(datetime) {
 const myWorkListLayout = document.getElementById("my-work-list");
 const myWorkListPaging = document.getElementById("my-work-list-paging");
 
-const showMyWorkList = ({myWorkPosts, workAndFundingPagination}) => {
+const showMyWorkList = ({myWorkPosts, myWorkAndFundingPagination}) => {
     let text = ``;
     let pagingText = ``;
 
@@ -50,7 +50,7 @@ const showMyWorkList = ({myWorkPosts, workAndFundingPagination}) => {
                 <div class="products-list">
                     <div class="flex-box">
                         <div class="products-text">
-                            <a
+                            <a href="/video/detail/${myWorkPost.id}"
                                 ><p
                                     class="my-products-title"
                                 >
@@ -62,7 +62,7 @@ const showMyWorkList = ({myWorkPosts, workAndFundingPagination}) => {
                             >
                                 <a
                                     ><p
-                                        class="btn smooth my-products-category"
+                                        class="smooth my-products-category"
                                     >
                                          ${myWorkPost.genreType}
                                     </p></a
@@ -90,11 +90,8 @@ const showMyWorkList = ({myWorkPosts, workAndFundingPagination}) => {
                                 </p></a
                             >
                         </div>
-                        <div class="btn products-image">
-                            <a 
-                                ><img 
-                                    src="/member/video/my/work/display?fileName=${myWorkPost.thumbnailFilePath}/t_${myWorkPost.thumbnailFileName}"
-                            </a>
+                        <div class="products-image">
+                            <img src="/text/display?fileName=${myWorkPost.thumbnailFilePath}/t_${myWorkPost.thumbnailFileName}">
                         </div>
                     </div>
                     <div
@@ -126,10 +123,12 @@ const showMyWorkList = ({myWorkPosts, workAndFundingPagination}) => {
                                     <div
                                         class="edit-my-off"
                                     >
-                                        <div
+                                        <img
                                             id="my-work-buyer-btn"
                                             class="icon-my-edit-off ${myWorkPost.id}"
-                                        ></div>
+                                            src="/images/member/icon-open-btn.png"
+                                            width="24px"
+                                        >
                                     </div>
                                     <div
                                         class="edit-my-on"
@@ -148,9 +147,11 @@ const showMyWorkList = ({myWorkPosts, workAndFundingPagination}) => {
                                     class="btn btn-action icon-delete-read-products"
                                     type="button"
                                 >
-                                    <div
+                                    <a href="/video/modify/${myWorkPost.id}"><img
                                         class="icon-my-delete"
-                                    ></div>
+                                        src="/images/member/icon-update-btn.png"
+                                        width="24px"
+                                    ></a>
                                     <p
                                         class="action-tooltip bottom-action"
                                     >
@@ -174,25 +175,25 @@ const showMyWorkList = ({myWorkPosts, workAndFundingPagination}) => {
     myWorkListLayout.innerHTML = text;
 
 
-    if(workAndFundingPagination.prev){
+    if(myWorkAndFundingPagination.prev){
         pagingText += `
             <li class="page-item">
-                <a href="${workAndFundingPagination.startPage - 1}" class="page-link back"></a>
+                <a href="${myWorkAndFundingPagination.startPage - 1}" class="page-link back"></a>
             </li>
         `
     }
-    for(let i=workAndFundingPagination.startPage; i<=workAndFundingPagination.endPage; i++){
-        if(workAndFundingPagination.page === i){
+    for(let i=myWorkAndFundingPagination.startPage; i<=myWorkAndFundingPagination.endPage; i++){
+        if(myWorkAndFundingPagination.page === i){
             pagingText += `<li class="page-item"><div class="page-link active">${i}</div></li>`
         }else{
             pagingText += `<li class="page-item"><a href="${i}" class="page-link">${i}</a></li>`
         }
     }
 
-    if(workAndFundingPagination.next) {
+    if(myWorkAndFundingPagination.next) {
         pagingText += `
             <li class="page-item">
-                <a href="${workAndFundingPagination.endPage + 1}" class="page-link next"></a>
+                <a href="${myWorkAndFundingPagination.endPage + 1}" class="page-link next"></a>
             </li>
         `
     }
@@ -201,7 +202,7 @@ const showMyWorkList = ({myWorkPosts, workAndFundingPagination}) => {
 }
 
 // 나의 작품 - 구매자 목록, 페이징
-const showMyWorkBuyerList = ({myWorkBuyers, settingTablePagination}) => {
+const showMyWorkBuyerList = ({myWorkBuyers, mySettingTablePagination}) => {
 
     let text = `<div class="price-member setting-th">
                             <div class="setting-td size-l">
@@ -248,7 +249,7 @@ const showMyWorkBuyerList = ({myWorkBuyers, settingTablePagination}) => {
         if(myWorkBuyer.workSendStatus === "NO") {
             text += `<div class="btn-choice btn-secret active">`
         } else {
-            text += `<div class="btn-choice btn-secret">`
+            text += `<div class="btn-choice btn-secret ${myWorkBuyer.id}">`
         }
              text +=          `<input
                                         class="radio-value"
@@ -274,18 +275,18 @@ const showMyWorkBuyerList = ({myWorkBuyers, settingTablePagination}) => {
 
     text += `<ul class="pagination theme-yozm mypage-page back-or-next">`;
 
-    if(settingTablePagination.prev){
+    if(mySettingTablePagination.prev){
         text += `
             <li class="page-item">
-                <a href="${settingTablePagination.startPage - 1}" class="page-link back"></a>
+                <a href="${mySettingTablePagination.startPage - 1}" class="page-link back"></a>
             </li>
         `
     }
 
-    if(settingTablePagination.next) {
+    if(mySettingTablePagination.next) {
         text += `
             <li class="page-item">
-                <a href="${settingTablePagination.endPage + 1}" class="page-link next"></a>
+                <a href="${mySettingTablePagination.endPage + 1}" class="page-link next"></a>
             </li>
         `
     }
@@ -299,7 +300,7 @@ const myBuyWorkListLayout = document.getElementById("my-buy-work-list");
 const myBuyWorkListPaging = document.getElementById("my-buy-work-list-paging");
 
 
-const showMyBuyWorkList = ({myBuyWorkPosts, workAndFundingPagination}) => {
+const showMyBuyWorkList = ({myBuyWorkPosts, myWorkAndFundingPagination}) => {
     let text = ``;
     let pagingText = ``;
 
@@ -308,7 +309,7 @@ const showMyBuyWorkList = ({myBuyWorkPosts, workAndFundingPagination}) => {
                     <div class="products-list">
                         <div class="flex-box">
                             <div class="products-text">
-                                <a
+                                <a href="/video/detail/${myBuyWorkPost.workId}"
                                     ><p
                                         class="my-products-title"
                                     >
@@ -318,13 +319,11 @@ const showMyBuyWorkList = ({myBuyWorkPosts, workAndFundingPagination}) => {
                                 <div
                                     class="my-products-info"
                                 >
-                                    <a
-                                        ><p
+                                    <p
                                             class="btn smooth my-products-category"
                                         >
                                            ${myBuyWorkPost.genreType}
-                                        </p></a
-                                    >
+                                        </p>
                                     <div
                                         class="divider"
                                     ></div>
@@ -339,20 +338,16 @@ const showMyBuyWorkList = ({myBuyWorkPosts, workAndFundingPagination}) => {
                                              ${timeForToday(myBuyWorkPost.createdDate)}
                                         </div>
                                     </div>
-                                </div>
-                                <a
-                                    ><p
+                                </div><p
                                         class="timeandcontent content products-description"
                                     >
                                          ${myBuyWorkPost.postContent}
-                                    </p></a
-                                >
+                                    </p>
                             </div>
                             <div class="btn products-image">
-                                <a
-                                    ><img
-                                        src="/images/member/thumnail.png"
-                                /></a>
+                                <img
+                                        src="/text/display?fileName=${myBuyWorkPost.thumbnailFilePath}/t_${myBuyWorkPost.thumbnailFileName}"
+                                />
                             </div>
                         </div>
                         <div
@@ -388,9 +383,12 @@ const showMyBuyWorkList = ({myBuyWorkPosts, workAndFundingPagination}) => {
                                         class="btn btn-action icon-delete-read-products"
                                         type="button"
                                     >
-                                        <div
-                                            class="icon-my-delete"
-                                        ></div>
+                                        <img
+                                                id="buy-work-delete-btn"
+                                                class="icon-my-delete ${myBuyWorkPost.workId}"
+                                                src="/images/member/icon-delete-btn.png"
+                                                width="24px"
+                                            >
                                         <p
                                             class="action-tooltip bottom-action"
                                         >
@@ -401,30 +399,59 @@ const showMyBuyWorkList = ({myBuyWorkPosts, workAndFundingPagination}) => {
                             </div>
                         </div>
                     </div>
+                </div>
+                <div class="delete-modal modal-${myBuyWorkPost.workId}" style="display: none;">
+                    <div class="modal">
+                        <div class="modal-header">
+                            <div>
+                                <div class="blank"></div>
+                                <div class="header-title">
+                                    <p>구매내역 삭제</p>
+                                </div>
+                                <div class="close-btn-wrapper">
+                                    <button class="close-btn">
+                                        <span class="icon-close"><svg viewBox="0 0 24 24" color="#000000" class="close"><path fill-rule="evenodd" clip-rule="evenodd" fill="#000000" d="M4.61321 4.6137C4.96469 4.26223 5.53453 4.26223 5.88601 4.6137L11.9996 10.7273L18.1132 4.6137C18.4647 4.26223 19.0345 4.26223 19.386 4.6137C19.7375 4.96517 19.7375 5.53502 19.386 5.88649L13.2724 12.0001L19.386 18.1137C19.7375 18.4652 19.7375 19.035 19.386 19.3865C19.0345 19.738 18.4647 19.738 18.1132 19.3865L11.9996 13.2729L5.88601 19.3865C5.53453 19.738 4.96469 19.738 4.61321 19.3865C4.26174 19.035 4.26174 18.4652 4.61321 18.1137L10.7268 12.0001L4.61321 5.88649C4.26174 5.53502 4.26174 4.96517 4.61321 4.6137Z"></path></svg></span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-content">
+                            <form>
+                                <div class="delete-question">
+                                    <p>정말 삭제하시겠습니까?</p>
+                                </div>
+                                <div class="submit-btn">
+                                    <button type="submit" ${myBuyWorkPost.id}>
+                                        <span>네, 삭제하겠습니다.</span>
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                 </div>`
     });
 
     myBuyWorkListLayout.innerHTML = text;
 
-    if(workAndFundingPagination.prev){
+    if(myWorkAndFundingPagination.prev){
         pagingText += `
             <li class="page-item">
-                <a href="${workAndFundingPagination.startPage - 1}" class="page-link back"></a>
+                <a href="${myWorkAndFundingPagination.startPage - 1}" class="page-link back"></a>
             </li>
         `
     }
-    for(let i=workAndFundingPagination.startPage; i<=workAndFundingPagination.endPage; i++){
-        if(workAndFundingPagination.page === i){
+    for(let i=myWorkAndFundingPagination.startPage; i<=myWorkAndFundingPagination.endPage; i++){
+        if(myWorkAndFundingPagination.page === i){
             pagingText += `<li class="page-item"><div class="page-link active">${i}</div></li>`
         }else{
             pagingText += `<li class="page-item"><a href="${i}" class="page-link">${i}</a></li>`
         }
     }
 
-    if(workAndFundingPagination.next) {
+    if(myWorkAndFundingPagination.next) {
         pagingText += `
             <li class="page-item">
-                <a href="${workAndFundingPagination.endPage + 1}" class="page-link next"></a>
+                <a href="${myWorkAndFundingPagination.endPage + 1}" class="page-link next"></a>
             </li>
         `
     }
@@ -436,7 +463,7 @@ const showMyBuyWorkList = ({myBuyWorkPosts, workAndFundingPagination}) => {
 const myFundingListLayout = document.getElementById("my-funding-list");
 const myFundingListPaging = document.getElementById("my-funding-list-paging");
 
-const showMyFundingList = ({myFundingPosts, workAndFundingPagination}) => {
+const showMyFundingList = ({myFundingPosts, myWorkAndFundingPagination}) => {
     let text = ``;
     let pagingText = ``;
 
@@ -520,71 +547,73 @@ const showMyFundingList = ({myFundingPosts, workAndFundingPagination}) => {
                                 >
                                     구매한 사람들
                                 </p>
-                                <div
-                                    class="edit-my-off"
-                                >
+                                <div class="edit-my-off">
+                                        <img
+                                            id="my-funding-buyer-btn"
+                                            class="icon-my-edit-off ${myFundingPost.id}"
+                                            src="/images/member/icon-open-btn.png"
+                                            width="24px"
+                                        >
+                                    </div>
                                     <div
-                                        id="my-funding-buyer-btn"
-                                        class="icon-my-edit-off ${myFundingPost.id}"
-                                    ></div>
-                                </div>
-                                <div
-                                    class="edit-my-on"
-                                    style="
-                                        display: none;
-                                    "
+                                        class="edit-my-on"
+                                        style="
+                                            display: none;
+                                        "
+                                    >
+                                        <div
+                                            class="icon-my-edit-on"
+                                        ></div>
+                                    </div>
+                                </button>
+                            </div>
+                            <div class="btn-wrapper">
+                                <button
+                                    class="btn btn-action icon-delete-read-products"
+                                    type="button"
                                 >
-                                    <div
-                                        class="icon-my-edit-on"
-                                    ></div>
-                                </div>
-                            </button>
-                        </div>
-                        <div class="btn-wrapper">
-                            <button
-                                class="btn btn-action icon-delete-read-products"
-                                type="button"
-                            >
-                                <div
-                                    class="icon-my-delete"
-                                ></div>
-                                <p
-                                    class="action-tooltip bottom-action"
-                                >
-                                    수정
-                                </p>
-                            </button>
+                                    <a href="/video/funding/modify/${myFundingPost.id}"><img
+                                        class="icon-my-delete"
+                                        src="/images/member/icon-update-btn.png"
+                                        width="24px"
+                                    ></a>
+                                    <p
+                                        class="action-tooltip bottom-action"
+                                    >
+                                        수정
+                                    </p>
+                                </button>
+                            </div>
                         </div>
                     </div>
+                    <div class="setting-table funding-buyer-${myFundingPost.id}" style="border-top: 1px solid rgb(224, 224, 224); display: none;">
+                     </div>    
                 </div>
-                <div class="setting-table funding-buyer-${myFundingPost.id}" style="border-top: 1px solid rgb(224, 224, 224); display: none;">
-                 </div>    
             </div>
-        </div>
             `;
     });
     myFundingListLayout.innerHTML = text;
 
 
-    if(workAndFundingPagination.prev){
+    if(myWorkAndFundingPagination.prev){
         pagingText += `
             <li class="page-item">
-                <a href="${workAndFundingPagination.startPage - 1}" class="page-link back"></a>
+                <a href="${myWorkAndFundingPagination.startPage - 1}" class="page-link back"></a>
             </li>
         `
     }
-    for(let i=workAndFundingPagination.startPage; i<=workAndFundingPagination.endPage; i++){
-        if(workAndFundingPagination.page === i){
+    for(let i=myWorkAndFundingPagination.startPage; i<=myWorkAndFundingPagination.endPage; i++){
+        if(myWorkAndFundingPagination.page === i){
             pagingText += `<li class="page-item"><div class="page-link active">${i}</div></li>`
         }else{
             pagingText += `<li class="page-item"><a href="${i}" class="page-link">${i}</a></li>`
         }
     }
 
-    if(workAndFundingPagination.next) {
+    if(myWorkAndFundingPagination.next) {
         pagingText += `
             <li class="page-item">
-                <a href="${workAndFundingPagination.endPage + 1}" class="page-link next"></a>
+                <a href="${myWorkAndFundingPagination.endPage + 1}" class="page-link next"></a>
             </li>
         `
     }
@@ -593,7 +622,7 @@ const showMyFundingList = ({myFundingPosts, workAndFundingPagination}) => {
 }
 
 // 나의 펀딩 - 구매자 목록, 페이징
-const showFundingBuyerList = ({myFundingBuyers, settingTablePagination}) => {
+const showFundingBuyerList = ({myFundingBuyers, mySettingTablePagination}) => {
 
     let text = `<div class="setting-th">
                                 <div class="setting-td size-l">
@@ -713,18 +742,18 @@ const showFundingBuyerList = ({myFundingBuyers, settingTablePagination}) => {
 
     text += `<ul class="pagination theme-yozm mypage-page back-or-next">`;
 
-    if(settingTablePagination.prev){
+    if(mySettingTablePagination.prev){
         text += `
             <li class="page-item">
-                <a href="${settingTablePagination.startPage - 1}" class="page-link back"></a>
+                <a href="${mySettingTablePagination.startPage - 1}" class="page-link back"></a>
             </li>
         `
     }
 
-    if(settingTablePagination.next) {
+    if(mySettingTablePagination.next) {
         text += `
             <li class="page-item">
-                <a href="${settingTablePagination.endPage + 1}" class="page-link next"></a>
+                <a href="${mySettingTablePagination.endPage + 1}" class="page-link next"></a>
             </li>
         `
     }
@@ -738,7 +767,7 @@ const myBuyFundingListLayout = document.getElementById("my-buy-funding-list");
 const myBuyFundingListPaging = document.getElementById("my-buy-funding-list-paging");
 
 
-const showMyBuyFundingList = ({myBuyFundingPosts, workAndFundingPagination}) => {
+const showMyBuyFundingList = ({myBuyFundingPosts, myWorkAndFundingPagination}) => {
     let text = ``;
     let pagingText = ``;
 
@@ -842,9 +871,11 @@ const showMyBuyFundingList = ({myBuyFundingPosts, workAndFundingPagination}) => 
                                             class="btn btn-action icon-delete-read-products"
                                             type="button"
                                         >
-                                            <div
+                                            <img
                                                 class="icon-my-delete"
-                                            ></div>
+                                                src="/images/member/icon-delete-btn.png"
+                                                width="24px"
+                                            >
                                             <p
                                                 class="action-tooltip bottom-action"
                                             >
@@ -860,25 +891,28 @@ const showMyBuyFundingList = ({myBuyFundingPosts, workAndFundingPagination}) => 
 
     myBuyFundingListLayout.innerHTML = text;
 
-    if(workAndFundingPagination.prev){
+//     콘솔창에 오류가 남. 확인 필요
+// if(myBuyFundingPosts[0].id !== null)  {}
+
+    if (myWorkAndFundingPagination.prev) {
         pagingText += `
             <li class="page-item">
-                <a href="${workAndFundingPagination.startPage - 1}" class="page-link back"></a>
+                <a href="${myWorkAndFundingPagination.startPage - 1}" class="page-link back"></a>
             </li>
         `
     }
-    for(let i=workAndFundingPagination.startPage; i<=workAndFundingPagination.endPage; i++){
-        if(workAndFundingPagination.page === i){
+    for (let i = myWorkAndFundingPagination.startPage; i <= myWorkAndFundingPagination.endPage; i++) {
+        if (myWorkAndFundingPagination.page === i) {
             pagingText += `<li class="page-item"><div class="page-link active">${i}</div></li>`
-        }else{
+        } else {
             pagingText += `<li class="page-item"><a href="${i}" class="page-link">${i}</a></li>`
         }
     }
 
-    if(workAndFundingPagination.next) {
+    if (myWorkAndFundingPagination.next) {
         pagingText += `
             <li class="page-item">
-                <a href="${workAndFundingPagination.endPage + 1}" class="page-link next"></a>
+                <a href="${myWorkAndFundingPagination.endPage + 1}" class="page-link next"></a>
             </li>
         `
     }
@@ -886,12 +920,479 @@ const showMyBuyFundingList = ({myBuyFundingPosts, workAndFundingPagination}) => 
     myBuyFundingListPaging.innerHTML = pagingText;
 }
 
+//************** 모집 ****************
+
+// 나의 모집 목록, 페이징
+const myAuditionListLayout = document.getElementById("my-audition-list");
+const myAuditionListPaging = document.getElementById("my-audition-list-paging");
+
+const showMyAuditionList = ({myAuditionPosts, myAuditionPagination}) => {
+    let text = ``;
+    let pagingText = ``;
+
+    myAuditionPosts.forEach((myAuditionPost) => {
+
+        text += `
+             <div class="item">
+                <div class="item_recruit">
+                    <div class="area_job">
+                        <h2 class="job_tit">
+                            <a
+                                target="_blank"
+                                title="${myAuditionPost.postTitle}"
+                                href=""
+                            >
+                                <span>
+                                    ${myAuditionPost.postTitle} / `
+        if (myAuditionPost.auditionField == 1) {
+            text += `<b>배우</b> 채용`
+        } else if (myAuditionPost.auditionField == 2) {
+            text += `<b>스텝</b> 채용`
+        } else if (myAuditionPost.auditionField == 3) {
+            text += `<b>감독</b> 채용`
+        } else if (myAuditionPost.auditionField == 4) {
+            text += `<b>기타</b> 채용`
+        }
+        text += `</span>
+                            </a>
+                        </h2>
+                        <div class="job_date">
+                            <span class="date"
+                                >~
+                                ${myAuditionPost.auditionDeadLine} </span
+                            >`
+        if (myAuditionPost.auditionStatus === 'YES') {
+           text += `<button class="sri_btn_xs">
+                                <span
+                                    class="sri_btn_immediately"
+                                    >모집중</span>
+                            </button>`
+        }
+        else {
+            text += `<button class="sri_btn_xs">
+                                <span class="btn-complete">
+                                    모집완료</span>
+                     </button>`
+        }
+
+        text +=  `</div>
+                        <div
+                            class="job_condition"
+                        >
+                            <span
+                                >${myAuditionPost.auditionLocation}</span
+                            >`
+        if (myAuditionPost.auditionCareer === '') {
+            text +=  `<span
+                                >·신입</span
+                            >`
+        } else {
+            text += `<span
+                                >·경력</span
+                            >`
+        }
+        text +=          `</div>
+                        <div class="job_sector">
+                            <b
+                                >${myAuditionPost.expectedAmount}</b
+                            >,
+                            <b
+                                >${myAuditionPost.auditionPersonnel}</b
+                            >
+                            <span
+                                class="job_day"
+                                >등록일
+                                ${myAuditionPost.createdDate}</span
+                            >
+                        </div>
+                    </div>
+                    <div class="area_corp">
+                        <strong
+                            class="corp_name"
+                            style="
+                                margin-top: 43px;
+                            "
+                        >${myAuditionPost.profileName}
+                        </strong>
+                        <span
+                            class="corp_affiliate"
+                            >${myAuditionPost.profileEmail}</span
+                        >
+
+                        <div
+                            class="btn-wrapper"
+                            id="toggleReplyBtn"
+                            data-reply="1"
+                            style="
+                                left: -100px;
+                                bottom: 12px;
+                            "
+                        >
+                            <button
+                                class="btn btn-action btn-icon-edit-my"
+                                name="toggle_btn"
+                                type="button"
+                                style="
+                                    background: white;
+                                    border: none;
+                                    cursor: unset;
+                                "
+                            >
+                                <p
+                                    class="action-tooltip bottom-action edit-my-off"
+                                >
+                                    지원자
+                                    상세보기
+                                </p>
+                                    <img
+                                        id="my-audition-applicant-btn"
+                                        class="icon-my-edit-off ${myAuditionPost.id}"
+                                        src="/images/member/icon-open-btn.png"
+                                        width="24px"
+                                    >
+                                <div
+                                    class="edit-my-on"
+                                    style="
+                                        display: none;
+                                    "
+                                >
+                                    <div
+                                        class="icon-my-edit-on"
+                                    ></div>
+                                </div>
+                            </button>
+                            <button
+                                    style="
+                                    background: none;
+                                "
+                                    class="btn btn-action icon-delete-read-products"
+                                    type="button"
+                            >
+                                <a href="/audition/video/modify/${myAuditionPost.id}"><img
+                                        class="icon-my-delete"
+                                        src="/images/member/icon-update-btn.png"
+                                        width="24px"
+                                ></a>
+                                <p
+                                        class="action-tooltip bottom-action"
+                                >
+                                    수정
+                                </p>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div
+                        class="similar_recruit"
+                        style="display: none"
+                    ></div>
+                </div>
+                <!-- js에서 id="replySection1", id="replySection2" 이런 식으로 구분합니다 참고해주세요 -->
+                <div
+                    class="reply"
+                    id="replySection1"
+                >
+                    <div class="item_recruit">
+                        <div
+                            class="setting-table audition-applicant-${myAuditionPost.id}"
+                            style="
+                                border-top: 1px
+                                    solid
+                                    rgb(
+                                        224,
+                                        224,
+                                        224
+                                    );
+                                    display: none;
+                            "
+                        >
+<!--                            지원자 목록 & 페이징-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            `;
+    });
+    myAuditionListLayout.innerHTML = text;
+
+
+    if (myAuditionPagination.prev) {
+        pagingText += `<a href="${myAuditionPagination.startPage - 1}" class="btnPrev page_move track_event"
+                        page="10" title="이전">이전</a>
+        `
+    }
+    for(let i=myAuditionPagination.startPage; i<=myAuditionPagination.endPage; i++){
+        if(myAuditionPagination.page === i){
+            pagingText += `<span class="page">${i}</span>`
+        }else{
+            pagingText += `<a href="${i}" page="${i}" class="page page_move track_event">
+                            ${i}</a>`
+        }
+    }
+
+    if(myAuditionPagination.next) {
+        pagingText += `<a href="${myAuditionPagination.endPage + 1}" class="btnNext page_move track_event"
+                          page="11" title="다음">다음</a>
+        `
+    }
+
+    myAuditionListPaging.innerHTML = pagingText;
+}
+
+// 나의 모집 목록, 페이징 - 구매자 목록, 페이징
+const showMyAuditionApplicantList = ({myAuditionApplicants, mySettingTablePagination}) => {
+    console.log("layout-myAuditionApplicants : ", myAuditionApplicants)
+    console.log("layout-mySettingTablePagination : ", mySettingTablePagination)
+
+    let text = `<div
+                                class="setting-th"
+                            >
+                                <div
+                                    class="setting-td size-l"
+                                >
+                                    이름/이메일
+                                </div>
+                                <div
+                                    class="center-text setting-td size-s"
+                                >
+                                    지원분야
+                                </div>
+                                <div
+                                    class="center-text setting-td size-m"
+                                >
+                                    확인 여부
+                                </div>
+                       </div>
+                       `
+    text += `<div class="setting-tr-group" style="border-bottom: solid 1px #e0e0e0; padding-bottom: 0px;">`;
+
+    myAuditionApplicants.forEach((myAuditionApplicant) => {
+        text += `<div class="setting-tr" style="padding-top: 7px">
+                    <div class="setting-td with-sub size-l">
+                        <div class="mb4 major-span">
+                           ${myAuditionApplicant.profileName}
+                        </div>
+                        <a  href="" class="sub-span">
+                           이력서 보기
+                        </a>
+                    </div>`
+            if(myAuditionApplicant.auditionField == 1){
+                text +=    `<div class="center-text setting-td with-text primary size-s"
+                         style="margin-bottom: 35px;">
+                         배우`
+            }
+            if(myAuditionApplicant.auditionField == 2){
+                text +=  `<div class="center-text setting-td with-text primary size-s"
+                         style="margin-bottom: 35px;">
+                         스텝`
+            }
+            if(myAuditionApplicant.auditionField == 3){
+                text +=   `<div class="center-text setting-td with-text primary size-s"
+                         style="margin-bottom: 35px;">
+                         감독`
+            }
+            if(myAuditionApplicant.auditionField == 4){
+                text +=   `<div class="center-text setting-td with-text primary size-s"
+                         style="margin-bottom: 35px;">
+                         기타`
+            }
+
+        text +=    `</div>
+                    <div class="center-text setting-td with-btn size-m">
+                        <div class="btn-group choice-group">`
+
+        if(myAuditionApplicant.confirmStatus === "YES") {
+
+            text += `<div class="btn-choice btn-public active">`
+
+        } else {
+
+            text += `<div class="btn-choice btn-public ${myAuditionApplicant.id}">`
+
+        }
+
+        text += `<input checked="" class="radio-value"
+                  name="is_secret_employment" type="radio"/>확인</div>`
+
+        if(myAuditionApplicant.confirmStatus === "NO") {
+
+            text += `<div class="btn-choice btn-secret active">`
+
+        } else {
+
+            text += `<div class="btn-choice btn-secret ${myAuditionApplicant.id}">`
+
+        }
+
+            text +=     `<input
+                                class="radio-value"
+                                name="is_secret_employment"
+                                type="radio"
+                            />미확인
+                        </div>
+                    </div>
+                </div>
+            </div>
+            `;
+
+    });
+    text += `    </div>`;
+
+    text += `<ul class="pagination theme-yozm mypage-page back-or-next" style="margin-bottom: 20px">`;
+
+    if(mySettingTablePagination.prev){
+        text += `
+            <li class="page-item">
+                <a href="${mySettingTablePagination.startPage - 1}" class="page-link back"></a>
+            </li>
+        `
+    }
+
+    if(mySettingTablePagination.next) {
+        text += `
+            <li class="page-item">
+                <a href="${mySettingTablePagination.endPage + 1}" class="page-link next"></a>
+            </li>
+        `
+    }
+    text += `    </ul>`;
+
+    return text;
+}
+
+// 내가 신청한 모집 목록, 페이징
+const myApplicationAuditionListLayout = document.getElementById("my-application-audition-list");
+const myApplicationAuditionListPaging = document.getElementById("my-application-audition-list-paging");
+
+
+const showMyApplicationAuditionList = ({myApplicationAuditionPosts, myAuditionPagination}) => {
+    let text = ``;
+    let pagingText = ``;
+
+    myApplicationAuditionPosts.forEach((myApplicationAuditionPost) => {
+        text += `<div class="item">
+                        <div class="item_recruit">
+                            <div class="area_job">
+                                <h2 class="job_tit">
+                                     <a
+                                target="_blank"
+                                title="${myApplicationAuditionPost.postTitle}"
+                                href=""
+                            >
+                                <span>
+                                    ${myApplicationAuditionPost.postTitle} / `
+        if (myApplicationAuditionPost.auditionField == 1) {
+            text += `<b>배우</b> 채용`
+        } else if (myApplicationAuditionPost.auditionField == 2) {
+            text += `<b>스텝</b> 채용`
+        } else if (myApplicationAuditionPost.auditionField == 3) {
+            text += `<b>감독</b> 채용`
+        } else if (myApplicationAuditionPost.auditionField == 4) {
+            text += `<b>기타</b> 채용`
+        }
+        text += `</span>
+                            </a>
+                        </h2>
+                        <div class="job_date">
+                            <span class="date"
+                                >~
+                                ${myApplicationAuditionPost.auditionDeadLine} </span
+                            >`
+        if (myApplicationAuditionPost.auditionStatus === 'YES') {
+            text += `<button class="sri_btn_xs">
+                                <span
+                                    class="sri_btn_immediately"
+                                    >모집중</span>
+                            </button>`
+        }
+        else {
+            text += `<button class="sri_btn_xs">
+                                <span class="btn-complete">
+                                    모집완료</span>
+                     </button>`
+        }
+
+        text +=  `</div>
+                        <div
+                            class="job_condition"
+                        >
+                            <span
+                                >${myApplicationAuditionPost.auditionLocation}</span
+                            >`
+        if (myApplicationAuditionPost.auditionCareer === '') {
+            text +=  `<span
+                                >·신입</span
+                            >`
+        } else {
+            text += `<span
+                                >·경력</span
+                            >`
+        }
+        text +=          `</div>
+                        <div class="job_sector">
+                            <b
+                                >${myApplicationAuditionPost.expectedAmount}</b
+                            >,
+                            <b
+                                >${myApplicationAuditionPost.auditionPersonnel}</b
+                            >
+                            <span
+                                class="job_day"
+                                >등록일
+                                ${myApplicationAuditionPost.createdDate}</span
+                            >
+                        </div>
+                    </div>
+                    <div class="area_corp">
+                        <strong
+                            class="corp_name"
+                        >${myApplicationAuditionPost.profileName}
+                        </strong>
+                        <span
+                            class="corp_affiliate"
+                            >${myApplicationAuditionPost.profileEmail}</span
+                        >
+                            </div>
+
+                            <div
+                                class="similar_recruit"
+                                style="display: none"
+                            ></div>
+                        </div>
+                    </div>`
+    });
+
+    myApplicationAuditionListLayout.innerHTML = text;
+
+    if (myAuditionPagination.prev) {
+        pagingText += `<a href="${myAuditionPagination.startPage - 1}" class="btnPrev page_move track_event"
+                        page="10" title="이전">이전</a>
+        `
+    }
+    for(let i=myAuditionPagination.startPage; i<=myAuditionPagination.endPage; i++){
+        if(myAuditionPagination.page === i){
+            pagingText += `<span class="page">${i}</span>`
+        }else{
+            pagingText += `<a href="${i}" page="${i}" class="page page_move track_event">
+                            ${i}</a>`
+        }
+    }
+
+    if(myAuditionPagination.next) {
+        pagingText += `<a href="${myAuditionPagination.endPage + 1}" class="btnNext page_move track_event"
+                          page="11" title="다음">다음</a>
+        `
+    }
+
+    myApplicationAuditionListPaging.innerHTML = pagingText;
+}
+
 // 문의내역, 페이징
 const myInquiryHistoryListLayout = document.getElementById("my-inquiry-history-list");
 const myInquiryHistoryListPaging = document.getElementById("my-inquiry-history-list-paging");
 
 
-const showMyInquiryHistoryList = ({myInquiryHistories, workAndFundingPagination}) => {
+const showMyInquiryHistoryList = ({myInquiryHistories, myWorkAndFundingPagination}) => {
 let text = ``;
 let pagingText = ``;
 
@@ -1002,25 +1503,25 @@ let pagingText = ``;
     myInquiryHistoryListLayout.innerHTML = text;
 
 
-    if(workAndFundingPagination.prev){
+    if(myWorkAndFundingPagination.prev){
         pagingText += `
             <li class="page-item">
-                <a href="${workAndFundingPagination.startPage - 1}" class="page-link back"></a>
+                <a href="${myWorkAndFundingPagination.startPage - 1}" class="page-link back"></a>
             </li>
         `
     }
-    for(let i=workAndFundingPagination.startPage; i<=workAndFundingPagination.endPage; i++){
-        if(workAndFundingPagination.page === i){
+    for(let i=myWorkAndFundingPagination.startPage; i<=myWorkAndFundingPagination.endPage; i++){
+        if(myWorkAndFundingPagination.page === i){
             pagingText += `<li class="page-item"><div class="page-link active">${i}</div></li>`
         }else{
             pagingText += `<li class="page-item"><a href="${i}" class="page-link">${i}</a></li>`
         }
     }
 
-    if(workAndFundingPagination.next) {
+    if(myWorkAndFundingPagination.next) {
         pagingText += `
             <li class="page-item">
-                <a href="${workAndFundingPagination.endPage + 1}" class="page-link next"></a>
+                <a href="${myWorkAndFundingPagination.endPage + 1}" class="page-link next"></a>
             </li>
         `
     }
@@ -1030,7 +1531,6 @@ let pagingText = ``;
 // 내 문의 내역 관리자 답변
 const showAdminAnswer = (adminAnswer) => {
     let text =``;
-    console.log("layout-adminAnswer: ",adminAnswer);
 
         text =  `<div class="setting-th">
                 <div
@@ -1074,4 +1574,160 @@ const showAdminAnswer = (adminAnswer) => {
     return text;
 }
 
+// 내 정보
+const myProfileLayout = document.getElementById("my-profile");
+
+const showMyProfile = (memberProfile) => {
+    let text = ``;
+
+    text = `<form class="form-horizontal has-validation-callback" id="base-edit-form">
+                <div class="form-group">
+                    <label class="control-label required" id="full_name_label"><span></span> 이름</label>
+                    <div class="control-wrapper">
+                        <input class="form-control" id="full_name" placeholder="이름을 입력해 주세요." name="profileName" type="text" value="${memberProfile.profileName}">
+                        <div class="error-message">
+                            <i class="fa fa-exclamation-circle"></i>
+                            이 항목을 채워주십시오.
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label required" id="full_nickname_label"><span></span> 닉네임</label>
+                    <div class="control-wrapper">
+                        <input class="form-control" id="full_nickname" placeholder="사용할 닉네임을 입력해주세요." name="profileNickName" type="text" value="${memberProfile.profileNickName}">
+                        <div class="error-message">
+                            <i class="fa fa-exclamation-circle"></i>
+                            이 항목을 채워주십시오.
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group" style="margin-top: -5px">
+                    <label class="control-label" for="gender">성별</label>
+                    <div class="control-wrapper">
+                        <div class="error-message">
+                            <i class="fa fa-exclamation-circle"></i>
+                            이 항목을 채워주십시오.
+                        </div>
+                    </div>
+                    <div class="control-wrapper">
+                        <ul class="list-unstyled" style="margin-bottom: 0">
+                            <li>
+                                <label class="radio-inline" for="gender_1"><input data-exception="yes" id="gender_1" name="profileGender" type="radio" value="남성" checked="${memberProfile.profileGender == '남성'}">남성</label>
+                            </li>
+                            <li>
+                                <label class="radio-inline" for="gender_2"><input data-exception="yes" id="gender_2" name="profileGender" type="radio" value="여성" checked="${memberProfile.profileGender == '여성'}">여성</label>
+                            </li>
+                        </ul>
+                        <div class="error-message">
+                            <i class="fa fa-exclamation-circle"></i>
+                            이 항목을 채워주십시오.
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="date_of_birth" id="date_of_birth_label">나이</label>
+                    <div class="control-wrapper">
+                        <input class="form-control" id="member-age" name="profileAge}" placeholder="만 나이를 입력해주세요." type="text" value="${memberProfile.profileAge}">
+
+                        <div class="error-message">
+                            <i class="fa fa-exclamation-circle"></i>
+                            이 항목을 채워주십시오.
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">이메일</label>
+
+                    <div class="control-wrapper">
+                        <div class="input-gap loading-icon-wrap">
+                            <input class="form-control" data-exception="yes" placeholder="이메일을 입력하세요." name="profileEmail" type="text" value="${memberProfile.profileEmail}">
+                            <button class="btn btn-certification-select" type="button" id="requestEmailCode">인증번호 요청</button>
+                            <img class="loading-icon" id="loadingGif" src="/images/main/loading.gif" alt="Loading...">
+                        </div>
+                        <div class="error-message">
+                            <i class="fa fa-exclamation-circle"></i>
+                            올바른 이메일 주소를
+                            입력해주세요.
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group certification-input-email">
+                    <label class="control-label required">이메일 인증</label>
+                    <div class="control-wrapper ">
+                        <div class="input-gap">
+                            <input class="form-control " id="emailVerificationCode" placeholder="인증번호를 입력하세요." type="text">
+                            <button class="btn btn-certification-select" type="button" id="verifyEmailCode">인증번호 확인</button>
+                        </div>
+                        <div class="error-message" id="emailVerificationError" style="display: none;"></div>
+                        <div class="email-timer-container" style="display: none;">
+                            <p>인증 유효 시간: <span id="emailTimerDisplay">3:00</span></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">연락처</label>
+                    <div class="control-wrapper">
+                        <div class="input-gap">
+                            <input class="form-control" data-exception="yes" placeholder="전화번호를 입력하세요." name="profilePhone" type="text" value="${memberProfile.profilePhone}">
+                            <button class="btn btn-certification-select" type="button" id="requestVerificationCode">인증번호 요청</button>
+                        </div>
+                        <div class="error-message">
+                            <i class="fa fa-exclamation-circle"></i>
+                            올바른 전화번호를 입력해주세요.
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group certification-input-phone">
+                    <label class="control-label required">전화번호 인증</label>
+                    <div class="control-wrapper ">
+                        <div class="input-gap">
+                            <input class="form-control " id="verificationCode" placeholder="인증번호를 입력하세요." type="text">
+                            <button class="btn btn-certification-select" type="button" id="verifyCode">인증번호 확인</button>
+                        </div>
+                        <div class="error-message" id="verificationError">인증번호를 입력하세요.</div>
+                        <!-- 타이머 표시 영역 -->
+                        <div class="timer-container" style="display: none;">
+                            <p>인증번호 유효 시간: <span id="timerDisplay">3:00</span></p>
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="form-group">
+                    <label class="control-label">추가 작성사항</label>
+                    <div class="control-wrapper">
+                        <textarea class="form-control form-textarea" placeholder="간단한 자기소개를 입력해주세요." name="profileEtc" value="${memberProfile.profileEtc}" style="height: 340px"></textarea>
+                        <div class="error-message">
+                            <i class="fa fa-exclamation-circle"></i>
+                            간단한 자기소개를 입력해주세요.
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group" style="margin-top: 360px">
+                    <label class="control-label" style="margin-top: 25px;">첨부파일</label>
+                    <div class="control-wrapper" style="margin-top: 25px;">
+                        <input accept=".pdf, .docx, .doc, .hwp" class="temp-upload-resume" name="profileFile" hidden="" type="file">
+
+                        <div class="selected-file-viewer">
+                            <input class="remove-request" hidden="" name="fileContent" type="checkbox">
+                            <p class="placeholder-attachment">
+                                이력서를 제출해주세요.
+                            </p>
+                            <div class="tooltip-group">
+                                <img class="viewer-file-icon" src="/images/audition/attachment_file_icon@2x.png" style="width: 15px"><a download="" id="resume_download"><p class="file-name-viewer text300 body-2-medium" id="selected_file_name_viewer"></p></a><img class="btn-delete-resume" id="btn_delete_resume" src="/images/audition/chip_btn_delete_normal@2x.png" style="width: 15px">
+                            </div>
+                        </div>
+                        <button class="btn btn-file-select" id="file_select_btn" type="button">
+                            <img src="/images/audition/btn_icon_add@2x.png" style="width: 15px">이력서 선택
+                        </button>
+                        <div class="error-message">
+                            <i class="fa fa-exclamation-circle"></i>
+                            첨부파일을 선택해주세요.
+                        </div>
+                    </div>
+                </div>
+            </form>`;
+
+    myProfileLayout.innerHTML = text;
+}
 

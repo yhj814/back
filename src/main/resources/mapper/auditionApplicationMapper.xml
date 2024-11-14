@@ -9,6 +9,17 @@
         VALUES (#{memberProfileId}, #{applyEtc}, #{auditionId}, #{confirmStatus})
     </insert>
 
+    <!-- 오디션 정보 조회: tbl_post와 tbl_audition 조인 -->
+    <select id="findByAuditionId" parameterType="long" resultType="auditionDTO">
+        SELECT
+            a.id AS auditionId,
+            p.member_profile_id AS memberProfileId
+        FROM tbl_audition a
+                 JOIN tbl_post p ON p.id = a.id
+        WHERE a.id = #{auditionId}
+            LIMIT 1
+    </select>
+
     <!-- 각 모집글(audition_id)별 지원자 수 조회 -->
     <select id="countApplicantsByAuditionId" resultType="int" parameterType="long">
         SELECT COUNT(*) AS application_count
@@ -16,5 +27,60 @@
         WHERE audition_id = #{auditionId}
     </select>
 
+    <!-- 마이페이지  -->
+    <select id="selectByAuditionPostId" resultType="auditionApplicationDTO">
+        select aa.id, aa.audition_id, aa_mp.profile_name, a.audition_field, aa.confirm_status
+        from
+            tbl_audition_application aa
+                join tbl_audition a on aa.audition_id = a.id
+                join tbl_post p on a.id = p.id and a.id = #{auditionId}
+                join tbl_member_profile mp on p.member_profile_id = mp.id
+                join tbl_member m on mp.member_id = m.id
+                join tbl_member_profile aa_mp on aa.member_profile_id = aa_mp.id
+        order by a.id desc
+            limit #{mySettingTablePagination.startRow}, #{mySettingTablePagination.rowCount};
+    </select>
 
+    <select id="selectCount">
+        select count(*) from
+            tbl_audition_application aa
+                join tbl_audition a on aa.audition_id = a.id
+                join tbl_post p on a.id = p.id and a.id = #{auditionId}
+                join tbl_member_profile mp on p.member_profile_id = mp.id
+                join tbl_member m on mp.member_id = m.id
+                join tbl_member_profile aa_mp on aa.member_profile_id = aa_mp.id
+    </select>
+
+    <update id="updateConfirmStatus">
+        update tbl_audition_application
+        set confirm_status = #{confirmStatus}
+        where id = #{id}
+    </update>
+
+    <select id="selectAppliedAuditionListByMember">
+        select a.id, a.audition_field, a.audition_career, a.expected_amount,
+               a.audition_deadline, a.audition_personnel, a.audition_location, a.audition_status,
+               p.post_title, p.post_content, p.created_date,
+               mp.profile_name, mp.profile_email
+        from tbl_audition_application aa
+                 join tbl_audition a on aa.audition_id = a.id
+                 join tbl_post p on a.id = p.id and p.post_type = #{postType}
+                 join tbl_member_profile mp on p.member_profile_id = mp.id
+                 join tbl_member m on mp.member_id = m.id
+                 join tbl_member_profile aa_mp on aa.member_profile_id = aa_mp.id
+                 join tbl_member aa_m on aa_mp.member_id = aa_m.id and aa_m.id = #{memberId}
+        order by a.id desc
+            limit #{myAuditionPagination.startRow}, #{myAuditionPagination.rowCount};
+    </select>
+
+    <select id="selectCountAppliedAuditionListByMember">
+        select count(*)
+        from tbl_audition_application aa
+         join tbl_audition a on aa.audition_id = a.id
+         join tbl_post p on a.id = p.id and p.post_type = #{postType}
+         join tbl_member_profile mp on p.member_profile_id = mp.id
+         join tbl_member m on mp.member_id = m.id
+         join tbl_member_profile aa_mp on aa.member_profile_id = aa_mp.id
+         join tbl_member aa_m on aa_mp.member_id = aa_m.id and aa_m.id = #{memberId}
+    </select>
 </mapper>

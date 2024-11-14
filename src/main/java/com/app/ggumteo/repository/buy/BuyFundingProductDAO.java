@@ -3,8 +3,8 @@ package com.app.ggumteo.repository.buy;
 import com.app.ggumteo.domain.buy.BuyFundingProductDTO;
 import com.app.ggumteo.domain.buy.BuyFundingProductVO;
 import com.app.ggumteo.mapper.buy.BuyFundingProductMapper;
-import com.app.ggumteo.pagination.SettingTablePagination;
-import com.app.ggumteo.pagination.WorkAndFundingPagination;
+import com.app.ggumteo.pagination.MySettingTablePagination;
+import com.app.ggumteo.pagination.MyWorkAndFundingPagination;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -16,8 +16,8 @@ public class BuyFundingProductDAO {
     private final BuyFundingProductMapper buyFundingProductMapper;
 
 //    펀딩 구매자 목록 조회
-    public List<BuyFundingProductDTO> findByFundingPostId(SettingTablePagination settingTablePagination, Long fundingPostId) {
-        return buyFundingProductMapper.selectByFundingPostId(settingTablePagination, fundingPostId);
+    public List<BuyFundingProductDTO> findByFundingPostId(MySettingTablePagination mySettingTablePagination, Long fundingPostId) {
+        return buyFundingProductMapper.selectByFundingPostId(mySettingTablePagination, fundingPostId);
     }
 
 //    내 펀딩 게시물 하나의 구매자 전체 갯수
@@ -31,9 +31,9 @@ public class BuyFundingProductDAO {
     }
 
 //   결제한 펀딩 목록 조회
-    public List<BuyFundingProductDTO> findMyBuyFundingList(WorkAndFundingPagination workAndFundingPagination
-            ,Long memberId, String postType) {
-        return buyFundingProductMapper.selectBuyFundingListByMember(workAndFundingPagination, memberId, postType);
+    public List<BuyFundingProductDTO> findMyBuyFundingList(MyWorkAndFundingPagination myWorkAndFundingPagination
+            , Long memberId, String postType) {
+        return buyFundingProductMapper.selectBuyFundingListByMember(myWorkAndFundingPagination, memberId, postType);
     }
 
 //  내가 결제한 펀딩 목록 전체 갯수

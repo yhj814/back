@@ -10,13 +10,13 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 public interface AuditionService {
-    public void write(AuditionDTO auditionDTO, MultipartFile[] auditionFiles);
+    public void write(AuditionDTO auditionDTO);
 
     AuditionDTO findAuditionById(Long id);
 
     List<AuditionDTO> findAllAuditions(PostType postType, Search search, AuditionPagination pagination);
 
-    void updateAudition(AuditionDTO auditionDTO, List<MultipartFile> newFiles, List<Long> deletedFileIds);
+    void updateAudition(AuditionDTO auditionDTO, List<Long> deletedFileIds);
     void deleteAuditionById(Long id);
 
     int findTotalAuditionsSearch(PostType postType, Search search);
