@@ -35,6 +35,7 @@
                                                 name="postTitle"
                                                 type="text"
                                                 th:value="${work.postTitle}"
+                                                maxlength="50"
                                                 required
                                         />
                                         <label for="title"
@@ -187,6 +188,7 @@
                                                             name="postContent"
                                                             th:text="${work.postContent}"
                                                             required
+                                                            style="white-space: pre-wrap"
                                                     ></textarea>
                                         </div>
                                         <span
@@ -231,6 +233,7 @@
                                                         name="fileContent"
                                                         th:value="${work.fileContent != null ? work.fileContent : ''}"
                                                         placeholder="올린 파일에 대한 설명을 입력해주세요."
+                                                        maxlength="50"
                                                 />
                                             </div>
                                         </div>
