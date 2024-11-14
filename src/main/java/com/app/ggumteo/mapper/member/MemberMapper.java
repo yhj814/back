@@ -24,6 +24,6 @@ public interface MemberMapper {
 //   회원 정보 조회: 마이페이지 목록 조회할 때 member id 조회가 필요하여 작성함.
     public Optional<MemberVO> selectById(Long id);
 
-
-
+//   회원 탈퇴
+    public void softDeleteMember(MemberVO memberVO);
 }

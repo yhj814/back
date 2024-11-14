@@ -46,6 +46,12 @@
     <select id="selectById" resultType="memberVO">
         select id, member_email, profile_img_url
         from tbl_member
-        where id = #{id}
+        where id = #{id} and member_status = 'YES'
     </select>
+    <!--  마이페이지 - 회원 탈퇴   -->
+    <update id="softDeleteMember">
+        update tbl_member
+        set member_status = 'NO'
+        where id = #{id};
+    </update>
 </mapper>
