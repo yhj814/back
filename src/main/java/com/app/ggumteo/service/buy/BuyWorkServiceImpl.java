@@ -13,8 +13,8 @@ public class BuyWorkServiceImpl implements BuyWorkService {
     private final BuyWorkDAO buyWorkDAO;
 
     @Override
-    public void savePurchase(BuyWorkVO buyWorkVO) {
-        buyWorkDAO.savePurchase(buyWorkVO);
+    public BuyWorkVO savePurchase(BuyWorkVO buyWorkVO) {
+        return buyWorkDAO.savePurchase(buyWorkVO);
     }
 }
 

@@ -2,9 +2,9 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.app.ggumteo.mapper.buy.BuyWorkMapper">
 
-    <insert id="insertPurchase">
-        insert into tbl_buy_work (member_profile_id, work_id, work_send_status)
-        values (#{memberProfileId}, #{workId}, #{workSendStatus})
+    <insert id="insertPurchase" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO tbl_buy_work (member_profile_id, work_id, work_send_status)
+        VALUES (#{memberProfileId}, #{workId}, #{workSendStatus})
     </insert>
 
     <select id="selectByWorkPostId" resultType="buyWorkDTO">
