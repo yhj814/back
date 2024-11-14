@@ -2,8 +2,10 @@ package com.app.ggumteo.controller.work;
 
 
 
+import com.app.ggumteo.constant.AlarmSubType;
 import com.app.ggumteo.constant.PostType;
 import com.app.ggumteo.domain.buy.BuyWorkDTO;
+import com.app.ggumteo.domain.buy.BuyWorkVO;
 import com.app.ggumteo.domain.file.FileVO;
 import com.app.ggumteo.domain.file.PostFileDTO;
 import com.app.ggumteo.domain.file.PostFileVO;
@@ -20,6 +22,7 @@ import com.app.ggumteo.mapper.post.PostMapper;
 import com.app.ggumteo.mapper.work.WorkMapper;
 import com.app.ggumteo.pagination.Pagination;
 import com.app.ggumteo.search.Search;
+import com.app.ggumteo.service.alarm.AlarmService;
 import com.app.ggumteo.service.buy.BuyWorkService;
 import com.app.ggumteo.service.file.PostFileService;
 import com.app.ggumteo.service.reply.ReplyService;
@@ -57,6 +60,7 @@ public class TextWorkController {
     private final HttpSession session;
     private final PostFileService postFileService;
     private final BuyWorkService buyWorkService;
+    private final AlarmService alarmService;
 
     @ModelAttribute
     public void setMemberInfo(HttpSession session, Model model) {
@@ -269,7 +273,16 @@ public class TextWorkController {
             buyWorkDTO.setProfileEmail(memberProfile.getProfileEmail());
             buyWorkDTO.setWorkSendStatus("0");
 
-            buyWorkService.savePurchase(buyWorkDTO.toVO());
+            BuyWorkVO savedBuyWork = buyWorkService.savePurchase(buyWorkDTO.toVO()); // 저장 후 BuyWorkVO 반환
+            Long buyWorkId = savedBuyWork.getId(); // 저장된 BuyWorkVO의 ID 가져오기
+
+            // 알림 메시지 설정
+            String message = "새로운 작품이 구매되었습니다.";
+
+            // 알람 생성
+            alarmService.createWorkAlarm(memberProfileId, buyWorkId, message, AlarmSubType.TEXT);
+
+            log.info("Audition application processed and alarm created.");
 
             return ResponseEntity.ok("결제 정보가 성공적으로 저장되었습니다.");
         } catch (Exception e) {
