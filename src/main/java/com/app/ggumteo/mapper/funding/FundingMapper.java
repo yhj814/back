@@ -79,4 +79,9 @@ public interface FundingMapper {
             @Param("genreType") String genreType,
             @Param("fundingId") Long fundingId
     );
+
+
+//    메인페이지
+public List<FundingDTO> selectTopTextFundingForMainPage();
+public List<FundingDTO> selectTopVideoFundingForMainPage();
 }

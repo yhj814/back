@@ -22,4 +22,10 @@ public interface AuditionService {
     int findTotalAuditionsSearch(PostType postType, Search search);
 
     List<PostFileDTO> findAllPostFiles(Long postId);
+
+//    메인페이지
+    List<AuditionDTO> getLatestTextAuditionsForMainPage();
+
+
+    List<AuditionDTO> getLatestVideoAuditionsForMainPage();
 }

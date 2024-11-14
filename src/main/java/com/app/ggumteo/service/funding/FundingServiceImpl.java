@@ -402,4 +402,15 @@ public class FundingServiceImpl implements FundingService{
     }
 
 
+    @Override
+    public List<FundingDTO> getTopTextFundingForMainPage() {
+        return fundingDAO.selectTopTextFundingForMainPage();
+    }
+
+    @Override
+    public List<FundingDTO> getTopVideoFundingForMainPage() {
+        return fundingDAO.selectTopVideoFundingForMainPage();
+    }
+
+
 }

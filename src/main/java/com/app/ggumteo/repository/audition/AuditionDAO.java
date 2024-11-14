@@ -65,4 +65,16 @@ public class AuditionDAO {
     public Optional<AuditionDTO> findByIdAndPostType(Long id, String postType) {
         return auditionMapper.selectByIdAndPostType(id, postType);
     };
+
+
+
+//    메인페이지
+public List<AuditionDTO> selectLatestTextAuditionsForMainPage() {
+    return auditionMapper.selectLatestTextAuditionsForMainPage();
+}
+
+    public List<AuditionDTO> selectLatestVideoAuditionsForMainPage() {
+        return auditionMapper.selectLatestVideoAuditionsForMainPage();
+    }
+
 }
