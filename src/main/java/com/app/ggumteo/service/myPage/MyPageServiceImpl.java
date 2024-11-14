@@ -319,7 +319,7 @@ public class MyPageServiceImpl implements MyPageService {
 
     //    마이페이지 - 회원 탈퇴
     @Override
-    public void softDeleteMember(MemberVO memberVO) {
-        memberDAO.softDeleteMember(memberVO);
+    public void softDeleteMember(Long id) {
+        memberDAO.softDeleteMember(id);
     }
 }

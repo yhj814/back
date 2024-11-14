@@ -2476,11 +2476,9 @@
                                             <p>정말 탈퇴하시겠습니까?</p>
                                         </div>
                                         <div class="submit-btn-wrapper">
-                                            <form action="/member/video/my-page" method="post">
-                                                <button type="button" id="soft-delete">
-                                                    <span>회원 탈퇴</span>
-                                                </button>
-                                            </form>
+                                            <button type="button" id="soft-delete">
+                                                <span>회원 탈퇴</span>
+                                            </button>
                                         </div>
                                     </form>
                                 </div>
@@ -2493,6 +2491,11 @@
     </body>
     <script th:inline="javascript">
         const memberId = [[${member.id}]];
+
+        document.getElementById("soft-delete").addEventListener("click", (e) => {
+            location.href = `/member/video/my-page/delete?id=${memberId}`;
+            console.log(`/member/video/my-page/delete?id=${memberId}`);
+        });
 
     </script>
     <script src="/js/member/video-main.js"></script>

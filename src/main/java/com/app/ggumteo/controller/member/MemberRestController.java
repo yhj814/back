@@ -67,56 +67,56 @@ public class MemberRestController {
         return "/member/video/my-page";
     }
 
-    @GetMapping("update/{id}")
-    public String updateMemberProfile(@PathVariable("id") Long id, Model model) {
-        Optional<MemberVO> memberVO = myPageService.getMember(id);
-        log.info("memberVO: {}", memberVO);  // member 객체를 로그로 출력해 확인
+//    @GetMapping("update/{id}")
+//    public String updateMemberProfile(@PathVariable("id") Long id, Model model) {
+//        Optional<MemberVO> memberVO = myPageService.getMember(id);
+//        log.info("memberVO: {}", memberVO);  // member 객체를 로그로 출력해 확인
+//
+//        if (memberVO != null) {  // member - null 인지 아닌지 확인
+//            model.addAttribute("member", memberVO);
+//            return "/member/video/my-page";
+//        } else {
+//            // member - null 인 경우 처리 (예: 에러 페이지로 이동??????)
+//            model.addAttribute("error", "회원 정보를 찾을 수 없습니다.");
+//            return "/error/404";
+//        }
+//    }
+//
+//    @PostMapping("/member/video/my-page")
+//    public RedirectView updateMemberProfile(@ModelAttribute MemberProfileDTO memberProfileDTO) {
+//        try {
+//            log.info("수정 요청 - 회원 프로필 정보: {}", memberProfileDTO);
+//
+////            // 기존 데이터를 가져와서 필요한 필드를 설정
+////            WorkDTO currentWork = myPageService.findWorkById(workDTO.getId());
+//
+//            // 서비스에서 작품 업데이트 로직 실행
+//            myPageService.updateMemberProfile(memberProfileDTO.toVO());
+//            return new RedirectView("/text/detail/" + workDTO.getId());
+//        } catch (Exception e) {
+//            log.error("Error updating work: ", e);
+//            return new RedirectView("/text/modify/" + workDTO.getId());
+//        }
+//    }
 
-        if (memberVO != null) {  // member - null 인지 아닌지 확인
-            model.addAttribute("member", memberVO);
-            return "/member/video/my-page";
-        } else {
-            // member - null 인 경우 처리 (예: 에러 페이지로 이동??????)
-            model.addAttribute("error", "회원 정보를 찾을 수 없습니다.");
-            return "/error/404";
-        }
-    }
-
-    @PostMapping("/member/video/my-page")
-    public RedirectView updateMemberProfile(@ModelAttribute MemberProfileDTO memberProfileDTO) {
-        try {
-            log.info("수정 요청 - 회원 프로필 정보: {}", memberProfileDTO);
-
-            // 기존 데이터를 가져와서 필요한 필드를 설정
-            WorkDTO currentWork = myPageService.findWorkById(workDTO.getId());
-
-            // 서비스에서 작품 업데이트 로직 실행
-            myPageService.updateWork(workDTO, deletedFileIds);
-            return new RedirectView("/text/detail/" + workDTO.getId());
-        } catch (Exception e) {
-            log.error("Error updating work: ", e);
-            return new RedirectView("/text/modify/" + workDTO.getId());
-        }
-    }
 
 
-
-    @PostMapping("delete")
-    public RedirectView softDeleteMember(@ModelAttribute MemberDTO memberDTO) {
-        MemberVO memberVO = (MemberVO) session.getAttribute("member");
-        if (memberVO == null) {
-            log.error("세션에 멤버 정보가 없습니다.");
-            throw new SessionNotFoundException("세션에 멤버 정보가 없습니다.");
-        }
-
-        memberDTO.setId(memberVO.getId());
-        memberDTO.setMemberStatus("NO");
-
-        myPageService.softDeleteMember(memberDTO.toVO());
-
-        log.info("memberDTO", memberDTO);
-        return new RedirectView("/main");
-    }
+//    @PostMapping("delete")
+//    public RedirectView softDeleteMember(@ModelAttribute MemberDTO memberDTO) {
+//        MemberVO memberVO = (MemberVO) session.getAttribute("member");
+//        if (memberVO == null) {
+//            log.error("세션에 멤버 정보가 없습니다.");
+//            throw new SessionNotFoundException("세션에 멤버 정보가 없습니다.");
+//        }
+//
+//        memberDTO.setId(memberVO.getId());
+//        memberDTO.setMemberStatus("NO");
+//
+//        myPageService.softDeleteMember(memberDTO.toVO());
+//
+//        log.info("memberDTO", memberDTO);
+//        return new RedirectView("/main");
+//    }
 
 //    @GetMapping("/member/video/my-page")
 //    public String goToMyPageForm(Long id, Model model){
@@ -135,12 +135,18 @@ public class MemberRestController {
 //        model.addAttribute("member", memberVO);
 //    }
 
-//    // 회원 탈퇴
-//    @PostMapping("/member/video/my-page")
-//    public RedirectView softDeleteMember(MemberDTO memberDTO) {
-//        myPageService.softDeleteMember(memberDTO.toVO());
-//        return new RedirectView("/main");
-//    }
+    @GetMapping(value = {"/member/video/my-page/delete"})
+    public void goToReadForm(/*Long id, */Model model, HttpSession session){
+        MemberVO memberVO = (MemberVO) session.getAttribute("member");
+        model.addAttribute("member", memberVO);
+    }
+
+    // 회원 탈퇴
+    @PostMapping("/member/video/my-page/delete")
+    public RedirectView softDeleteMember(Long id) {
+        myPageService.softDeleteMember(id);
+        return new RedirectView("/main");
+    }
 //************************************************************************************************
 
     // 내 영상 작품 게시글 목록

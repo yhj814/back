@@ -26,5 +26,5 @@ public interface MemberMapper {
     public Optional<MemberVO> selectById(Long id);
 
 //   회원 탈퇴
-    public void softDeleteMember(MemberVO memberVO);
+    public void softDeleteMember(Long id);
 }

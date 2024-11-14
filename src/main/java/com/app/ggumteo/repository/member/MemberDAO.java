@@ -37,7 +37,7 @@ public class MemberDAO {
     };
 
     //   회원 탈퇴
-    public void softDeleteMember(MemberVO memberVO) {
-        memberMapper.softDeleteMember(memberVO);
+    public void softDeleteMember(Long id) {
+        memberMapper.softDeleteMember(id);
     };
 }

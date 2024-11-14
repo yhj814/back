@@ -133,7 +133,7 @@ public interface MyPageService {
     public void updateMemberProfile(MemberProfileVO memberProfileVO);
 
     // 마이페이지 - 회원 탈퇴
-    public void softDeleteMember(MemberVO memberVO);
+    public void softDeleteMember(Long id);
 }
 
 
