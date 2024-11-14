@@ -2,6 +2,7 @@ package com.app.ggumteo.controller.audition;
 
 import com.app.ggumteo.constant.AlarmSubType;
 import com.app.ggumteo.constant.PostType;
+import com.app.ggumteo.constant.RedirectPaths;
 import com.app.ggumteo.domain.audition.AuditionApplicationDTO;
 import com.app.ggumteo.domain.audition.AuditionDTO;
 import com.app.ggumteo.domain.file.AuditionApplicationFileDTO;
@@ -42,7 +43,6 @@ public class TextAuditionController {
     private final HttpSession session;
     private final PostFileService postFileService;
     private final AuditionApplicationFileService auditionApplicationFileService;
-    private final AlarmService alarmService;
 
     @ModelAttribute
     public void setMemberInfo(HttpSession session, Model model) {
@@ -295,29 +295,12 @@ public class TextAuditionController {
         auditionApplicationDTO.setMemberProfileId(memberProfile.getId());
         auditionApplicationDTO.setFileNames(fileNames);
 
-        // 신청 데이터 저장
-        auditionApplicationService.write(auditionApplicationDTO);
-
-        // 오디션 정보 조회 (호스트 정보 포함)
-        AuditionDTO audition = auditionService.findAuditionById(id);
-        if (audition == null) {
-            log.error("해당 오디션 정보를 찾을 수 없습니다. ID: {}", id);
-            model.addAttribute("error", "해당 오디션 정보를 찾을 수 없습니다.");
-            return "/audition/text/error";
-        }
-
-        // 호스트의 memberProfileId 가져오기
-        Long hostMemberProfileId = audition.getMemberProfileId();
-        Long auditionApplicationId = auditionApplicationDTO.getId(); // 저장 후 ID가 설정되었다고 가정
-
-        // 알림 메시지 설정
-        String message = "새로운 오디션 신청이 들어왔습니다.";
-
-        // 알람 생성 - subType을 "TEXT"로 설정
-        alarmService.createApplyAuditionAlarm(hostMemberProfileId, auditionApplicationId, message, AlarmSubType.TEXT);
+        // 신청 데이터 저장 및 알람 생성
+        // subType을 TEXT로 설정하여 서비스 메서드 호출
+        auditionApplicationService.write(auditionApplicationDTO, AlarmSubType.TEXT);
 
         log.info("Audition application processed and alarm created.");
 
-        return "redirect:/audition/text/detail/" + id; // 신청 성공 후 상세 페이지로 이동
+        return RedirectPaths.AUDITION_DETAIL + id; // 상세 페이지로 포워드
     }
 }

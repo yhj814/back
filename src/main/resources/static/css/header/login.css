@@ -256,19 +256,25 @@ header.header .header-nav {
     cursor: pointer;
 }
 
+.noti-item-write {
+    font-weight: 700;
+    color: #343434;
+    cursor: pointer;
+}
+
 .icon-box .noti-item {
     margin-bottom: 15px;
 }
 
-.dot-vedio {
+.dot-video {
     position: absolute;
-    top: 40px;
+    top: 39px;
     left: 36px;
 }
 
 .dot-writing {
     position: absolute;
-    top: 71px;
+    top: 70px;
     left: 23px;
 }
 

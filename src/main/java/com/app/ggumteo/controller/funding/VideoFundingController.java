@@ -22,6 +22,7 @@ import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.view.RedirectView;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -77,10 +78,7 @@ public class VideoFundingController {
 
 
     @PostMapping("write")
-    @ResponseBody
-//    json으로 데이터를 반환하기위해 responsebody 씀
-    // 일반 컨트롤러는 html 페이지 반환
-    public FundingDTO write(
+    public RedirectView write(
             @ModelAttribute FundingDTO fundingDTO,
             @RequestParam(value = "thumbnailFileName", required = false) String thumbnailFileName,
             @RequestParam(value = "fileNames", required = false) List<String> fileNames) {
@@ -107,9 +105,8 @@ public class VideoFundingController {
         fundingService.write(fundingDTO);
 
         log.info("펀딩 작성 완료: {}", fundingDTO);
-        return fundingDTO;
+        return new RedirectView("/video/funding/list");
     }
-
 
 
 
@@ -120,7 +117,7 @@ public class VideoFundingController {
             Model model) {
 
 
-        search.setPostType(PostType.FUNDINGTEXT.name());
+        search.setPostType(PostType.FUNDINGVIDEO.name());
         log.info("Received Search Parameters: {}", search);
         log.info("Received page: {}", page);
 
@@ -143,7 +140,7 @@ public class VideoFundingController {
         model.addAttribute("pagination", pagination);
         model.addAttribute("search", search);
 
-        return "text/funding/funding-list";
+        return "video/funding/funding-list";
     }
 
     @GetMapping("display")
@@ -184,11 +181,11 @@ public class VideoFundingController {
             model.addAttribute("postFiles", postFiles);
             model.addAttribute("relatedFundings", relatedFundings);
 
-            return "text/funding/funding-detail";  // 상세 페이지 뷰로 이동
+            return "video/funding/funding-detail";  // 상세 페이지 뷰로 이동
         } catch (Exception e) {
             log.error("펀딩 상세 조회 중 오류 발생", e);
             model.addAttribute("error", "펀딩 상세 조회 중 오류가 발생했습니다.");
-            return "text/funding/error";
+            return "video/funding/error";
         }
     }
 
@@ -213,17 +210,17 @@ public class VideoFundingController {
             model.addAttribute("funding", funding);
             model.addAttribute("existingFiles", existingFiles);
 
-            return "text/funding/funding-modify";  // 수정 페이지 뷰로 이동
+            return "video/funding/funding-modify";  // 수정 페이지 뷰로 이동
         } catch (Exception e) {
             log.error("펀딩 수정 폼 로드 중 오류 발생", e);
             model.addAttribute("error", "펀딩 수정 폼을 로드하는 중 오류가 발생했습니다.");
-            return "text/funding/error";
+            return "video/funding/error";
         }
     }
 
     // 펀딩 수정 요청 처리
     @PostMapping("modify")
-    public String updateFunding(
+    public RedirectView updateFunding(
             @ModelAttribute FundingDTO fundingDTO,
             @RequestParam(value = "fileNames", required = false) List<String> fileNames,
             @RequestParam(value = "deletedFileIds", required = false) List<Long> deletedFileIds,
@@ -235,16 +232,17 @@ public class VideoFundingController {
             log.info("삭제할 펀딩 상품 IDs: {}", fundingProductIds); // 콤마로 구분된 문자열
             log.info("새로운 썸네일 파일명: {}", thumbnailFileName);
             log.info("펀딩 상품 목록: {}", fundingDTO.getFundingProducts());
+            log.info("Modify form submitted for Funding ID: {}", fundingDTO.getId());
 
             // 세션에서 로그인 사용자 정보 가져오기
             MemberVO member = (MemberVO) session.getAttribute("member");
             if (member == null) {
                 log.error("세션에 멤버 정보가 없습니다.");
-                return "redirect:/main";  // 로그인 페이지로 리다이렉트
+                throw new SessionNotFoundException("펀딩을 수정하려면 먼저 로그인하세요.");
             }
 
             // 펀딩 타입 설정
-            fundingDTO.setPostType(PostType.FUNDINGTEXT.name());
+            fundingDTO.setPostType(PostType.FUNDINGVIDEO.name());
 
             // 파일명 리스트를 DTO에 설정
             if (fileNames != null && !fileNames.isEmpty()) {
@@ -268,10 +266,12 @@ public class VideoFundingController {
             fundingService.updateFunding(fundingDTO, deletedFileIds);
 
             log.info("펀딩 수정 완료: 펀딩 ID {}", fundingDTO.getId());
-            return "redirect:/text/funding/detail/" + fundingDTO.getId();
+
+
+            return new RedirectView("/video/funding/detail/" + fundingDTO.getId());
         } catch (Exception e) {
             log.error("펀딩 수정 중 오류 발생", e);
-            return "redirect:/text/funding/modify/" + fundingDTO.getId();
+            return new RedirectView("/video/funding/error");
         }
     }
 

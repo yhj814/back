@@ -29,4 +29,6 @@ public interface AlarmMapper {
             @Param("alarmType") String alarmType,
             @Param("dataId") Long dataId
     );
+
+    int countUnreadAlarmsBySubtype(@Param("memberProfileId") Long memberProfileId, @Param("subType") String subType);
 }

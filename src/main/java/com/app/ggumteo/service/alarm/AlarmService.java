@@ -22,4 +22,6 @@ public interface AlarmService {
     public List<AlarmDTO> getUnreadAlarmsByMemberId(Long memberProfileId);
 
     public boolean markAlarmAsRead(Long id, Long memberProfileId, String alarmType, Long dataId);
+
+    int countUnreadAlarmsBySubtype(Long memberProfileId, String subType);
 }
