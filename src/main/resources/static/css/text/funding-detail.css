@@ -495,3 +495,59 @@ textarea:focus {
     font-weight: 400;
     margin-bottom: 10px;
 }
+
+
+.main-header {
+    height: 48px;
+    padding: 0;
+    border-bottom: 1px solid #eee;
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+.main-header .container {
+    display: flex;
+    padding-left: 2px;
+    gap: 50px;
+}
+.container {
+    width: 1080px;
+    margin: 0 auto;
+}
+.sub-navigation {
+    position: relative;
+    text-decoration: none;
+}
+a {
+    text-decoration: none;
+    color: #212121;
+}
+.sub-navigation div {
+    position: relative;
+    display: inline-block;
+}
+.sub-navigation div {
+    padding: 12px 0;
+    height: 100%;
+    display: inline-block;
+    font-size: 17px;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.71;
+    letter-spacing: normal;
+    color: #424242;
+    font-weight: 600;
+}
+.sub-navigation div::after {
+    content: "";
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: 0;
+    left: 0;
+    background-color: gray;
+    transition: width 0.3s ease;
+}
+.sub-navigation div:hover::after {
+    width: 100%;
+}
