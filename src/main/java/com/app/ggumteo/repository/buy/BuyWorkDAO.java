@@ -18,9 +18,11 @@ public class BuyWorkDAO {
 
     private final BuyWorkMapper buyWorkMapper;
 
-    public void savePurchase(BuyWorkVO buyWorkVO) {
+    public BuyWorkVO savePurchase(BuyWorkVO buyWorkVO) {
         try {
             buyWorkMapper.insertPurchase(buyWorkVO);
+            log.info("BuyWork 저장 완료: {}", buyWorkVO);
+            return buyWorkVO; // id가 설정된 상태
         } catch (Exception e) {
             log.error("Insert 작업 중 오류 발생: ", e);
             throw e;

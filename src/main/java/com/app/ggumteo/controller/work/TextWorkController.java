@@ -256,40 +256,61 @@ public class TextWorkController {
     @PostMapping("/order")
     public ResponseEntity<String> completePayment(@RequestBody Map<String, Object> paymentData) {
         try {
+            // 클라이언트로부터 전달받은 결제 데이터에서 작품 ID를 추출
             Long workId = Long.parseLong(paymentData.get("workId").toString());
-            Long memberProfileId = Long.parseLong(paymentData.get("memberProfileId").toString());
 
-            // 세션에서 MemberProfileDTO를 가져옵니다.
-            MemberProfileDTO memberProfile = (MemberProfileDTO) session.getAttribute("memberProfile");
-            if (memberProfile == null) {
+            // 세션에서 현재 로그인한 회원의 프로필 정보를 가져옴 (구매자 정보)
+            MemberProfileDTO buyerProfile = (MemberProfileDTO) session.getAttribute("memberProfile");
+            if (buyerProfile == null) {
+                log.error("세션에 멤버 프로필 정보가 없습니다.");
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("세션에 멤버 프로필 정보가 없습니다.");
             }
+            Long buyerMemberProfileId = buyerProfile.getId();
 
+            // 작품 정보 조회
+            WorkDTO work = workService.findWorkById(workId);
+            if (work == null) {
+                log.error("해당 작품을 찾을 수 없습니다. 작품 ID: {}", workId);
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("해당 작품을 찾을 수 없습니다.");
+            }
+
+            // 작품 작성자의 memberProfileId 가져오기
+            Long authorMemberProfileId = work.getMemberProfileId();
+            if (authorMemberProfileId == null) {
+                log.error("작품의 작성자 정보를 찾을 수 없습니다. 작품 ID: {}", workId);
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("작품의 작성자 정보를 찾을 수 없습니다.");
+            }
+
+            // BuyWorkDTO 객체 생성 및 데이터 설정
             BuyWorkDTO buyWorkDTO = new BuyWorkDTO();
             buyWorkDTO.setWorkId(workId);
-            buyWorkDTO.setMemberProfileId(memberProfileId);
-            buyWorkDTO.setProfileName(memberProfile.getProfileName());
-            buyWorkDTO.setProfilePhone(memberProfile.getProfilePhone());
-            buyWorkDTO.setProfileEmail(memberProfile.getProfileEmail());
-            buyWorkDTO.setWorkSendStatus("0");
+            buyWorkDTO.setMemberProfileId(buyerMemberProfileId);
+            buyWorkDTO.setProfileName(buyerProfile.getProfileName());
+            buyWorkDTO.setProfilePhone(buyerProfile.getProfilePhone());
+            buyWorkDTO.setProfileEmail(buyerProfile.getProfileEmail());
+            buyWorkDTO.setWorkSendStatus("0"); // 초기 상태 설정 (예: '미발송')
 
-            BuyWorkVO savedBuyWork = buyWorkService.savePurchase(buyWorkDTO.toVO()); // 저장 후 BuyWorkVO 반환
-            Long buyWorkId = savedBuyWork.getId(); // 저장된 BuyWorkVO의 ID 가져오기
+            // BuyWorkVO 객체로 변환
+            BuyWorkVO buyWorkVO = buyWorkDTO.toVO();
+
+            // 구매 정보를 데이터베이스에 저장하고 저장된 BuyWorkVO 객체 반환
+            BuyWorkVO savedBuyWork = buyWorkService.savePurchase(buyWorkVO);
+            Long buyWorkId = savedBuyWork.getId(); // 저장된 구매 ID 추출
 
             // 알림 메시지 설정
             String message = "새로운 작품이 구매되었습니다.";
 
-            // 알람 생성
-            alarmService.createWorkAlarm(memberProfileId, buyWorkId, message, AlarmSubType.TEXT);
+            // AlarmService를 통해 알림 생성 (작품 작성자의 memberProfileId 사용)
+            alarmService.createWorkAlarm(authorMemberProfileId, buyWorkId, message, AlarmSubType.TEXT);
 
-            log.info("Audition application processed and alarm created.");
-
+            log.info("작품 구매가 처리되었으며 알림이 생성되었습니다.");
             return ResponseEntity.ok("결제 정보가 성공적으로 저장되었습니다.");
         } catch (Exception e) {
             log.error("결제 저장 중 오류 발생: ", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("저장 중 오류가 발생했습니다.");
         }
     }
+
 
 }
 
