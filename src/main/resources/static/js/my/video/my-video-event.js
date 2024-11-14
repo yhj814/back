@@ -332,5 +332,3 @@ myInquiryHistoryListLayout.addEventListener('click', async (e) => {
         }
     }
 });
-
-myPageService.getMemberProfile(memberId, showMyProfile);

@@ -134,6 +134,9 @@ public interface MyPageService {
 
     // 마이페이지 - 내 정보 수정
     public void updateMemberProfile(MemberProfileVO memberProfileVO);
+
+    // 마이페이지 - 회원 탈퇴
+    public void softDeleteMember(MemberVO memberVO);
 }
 
 

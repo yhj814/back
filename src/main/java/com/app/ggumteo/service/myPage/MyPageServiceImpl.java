@@ -321,4 +321,10 @@ public class MyPageServiceImpl implements MyPageService {
     public void updateMemberProfile(MemberProfileVO memberProfileVO) {
         memberProfileDAO.setMemberProfile(memberProfileVO);
     }
+
+    //    마이페이지 - 회원 탈퇴
+    @Override
+    public void softDeleteMember(MemberVO memberVO) {
+        memberDAO.softDeleteMember(memberVO);
+    }
 }

@@ -8,6 +8,7 @@ import com.app.ggumteo.domain.audition.MyAuditionListDTO;
 import com.app.ggumteo.domain.buy.*;
 import com.app.ggumteo.domain.funding.MyFundingListDTO;
 import com.app.ggumteo.domain.inquiry.MyInquiryHistoryListDTO;
+import com.app.ggumteo.domain.member.MemberDTO;
 import com.app.ggumteo.domain.member.MemberProfileVO;
 import com.app.ggumteo.domain.member.MemberVO;
 import com.app.ggumteo.domain.post.PostVO;
@@ -17,12 +18,14 @@ import com.app.ggumteo.pagination.MySettingTablePagination;
 import com.app.ggumteo.pagination.MyWorkAndFundingPagination;
 import com.app.ggumteo.service.file.PostFileService;
 import com.app.ggumteo.service.myPage.MyPageService;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.view.RedirectView;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -36,12 +39,26 @@ public class MemberRestController {
     private final MyPageService myPageService;
 
     @GetMapping("/member/video/my-page")
-    public void read(Long id, Model model){
+    public void goToMyPageForm(Long id, Model model){
         MemberVO memberVO = myPageService.getMember(id).orElseThrow();
         model.addAttribute("member", memberVO);
     }
     //    http://localhost:10000/member/video/my-page?id=15
 
+
+//    // 회원 탈퇴
+//    @GetMapping("/member/video/my-page")
+//    public void softDeleteMember(MemberDTO memberDTO, Model model) {
+//        myPageService.softDeleteMember(memberDTO.toVO());
+//        model.addAttribute("member", memberVO);
+//    }
+
+    // 회원 탈퇴
+    @PostMapping("/member/video/my-page")
+    public RedirectView softDeleteMember(MemberDTO memberDTO) {
+        myPageService.softDeleteMember(memberDTO.toVO());
+        return new RedirectView("/main");
+    }
 //************************************************************************************************
 
     // 내 영상 작품 게시글 목록
@@ -196,21 +213,8 @@ public class MemberRestController {
     }
 
 //************************************************************************************************
-    // 내 정보 조회
-    // SELECT
-    @ResponseBody
-    @GetMapping("/members/{memberId}/profile")
-    public Optional<MemberProfileVO> getMemberProfile(@PathVariable("memberId") Long memberId) {
-        return myPageService.getMemberProfile(memberId);
-    }
 
-//    // 내 정보 수정
-//    // UPDATE
-//    @ResponseBody
-//    @GetMapping("/members/profile/update")
-//    public void updateMemberProfile(@RequestBody MemberProfileDTO memberProfileDTO) {
-//        myPageService.updateMemberProfile(memberProfileDTO.toVO());
-//    }
+
 
 //************************************************************************************************
 

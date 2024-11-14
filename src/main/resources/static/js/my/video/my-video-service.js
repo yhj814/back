@@ -136,27 +136,6 @@ const myPageService = (() => {
         }
     }
 
-//************* 내 정보 ***************
-
-    const getMemberProfile = async (memberId, callback) => {
-        const response = await fetch(`/members/${memberId}/profile`);
-        const memberProfile = await response.json();
-
-        if (callback) {
-            callback(memberProfile);
-        }
-    }
-
-    // const updateMemberProfile = async (memberProfile) => {
-    //     await fetch(`/members/profile/update`, {
-    //         method: "put",
-    //         body: JSON.stringify(memberProfile),
-    //         headers: {
-    //             "Content-Type": "application/json; charset=utf-8"
-    //         }
-    //     });
-    // }
-
 //************* 문의 ***************
 
     const getMyInquiryHistoryList = async (page, memberId, callback) => {
@@ -178,7 +157,6 @@ const myPageService = (() => {
         }
     }
 
-
     return {
         getMyVideoWorkList: getMyVideoWorkList,
         getMyVideoWorkBuyerList: getMyVideoWorkBuyerList,
@@ -194,7 +172,6 @@ const myPageService = (() => {
         updateConfirmStatus: updateConfirmStatus,
         getMyVideoApplicationAuditionList: getMyVideoApplicationAuditionList,
         getMyInquiryHistoryList: getMyInquiryHistoryList,
-        getAdminAnswerByInquiryId: getAdminAnswerByInquiryId,
-        getMemberProfile: getMemberProfile
+        getAdminAnswerByInquiryId: getAdminAnswerByInquiryId
     }
 })()
