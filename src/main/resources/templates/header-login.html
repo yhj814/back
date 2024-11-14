@@ -12,14 +12,14 @@
     <div class="header-nav sticky">
         <div class="container">
             <div class="header-nav-wrapper">
-                <a class="category-navigation-logo" href="/">
+                <a class="category-navigation-logo" th:href="@{/main}">
                     <img class="test-logo" src="/images/header/test-logo.png" alt="Logo" />
                 </a>
                 <div class="category-navigation-wrapper">
-                    <a class="category-navigation" href="/videos">
+                    <a class="category-navigation" th:href="@{/video/main}">
                         <div class="category category-color">영상</div>
                     </a>
-                    <a class="category-navigation" href="/texts">
+                    <a class="category-navigation" th:href="@{/text/main}">
                         <div class="category category-color">글</div>
                     </a>
                     <a class="category-navigation" href="/notices">
@@ -29,7 +29,6 @@
                 <div class="icon-box">
                     <!-- 알림박스 (notification.js 있음) -->
                     <div class="noti-box">
-                        <div class="divider"></div>
                         <!-- 알림 없을 시 -->
                         <div th:if="${#lists.isEmpty(unreadAlarms)}" id="noti-bell-container-1" class="noti-bell-container">
                             <img class="icon-noti-bell" src="/images/header/icon-noti-bell.png" alt="No Notifications" />
@@ -89,11 +88,12 @@
                                 </a>
                             </div>
                         </div>
+                        <div class="divider"></div>
                     </div>
                     <!-- 프로필 이미지 -->
                     <div class="profile-image">
-                        <!--/*@thymesVar id="member" type=""*/-->
-<!--                        <img class="authenticated-member-image" th:src="@{${member.profileImgUrl}}" alt="Profile Image">-->
+<!--                        /*@thymesVar id="member" type=""*/-->
+                        <img class="authenticated-member-image" th:src="${member.profileImgUrl}" alt="Profile Image">
                     </div>
                     <!-- 로그아웃 버튼 -->
                     <div class="logout-box">
