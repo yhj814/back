@@ -240,4 +240,54 @@
 
 
 
+    <!--메인페이지-->
+    <select id="selectTopTextFundingForMainPage" resultType="fundingDTO">
+        select
+            f.id,
+            p.post_title,
+            p.post_content,
+            p.created_date,
+            mp.profile_nickname as profileName,
+            m.profile_img_url as profileImgUrl,
+            fl.file_name as thumbnailFileName,
+            fl.file_path as thumbnailFilePath,
+            if(f.target_price > 0, round((f.converge_price / f.target_price) * 100, 1), 0) as fundingPercentage
+        from
+            tbl_funding f
+                join tbl_post p on f.id = p.id
+                join tbl_member_profile mp on p.member_profile_id = mp.id
+                join tbl_member m on mp.member_id = m.id
+                left join tbl_file fl on f.thumbnail_file_id = fl.id
+        where
+            p.post_type = 'FUNDINGTEXT'
+        order by
+            f.converge_price desc
+            limit 3
+    </select>
+
+    <select id="selectTopVideoFundingForMainPage" resultType="fundingDTO">
+        select
+            f.id,
+            p.post_title,
+            p.post_content,
+            p.created_date,
+            mp.profile_nickname as profileName,
+            m.profile_img_url as profileImgUrl,
+            fl.file_name as thumbnailFileName,
+            fl.file_path as thumbnailFilePath,
+            if(f.target_price > 0, round((f.converge_price / f.target_price) * 100, 1), 0) as fundingPercentage
+        from
+            tbl_funding f
+                join tbl_post p on f.id = p.id
+                join tbl_member_profile mp on p.member_profile_id = mp.id
+                join tbl_member m on mp.member_id = m.id
+                left join tbl_file fl on f.thumbnail_file_id = fl.id
+        where
+            p.post_type = 'FUNDINGVIDEO'
+        order by
+            f.converge_price desc
+            limit 3
+    </select>
+
+
 </mapper>

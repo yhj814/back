@@ -58,9 +58,9 @@ public class PostFileServiceImpl implements PostFileService {
                 String thumbnailFileName = "t_" + uniqueFileName;
                 File thumbnailFile = new File(rootPath + thumbnailFileName);
 
-                // 썸네일 이미지 생성 (예: 가로 100px, 세로 비율에 맞게)
+                // 썸네일 이미지 생성
                 Thumbnails.of(saveLocation)
-                        .size(100, 100)
+                        .size(300, 300)
                         .toFile(thumbnailFile);
             }
         } catch (IOException e) {

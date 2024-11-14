@@ -118,6 +118,16 @@ public class FundingDAO {
         fundingMapper.deleteFundingProductById(id);
     }
 
+
+//    메인페이지
+public List<FundingDTO> selectTopTextFundingForMainPage() {
+    return fundingMapper.selectTopTextFundingForMainPage();
+}
+
+    public List<FundingDTO> selectTopVideoFundingForMainPage() {
+        return fundingMapper.selectTopVideoFundingForMainPage();
+    }
+
 }
 
 

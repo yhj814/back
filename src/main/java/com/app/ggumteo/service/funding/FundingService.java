@@ -40,4 +40,10 @@ public interface FundingService {
 
     FundingDTO findFundingId(Long id);
 
+
+    List<FundingDTO> getTopTextFundingForMainPage();
+
+
+    List<FundingDTO> getTopVideoFundingForMainPage();
+
 }

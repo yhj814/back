@@ -33,5 +33,9 @@ public interface WorkService {
     List<WorkDTO> getThreeWorksByAuthor(Long memberProfileId, Long workId, String postType);
 
 
+    WorkDTO getMostReadTextWorkForMainPage();
+
+
+    WorkDTO getMostReadVideoWorkForMainPage();
 
 }

@@ -284,5 +284,15 @@ public class WorkServiceImpl implements WorkService {
         return LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd"));
     }
 
+    @Override
+    public WorkDTO getMostReadTextWorkForMainPage() {
+        return workDAO.selectMostReadTextWorkForMainPage();
+    }
+
+    @Override
+    public WorkDTO getMostReadVideoWorkForMainPage() {
+        return workDAO.selectMostReadVideoWorkForMainPage();
+    }
+
 
 }

@@ -190,4 +190,15 @@ private String getPath() {
         return LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd"));
     }
 
+
+    @Override
+    public List<AuditionDTO> getLatestTextAuditionsForMainPage() {
+        return auditionDAO.selectLatestTextAuditionsForMainPage();
+    }
+
+    @Override
+    public List<AuditionDTO> getLatestVideoAuditionsForMainPage() {
+        return auditionDAO.selectLatestVideoAuditionsForMainPage();
+    }
+
 }
