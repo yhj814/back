@@ -13,7 +13,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class MemberDAO {
     private final MemberMapper memberMapper;
-    private final AuditionMapper auditionMapper;
 
     public void save(MemberVO memberVO) {memberMapper.insert(memberVO);}
 
@@ -32,8 +31,13 @@ public class MemberDAO {
 
 
 
-    //   회원 정보 조회: 마이페이지 목록 조회할 때 member id 조회가 필요하여 작성함.
+    //   회원 정보 조회: 마이페이지에서 조회
     public Optional<MemberVO> findById(Long id) {
         return memberMapper.selectById(id);
+    };
+
+    //   회원 탈퇴
+    public void softDeleteMember(Long id) {
+        memberMapper.softDeleteMember(id);
     };
 }

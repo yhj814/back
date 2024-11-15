@@ -56,7 +56,6 @@ public class TextAuditionController {
         if (isLoggedIn) {
             model.addAttribute("member", member);
             model.addAttribute("memberProfile", memberProfile);
-            log.info("로그인 상태 - 사용자 ID: {}, 프로필 ID: {}", member.getId(), memberProfile != null ? memberProfile.getId() : "null");
         } else {
             log.info("비로그인 상태입니다.");
         }
@@ -91,7 +90,6 @@ public class TextAuditionController {
 
     @GetMapping("write")
     public String goToWritePage() {
-        log.info("작성 페이지로 이동");
         return "/audition/text/write";
     }
 
@@ -104,7 +102,6 @@ public class TextAuditionController {
             MemberProfileDTO memberProfile = (MemberProfileDTO) session.getAttribute("memberProfile");
 
             if (member == null || memberProfile == null) {
-                log.error("세션에 사용자 정보가 없습니다.");
                 model.addAttribute("error", "세션에 사용자 정보가 없습니다.");
                 return new RedirectView("/error");
             }
@@ -113,8 +110,6 @@ public class TextAuditionController {
             auditionDTO.setAuditionStatus("YES");
             auditionDTO.setMemberProfileId(memberProfile.getId());
             auditionDTO.setMemberId(member.getId());
-
-            log.info("write 메서드 - 사용자 ID: {}, 프로필 ID: {}", member.getId(), auditionDTO.getMemberProfileId());
 
             auditionDTO.setFileNames(fileNames);
 
@@ -134,12 +129,10 @@ public class TextAuditionController {
         List<PostFileDTO> existingFiles = postFileService.findFilesByPostId(id);
 
         if (audition != null) {
-            log.info("Fetched audition - ID: {}", audition.getId());
             model.addAttribute("audition", audition);
             model.addAttribute("existingFiles", existingFiles);
             return "/audition/text/modify";
         } else {
-            log.error("해당 게시글을 찾을 수 없습니다. ID: {}", id);
             model.addAttribute("error", "해당 게시글을 찾을 수 없습니다.");
             return "/audition/text/error";
         }
@@ -153,10 +146,6 @@ public class TextAuditionController {
             @RequestParam(value = "deletedFileIds", required = false) List<Long> deletedFileIds,
             Model model) {
         try {
-            log.info("수정 요청 - AuditionDTO 정보: {}", auditionDTO);
-            log.info("수정 요청 - 새 파일 목록: {}", fileNames);
-            log.info("수정 요청 - 삭제할 파일 ID 목록: {}", deletedFileIds);
-
             AuditionDTO currentAudition = auditionService.findAuditionById(auditionDTO.getId());
             auditionDTO.setPostType(PostType.AUDITIONTEXT.name());
             auditionDTO.setAuditionStatus("모집중");
@@ -171,13 +160,10 @@ public class TextAuditionController {
 
             auditionService.updateAudition(auditionDTO, deletedFileIds);
 
-            log.info("업데이트 성공 - AuditionDTO ID: {}", auditionDTO.getId());
-
             model.addAttribute("audition", auditionDTO);
 
             return new RedirectView("/audition/text/detail/" + auditionDTO.getId());
         } catch (Exception e) {
-            log.error("오류 발생: {}", e.getMessage(), e);
             model.addAttribute("error", "업데이트 중 오류가 발생했습니다: " + e.getMessage());
             return new RedirectView("/audition/text/error");
         }
@@ -190,8 +176,6 @@ public class TextAuditionController {
 
         MemberVO member = (MemberVO) session.getAttribute("member");
         MemberProfileDTO memberProfile = (MemberProfileDTO) session.getAttribute("memberProfile");
-
-        log.info("list 메서드 - 사용자 ID: {}, 프로필 ID: {}", member != null ? member.getId() : "null", memberProfile != null ? memberProfile.getId() : "null");
 
         AuditionPagination pagination = new AuditionPagination();
         pagination.setPage(page);
@@ -227,8 +211,6 @@ public class TextAuditionController {
         MemberVO member = (MemberVO) session.getAttribute("member");
         MemberProfileDTO memberProfile = (MemberProfileDTO) session.getAttribute("memberProfile");
 
-        log.info("detail 메서드 - 사용자 ID: {}, 프로필 ID: {}", member != null ? member.getId() : "null", memberProfile != null ? memberProfile.getId() : "null");
-
         AuditionDTO audition = auditionService.findAuditionById(id);
         List<PostFileDTO> postFiles = auditionService.findAllPostFiles(id);
 
@@ -243,11 +225,6 @@ public class TextAuditionController {
         // 세션에서 멤버 정보 가져오기
         MemberVO member = (MemberVO) session.getAttribute("member");
         MemberProfileDTO memberProfile = (MemberProfileDTO) session.getAttribute("memberProfile");
-
-        log.info("application 메서드 - 사용자 ID: {}, 프로필 ID: {}, 프로필 이름: {}",
-                member != null ? member.getId() : "null",
-                memberProfile != null ? memberProfile.getId() : "null",
-                memberProfile != null ? memberProfile.getProfileName() : "null");
 
         if (member == null || memberProfile == null) {
             model.addAttribute("error", "로그인이 필요합니다.");
@@ -265,8 +242,6 @@ public class TextAuditionController {
         model.addAttribute("memberProfile", memberProfile);
         model.addAttribute("audition", audition);
         model.addAttribute("id", id);
-
-        log.info("오디션 ID: {}", id);
 
         return "audition/text/application"; // 신청서 작성 페이지로 이동
     }
@@ -286,10 +261,6 @@ public class TextAuditionController {
             return new RedirectView("/login");
         }
 
-        log.info("submitApplication 메서드 - 사용자 ID: {}, 프로필 ID: {}", member.getId(), memberProfile.getId());
-        log.info("받아온 Audition ID: {}", id);
-        log.info("받아온 fileNames: {}", fileNames);
-
         // 신청 데이터 설정
         auditionApplicationDTO.setAuditionId(id);
         auditionApplicationDTO.setMemberProfileId(memberProfile.getId());
@@ -297,8 +268,6 @@ public class TextAuditionController {
 
         // 신청 데이터 저장 및 알람 생성
         auditionApplicationService.write(auditionApplicationDTO, AlarmSubType.TEXT);
-
-        log.info("Audition application processed and alarm created.");
 
         return new RedirectView("/audition/text/detail/" + id);
     }

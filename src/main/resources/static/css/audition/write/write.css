@@ -223,6 +223,11 @@ footer.footer .footer-contact .footer-cs-tel,
     font-size: 0.688rem;
 }
 
+.label-input-partner.label-effect-placeholder > label {
+    transform: translateY(-20px);
+    font-size: 0.688rem;
+}
+
 .label-input-partner label {
     z-index: 16;
 }

@@ -1,6 +1,7 @@
 package com.app.ggumteo.mapper.member;
 
 import com.app.ggumteo.domain.member.MemberProfileDTO;
+import com.app.ggumteo.domain.member.MemberProfileVO;
 import com.app.ggumteo.domain.member.MemberVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -21,9 +22,9 @@ public interface MemberMapper {
     public Optional<MemberProfileDTO> getMemberProfileByMemberId(Long memberId);
 
 
-//   회원 정보 조회: 마이페이지 목록 조회할 때 member id 조회가 필요하여 작성함.
+//   회원 정보 조회: 마이페이지에서 조회
     public Optional<MemberVO> selectById(Long id);
 
-
-
+//   회원 탈퇴
+    public void softDeleteMember(Long id);
 }

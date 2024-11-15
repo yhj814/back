@@ -16,6 +16,14 @@ public class MemberDTO implements Serializable {
     private String profileImgUrl;
     private String createdDate;
     private String updatedDate;
+    private String profileName;
+    private String profileNickName;
+    private String profileGender;
+    private int profileAge;
+    private String profileEmail;
+    private String profilePhone;
+    private String profileEtc;
+
 
     public MemberVO toVO(){
         return new MemberVO(id, memberEmail,memberStatus, profileImgUrl, createdDate, updatedDate);

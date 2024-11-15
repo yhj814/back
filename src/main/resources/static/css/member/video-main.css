@@ -1721,11 +1721,11 @@ p {
     font-size: 19px;
     line-height: 28px;
 }
-.submit-btn {
+.submit-btn-wrapper {
     display: flex;
     justify-content: right;
 }
-.submit-btn > button {
+.submit-btn-wrapper > button {
     width: 100%;
     color: rgba(55, 56, 60, 0.16);
     background-color: #F4F4F5;
@@ -1735,11 +1735,11 @@ p {
     border-radius: 10px;
     cursor: pointer;
 }
-.submit-btn > button > span {
+.submit-btn-wrapper > button > span {
     font-weight: 600;
     font-size: 16px;
 }
-.submit-btn > button:hover {
+.submit-btn-wrapper > button:hover {
     background-color: #dcdcdc;
     color: rgb(53, 53, 53);
 }

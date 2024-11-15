@@ -30,3 +30,13 @@ select mp.profile_name, mp.profile_nickname, mp.profile_gender, mp.profile_age, 
 from tbl_member_profile mp
          join tbl_member m on mp.member_id = m.id
                               and m.member_status = 'YES' and m.id = 1;
+
+# <update id="softDelete">
+# UPDATE TBL_MEMBER
+# SET STATUS = 0
+# WHERE ID = #{id}
+#           </update>
+
+update tbl_member
+set member_status = 'NO'
+where id = 2;
