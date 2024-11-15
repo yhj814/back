@@ -308,18 +308,18 @@ li:first-child > .page-link {
     background-position: center;
 }
 .page-link {
-    position: relative;
-    display: block;
-    font-size: 14px;
-    line-height: 30px;
-    min-width: 32px;
-    text-align: center;
-    padding: 0 8px;
-    font-weight: 500;
-    color: #616161;
-    text-decoration: none;
-    border: 1px solid transparent;
-}
+     position: relative;
+     display: block;
+     font-size: 14px;
+     line-height: 30px;
+     min-width: 32px;
+     text-align: center;
+     padding: 0 8px;
+     font-weight: 500;
+     color: #616161;
+     text-decoration: none;
+     border: 1px solid #2099bb;
+ }
 .theme-ggumteo li {
     height: 100%;
     margin-left: 4px;
