@@ -9,3 +9,6 @@ create table tbl_admin (
 select *from tbl_admin;
 
 drop table tbl_admin;
+
+insert into tbl_admin
+values (1,'111111');
