@@ -41,6 +41,7 @@
                                                 name="postTitle"
                                                 type="text"
                                                 th:value="${funding.postTitle}"
+                                                maxlength="50"
                                                 required
                                         />
                                         <label for="title">제목을 입력해주세요 *</label>
@@ -153,6 +154,7 @@
                                                         name="postContent"
                                                         th:text="${funding.postContent}"
                                                         required
+                                                        style="white-space: pre-wrap"
                                                 ></textarea>
                                         </div>
                                         <span class="error-text" style="display: none">에러상세 메시지</span>
@@ -172,6 +174,7 @@
                                             name="fundingContent"
                                             th:value="${funding.fundingContent}"
                                             placeholder="펀딩상세페이지 우측에 들어가는 소개글입니다."
+                                            maxlength="50"
                                             required
                                     />
                                 </div>
@@ -188,6 +191,7 @@
                                             name="investorNumber"
                                             th:value="${funding.investorNumber}"
                                             placeholder="ex) 10명"
+                                            maxlength="5"
                                             required
                                     />
                                 </div>
@@ -204,6 +208,7 @@
                                             name="targetPrice"
                                             th:value="${funding.targetPrice}"
                                             placeholder="ex) 1,000,000원"
+                                            maxlength="10"
                                             required
                                     />
                                 </div>
@@ -241,6 +246,7 @@
                                                         name="fileContent"
                                                         th:value="${funding.fileContent != null ? funding.fileContent : ''}"
                                                         placeholder="올린 파일에 대한 설명을 입력해주세요."
+                                                        maxlength="50"
                                                 />
                                             </div>
                                         </div>
@@ -305,15 +311,15 @@
 
                                                 <!-- 상품명 -->
                                                 <div class="product-name">상품명 <span class="star">*</span></div>
-                                                <input type="text" class="product-name-input" th:name="|fundingProducts[${iterStat.index}].productName|" th:value="${product.productName}" required />
+                                                <input type="text" class="product-name-input" th:name="|fundingProducts[${iterStat.index}].productName|" th:value="${product.productName}" required maxlength="20"/>
 
                                                 <!-- 상품가격 -->
                                                 <div class="product-price">상품가격 <span class="star">*</span></div>
-                                                <input type="number" class="product-price-input" th:name="|fundingProducts[${iterStat.index}].productPrice|" th:value="${product.productPrice}" required />
+                                                <input type="number" class="product-price-input" th:name="|fundingProducts[${iterStat.index}].productPrice|" th:value="${product.productPrice}" required maxlength="8"/>
 
                                                 <!-- 상품수량 -->
                                                 <div class="product-quantity">상품수량 <span class="star">*</span></div>
-                                                <input type="number" class="product-quantity-input" th:name="|fundingProducts[${iterStat.index}].productAmount|" th:value="${product.productAmount}" required />
+                                                <input type="number" class="product-quantity-input" th:name="|fundingProducts[${iterStat.index}].productAmount|" th:value="${product.productAmount}" required maxlength="7"/>
                                                 <div class="product-cancel">
                                                     <button
                                                             class="delete-existing-product-btn"

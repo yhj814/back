@@ -111,17 +111,31 @@ myBuyWorkListPaging.addEventListener("click", (e)=>{
 });
 
 // 구매한 작품 결제 내역 삭제
-myBuyWorkListLayout.addEventListener('click', (e) => {
-    // 클릭한 타겟이 '결제 내역 삭제' 버튼이라면
-    if(e.target.id === "buy-work-delete-btn" ) {
-        console.log("들어옴")
-        const myBuyWorkPostId = e.target.classList[1];
-        console.log("myBuyWorkPostId : ", myBuyWorkPostId)
-        const deleteModal = document.querySelector(`.modal-${myBuyWorkPostId}`)
-        console.log("deleteModal : ", deleteModal)
+myBuyWorkListLayout.addEventListener('click', async (e) => {
+    const deleteModal = document.querySelector(".delete-modal")
+
+    // 구매내역 삭제 모달창 열기
+    if(e.target.id === "delete-modal-open-btn" ) {
         deleteModal.style.display = "flex";
-        // await myPageService.removeBuyWorkPost(buyWorkId);
-        // await myPageService.getMyBuyVideoWorkList(globalThis.myBuyWorkPage, memberId, showMyBuyWorkList);
+    }
+
+    // 구매내역 삭제 모달창 닫기
+    if(e.target.classList[0] === "delete-modal-close-btn"){
+        console.log("close-btn : ", e.target)
+        deleteModal.style.display = "none";
+    }
+
+    // 구매내역 삭제 버튼 눌렀을 때, 구매 내역삭제
+    if (e.target.classList[1] === "btn-test-1") {
+        const buyWorkId = e.target.classList[0];
+        await myPageService.removeBuyWorkPost(buyWorkId);
+        await myPageService.getMyBuyVideoWorkList(globalThis.myBuyWorkPage, memberId, showMyBuyWorkList);
+    }
+    // 구매내역 삭제 버튼 눌렀을 때, 구매 내역삭제
+    if (e.target.classList[1] === "btn-test-2") {
+        const buyWorkId = e.target.classList[0];
+        await myPageService.removeBuyWorkPost(buyWorkId);
+        await myPageService.getMyBuyVideoWorkList(globalThis.myBuyWorkPage, memberId, showMyBuyWorkList);
     }
 });
 
@@ -251,10 +265,16 @@ myAuditionListLayout.addEventListener('click', async (e) => {
                             e.target.classList.add("active");
                             e.target.previousElementSibling.classList.remove("active")
                             await myPageService.updateConfirmStatus({
-                                id: auditionApplicantId, confirmStatus: confirmNo
+                                id: auditionApplicantId,
+                                confirmStatus: confirmNo
                             });
                         }
                     }
+
+                    // if (e.target.id === "resume-open") {
+                    //     const auditionApplicationId = e.target.classList[1];
+                    //     window.open(`/audition/video/application/${auditionApplicationId}`, "PopupWin", "width=500,height=600");
+                    // }
 
                 });
             }
@@ -312,5 +332,3 @@ myInquiryHistoryListLayout.addEventListener('click', async (e) => {
         }
     }
 });
-
-myPageService.getMemberProfile(memberId, showMyProfile);

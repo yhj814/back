@@ -57,7 +57,6 @@ public class AlarmController {
             List<AlarmDTO> latestAlarms = alarmService.getUnreadAlarmsByMemberId(member.getId());
             return ResponseEntity.ok(latestAlarms);
         } else {
-            log.warn("로그인되지 않은 사용자가 읽지 않은 알림을 조회하려고 시도했습니다.");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
     }
@@ -90,7 +89,6 @@ public class AlarmController {
             }
 
             if (alarmType == null || alarmType.isEmpty() || dataId == null) {
-                log.warn("AlarmType 또는 dataId가 누락되었습니다. 알림 ID: {}", id);
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
             }
 

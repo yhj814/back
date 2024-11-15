@@ -367,9 +367,7 @@ a {
 .content-list {
     margin-bottom: 8px;
 }
-.similar-link {
-    float: left;
-}
+
 .link-box {
     display: inline-block;
     border-radius: 8px;
@@ -511,7 +509,7 @@ textarea:focus {
     padding-left: 2px;
     gap: 50px;
 }
-.container {
+.main-header .container {
     width: 1080px;
     margin: 0 auto;
 }
