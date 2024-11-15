@@ -15,5 +15,5 @@ create table tbl_audition_report (
 select *from tbl_audition_report;
 
 insert into tbl_audition_report
-values (26,'글모집ㄴㅁㅇㄴㅁㄴㅇㅇㅁㅁㅁㄴ',58,now(),default,11);
+values (6,'모집조건이 너무 까다롭습니다..',34,now(),default,2);
 

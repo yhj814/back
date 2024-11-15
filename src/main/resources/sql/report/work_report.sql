@@ -14,7 +14,7 @@ create table tbl_work_report (
 select *from tbl_work_report;
 
 insert into tbl_work_report
-values (19,'신고내용19',44,now(),default,10);
+values (3,'현실성을 떨어뜨리는 연출과 전개 방식은 관객의 이해를 저해할 수 있습니다. 이는 서사의 논리적 일관성과 관객의 몰입을 방해할 가능성이 높습니다.',3,now(),default,2);
 
 select *from tbl_member_profile;
 
