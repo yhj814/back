@@ -7,15 +7,15 @@ console.log(header);
 console.log(headerHeight);
 console.log(headerNav);
 
-window.onscroll = function () {
-    let windowTop = window.scrollY;
-    if (windowTop >= headerHeight) {
-        headerNav.classList.add("sticky");
-    } else {
-        headerNav.classList.remove("sticky");
-        console.log(header.classList.remove("sticky"));
-    }
-};
+// window.onscroll = function () {
+//     let windowTop = window.scrollY;
+//     if (windowTop >= headerHeight) {
+//         headerNav.classList.add("sticky");
+//     } else {
+//         headerNav.classList.remove("sticky");
+//         console.log(header.classList.remove("sticky"));
+//     }
+// };
 
 // **검색창 기능 구현
 const searchBox = document.getElementById("search-box");

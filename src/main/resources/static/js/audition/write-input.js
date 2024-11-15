@@ -178,29 +178,29 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // 모집 제목 (postTitle) 입력 제한: 최대 20자
+    // 모집 제목 (postTitle) 입력 제한: 최대 50자
     const postTitleInput = document.querySelector('input[name="postTitle"]');
 
     if (postTitleInput) {
-        limitInputLength(postTitleInput, 20);
+        limitInputLength(postTitleInput, 50);
     }
 
-    // 모집 장소 (auditionLocation) 입력 제한: 최대 15자
+    // 모집 장소 (auditionLocation) 입력 제한: 최대 25자
     const auditionLocationInput = document.querySelector('input[name="auditionLocation"]');
     if (auditionLocationInput) {
-        limitInputLength(auditionLocationInput, 15);
+        limitInputLength(auditionLocationInput, 25);
     }
 
-    // 모집 배경 (auditionBackground) 입력 제한: 최대 25자
+    // 모집 배경 (auditionBackground) 입력 제한: 최대 50자
     const auditionBackgroundInput = document.querySelector('input[name="auditionBackground"]');
     if (auditionBackgroundInput) {
-        limitInputLength(auditionBackgroundInput, 25);
+        limitInputLength(auditionBackgroundInput, 50);
     }
 
-    // 모집 유형 (auditionCategory) 입력 제한: 최대 25자
+    // 모집 유형 (auditionCategory) 입력 제한: 최대 50자
     const auditionCategoryInput = document.querySelector('input[name="auditionCategory"]');
     if (auditionCategoryInput) {
-        limitInputLength(auditionCategoryInput, 25);
+        limitInputLength(auditionCategoryInput, 50);
     }
 
     // **추가된 부분: 경력과 예상 금액 입력 제한 적용 (최대 15자)**
@@ -214,6 +214,11 @@ document.addEventListener("DOMContentLoaded", function () {
     const expectedAmountInput = document.querySelector('input[name="expectedAmount"]');
     if (expectedAmountInput) {
         limitInputLength(expectedAmountInput, 15);
+    }
+
+    const fileContentInput = document.querySelector('input[name="fileContent"]');
+    if (fileContentInput) {
+        limitInputLength(fileContentInput, 30);
     }
 
     // 근무시작일, 모집마감일 입력 필드에 대한 처리

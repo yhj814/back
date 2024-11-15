@@ -40,13 +40,12 @@ html {
 body {
     height: 100%;
 }
-.ggumteo-funding {
-    background-color: #fff;
-}
+
 .funding-detail-page {
     min-width: 1080px;
     height: auto;
     min-height: 70%;
+    background-color: #fff;
 }
 .container {
     width: 1080px;
@@ -166,6 +165,7 @@ button {
     float: left;
     border-radius: 0 4px 4px 0;
     width: 312px;
+    margin-top: 30px;
 }
 .right-side-wrapper {
     position: sticky;
