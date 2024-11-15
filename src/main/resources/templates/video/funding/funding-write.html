@@ -42,7 +42,7 @@
                                                 type="text"
                                                 th:value="${post?.postTitle}"
                                                 id="postTitle"
-
+                                                maxlength="50"
                                                 required
                                         />
                                         <label for="title"
@@ -224,6 +224,7 @@
                                             class="info-text"
                                             name="fundingContent"
                                             id="fundingContent"
+                                            maxlength="50"
                                             placeholder="펀딩상세페이지 우측에 들어가는 소개글입니다."
                                     />
                                 </div>
@@ -238,6 +239,7 @@
                                             name="investorNumber"
                                             id="investorNumber"
                                             placeholder="ex) 10명"
+                                            maxlength="8"
                                     />
                                 </div>
                                 <div class="hope-money-text-content">
@@ -251,6 +253,7 @@
                                             name="targetPrice"
                                             id="targetPrice"
                                             placeholder="ex) 1,000,000원"
+                                            maxlength="10"
                                     />
                                 </div>
                                 <div class="input-guide-helpertext">
@@ -317,7 +320,7 @@
                                     </div>
                                     <div class="img-caption-box" style="display: block">
                                         <div class="default-input-partner">
-                                            <input type="text" name="fileContent" class="img-caption-box-content" placeholder="올린 파일에 대한 설명을 입력해주세요.">
+                                            <input type="text" name="fileContent" class="img-caption-box-content" placeholder="올린 파일에 대한 설명을 입력해주세요." maxlength="50">
                                         </div>
                                     </div>
                                     <div class="img-add">
@@ -350,6 +353,7 @@
                                                     class="product-name-input"
                                                     name="fundingProducts[0].productName"
                                                     placeholder="등록할 상품명을 입력해주세요."
+                                                    maxlength="20"
                                             />
                                             <div class="product-price">
                                                 상품가격
@@ -362,6 +366,7 @@
                                                     class="product-price-input"
                                                     name="fundingProducts[0].productPrice"
                                                     placeholder="등록할 상품가격을 입력해주세요."
+                                                    maxlength="9"
                                             />
                                             <div
                                                     class="product-quantity"
@@ -376,6 +381,7 @@
                                                     class="product-quantity-input"
                                                     name="fundingProducts[0].productAmount"
                                                     placeholder="등록할 상품수량을 입력해주세요."
+                                                    maxlength="7"
                                             />
                                         </div>
                                     </div>
