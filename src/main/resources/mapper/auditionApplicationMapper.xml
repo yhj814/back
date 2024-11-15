@@ -6,7 +6,7 @@
     <!-- 신청 정보 삽입 -->
     <insert id="insert" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO tbl_audition_application (member_profile_id, apply_etc, audition_id, confirm_status)
-        VALUES (#{memberProfileId}, #{applyEtc}, #{auditionId}, #{confirmStatus})
+        VALUES (#{memberProfileId}, #{applyEtc}, #{auditionId}, 'NO')
     </insert>
 
     <!-- 오디션 정보 조회: tbl_post와 tbl_audition 조인 -->
