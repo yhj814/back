@@ -19,6 +19,7 @@ import com.app.ggumteo.service.report.AuditionReportService;
 import com.app.ggumteo.service.report.FundingReportService;
 import com.app.ggumteo.service.report.ReplyReportService;
 import com.app.ggumteo.service.report.WorkReportService;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -55,11 +56,12 @@ public class AdminController {
     // 인증 완료 시 관리자 페이지로 이동
     @PostMapping("/verify")
     @ResponseBody
-    public Map<String, Object> verifyCode(@ModelAttribute AdminDTO adminDTO) {
+    public Map<String, Object> verifyCode(@ModelAttribute AdminDTO adminDTO, HttpSession session) {
         Map<String, Object> response = new HashMap<>();
         boolean isVerified = adminService.verifyAdminCode(adminDTO.getAdminVerifyCode());
 
         if (isVerified) {
+            session.setAttribute("isVerified", true);  // 세션에 인증 상태 저장
             response.put("success", true);
             log.info("인증번호 {}로 관리자 인증 성공!", adminDTO.getAdminVerifyCode());
             response.put("redirect", "/admin/admin");
@@ -70,9 +72,16 @@ public class AdminController {
         return response;
     }
 
-    // 관리자 페이지
+    // 관리자 페이지 - 인증되지 않은 사용자는 접근 불가
     @GetMapping("/admin")
-    public String showAdminPage() {
+    public String showAdminPage(HttpSession session) {
+        Boolean isVerified = (Boolean) session.getAttribute("isVerified");
+
+        if (isVerified == null || !isVerified) {
+            log.warn("인증되지 않은 접근 시도 감지됨. 인증 페이지로 리디렉션합니다.");
+            return "redirect:/admin/verify";
+        }
+
         return "admin/admin";
     }
 
