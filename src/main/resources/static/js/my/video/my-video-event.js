@@ -347,8 +347,6 @@ myProfileLayout.addEventListener('click', async (e) => {
         const InputProfileName = document.querySelector("input[name=profileName]");
         const InputProfileNickName = document.querySelector("input[name=profileNickName]");
         const InputProfileAge = document.querySelector("input[name=profileAge]");
-        const InputProfileEmail = document.querySelector("input[name=profileEmail]");
-        const InputProfilePhone = document.querySelector("input[name=profilePhone]");
         const textareaProfileEtc = document.querySelector("textarea[name=profileEtc]");
 
         const profileGenderMan = document.getElementById('gender-1');
@@ -386,8 +384,7 @@ myProfileLayout.addEventListener('click', async (e) => {
             await myPageService.updateMemberProfileByMemberId({
                 memberId: memberId, profileName: InputProfileName.value,
                 profileNickName: InputProfileNickName.value, profileGender: selectedProfileGender,
-                profileAge: InputProfileAge.value, profileEmail: InputProfileEmail.value,
-                profilePhone: InputProfilePhone.value, profileEtc: textareaProfileEtc.value
+                profileAge: InputProfileAge.value, profileEtc: textareaProfileEtc.value
             });
             await myPageService.getMemberProfileByMemberId(memberId, showMyProfile);
         } else {
@@ -401,8 +398,6 @@ myProfileLayout.addEventListener('click', async (e) => {
         const originalProfileNickName = document.querySelector(".original-profileNickName");
         const originalProfileGender = document.querySelector(".original-profileGender");
         const originalProfileAge = document.querySelector(".original-profileAge");
-        const originalProfileEmail = document.querySelector(".original-profileEmail");
-        const originalProfilePhone = document.querySelector(".original-profilePhone");
         const originalProfileEtc = document.querySelector(".original-profileEtc");
 
         console.log(originalProfileName.innerText);
@@ -411,8 +406,7 @@ myProfileLayout.addEventListener('click', async (e) => {
         await myPageService.updateMemberProfileByMemberId({
             memberId: memberId, profileName: originalProfileName.innerText,
             profileNickName: originalProfileNickName.innerText, profileGender: originalProfileGender.innerText,
-            profileAge: originalProfileAge.innerText, profileEmail: originalProfileEmail.innerText,
-            profilePhone: originalProfilePhone.innerText, profileEtc: originalProfileEtc.innerText
+            profileAge: originalProfileAge.innerText, profileEtc: originalProfileEtc.innerText
         });
         await myPageService.getMemberProfileByMemberId(memberId, showMyProfile);
     }
