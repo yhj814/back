@@ -310,6 +310,7 @@ a {
 }
 
 .person-card-description {
+    height: 160px;
     text-overflow: ellipsis;
     margin: 8px 0 16px 0;
     font-size: 13px;
