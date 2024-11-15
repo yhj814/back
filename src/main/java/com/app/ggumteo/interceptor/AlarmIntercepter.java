@@ -29,7 +29,6 @@ public class AlarmIntercepter implements HandlerInterceptor {
             while (attributeNames.hasMoreElements()) {
                 String attributeName = attributeNames.nextElement();
                 Object attributeValue = session.getAttribute(attributeName);
-                log.info("Session attribute: {} = {}", attributeName, attributeValue);
             }
         } else {
             log.info("세션이 존재하지 않습니다.");
@@ -55,8 +54,6 @@ public class AlarmIntercepter implements HandlerInterceptor {
 
             request.setAttribute("unreadVideoAlarmsCount", unreadVideoAlarmsCount);
             request.setAttribute("unreadTextAlarmsCount", unreadTextAlarmsCount);
-
-            log.info("로그인 된 사용자. memberProfileId: {}", memberProfileId);
         } else {
             log.info("로그인 되지 않은 사용자입니다.");
         }
