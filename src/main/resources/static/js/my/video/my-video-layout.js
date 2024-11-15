@@ -943,7 +943,6 @@ const showMyAuditionList = ({myAuditionPosts, myAuditionPagination}) => {
                         <h2 class="job_tit">
                             <a
                                 target="_blank"
-                                title="${myAuditionPost.postTitle}"
                                 href=""
                             >
                                 <span>
@@ -1006,7 +1005,7 @@ const showMyAuditionList = ({myAuditionPosts, myAuditionPagination}) => {
                             <span
                                 class="job_day"
                                 >등록일
-                                ${myAuditionPost.createdDate}</span
+                                ${myAuditionPost.createdDate.substring(0,10)}</span
                             >
                         </div>
                     </div>
@@ -1566,7 +1565,7 @@ const showAdminAnswer = (adminAnswer) => {
                             ${adminAnswer.adminAnswerContent}
                         </div>`
             }
-            else {
+            else if((adminAnswer.inquiryStatus === 'NO')) {
 
                 text +=  `<div class="sub-span">
                             아직 미답변 상태입니다.
