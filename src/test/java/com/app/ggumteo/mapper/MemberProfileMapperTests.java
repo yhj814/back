@@ -35,4 +35,21 @@ public class MemberProfileMapperTests {
         memberProfileMapper.insert(memberProfileVO);
 
     }
+
+    @Test
+    public void testUpdateMemberProfile() {
+        MemberProfileDTO memberProfileDTO = new MemberProfileDTO();
+        memberProfileDTO.setMemberId(2L);
+        memberProfileDTO.setProfileName("수정된 이름");
+        memberProfileDTO.setProfileNickName("수정된 닉네임");
+        memberProfileDTO.setProfileAge(30);
+        memberProfileDTO.setProfileGender("남성");
+        memberProfileDTO.setProfileEmail("000test@gmail.com");
+        memberProfileDTO.setProfilePhone("01045678912");
+        memberProfileDTO.setProfileEtc("추가추가");
+
+        memberProfileMapper.updateMemberProfileByMemberId(memberProfileDTO.toVO());
+
+        log.info("memberProfileDTO={}", memberProfileDTO);
+    }
 }

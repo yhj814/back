@@ -35,9 +35,8 @@
 
     <select id="selectBuyFundingListByMember">
         select bfp_mp.member_id, fp.funding_id, p.post_title, f.genre_type, p.created_date, p.post_content,
-               m.profile_img_url, mp.profile_nickname,fp.product_name, fp.product_price,
-               fl.file_name, fl.file_size, fl.file_type, fl.file_path from
-            tbl_buy_funding_product bfp
+               m.profile_img_url, mp.profile_nickname,fp.product_name, fp.product_price
+        from tbl_buy_funding_product bfp
                 join tbl_funding_product fp on bfp.funding_product_id = fp.id
                 join tbl_funding f on fp.funding_id = f.id
                 join tbl_post p on f.id = p.id and p.post_type = #{postType}
@@ -45,8 +44,6 @@
                 join tbl_member m on mp.member_id = m.id
                 join tbl_member_profile bfp_mp on bfp.member_profile_id = bfp_mp.id
                 join tbl_member bfp_m on bfp_mp.member_id = bfp_m.id and bfp_m.id = #{memberId}
-                join tbl_post_file pfl on p.id = pfl.post_id
-                join tbl_file fl on pfl.id = fl.id
         order by f.id desc
             limit #{myWorkAndFundingPagination.startRow}, #{myWorkAndFundingPagination.rowCount};
     </select>
@@ -61,8 +58,7 @@
                 join tbl_member m on mp.member_id = m.id
                 join tbl_member_profile bfp_mp on bfp.member_profile_id = bfp_mp.id
                 join tbl_member bfp_m on bfp_mp.member_id = bfp_m.id and bfp_m.id = #{memberId}
-                join tbl_post_file pfl on p.id = pfl.post_id
-                join tbl_file fl on pfl.id = fl.id;
+                join tbl_file fl on f.thumbnail_file_id = fl.id
     </select>
 
     <!-- 펀딩 금액 업데이트 -->
