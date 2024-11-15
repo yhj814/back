@@ -14,11 +14,11 @@
     </insert>
 
     <!-- 마이페이지 - 내 정보 수정 -->
-    <update id="updateByMemberId">
+    <update id="updateMemberProfile">
         update tbl_member_profile
         set profile_nickname = #{profileNickName}, profile_gender = #{profileGender},
             profile_age = #{profileAge}, profile_email = #{profileEmail}, profile_phone = #{profilePhone},
             profile_etc = #{profileEtc}
-        where member_id = #{memberId};
+        where id = #{id}
     </update>
 </mapper>

@@ -11,5 +11,5 @@ public interface MemberProfileMapper {
     void insert(MemberProfileVO memberProfileVO);
 
     //  마이페이지 - 내 정보 수정
-    public void updateByMemberId(MemberProfileVO memberProfileVO);
+    public void updateMemberProfile(MemberProfileVO memberProfileVO);
 }

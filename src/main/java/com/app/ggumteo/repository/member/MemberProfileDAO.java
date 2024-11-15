@@ -18,6 +18,6 @@ public class MemberProfileDAO {
 
     // 마이페이지 - 내 정보 수정
     public void setMemberProfile(MemberProfileVO memberProfileVO) {
-        memberProfileMapper.updateByMemberId(memberProfileVO);
+        memberProfileMapper.updateMemberProfile(memberProfileVO);
     }
 }

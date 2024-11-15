@@ -69,7 +69,7 @@ public class MemberRestController {
     public RedirectView update(MemberProfileDTO memberProfileDTO) {
         log.info(memberProfileDTO.toString());
         myPageService.updateMemberProfile(memberProfileDTO.toVO());
-        return new RedirectView("/member/video/my-page");
+        return new RedirectView("/member/video/my-page?id=" + memberProfileDTO.getMemberId());
     }
 //************************************************************************************************
 
