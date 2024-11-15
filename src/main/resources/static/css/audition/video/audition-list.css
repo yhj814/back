@@ -1,27 +1,27 @@
 @font-face {
     font-family: "NotoSansKR";
     font-weight: 700;
-    src: url("/static/fonts/NotoSansKR-Bold.woff2") format("woff2");
+    src: url("/fonts/NotoSansKR-Bold.woff2") format("woff2");
 }
 @font-face {
     font-family: "NotoSansKR";
     font-weight: 500;
-    src: url("/static/fonts/NotoSansKR-Medium.woff2") format("woff2");
+    src: url("/fonts/NotoSansKR-Medium.woff2") format("woff2");
 }
 @font-face {
     font-family: "NotoSansKR";
     font-weight: 400;
-    src: url("/static/fonts/NotoSansKR-Regular.woff2") format("woff2");
+    src: url("/fonts/NotoSansKR-Regular.woff2") format("woff2");
 }
 @font-face {
     font-family: "NotoSansKR";
     font-weight: 300;
-    src: url("/static/fonts/NotoSansKR-Light.woff2") format("woff2");
+    src: url("/fonts/NotoSansKR-Light.woff2") format("woff2");
 }
 @font-face {
     font-family: "NotoSansKR";
     font-weight: 100;
-    src: url("/static/fonts/NotoSansKR-Thin.woff2") format("woff2");
+    src: url("/fonts/NotoSansKR-Thin.woff2") format("woff2");
 }
 
 
@@ -534,13 +534,13 @@ a {
 .pagination .btnPrev {
     margin-right: 19px;
     padding-left: 10px;
-    background: url(/static/images/audition/bul_page_prev.png) 0 50% no-repeat;
+    background: url(/images/audition/bul_page_prev.png) 0 50% no-repeat;
 }
 
 .pagination .btnNext {
     margin-left: 14px;
     padding-right: 10px;
-    background: url(/static/images/audition/bul_page_next.png) 100% 50% no-repeat;
+    background: url(/images/audition/bul_page_next.png) 100% 50% no-repeat;
 }
 
 .pagination .btnPrev, .pagination .btnNext {
@@ -823,7 +823,7 @@ a {
         left: 17px;
         width: 6px;
         height: 11px;
-        background: url(/static/images/audition/bul_page_next.png) no-repeat 0 0;
+        background: url(/images/audition/bul_page_next.png) no-repeat 0 0;
         /* background-size: 8px 8px; */
         content: "";
     }
@@ -835,7 +835,7 @@ a {
         left: 17px;
         width: 6px;
         height: 11px;
-        background: url(/static/images/audition/bul_page_prev.png) no-repeat 0 0;
+        background: url(/images/audition/bul_page_prev.png) no-repeat 0 0;
         /* background-size: 8px 8px; */
         content: "";
     }
