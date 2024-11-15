@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -50,7 +50,7 @@
                         <div class="number-box">
                             <div class="number-info upper">
                                 <p class="number-info-count">
-                                    <span>113,502</span>명
+                                    <span th:text="${totalMembers}">113,502</span>명
                                 </p>
                                 <p class="number-info-text">
                                     꿈터에 가입한 회원들
@@ -58,7 +58,7 @@
                             </div>
                             <div class="number-info upper">
                                 <p class="number-info-count">
-                                    <span>17,412</span>개
+                                    <span th:text="${totalWorks}">17,412</span>개
                                 </p>
                                 <p class="number-info-text">
                                     꿈터에 올라온 작품 수
@@ -66,7 +66,7 @@
                             </div>
                             <div class="number-info">
                                 <p class="number-info-count">
-                                    <span>8,143억</span>원
+                                    <span th:text="${totalConvergePrice}">8,143억</span>원
                                 </p>
                                 <p class="number-info-text">
                                     꿈터 펀딩 누적 금액
@@ -74,11 +74,11 @@
                             </div>
                             <div class="number-info">
                                 <p class="number-info-count">
-                                    <span>97</span>
+                                    <span th:text="${averageConvergePricePercentage}">97.00</span>
                                     <img src="/images/main/icon_percent.svg" />
                                 </p>
                                 <p class="number-info-text">
-                                    펀딩 목표금액 달성 확률
+                                    펀딩 목표금액 달성률
                                 </p>
                             </div>
                         </div>

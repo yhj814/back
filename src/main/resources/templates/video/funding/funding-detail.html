@@ -75,8 +75,29 @@
                         <!-- 펀딩내용설명 -->
                         <div class="funding-content" th:text="${funding.postContent}" style="white-space: pre-wrap"></div>
                         <!-- 펀딩내용 이미지 -->
-                        <div class="funding-img" th:each="file : ${postFiles}" th:if="${file.fileName != funding.thumbnailFileName}">
-                            <img th:src="@{'/video/funding/display?fileName=/' + ${file.filePath} + '/' + ${file.fileName}}" />
+                        <div class="funding-img"
+                             th:each="file : ${postFiles}"
+                             th:if="${file.fileName != funding.thumbnailFileName}">
+
+                            <!-- 이미지 파일 처리 -->
+                            <div th:if="${#strings.endsWith(file.fileName.toLowerCase(), '.jpg')
+                                                  or #strings.endsWith(file.fileName.toLowerCase(), '.png')
+                                                     or #strings.endsWith(file.fileName.toLowerCase(), '.gif')}">
+                                <img th:src="@{'/video/funding/display?fileName=/' + ${file.filePath} + '/' + ${file.fileName}}" />
+                            </div>
+
+                            <!-- 비디오 파일 처리 -->
+                            <div th:if="${#strings.endsWith(file.fileName.toLowerCase(), '.mp4')
+                                             or #strings.endsWith(file.fileName.toLowerCase(), '.webm')
+                                                 or #strings.endsWith(file.fileName.toLowerCase(), '.ogg')}">
+                                <video controls
+                                       th:src="@{'/video/funding/display?fileName=/' + ${file.filePath} + '/' + ${file.fileName}}" style="
+                                             width: 500px;
+                                                                        ">
+                                    해당 브라우저는 비디오 태그를 지원하지 않습니다.
+                                </video>
+                            </div>
+
                         </div>
                         <!-- 이미지설명 -->
                         <div class="funding-img-content" th:text="${funding.fileContent}">
