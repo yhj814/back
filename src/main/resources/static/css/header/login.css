@@ -72,7 +72,7 @@ header.header .header-nav {
     border-bottom: 1px solid #eee;
 }
 
-.container {
+.main-header-container {
     width: 1080px;
     margin: 0 auto;
 }
