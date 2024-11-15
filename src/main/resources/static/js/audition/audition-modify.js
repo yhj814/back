@@ -352,4 +352,63 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
     }
+
+    // 추가할 입력 제한 함수
+    function limitInputLength(input, maxLength) {
+        input.addEventListener("input", function () {
+            if (input.value.length > maxLength) {
+                input.value = input.value.slice(0, maxLength);
+            }
+        });
+
+        input.addEventListener("blur", function () {
+            if (input.value.length > maxLength) {
+                input.value = input.value.slice(0, maxLength);
+            }
+        });
+    }
+
+    // 모집 제목 (postTitle) 입력 제한: 최대 50자
+    const postTitleInput = document.querySelector('input[name="postTitle"]');
+
+    if (postTitleInput) {
+        limitInputLength(postTitleInput, 50);
+    }
+
+    // 모집 장소 (auditionLocation) 입력 제한: 최대 25자
+    const auditionLocationInput = document.querySelector('input[name="auditionLocation"]');
+    if (auditionLocationInput) {
+        limitInputLength(auditionLocationInput, 25);
+    }
+
+    // 모집 배경 (auditionBackground) 입력 제한: 최대 50자
+    const auditionBackgroundInput = document.querySelector('input[name="auditionBackground"]');
+    if (auditionBackgroundInput) {
+        limitInputLength(auditionBackgroundInput, 50);
+    }
+
+    // 모집 유형 (auditionCategory) 입력 제한: 최대 50자
+    const auditionCategoryInput = document.querySelector('input[name="auditionCategory"]');
+    if (auditionCategoryInput) {
+        limitInputLength(auditionCategoryInput, 50);
+    }
+
+    // **추가된 부분: 경력과 예상 금액 입력 제한 적용 (최대 15자)**
+    // 경력 (auditionCareer) 입력 제한: 최대 15자
+    const auditionCareerInput = document.querySelector('input[name="auditionCareer"]');
+    if (auditionCareerInput) {
+        limitInputLength(auditionCareerInput, 15);
+    }
+
+    // 예상 금액 (expectedAmount) 입력 제한: 최대 15자
+    const expectedAmountInput = document.querySelector('input[name="expectedAmount"]');
+    if (expectedAmountInput) {
+        limitInputLength(expectedAmountInput, 15);
+    }
+
+    const fileContentInput = document.querySelector('input[name="fileContent"]');
+    if (fileContentInput) {
+        limitInputLength(fileContentInput, 30);
+    }
+
 });
