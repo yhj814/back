@@ -174,6 +174,7 @@ public class VideoAuditionController {
     @GetMapping("/list")
     public String list(@ModelAttribute Search search,
                        @RequestParam(value = "page", defaultValue = "1") int page,
+                       @RequestParam(value = "keyword", required = false) String keyword,
                        Model model) {
 
         MemberVO member = (MemberVO) session.getAttribute("member");
@@ -192,6 +193,7 @@ public class VideoAuditionController {
         model.addAttribute("search", search);
         model.addAttribute("pagination", pagination);
         model.addAttribute("totalSearchAudition", totalSearchAudition);
+        model.addAttribute("keyword", keyword);
 
         return "/audition/video/list";
     }
