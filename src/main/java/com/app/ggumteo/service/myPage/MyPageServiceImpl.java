@@ -311,10 +311,16 @@ public class MyPageServiceImpl implements MyPageService {
         return memberDAO.findById(id);
     }
 
+    //   마이페이지 - 내 정보 수정(조회)
+    @Override
+    public Optional<MemberProfileVO> getMemberProfileByMemberId(Long memberId) {
+        return memberProfileDAO.findByMemberId(memberId);
+    }
+
     //    마이페이지 - 내 정보 수정
     @Override
-    public void updateMemberProfile(MemberProfileVO memberProfileVO) {
-        memberProfileDAO.setMemberProfile(memberProfileVO);
+    public void updateMemberProfileByMemberId(MemberProfileVO memberProfileVO) {
+        memberProfileDAO.setMemberProfileByMemberId(memberProfileVO);
 
         log.info("memberProfileVO={}", memberProfileVO);
     }

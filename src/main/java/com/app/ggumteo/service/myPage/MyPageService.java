@@ -129,8 +129,11 @@ public interface MyPageService {
     // 마이페이지 - 내 정보 조회
     public Optional<MemberVO> getMember(Long id);
 
+    //  마이페이지 - 회원 정보 수정(조회)
+    public Optional<MemberProfileVO> getMemberProfileByMemberId(Long memberId);
+
     // 마이페이지 - 내 정보 수정
-    public void updateMemberProfile(MemberProfileVO memberProfileVO);
+    public void updateMemberProfileByMemberId(MemberProfileVO memberProfileVO);
 
     // 마이페이지 - 회원 탈퇴
     public void softDeleteMember(Long id);

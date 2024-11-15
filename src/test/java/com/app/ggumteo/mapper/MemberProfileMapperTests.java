@@ -39,7 +39,7 @@ public class MemberProfileMapperTests {
     @Test
     public void testUpdateMemberProfile() {
         MemberProfileDTO memberProfileDTO = new MemberProfileDTO();
-        memberProfileDTO.setId(2L);
+        memberProfileDTO.setMemberId(2L);
         memberProfileDTO.setProfileName("수정된 이름");
         memberProfileDTO.setProfileNickName("수정된 닉네임");
         memberProfileDTO.setProfileAge(30);
@@ -48,7 +48,7 @@ public class MemberProfileMapperTests {
         memberProfileDTO.setProfilePhone("01045678912");
         memberProfileDTO.setProfileEtc("추가추가");
 
-        memberProfileMapper.updateByMemberId(memberProfileDTO.toVO());
+        memberProfileMapper.updateMemberProfileByMemberId(memberProfileDTO.toVO());
 
         log.info("memberProfileDTO={}", memberProfileDTO);
     }

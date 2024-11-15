@@ -332,3 +332,174 @@ myInquiryHistoryListLayout.addEventListener('click', async (e) => {
         }
     }
 });
+
+// 내 정보
+myPageService.getMemberProfileByMemberId(memberId, showMyProfile);
+
+// 추가 : 내 정보 수정
+document.addEventListener("DOMContentLoaded", function () {
+    const formControls = document.querySelectorAll(".form-control");
+
+    formControls.forEach((control) => {
+        let hasBeenFocused = false;
+
+        control.addEventListener("focus", () => {
+            control.classList.add("active");
+            hasBeenFocused = true;
+        });
+
+        control.addEventListener("blur", () => {
+            const errorMessage = control.closest(".input-gap")
+                ? control.closest(".input-gap").parentElement.querySelector(".error-message")
+                : control.parentElement.querySelector(".error-message");
+
+            if (control.value.trim() === "" && !control.matches("textarea")) {
+                control.classList.add("error");
+                if (errorMessage) {
+                    errorMessage.style.display = "block";
+                }
+            } else {
+                control.classList.remove("error");
+                if (errorMessage) {
+                    errorMessage.style.display = "none";
+                }
+            }
+        });
+    });
+
+    // 유효성 검사 함수 (이메일, 전화번호 전용 - 인증번호는 제외)
+    function validateField(input, regex, errorMessageText) {
+        const errorMessage = input.closest(".input-gap")
+            ? input.closest(".input-gap").parentElement.querySelector(".error-message")
+            : input.parentElement.querySelector(".error-message");
+
+        if (!regex.test(input.value.trim())) {
+            input.classList.add("error");
+            if (errorMessage) {
+                errorMessage.textContent = errorMessageText;
+                errorMessage.style.display = "block";
+            }
+            return false;
+        } else {
+            input.classList.remove("error");
+            if (errorMessage) {
+                errorMessage.style.display = "none";
+            }
+            return true;
+        }
+    }
+
+    // 전화번호 포맷 자동 추가
+    const phoneField = document.querySelector("input[name='profilePhone']");
+    phoneField.addEventListener("input", (event) => {
+        let value = event.target.value.replace(/[^0-9]/g, "");
+        if (value.length > 3 && value.length <= 7) {
+            value = value.slice(0, 3) + "-" + value.slice(3);
+        } else if (value.length > 7) {
+            value = value.slice(0, 3) + "-" + value.slice(3, 7) + "-" + value.slice(7);
+        }
+        event.target.value = value;
+    });
+
+    // 이메일 인증번호 요청 버튼 클릭 시 유효성 검사 및 `.certification-input` 클래스 제거
+    document.getElementById("requestEmailCode").addEventListener("click", function () {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const emailField = document.querySelector("input[name='profileEmail']");
+
+        if (validateField(emailField, emailRegex, "올바른 이메일 주소를 입력해주세요.")) {
+            const emailCertificationInput = document.getElementById("emailVerificationCode").closest(".certification-input");
+            if (emailCertificationInput) {
+                emailCertificationInput.classList.remove("certification-input");
+            }
+        }
+    });
+
+    // 전화번호 인증번호 요청 버튼 클릭 시 유효성 검사 및 `.certification-input` 클래스 제거
+    document.getElementById("requestVerificationCode").addEventListener("click", function () {
+        const phoneRegex = /^(010|011|016|017|018|019)-\d{3,4}-\d{4}$/;
+
+        if (validateField(phoneField, phoneRegex, "올바른 전화번호를 입력해주세요.")) {
+            const phoneCertificationInput = document.getElementById("verificationCode").closest(".certification-input");
+            if (phoneCertificationInput) {
+                phoneCertificationInput.classList.remove("certification-input");
+            }
+        }
+    });
+
+});
+
+myProfileLayout.addEventListener('click', async (e) => {
+    if(e.target.id === 'btn-update') {
+        e.preventDefault();
+
+        let isValid = true;
+        let selectedProfileGender = null;
+
+        const memberId = e.target.classList[3];
+        const InputProfileName = document.querySelector("input[name=profileName]");
+        const InputProfileNickName = document.querySelector("input[name=profileNickName]");
+        const InputProfileAge = document.querySelector("input[name=profileAge]");
+        const InputProfileEmail = document.querySelector("input[name=profileEmail]");
+        const InputProfilePhone = document.querySelector("input[name=profilePhone]");
+        const textareaProfileEtc = document.querySelector("textarea[name=profileEtc]");
+
+        const profileGenderMan = document.getElementById('gender-1');
+        const profileGenderWoman = document.getElementById('gender-2');
+
+        if (profileGenderMan.checked) {
+            selectedProfileGender = profileGenderMan.value; // profileGenderMan radio 버튼 선택 시
+        } else if (profileGenderWoman.checked) {
+            selectedProfileGender = profileGenderWoman.value; // profileGenderWoman radio 버튼 선택 시
+        }
+
+        // 이메일 필드 유효성 검사
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!validateField(InputProfileEmail, emailRegex, "올바른 이메일 주소를 입력해주세요.")) {
+            isValid = false;
+        }
+
+        // 전화번호 필드 유효성 검사
+        const phoneRegex = /^(010|011|016|017|018|019)-\d{3,4}-\d{4}$/;
+        if (!validateField(InputProfilePhone, phoneRegex, "올바른 전화번호를 입력해주세요.")) {
+            isValid = false;
+        }
+
+        // 기타 필드 유효성 검사 (인증번호 필드는 제외)
+        document.querySelectorAll(".form-control:not(#emailVerificationCode):not(#verificationCode)").forEach((input) => {
+            const errorMessage = input.closest(".input-gap")
+                ? input.closest(".input-gap").parentElement.querySelector(".error-message")
+                : input.parentElement.querySelector(".error-message");
+
+            if (!input.value.trim() && !input.matches(".temp-upload-resume") && !input.matches("textarea")) {
+                input.classList.add("error");
+                if (errorMessage) {
+                    errorMessage.style.display = "block";
+                }
+                isValid = false;
+            } else {
+                input.classList.remove("error");
+                if (errorMessage) {
+                    errorMessage.style.display = "none";
+                }
+            }
+        });
+
+        // 폼 제출 처리
+        if (isValid) {
+            alert("회원정보가 수정되었습니다.")
+            await myPageService.updateMemberProfileByMemberId({
+                memberId: memberId, profileName: InputProfileName.value,
+                profileNickName: InputProfileNickName.value, profileGender: selectedProfileGender,
+                profileAge: InputProfileAge.value, profileEmail: InputProfileEmail.value,
+                profilePhone: InputProfilePhone.value, profileEtc: textareaProfileEtc.value
+            });
+        } else {
+            alert("예시 형식에 맞게 필수 항목을 모두 작성해 주세요.")
+        }
+    }
+
+    if(e.target.id === 'btn-cancle') {
+        const originalProfileName = document.getElementById("full_name");
+        alert("들어옴")
+    }
+})

@@ -135,6 +135,27 @@ const myPageService = (() => {
             callback(myApplicationAuditionPosts);
         }
     }
+//************* 내 정보 ***************
+    const getMemberProfileByMemberId = async (memberId, callback) => {
+        const response = await fetch(`/members/${memberId}/profile`);
+        const myProfile = await response.json();
+
+        console.log("myProfile : ", myProfile)
+
+        if(callback){
+            callback(myProfile);
+        }
+    }
+
+    const updateMemberProfileByMemberId = async (memberProfile) => {
+        await fetch(`/members/profile/update`, {
+            method: "put",
+            body: JSON.stringify(memberProfile),
+            headers: {
+                "Content-Type": "application/json; charset=utf-8"
+            }
+        });
+    }
 
 //************* 문의 ***************
 
@@ -171,6 +192,8 @@ const myPageService = (() => {
         getMyVideoAuditionApplicantList: getMyVideoAuditionApplicantList,
         updateConfirmStatus: updateConfirmStatus,
         getMyVideoApplicationAuditionList: getMyVideoApplicationAuditionList,
+        getMemberProfileByMemberId: getMemberProfileByMemberId,
+        updateMemberProfileByMemberId: updateMemberProfileByMemberId,
         getMyInquiryHistoryList: getMyInquiryHistoryList,
         getAdminAnswerByInquiryId: getAdminAnswerByInquiryId
     }
