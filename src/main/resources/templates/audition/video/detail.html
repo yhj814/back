@@ -317,13 +317,13 @@
                                         <div class="upload-media" th:each="file : ${postFiles}">
                                             <!-- 이미지 파일일 경우 -->
                                             <div class="media-wrapper" th:if="${file.fileName.endsWith('.jpg') or file.fileName.endsWith('.jpeg') or file.fileName.endsWith('.png') or file.fileName.endsWith('.gif')}">
-                                                <img th:src="@{'/audition/text/display?fileName=' + ${file.filePath} + '/' + ${file.fileName}}" alt="첨부 이미지" class="center-media" />
+                                                <img th:src="@{'/audition/video/display?fileName=' + ${file.filePath} + '/' + ${file.fileName}}" alt="첨부 이미지" class="center-media" />
                                             </div>
 
                                             <!-- 동영상 파일일 경우 -->
                                             <div class="media-wrapper" th:if="${file.fileName.endsWith('.mp4') or file.fileName.endsWith('.avi') or file.fileName.endsWith('.mkv')}">
                                                 <video controls class="center-media">
-                                                    <source th:src="@{'/audition/text/display?fileName=' + ${file.filePath} + '/' + ${file.fileName}}" type="video/mp4">
+                                                    <source th:src="@{'/audition/video/display?fileName=' + ${file.filePath} + '/' + ${file.fileName}}" type="video/mp4">
                                                     동영상 형식을 지원하지 않는 브라우저입니다.
                                                 </video>
                                             </div>
