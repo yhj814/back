@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.app.ggumteo.mapper.main.MainMapper">
+
+    <select id="countMembers" resultType="int">
+        SELECT COUNT(*) AS total
+        FROM tbl_member
+    </select>
+
+    <select id="countWorks" resultType="int">
+        SELECT COUNT(*) AS total
+        FROM tbl_work
+    </select>
+
+    <select id="sumConvergePrice" resultType="int">
+        SELECT SUM(converge_price) AS totalConvergePrice
+        FROM tbl_funding
+    </select>
+
+    <select id="getAverageConvergePricePercentage" resultType="double">
+        SELECT
+            AVG((CONVERT(converge_price, DECIMAL(10,2)) / NULLIF(target_price, 0)) * 100) AS averageConvergePricePercentage
+        FROM tbl_funding
+    </select>
+
+</mapper>
