@@ -1,15 +1,14 @@
 package com.app.ggumteo.domain.member;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
 
 @Component
 @Getter @Setter @ToString @EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@NoArgsConstructor
+@AllArgsConstructor
 public class MemberProfileDTO implements Serializable {
     @EqualsAndHashCode.Include
     private Long id;

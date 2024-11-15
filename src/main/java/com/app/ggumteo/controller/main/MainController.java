@@ -1,4 +1,4 @@
-package com.app.ggumteo.controller;
+package com.app.ggumteo.controller.main;
 
 import com.app.ggumteo.domain.audition.AuditionDTO;
 import com.app.ggumteo.domain.funding.FundingDTO;

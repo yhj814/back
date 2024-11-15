@@ -332,3 +332,82 @@ myInquiryHistoryListLayout.addEventListener('click', async (e) => {
         }
     }
 });
+
+// 내 정보
+myPageService.getMemberProfileByMemberId(memberId, showMyProfile);
+
+myProfileLayout.addEventListener('click', async (e) => {
+    if(e.target.id === 'btn-update') {
+        e.preventDefault();
+
+        let isValid = true;
+        let selectedProfileGender = null;
+
+        const memberId = e.target.classList[3];
+        const InputProfileName = document.querySelector("input[name=profileName]");
+        const InputProfileNickName = document.querySelector("input[name=profileNickName]");
+        const InputProfileAge = document.querySelector("input[name=profileAge]");
+        const textareaProfileEtc = document.querySelector("textarea[name=profileEtc]");
+
+        const profileGenderMan = document.getElementById('gender-1');
+        const profileGenderWoman = document.getElementById('gender-2');
+
+        if (profileGenderMan.checked) {
+            selectedProfileGender = profileGenderMan.value; // profileGenderMan radio 버튼 선택 시
+        } else if (profileGenderWoman.checked) {
+            selectedProfileGender = profileGenderWoman.value; // profileGenderWoman radio 버튼 선택 시
+        }
+
+        // 기타 필드 유효성 검사 (인증번호 필드는 제외)
+        document.querySelectorAll(".form-control:not(#emailVerificationCode):not(#verificationCode)").forEach((input) => {
+            const errorMessage = input.closest(".input-gap")
+                ? input.closest(".input-gap").parentElement.querySelector(".error-message")
+                : input.parentElement.querySelector(".error-message");
+
+            if (!input.value.trim() && !input.matches(".temp-upload-resume") && !input.matches("textarea")) {
+                input.classList.add("error");
+                if (errorMessage) {
+                    errorMessage.style.display = "block";
+                }
+                isValid = false;
+            } else {
+                input.classList.remove("error");
+                if (errorMessage) {
+                    errorMessage.style.display = "none";
+                }
+            }
+        });
+
+        // 폼 제출 처리
+        if (isValid) {
+            alert("회원정보가 수정되었습니다.")
+            await myPageService.updateMemberProfileByMemberId({
+                memberId: memberId, profileName: InputProfileName.value,
+                profileNickName: InputProfileNickName.value, profileGender: selectedProfileGender,
+                profileAge: InputProfileAge.value, profileEtc: textareaProfileEtc.value
+            });
+            await myPageService.getMemberProfileByMemberId(memberId, showMyProfile);
+        } else {
+            alert("예시 형식에 맞게 필수 항목을 모두 작성해 주세요.")
+        }
+    }
+
+    if(e.target.id === 'btn-cancle') {
+        const memberId = e.target.classList[3];
+        const originalProfileName = document.querySelector(".original-profileName");
+        const originalProfileNickName = document.querySelector(".original-profileNickName");
+        const originalProfileGender = document.querySelector(".original-profileGender");
+        const originalProfileAge = document.querySelector(".original-profileAge");
+        const originalProfileEtc = document.querySelector(".original-profileEtc");
+
+        console.log(originalProfileName.innerText);
+        alert("회원정보 수정이 취소되었습니다.")
+
+        await myPageService.updateMemberProfileByMemberId({
+            memberId: memberId, profileName: originalProfileName.innerText,
+            profileNickName: originalProfileNickName.innerText, profileGender: originalProfileGender.innerText,
+            profileAge: originalProfileAge.innerText, profileEtc: originalProfileEtc.innerText
+        });
+        await myPageService.getMemberProfileByMemberId(memberId, showMyProfile);
+    }
+})
