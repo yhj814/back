@@ -65,11 +65,11 @@ public class MemberRestController {
     }
 
     // 회원 정보 수정
-    @PutMapping("/member/video/my-page/update")
+    @PostMapping("/member/video/my-page/update")
     public RedirectView update(MemberProfileDTO memberProfileDTO) {
         log.info(memberProfileDTO.toString());
         myPageService.updateMemberProfile(memberProfileDTO.toVO());
-        return new RedirectView("/member/video/my-page?id=" + memberProfileDTO.getMemberId());
+        return new RedirectView("/member/video/my-page");
     }
 //************************************************************************************************
 

@@ -2239,9 +2239,9 @@
 <!--                                                </div>-->
                                                 <div class="inquiry-footer">
                                                     <div class="button-box">
-                                                        <button class="btn btn-gray btn-back" type="button">
-                                                            취소
-                                                        </button>
+<!--                                                        <button class="btn btn-gray btn-back" type="button">-->
+<!--                                                            취소-->
+<!--                                                        </button>-->
                                                         <button
                                                             id="btn-submit" type="submit"
                                                             class="btn btn-partner btn-submit">
@@ -2501,87 +2501,87 @@
     </body>
     <script th:inline="javascript">
         const memberId = [[${member.id}]];
-        // const memberProfile = [[${memberProfile}]];
-        //
-        // const updateBtn = document.getElementById("btn-submit");
-        //
-        // updateBtn.addEventListener('click', (e) => {
-        //     e.preventDefault();
-        //
-        //     let isValid = true;
-        //     let selectedValue = null;
-        //
-        //     const memberProfileId = document.querySelector("input[name=id]");
-        //     const profileName = document.querySelector("input[name=profileName]");
-        //     const profileNickName = document.querySelector("input[name=profileNickName]");
-        //     const profileGender = document.querySelector("input[name=profileGender]");
-        //     const profileAge = document.querySelector("input[name=profileAge]");
-        //     const profileEmail = document.querySelector("input[name=profileEmail]");
-        //     const profilePhone = document.querySelector("input[name=profilePhone]");
-        //     const profileEtc = document.querySelector("textarea[name=profileEtc]");
-        //
-        //     const profileGenderMan = document.getElementById('gender-1');
-        //     const profileGenderWoman = document.getElementById('gender-2');
-        //
-        //     if (profileGenderMan.checked) {
-        //         selectedValue = profileGenderMan.value; // profileGenderMan radio 버튼 선택 시
-        //     } else if (profileGenderWoman.checked) {
-        //         selectedValue = profileGenderWoman.value; // profileGenderWoman radio 버튼 선택 시
-        //     }
-        //
-        //     profileGender.value = selectedValue;
-        //
-        //     // 이메일 필드 유효성 검사
-        //     const emailField = document.querySelector("input[name='profileEmail']");
-        //     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        //     if (!validateField(emailField, emailRegex, "올바른 이메일 주소를 입력해주세요.")) {
-        //         isValid = false;
-        //     }
-        //
-        //     // 전화번호 필드 유효성 검사
-        //     const phoneField = document.querySelector("input[name='profilePhone']");
-        //     const phoneRegex = /^(010|011|016|017|018|019)-\d{3,4}-\d{4}$/;
-        //     if (!validateField(phoneField, phoneRegex, "올바른 전화번호를 입력해주세요.")) {
-        //         isValid = false;
-        //     }
-        //
-        //     // 기타 필드 유효성 검사 (인증번호 필드는 제외)
-        //     document.querySelectorAll(".form-control:not(#emailVerificationCode):not(#verificationCode)").forEach((input) => {
-        //         const errorMessage = input.closest(".input-gap")
-        //             ? input.closest(".input-gap").parentElement.querySelector(".error-message")
-        //             : input.parentElement.querySelector(".error-message");
-        //
-        //         if (!input.value.trim() && !input.matches(".temp-upload-resume") && !input.matches("textarea")) {
-        //             input.classList.add("error");
-        //             if (errorMessage) {
-        //                 errorMessage.style.display = "block";
-        //             }
-        //             isValid = false;
-        //         } else {
-        //             input.classList.remove("error");
-        //             if (errorMessage) {
-        //                 errorMessage.style.display = "none";
-        //             }
-        //         }
-        //     });
-        //
-        //     console.log("0 ", memberProfileId.value);
-        //     console.log("1 ", profileName.value);
-        //     console.log("2 ", profileNickName.value);
-        //     console.log("3 ", profileGender.value);
-        //     console.log("4 ", profileAge.value);
-        //     console.log("5 ", profileEmail.value);
-        //     console.log("6 ", profilePhone.value);
-        //     console.log("7 ", profileEtc.value);
-        //
-        //     // 폼 제출 처리
-        //     if (isValid) {
-        //         document['update-form'].submit();
-        //     } else {
-        //         alert("예시 형식에 맞게 필수 항목을 모두 작성해 주세요.")
-        //     }
-        //
-        // });
+        const memberProfile = [[${memberProfile}]];
+
+        const updateBtn = document.getElementById("btn-submit");
+
+        updateBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+
+            let isValid = true;
+            // let selectedValue = null;
+            //
+            const memberProfileId = document.querySelector("input[name=id]");
+            const profileName = document.querySelector("input[name=profileName]");
+            const profileNickName = document.querySelector("input[name=profileNickName]");
+            const profileGender = document.querySelector("input[name=profileGender]");
+            const profileAge = document.querySelector("input[name=profileAge]");
+            const profileEmail = document.querySelector("input[name=profileEmail]");
+            const profilePhone = document.querySelector("input[name=profilePhone]");
+            const profileEtc = document.querySelector("textarea[name=profileEtc]");
+            //
+            // const profileGenderMan = document.getElementById('gender-1');
+            // const profileGenderWoman = document.getElementById('gender-2');
+            //
+            // if (profileGenderMan.checked) {
+            //     selectedValue = profileGenderMan.value; // profileGenderMan radio 버튼 선택 시
+            // } else if (profileGenderWoman.checked) {
+            //     selectedValue = profileGenderWoman.value; // profileGenderWoman radio 버튼 선택 시
+            // }
+            //
+            // profileGender.value = selectedValue;
+
+            // 이메일 필드 유효성 검사
+            const emailField = document.querySelector("input[name='profileEmail']");
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!validateField(emailField, emailRegex, "올바른 이메일 주소를 입력해주세요.")) {
+                isValid = false;
+            }
+
+            // 전화번호 필드 유효성 검사
+            const phoneField = document.querySelector("input[name='profilePhone']");
+            const phoneRegex = /^(010|011|016|017|018|019)-\d{3,4}-\d{4}$/;
+            if (!validateField(phoneField, phoneRegex, "올바른 전화번호를 입력해주세요.")) {
+                isValid = false;
+            }
+
+            // 기타 필드 유효성 검사 (인증번호 필드는 제외)
+            document.querySelectorAll(".form-control:not(#emailVerificationCode):not(#verificationCode)").forEach((input) => {
+                const errorMessage = input.closest(".input-gap")
+                    ? input.closest(".input-gap").parentElement.querySelector(".error-message")
+                    : input.parentElement.querySelector(".error-message");
+
+                if (!input.value.trim() && !input.matches(".temp-upload-resume") && !input.matches("textarea")) {
+                    input.classList.add("error");
+                    if (errorMessage) {
+                        errorMessage.style.display = "block";
+                    }
+                    isValid = false;
+                } else {
+                    input.classList.remove("error");
+                    if (errorMessage) {
+                        errorMessage.style.display = "none";
+                    }
+                }
+            });
+
+            console.log("0 ", memberProfileId.value);
+            console.log("1 ", profileName.value);
+            console.log("2 ", profileNickName.value);
+            console.log("3 ", profileGender.value);
+            console.log("4 ", profileAge.value);
+            console.log("5 ", profileEmail.value);
+            console.log("6 ", profilePhone.value);
+            console.log("7 ", profileEtc.value);
+
+            // 폼 제출 처리
+            if (isValid) {
+                document['update-form'].submit();
+            } else {
+                alert("예시 형식에 맞게 필수 항목을 모두 작성해 주세요.")
+            }
+
+        });
 
         document.getElementById("soft-delete").addEventListener("click", (e) => {
             location.href = `/member/video/my-page/delete?id=${memberId}`;

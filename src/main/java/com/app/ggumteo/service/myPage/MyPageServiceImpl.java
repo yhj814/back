@@ -315,6 +315,8 @@ public class MyPageServiceImpl implements MyPageService {
     @Override
     public void updateMemberProfile(MemberProfileVO memberProfileVO) {
         memberProfileDAO.setMemberProfile(memberProfileVO);
+
+        log.info("memberProfileVO={}", memberProfileVO);
     }
 
     //    마이페이지 - 회원 탈퇴

@@ -183,7 +183,7 @@ public class MyPageServiceTests {
     @Test
     public void testUpdateMemberProfile() {
         MemberProfileDTO memberProfileDTO = new MemberProfileDTO();
-        memberProfileDTO.setMemberId(2L);
+        memberProfileDTO.setId(2L);
         memberProfileDTO.setProfileName("수정된 이름");
         memberProfileDTO.setProfileNickName("수정된 닉네임");
         memberProfileDTO.setProfileAge(30);
@@ -192,7 +192,7 @@ public class MyPageServiceTests {
         memberProfileDTO.setProfilePhone("01045678912");
         memberProfileDTO.setProfileEtc("추가추가");
 
-        myPageService.updateMemberProfileByMemberId(memberProfileDTO.toVO());
+        myPageService.updateMemberProfile(memberProfileDTO.toVO());
 
         log.info("memberProfileDTO={}", memberProfileDTO);
     }
