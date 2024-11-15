@@ -5,88 +5,47 @@ document.addEventListener("DOMContentLoaded", function () {
         input.addEventListener("blur", function () {
             if (input.value.trim() === "") {
                 input.classList.add("error");
-                // input.style.border = "solid 1px #e52929";
-                input.style.position = "relative";
-                input.style.zIndex = "2";
             }
         });
 
         input.addEventListener("input", function () {
-            if (
-                input.classList.contains("error") &&
-                input.value.trim() !== ""
-            ) {
+            if (input.classList.contains("error") && input.value.trim() !== "") {
                 input.classList.remove("error");
-                input.style.border = ""; // 원래 상태로 복구
-                input.style.position = "";
-                input.style.zIndex = "";
             }
         });
     });
 
-    const targetInputNames = ["postTitle", "auditionCareer", "expectedAmount"];
-
-    targetInputNames.forEach((name) => {
-        const inputElement = document.querySelector(`input[name="${name}"]`);
-        if (inputElement) {
-            inputElement.addEventListener("focus", function () {
-                const parentDiv = inputElement.closest("div");
-                if (parentDiv) {
-                    parentDiv.classList.add("label-effect");
-                }
-            });
-
-            inputElement.addEventListener("blur", function () {
-                const parentDiv = inputElement.closest("div");
-                if (parentDiv && inputElement.value.trim() === "") {
-                    parentDiv.classList.remove("label-effect");
-                }
-            });
-        }
-    });
-
+    // Textarea 유효성 검사 수정
     const textareas = document.querySelectorAll("textarea");
 
     textareas.forEach((textarea) => {
-        // textarea에 포커스가 가면 상위 div에 active 클래스 추가
         textarea.addEventListener("focus", function () {
-            const parentDiv = textarea.closest("div");
+            const parentDiv = textarea.closest(".input-box"); // 상위 div 클래스명 확인
             if (parentDiv) {
                 parentDiv.classList.add("active");
             }
         });
 
-        // textarea에서 포커스가 벗어날 때
         textarea.addEventListener("blur", function () {
-            const parentDiv = textarea.closest("div");
+            const parentDiv = textarea.closest(".input-box"); // 상위 div 클래스명 확인
             if (parentDiv) {
                 parentDiv.classList.remove("active");
 
-                // 포커스가 벗어날 때 값이 없으면 상위 div에 error 클래스 추가
                 if (textarea.value.trim() === "") {
                     parentDiv.classList.add("error");
-                    parentDiv.style.border = "solid 1px #e52929"; // 테두리 스타일 적용
-                    parentDiv.style.position = "relative"; // 포지션 설정
-                    parentDiv.style.zIndex = "2"; // z-index 설정
                 }
             }
         });
 
-        // textarea에 값이 입력되면 상위 div의 error 클래스 제거 및 스타일 초기화
         textarea.addEventListener("input", function () {
-            const parentDiv = textarea.closest("div");
-            if (
-                parentDiv &&
-                parentDiv.classList.contains("error") &&
-                textarea.value.trim() !== ""
-            ) {
+            const parentDiv = textarea.closest(".input-box"); // 상위 div 클래스명 확인
+            if (parentDiv && parentDiv.classList.contains("error") && textarea.value.trim() !== "") {
                 parentDiv.classList.remove("error");
-                parentDiv.style.border = ""; // 스타일 초기화
-                parentDiv.style.position = ""; // 스타일 초기화
-                parentDiv.style.zIndex = ""; // 스타일 초기화
             }
         });
     });
+
+
 
     // 날짜 입력 처리 함수
     function formatDateInput(input) {
