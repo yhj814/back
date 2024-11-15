@@ -5,7 +5,7 @@
         <choose>
             <when test="memberEmail != null">
                 insert into tbl_member(member_email, profile_img_url, member_status)
-                values (#{memberEmail},#{profileImgUrl}, #{memberStatus})
+                values (#{memberEmail},#{profileImgUrl}, 'YES')
             </when>
         </choose>
     </insert>

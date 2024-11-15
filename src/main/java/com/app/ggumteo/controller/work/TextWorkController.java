@@ -142,12 +142,11 @@ public class TextWorkController {
         List<PostFileDTO> existingFiles = postFileService.findFilesByPostId(id); // 기존 파일 조회
         log.info("Fetched work: {}", work);  // work 객체를 로그로 출력해 확인
 
-        if (work != null) {  // work가 null이 아닌지 확인
+        if (work != null) {
             model.addAttribute("work", work);
             model.addAttribute("existingFiles", existingFiles);
             return "text/modify";
         } else {
-            // work가 null인 경우 처리 (예: 에러 페이지로 이동)
             model.addAttribute("error", "작품을 찾을 수 없습니다.");
             return "text/error";
         }

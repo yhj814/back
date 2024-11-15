@@ -5,8 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>올린작품수정</title>
     <link rel="stylesheet" href="/css/video/modify.css" />
+    <link rel="stylesheet" th:href="@{/css/header/logout.css}">
+    <link rel="stylesheet" th:href="@{/css/header/login.css}">
+    <link rel="stylesheet" th:href="@{/css/footer/footer.css}">
 </head>
 <body>
+<th:block th:if="${isLoggedIn}">
+    <div th:replace="~{header-login :: header}"></div>
+</th:block>
+<th:block th:if="${!isLoggedIn}">
+    <div th:replace="~{header-logout :: header}"></div>
+</th:block>
 <header></header>
 <main>
     <div class="main">
@@ -457,7 +466,10 @@
         </div>
     </div>
 </main>
-<footer></footer>
+<footer th:replace="~{footer.html :: footer}"></footer>
 </body>
 <script src="/js/video/modify.js"></script>
+<script th:src="@{/js/header/header-logout.js}" defer></script>
+<script th:src="@{/js/header/header-login.js}" defer></script>
+<script th:src="@{/js/header/logout-click.js}" defer></script>
 </html>

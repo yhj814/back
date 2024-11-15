@@ -5,9 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>영상 작품 목록</title>
     <link rel="stylesheet" href="/css/video/list.css" />
+    <link rel="stylesheet" th:href="@{/css/header/logout.css}">
+    <link rel="stylesheet" th:href="@{/css/header/login.css}">
+    <link rel="stylesheet" th:href="@{/css/footer/footer.css}">
 </head>
 <body>
-<div class="main-header">
+<th:block th:if="${isLoggedIn}">
+    <div th:replace="~{header-login :: header}"></div>
+</th:block>
+<th:block th:if="${!isLoggedIn}">
+    <div th:replace="~{header-logout :: header}"></div>
+</th:block>
+<div class="main-header" style="background: white">
     <div class="container">
         <a class="sub-navigation" th:href="@{/video/list}">
             <div>작품</div>
@@ -20,7 +29,7 @@
         </a>
     </div>
 </div>
-<div class="main">
+<div class="main" style="background: white">
     <div class="container">
         <div class="content-wrapper">
             <div class="list">
@@ -147,7 +156,10 @@
         </div>
     </div>
 </div>
+<footer th:replace="~{footer.html :: footer}"></footer>
 </body>
-
 <script src="/js/video/list.js"></script>
+<script th:src="@{/js/header/header-logout.js}" defer></script>
+<script th:src="@{/js/header/header-login.js}" defer></script>
+<script th:src="@{/js/header/logout-click.js}" defer></script>
 </html>
