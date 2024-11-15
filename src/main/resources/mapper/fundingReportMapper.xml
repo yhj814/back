@@ -27,8 +27,9 @@
         left join tbl_member_profile rp on fr.member_profile_id = rp.id
         where
         p.post_type = 'FUNDINGVIDEO'
+        and fr.id is not null -- 항상 신고된 글만 표시
 
-        <!-- 신고 관리 조건 -->
+        <!-- 신고 관리 조건: 신고 관리일 경우에만 report_status = 'REPORT' 추가 -->
         <if test="order == '신고관리'">
             and fr.report_status = 'REPORT'
         </if>
@@ -43,9 +44,9 @@
         </if>
 
         group by p.id, mp.profile_name, p.created_date, DATE_ADD(p.created_date, INTERVAL 30 DAY),
-                 f.genre_type, p.post_title, p.post_type,
-                 f.converge_price, f.target_price, f.investor_number, rp.profile_name,
-                 rp.profile_email, fr.report_status, fr.created_date, fr.report_contents
+        f.genre_type, p.post_title, p.post_type,
+        f.converge_price, f.target_price, f.investor_number, rp.profile_name,
+        rp.profile_email, fr.report_status, fr.created_date, fr.report_contents
 
         <!-- 정렬 조건 -->
         <choose>
@@ -60,6 +61,7 @@
         limit #{pagination.startRow}, #{pagination.rowCount}
     </select>
 
+
     <!-- 모든 영상 펀딩 신고글 개수 조회 -->
     <select id="fundingVideoReportCounts" resultType="int">
         select
@@ -71,8 +73,9 @@
         left join tbl_funding_report fr on fr.funding_id = f.id
         where
         p.post_type = 'FUNDINGVIDEO'
+        and fr.id is not null -- 항상 신고된 글만 카운트
 
-        <!-- 신고 관리 조건 -->
+        <!-- 신고 관리 조건: 신고 관리일 경우에만 report_status = 'REPORT' 추가 -->
         <if test="order == '신고관리'">
             and fr.report_status = 'REPORT'
         </if>
@@ -86,6 +89,7 @@
             )
         </if>
     </select>
+
 
     <!-- 펀딩 영상 신고 상태 업데이트 -->
     <update id="fundingVideoStatusChange">
@@ -120,8 +124,9 @@
         left join tbl_member_profile rp on fr.member_profile_id = rp.id
         where
         p.post_type = 'FUNDINGTEXT'
+        and fr.id is not null -- 항상 신고된 글만 표시
 
-        <!-- 신고 관리 조건 -->
+        <!-- 신고 관리 조건: 신고 관리일 경우에만 report_status = 'REPORT' 추가 -->
         <if test="order == '신고관리'">
             and fr.report_status = 'REPORT'
         </if>
@@ -164,8 +169,9 @@
         left join tbl_funding_report fr on fr.funding_id = f.id
         where
         p.post_type = 'FUNDINGTEXT'
+        and fr.id is not null -- 항상 신고된 글만 카운트
 
-        <!-- 신고 관리 조건 -->
+        <!-- 신고 관리 조건: 신고 관리일 경우에만 report_status = 'REPORT' 추가 -->
         <if test="order == '신고관리'">
             and fr.report_status = 'REPORT'
         </if>
@@ -179,6 +185,7 @@
             )
         </if>
     </select>
+
 
     <!-- 펀딩 영상 신고 상태 업데이트 -->
     <update id="fundingTextStatusChange">

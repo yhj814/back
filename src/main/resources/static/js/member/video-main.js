@@ -170,80 +170,80 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // 각 입력 필드의 유효성 검사를 위한 정규식 패턴 정의
-    const validationPatterns = {
-        name: /^[가-힣]{2,4}$/, // 한글 2~4자만 허용 예) 홍길동
-        age: /^[0-9]{1,2}$/, // 숫자만 1~2자 허용 예) 21
-        email: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, // 일반 이메일 형식 예) ggumteo@naver.com
-        phonenumber: /^010\d{7,8}$/, // 010으로 시작하고 숫자가 10~11자 예) 01099999999
-    };
-
-    // 모든 필수 입력 필드 선택
-    const inputFields = document.querySelectorAll(".required");
-
-    // 입력 필드 변화 시 유효성 검사 적용
-    inputFields.forEach(function (input) {
-        input.addEventListener("input", function () {
-            validateInput(input);
-        });
-    });
-
-    // 유효성 검사 함수
-    function validateInput(input) {
-        const fieldId = input.id;
-        const pattern = validationPatterns[fieldId];
-
-        // 각 필드의 id에 해당하는 패턴이 있을 때만 검사
-        if (pattern) {
-            if (!pattern.test(input.value.trim())) {
-                input.classList.remove("input-valid");
-                input.classList.add("input-invalid");
-            } else {
-                input.classList.remove("input-invalid");
-                input.classList.add("input-valid");
-            }
-        } else {
-            // 추가사항 작성은 비어 있어도 valid 처리
-            if (fieldId === "addwrite") {
-                if (input.value.trim() === "") {
-                    input.classList.remove("input-valid");
-                    input.classList.remove("input-invalid");
-                } else {
-                    input.classList.remove("input-invalid");
-                    input.classList.add("input-valid");
-                }
-            }
-        }
-    }
-
-    // 폼 제출 시 모든 필수 항목이 유효한지 확인
-    const submitButton = document.querySelector(".btn-submit");
-    if (submitButton) {
-        submitButton.addEventListener("click", function (event) {
-            let isValid = true;
-
-            // 제출 시 모든 필드 재검사
-            inputFields.forEach(function (input) {
-                validateInput(input);
-
-                // 유효성 검사를 통과하지 못하면 isValid를 false로 설정
-                if (
-                    input.classList.contains("input-invalid") ||
-                    !input.classList.contains("input-valid")
-                ) {
-                    isValid = false;
-                }
-            });
-
-            // 유효하지 않은 경우 경고 메시지 표시 및 제출 막기
-            if (!isValid) {
-                event.preventDefault();
-                alert("예시 형식에 맞게 필수 항목을 모두 작성해 주세요.");
-            } else {
-                alert("성공적으로 제출되었습니다.");
-            }
-        });
-    }
+    // // 각 입력 필드의 유효성 검사를 위한 정규식 패턴 정의
+    // const validationPatterns = {
+    //     name: /^[가-힣]{2,4}$/, // 한글 2~4자만 허용 예) 홍길동
+    //     age: /^[0-9]{1,2}$/, // 숫자만 1~2자 허용 예) 21
+    //     email: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, // 일반 이메일 형식 예) ggumteo@naver.com
+    //     phonenumber: /^010\d{7,8}$/, // 010으로 시작하고 숫자가 10~11자 예) 01099999999
+    // };
+    //
+    // // 모든 필수 입력 필드 선택
+    // const inputFields = document.querySelectorAll(".required");
+    //
+    // // 입력 필드 변화 시 유효성 검사 적용
+    // inputFields.forEach(function (input) {
+    //     input.addEventListener("input", function () {
+    //         validateInput(input);
+    //     });
+    // });
+    //
+    // // 유효성 검사 함수
+    // function validateInput(input) {
+    //     const fieldId = input.id;
+    //     const pattern = validationPatterns[fieldId];
+    //
+    //     // 각 필드의 id에 해당하는 패턴이 있을 때만 검사
+    //     if (pattern) {
+    //         if (!pattern.test(input.value.trim())) {
+    //             input.classList.remove("input-valid");
+    //             input.classList.add("input-invalid");
+    //         } else {
+    //             input.classList.remove("input-invalid");
+    //             input.classList.add("input-valid");
+    //         }
+    //     } else {
+    //         // 추가사항 작성은 비어 있어도 valid 처리
+    //         if (fieldId === "addwrite") {
+    //             if (input.value.trim() === "") {
+    //                 input.classList.remove("input-valid");
+    //                 input.classList.remove("input-invalid");
+    //             } else {
+    //                 input.classList.remove("input-invalid");
+    //                 input.classList.add("input-valid");
+    //             }
+    //         }
+    //     }
+    // }
+    //
+    // // 폼 제출 시 모든 필수 항목이 유효한지 확인
+    // const submitButton = document.querySelector(".btn-submit");
+    // if (submitButton) {
+    //     submitButton.addEventListener("click", function (event) {
+    //         let isValid = true;
+    //
+    //         // 제출 시 모든 필드 재검사
+    //         inputFields.forEach(function (input) {
+    //             validateInput(input);
+    //
+    //             // 유효성 검사를 통과하지 못하면 isValid를 false로 설정
+    //             if (
+    //                 input.classList.contains("input-invalid") ||
+    //                 !input.classList.contains("input-valid")
+    //             ) {
+    //                 isValid = false;
+    //             }
+    //         });
+    //
+    //         // 유효하지 않은 경우 경고 메시지 표시 및 제출 막기
+    //         if (!isValid) {
+    //             event.preventDefault();
+    //             alert("예시 형식에 맞게 필수 항목을 모두 작성해 주세요.");
+    //         } else {
+    //             alert("성공적으로 제출되었습니다.");
+    //         }
+    //     });
+    // }
 
     // textarea 크기 조절 함수
     function resizeTextarea(textarea) {
@@ -320,151 +320,11 @@ const closeBtn = document.querySelector(".close-btn");
 
 withdrawBtn.addEventListener("click", () => {
     withdrawModal.style.display = "flex"
-})
+});
 
 closeBtn.addEventListener("click", () => {
     withdrawModal.style.display = "none"
-})
+});
 
-// // 추가 : 내 정보
-// document.addEventListener("DOMContentLoaded", function () {
-//     const formControls = document.querySelectorAll(".form-control");
-//
-//     formControls.forEach((control) => {
-//         let hasBeenFocused = false;
-//
-//         control.addEventListener("focus", () => {
-//             control.classList.add("active");
-//             hasBeenFocused = true;
-//         });
-//
-//         control.addEventListener("blur", () => {
-//             const errorMessage = control.closest(".input-gap")
-//                 ? control.closest(".input-gap").parentElement.querySelector(".error-message")
-//                 : control.parentElement.querySelector(".error-message");
-//
-//             if (control.value.trim() === "" && !control.matches("textarea")) {
-//                 control.classList.add("error");
-//                 if (errorMessage) {
-//                     errorMessage.style.display = "block";
-//                 }
-//             } else {
-//                 control.classList.remove("error");
-//                 if (errorMessage) {
-//                     errorMessage.style.display = "none";
-//                 }
-//             }
-//         });
-//     });
-//
-//     // 유효성 검사 함수 (이메일, 전화번호 전용 - 인증번호는 제외)
-//     function validateField(input, regex, errorMessageText) {
-//         const errorMessage = input.closest(".input-gap")
-//             ? input.closest(".input-gap").parentElement.querySelector(".error-message")
-//             : input.parentElement.querySelector(".error-message");
-//
-//         if (!regex.test(input.value.trim())) {
-//             input.classList.add("error");
-//             if (errorMessage) {
-//                 errorMessage.textContent = errorMessageText;
-//                 errorMessage.style.display = "block";
-//             }
-//             return false;
-//         } else {
-//             input.classList.remove("error");
-//             if (errorMessage) {
-//                 errorMessage.style.display = "none";
-//             }
-//             return true;
-//         }
-//     }
-//
-//     // 전화번호 포맷 자동 추가
-//     const phoneField = document.querySelector("input[name='profilePhone']");
-//     phoneField.addEventListener("input", (event) => {
-//         let value = event.target.value.replace(/[^0-9]/g, "");
-//         if (value.length > 3 && value.length <= 7) {
-//             value = value.slice(0, 3) + "-" + value.slice(3);
-//         } else if (value.length > 7) {
-//             value = value.slice(0, 3) + "-" + value.slice(3, 7) + "-" + value.slice(7);
-//         }
-//         event.target.value = value;
-//     });
-//
-//     // 이메일 인증번호 요청 버튼 클릭 시 유효성 검사 및 `.certification-input` 클래스 제거
-//     document.getElementById("requestEmailCode").addEventListener("click", function () {
-//         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-//         const emailField = document.querySelector("input[name='profileEmail']");
-//
-//         if (validateField(emailField, emailRegex, "올바른 이메일 주소를 입력해주세요.")) {
-//             const emailCertificationInput = document.getElementById("emailVerificationCode").closest(".certification-input");
-//             if (emailCertificationInput) {
-//                 emailCertificationInput.classList.remove("certification-input");
-//             }
-//         }
-//     });
-//
-//     // 전화번호 인증번호 요청 버튼 클릭 시 유효성 검사 및 `.certification-input` 클래스 제거
-//     document.getElementById("requestVerificationCode").addEventListener("click", function () {
-//         const phoneRegex = /^(010|011|016|017|018|019)-\d{3,4}-\d{4}$/;
-//
-//         if (validateField(phoneField, phoneRegex, "올바른 전화번호를 입력해주세요.")) {
-//             const phoneCertificationInput = document.getElementById("verificationCode").closest(".certification-input");
-//             if (phoneCertificationInput) {
-//                 phoneCertificationInput.classList.remove("certification-input");
-//             }
-//         }
-//     });
-//
-//     // 전체 폼 유효성 검사 및 제출 함수
-//     function validateAndSubmitForm() {
-//         let isValid = true;
-//
-//         // 이메일 필드 유효성 검사
-//         const emailField = document.querySelector("input[name='profileEmail']");
-//         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-//         if (!validateField(emailField, emailRegex, "올바른 이메일 주소를 입력해주세요.")) {
-//             isValid = false;
-//         }
-//
-//         // 전화번호 필드 유효성 검사
-//         const phoneField = document.querySelector("input[name='profilePhone']");
-//         const phoneRegex = /^(010|011|016|017|018|019)-\d{3,4}-\d{4}$/;
-//         if (!validateField(phoneField, phoneRegex, "올바른 전화번호를 입력해주세요.")) {
-//             isValid = false;
-//         }
-//
-//         // 기타 필드 유효성 검사 (인증번호 필드는 제외)
-//         document.querySelectorAll(".form-control:not(#emailVerificationCode):not(#verificationCode)").forEach(function (input) {
-//             const errorMessage = input.closest(".input-gap")
-//                 ? input.closest(".input-gap").parentElement.querySelector(".error-message")
-//                 : input.parentElement.querySelector(".error-message");
-//
-//             if (!input.value.trim() && !input.matches(".temp-upload-resume") && !input.matches("textarea")) {
-//                 input.classList.add("error");
-//                 if (errorMessage) {
-//                     errorMessage.style.display = "block";
-//                 }
-//                 isValid = false;
-//             } else {
-//                 input.classList.remove("error");
-//                 if (errorMessage) {
-//                     errorMessage.style.display = "none";
-//                 }
-//             }
-//         });
-//
-//         // 폼 제출 처리
-//         if (isValid) {
-//             document.getElementById("base-edit-form").submit();
-//         } else {
-//             console.log("Form validation failed. Please fill in all required fields.");
-//         }
-//     }
-//
-//     document.getElementById("consulting_apply_button").addEventListener("click", function (event) {
-//         event.preventDefault();
-//         validateAndSubmitForm();
-//     });
-// });
-//
+
+

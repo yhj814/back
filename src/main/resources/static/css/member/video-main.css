@@ -686,12 +686,6 @@ body.partners_profile .edit-menu-box .profile-menu-setting .setting-table .setti
     content: "";
     table-layout: fixed;
 }
-.section_search {
-    margin-top: 50px;
-    font-size: 13px;
-    background: #fff;
-    border-radius: 16px;
-}
 .section_search .content2 {
     position: relative;
 }
@@ -1234,8 +1228,8 @@ p {
     border-top: solid 1px #e0e0e0;
 }
 .inquiry-footer .button-box {
-    margin: -24px;
     float: right;
+    margin: -24px;
 }.button-box .btn {
     width: 96px;
 }
@@ -2140,7 +2134,7 @@ html, button, input, select, textarea {
 }
 
 .form-horizontal {
-    height: 875px;
+    height: 800px;
     box-sizing: border-box;
     margin: 0;
     font-family: "NotoSansKR";
@@ -2149,6 +2143,10 @@ html, button, input, select, textarea {
 
 .form-group {
     margin-bottom: 60px;
+}
+
+.form-group.etc {
+    margin-bottom: 380px;
 }
 
 .form-horizontal .form-group:before, .form-horizontal .form-group:after {
@@ -2199,6 +2197,7 @@ html, button, input, select, textarea {
     float: left;
     color: #f33d12;
     margin-bottom: 10px;
+    font-size: 13px;
 }
 
 .fa {
@@ -2277,17 +2276,12 @@ html, button, input, select, textarea {
     display: none;
 }
 
-.certification-input-phone {
+.certification-input-email, .certification-input-phone {
     display: none;
 }
 
-.timer-container {
-    margin-top: 5px;
-    margin-bottom: 10px;
-    float: left;
-}
-
-.timer-container p {
+.email-timer-container p, .timer-container p {
+    font-size: 13px;
     color: #2099bb;
 }
 

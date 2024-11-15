@@ -415,7 +415,7 @@ function renderReportList(reports) {
             <div class="apply-table-cell">${report.postCreatedDate || ''}</div>
             <div class="apply-table-cell">${videoFieldText}</div>
             <div class="apply-table-cell post-title">
-                 <a href="#">
+                 <a href="/video/detail/${report.postId}">
                     ${report.postTitle && report.postTitle.length > 7
                     ? report.postTitle.substring(0, 7) + '...'
                     : report.postTitle || ''}
@@ -559,7 +559,7 @@ function renderTextReportList(reports) {
             <div class="apply-table-cell">${report.postCreatedDate || ''}</div>
             <div class="apply-table-cell">${textFieldText}</div>
             <div class="apply-table-cell post-title">
-                 <a href="#">
+                 <a href="/text/detail/${report.postId}">
                   ${report.postTitle && report.postTitle.length > 7
                   ? report.postTitle.substring(0, 7) + '...'
                   : report.postTitle || ''}
@@ -666,7 +666,7 @@ function renderVideoReplyReportList(replyReports) {
         row.innerHTML = `
             <div class="apply-table-cell"><input type="checkbox" class="apply-checkbox" data-id="${replyReport.replyId}"/></div>
             <div class="apply-table-cell">${replyReport.replyId}</div>
-            <div class="apply-table-cell post-title"><a href="#">${replyReport.postTitle || ''}</a></div>
+            <div class="apply-table-cell post-title"><a href="/video/detail/${replyReport.replyId}">${replyReport.postTitle || ''}</a></div>
             <div class="apply-table-cell video-reply-content" style="cursor: pointer" 
                  data-content="${replyReport.replyContent || ''}"
                     onclick="openVideoReplyModal(this)">
@@ -768,7 +768,7 @@ function renderTextReplyReportList(replyReports) {
         row.innerHTML = `
             <div class="apply-table-cell"><input type="checkbox" class="apply-checkbox" data-id="${replyReport.replyId}"/></div>
             <div class="apply-table-cell">${replyReport.replyId}</div>
-            <div class="apply-table-cell post-title"><a href="#">${replyReport.postTitle || ''}</a></div>
+            <div class="apply-table-cell post-title"><a href="/text/detail/${replyReport.replyId}">${replyReport.postTitle || ''}</a></div>
             <div class="apply-table-cell text-reply-content" style="cursor: pointer" 
                  data-content="${replyReport.replyContent || ''}"
                     onclick="openTextReplyModal(this)">
@@ -892,7 +892,7 @@ function renderVideoAuditionReportList(auditionReports) {
             <div class="apply-table-cell">${auditionReports.createdDate || ''}</div>
             <div class="apply-table-cell">${videoAuditionFieldText}</div>
             <div class="apply-table-cell" style="color: #002fff">
-                 <a href="#">
+                 <a href="/audition/video/detail/${auditionReports.postId}">
                         ${auditionReports.postTitle && auditionReports.postTitle.length > 7
                         ? auditionReports.postTitle.substring(0, 7) + '...'
                         : auditionReports.postTitle || ''}
@@ -1016,7 +1016,7 @@ function renderTextAuditionReportList(auditionReports) {
             <div class="apply-table-cell">${auditionReports.createdDate || ''}</div>
             <div class="apply-table-cell">${textAuditionFieldText}</div>
             <div class="apply-table-cell" style="color: #002fff">
-                 <a href="#">
+                 <a href="/audition/text/detail/${auditionReports.postId}">
                         ${auditionReports.postTitle && auditionReports.postTitle.length > 7
             ? auditionReports.postTitle.substring(0, 7) + '...'
             : auditionReports.postTitle || ''}
@@ -1145,7 +1145,7 @@ function renderVideoFundingReportList(fundingReports) {
             <div class="apply-table-cell">${fundingReports.endDate || ''}</div>
             <div class="apply-table-cell">${videoFundingFieldText}</div>
             <div class="apply-table-cell" style="color: #002fff">
-                 <a href="#">
+                 <a href="/video/funding/detail/${fundingReports.postId}">
                         ${fundingReports.postTitle && fundingReports.postTitle.length > 7
             ? fundingReports.postTitle.substring(0, 7) + '...'
             : fundingReports.postTitle || ''}
@@ -1274,7 +1274,7 @@ function renderTextFundingReportList(fundingReports) {
             <div class="apply-table-cell">${fundingReports.endDate || ''}</div>
             <div class="apply-table-cell">${textFundingFieldText}</div>
             <div class="apply-table-cell" style="color: #002fff">
-                 <a href="#">
+                 <a href="/text/funding/detail/${fundingReports.postId}">
                         ${fundingReports.postTitle && fundingReports.postTitle.length > 7
                         ? fundingReports.postTitle.substring(0, 7) + '...'
                         : fundingReports.postTitle || ''}

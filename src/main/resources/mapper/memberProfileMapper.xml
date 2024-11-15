@@ -13,12 +13,22 @@
                )
     </insert>
 
+    <!-- 마이페이지 - 내 정보 조회 -->
+    <select id="selectByMemberId" resultType="memberProfileVO">
+        select mp.profile_name, mp.profile_nickname, mp.profile_gender, mp.profile_age, mp.profile_email,
+               mp.profile_phone, mp.profile_etc, mp.member_id, mp.created_date, mp.updated_date,
+               m.id, m.member_status
+        from tbl_member_profile mp
+                 join tbl_member m on mp.member_id = m.id
+            and m.member_status = 'YES' and mp.id = #{memberId};
+    </select>
+
     <!-- 마이페이지 - 내 정보 수정 -->
-    <update id="updateByMemberId">
+    <update id="updateMemberProfileByMemberId">
         update tbl_member_profile
-        set profile_nickname = #{profileNickName}, profile_gender = #{profileGender},
+        set profile_name = #{profileName}, profile_nickname = #{profileNickName}, profile_gender = #{profileGender},
             profile_age = #{profileAge}, profile_email = #{profileEmail}, profile_phone = #{profilePhone},
             profile_etc = #{profileEtc}
-        where member_id = #{memberId};
+        where member_id = #{memberId}
     </update>
 </mapper>

@@ -29,8 +29,6 @@ public class MemberDAO {
         return memberMapper.getMemberProfileByMemberId(memberId);
     }
 
-
-
     //   회원 정보 조회: 마이페이지에서 조회
     public Optional<MemberVO> findById(Long id) {
         return memberMapper.selectById(id);

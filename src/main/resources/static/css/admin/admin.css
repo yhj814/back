@@ -1380,13 +1380,13 @@ h1.common-header-description {
 /* 첫번째 열 */
 #review-section .apply-header-cell:nth-child(2),
 #review-section .apply-table-cell:nth-child(2) {
-    width: 9%;
+    width: 4%;
 }
 
 /* 두번째 열 */
 #review-section .apply-header-cell:nth-child(3),
 #review-section .apply-table-cell:nth-child(3) {
-    width: 14%;
+    width: 18%;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
