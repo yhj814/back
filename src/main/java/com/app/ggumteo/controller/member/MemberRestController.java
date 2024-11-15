@@ -51,7 +51,24 @@ public class MemberRestController {
         MemberVO memberVO = (MemberVO)session.getAttribute("member");
         MemberProfileDTO memberProfileDTO = (MemberProfileDTO) session.getAttribute("memberProfile");
         model.addAttribute("member", memberVO);
-        model.addAttribute("memberProfile", memberProfileDTO);
+
+        log.info("memberProfileDTO ??={}", memberProfileDTO);
+    }
+
+    // 내 정보 조회
+    // SELECT
+    @ResponseBody
+    @GetMapping("/members/{memberId}/profile")
+    public Optional<MemberProfileVO> getMemberProfileByMemberId(@PathVariable("memberId") Long memberId) {
+        return myPageService.getMemberProfileByMemberId(memberId);
+    }
+
+    // 내 정보 수정
+    // UPDATE
+    @ResponseBody
+    @PutMapping("/members/profile/update")
+    public void updateMemberProfileByMemberId(@RequestBody MemberProfileDTO memberProfileDTO) {
+        myPageService.updateMemberProfileByMemberId(memberProfileDTO.toVO());
     }
 
     // 회원 탈퇴
@@ -64,13 +81,13 @@ public class MemberRestController {
         return new RedirectView("/main");
     }
 
-    // 회원 정보 수정
-    @PutMapping("/member/video/my-page/update")
-    public RedirectView update(MemberProfileDTO memberProfileDTO) {
-        log.info(memberProfileDTO.toString());
-        myPageService.updateMemberProfile(memberProfileDTO.toVO());
-        return new RedirectView("/member/video/my-page?id=" + memberProfileDTO.getMemberId());
-    }
+//    // 회원 정보 수정
+//    @PostMapping("/member/video/my-page/update")
+//    public RedirectView update(MemberProfileDTO memberProfileDTO) {
+//        log.info(memberProfileDTO.toString());
+//        myPageService.updateMemberProfile(memberProfileDTO.toVO());
+//        return new RedirectView("/member/video/my-page");
+//    }
 //************************************************************************************************
 
     // 내 영상 작품 게시글 목록

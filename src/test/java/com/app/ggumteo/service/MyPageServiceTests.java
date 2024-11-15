@@ -183,7 +183,7 @@ public class MyPageServiceTests {
     @Test
     public void testUpdateMemberProfile() {
         MemberProfileDTO memberProfileDTO = new MemberProfileDTO();
-        memberProfileDTO.setMemberId(2L);
+        memberProfileDTO.setMemberId(5L);
         memberProfileDTO.setProfileName("수정된 이름");
         memberProfileDTO.setProfileNickName("수정된 닉네임");
         memberProfileDTO.setProfileAge(30);
