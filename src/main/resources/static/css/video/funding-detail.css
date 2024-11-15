@@ -358,6 +358,7 @@ a {
     margin-bottom: 8px;
 }
 .more-info-box {
+    display: flex;
     border-top: solid 1px #e0e0e0;
     padding-top: 32px;
 }
@@ -376,9 +377,7 @@ a {
 .content-list {
     margin-bottom: 8px;
 }
-.similar-link {
-    float: left;
-}
+
 .link-box {
     display: inline-block;
     border-radius: 8px;

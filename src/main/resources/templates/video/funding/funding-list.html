@@ -5,9 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>영상 펀딩 목록</title>
     <link rel="stylesheet" href="/css/video/funding-list.css" />
+    <link rel="stylesheet" th:href="@{/css/header/logout.css}">
+    <link rel="stylesheet" th:href="@{/css/header/login.css}">
+    <link rel="stylesheet" th:href="@{/css/footer/footer.css}">
 </head>
 <body>
-<div class="main-header">
+<th:block th:if="${isLoggedIn}">
+    <div th:replace="~{header-login :: header}"></div>
+</th:block>
+<th:block th:if="${!isLoggedIn}">
+    <div th:replace="~{header-logout :: header}"></div>
+</th:block>
+<div class="main-header" style="background: white">
     <div class="container">
         <a class="sub-navigation" th:href="@{/video/list}">
             <div>작품</div>
@@ -20,7 +29,7 @@
         </a>
     </div>
 </div>
-<div class="main">
+<div class="main" style="background: white">
     <div class="container">
         <div class="content-wrapper">
             <div class="list">
@@ -55,19 +64,19 @@
                     <div class="filter-group-wrapper">
                         <div class="filter-group">
                             <div class="filter-box-group">
-                                <a href="/video/funding/list?genreType=romance&postType=FUNDINGTEXT" class="filter-box">로맨스</a>
+                                <a href="/video/funding/list?genreType=romance&postType=FUNDINGVIDEO" class="filter-box">로맨스</a>
                             </div>
                             <div class="filter-box-group">
-                                <a href="/video/funding/list?genreType=comedy&postType=FUNDINGTEXT" class="filter-box">코미디</a>
+                                <a href="/video/funding/list?genreType=comedy&postType=FUNDINGVIDEO" class="filter-box">코미디</a>
                             </div>
                             <div class="filter-box-group">
-                                <a href="/video/funding/list?genreType=horror&postType=FUNDINGTEXT" class="filter-box">공포</a>
+                                <a href="/video/funding/list?genreType=horror&postType=FUNDINGVIDEO" class="filter-box">공포</a>
                             </div>
                             <div class="filter-box-group">
-                                <a href="/video/funding/list?genreType=action&postType=FUNDINGTEXT" class="filter-box">액션</a>
+                                <a href="/video/funding/list?genreType=action&postType=FUNDINGVIDEO" class="filter-box">액션</a>
                             </div>
                             <div class="filter-box-group">
-                                <a href="/video/funding/list?genreType=drama&postType=FUNDINGTEXT" class="filter-box">드라마</a>
+                                <a href="/video/funding/list?genreType=drama&postType=FUNDINGVIDEO" class="filter-box">드라마</a>
                             </div>
                             <div class="box-group">
                                 <div class="write-box">
@@ -77,7 +86,8 @@
                         </div>
                     </div>
                 </div>
-                <div id="ggumteo-list-box">
+                <div id="ggumteo-list-box" style="    margin-left: -25px;
+                                                             width: 1150px;">
                     <div class="list-box-wrapper">
                         <li th:each="funding : ${fundings}" style="width: 213px">
                             <a th:href="@{/video/funding/detail/{id}(id=${funding.id})}" class="box">
@@ -153,5 +163,9 @@
     </div>
 </div>
 </body>
+<footer th:replace="~{footer.html :: footer}"></footer>
 <script src="/js/video/funding-list.js"></script>
+<script th:src="@{/js/header/header-logout.js}" defer></script>
+<script th:src="@{/js/header/header-login.js}" defer></script>
+<script th:src="@{/js/header/logout-click.js}" defer></script>
 </html>
