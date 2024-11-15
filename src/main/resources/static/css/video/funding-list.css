@@ -210,9 +210,9 @@ a {
     flex-direction: column;
 }
 .list-box-wrapper {
+    gap: 20px;
     display: flex;
     flex-wrap: wrap;
-    gap: 32px;
 }
 .box {
     width: 246px;
