@@ -1471,12 +1471,12 @@ let pagingText = ``;
                                 <div
                                     class="edit-my-off"
                                 >
-                                    <div
+                                    <img
                                         id="admin-answer-btn"
                                         class="icon-my-edit-off ${myInquiryHistory.postId}"
                                         src="/images/member/icon-open-btn.png"
                                         width="24px"
-                                    ></div>
+                                    >
                                 </div>
                                 <div
                                     class="edit-my-on"
