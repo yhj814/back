@@ -1585,10 +1585,15 @@ const showMyProfile = (myProfile) => {
     let text = ``;
 
     text = `<form class="form-horizontal has-validation-callback">
+                <div class="original-profileName" style="display: none">${myProfile.profileName}</div>
+                <div class="original-profileNickName" style="display: none">${myProfile.profileNickName}</div>
+                <div class="original-profileGender" style="display: none">${myProfile.profileGender}</div>
+                <div class="original-profileAge" style="display: none">${myProfile.profileAge}</div>
+                <div class="original-profileEtc" style="display: none">${myProfile.profileEtc}</div>
                 <div class="form-group">
                     <label class="control-label required" id="full_name_label"><span></span>이름</label>
                     <div class="control-wrapper">
-                        <input class="form-control ${myProfile.profileName}" id="full_name" placeholder="이름을 입력해 주세요." name="profileName" type="text" value="${myProfile.profileName}">
+                        <input class="form-control" id="profileName" placeholder="이름을 입력해 주세요." name="profileName" type="text" value="${myProfile.profileName}">
                         <div class="error-message">
                             <i class="fa fa-exclamation-circle"></i>
                             이 항목을 채워주십시오.
@@ -1598,7 +1603,7 @@ const showMyProfile = (myProfile) => {
                 <div class="form-group">
                     <label class="control-label required" id="full_nickname_label"><span></span> 닉네임</label>
                     <div class="control-wrapper">
-                        <input class="form-control ${myProfile.profileNickName}" id="full_nickname"
+                        <input class="form-control" id="profileNickName"
                                placeholder="사용할 닉네임을 입력해주세요." name="profileNickName" type="text" value="${myProfile.profileNickName}">
                         <div class="error-message">
                             <i class="fa fa-exclamation-circle"></i>
@@ -1615,7 +1620,7 @@ const showMyProfile = (myProfile) => {
                         </div>
                     </div>
                     <div class="control-wrapper">
-                        <ul class="list-unstyled ${myProfile.profileGender}" style="margin-bottom: 0">
+                        <ul id="profileGender" class="list-unstyled" style="margin-bottom: 0">
                             <li>
                                 <label class="radio-inline" for="gender_1">`
     if(myProfile.profileGender === '남성'){
@@ -1648,73 +1653,17 @@ const showMyProfile = (myProfile) => {
                 <div class="form-group">
                     <label class="control-label" for="date_of_birth" id="date_of_birth_label">나이</label>
                     <div class="control-wrapper">
-                        <input class="form-control ${myProfile.profileAge}" id="member-age" name="profileAge" placeholder="만 나이를 입력해주세요." type="text" value="${myProfile.profileAge}">
+                        <input class="form-control" id="profileAge" name="profileAge" placeholder="만 나이를 입력해주세요." type="text" value="${myProfile.profileAge}">
                         <div class="error-message">
                             <i class="fa fa-exclamation-circle"></i>
                             이 항목을 채워주십시오.
                         </div>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label class="control-label">이메일</label>
-
-                    <div class="control-wrapper">
-                        <div class="input-gap loading-icon-wrap">
-                            <input class="form-control ${myProfile.profileEmail}" data-exception="yes" placeholder="이메일을 입력하세요." name="profileEmail" type="text" value="${myProfile.profileEmail}">
-                            <button class="btn btn-certification-select" type="button" id="requestEmailCode">인증번호 요청</button>
-                            <img class="loading-icon" id="loadingGif" src="/images/main/loading.gif" alt="Loading...">
-                        </div>
-                        <div class="error-message">
-                            <i class="fa fa-exclamation-circle"></i>
-                            올바른 이메일 주소를
-                            입력해주세요.
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group certification-input-email">
-                    <label class="control-label required">이메일 인증</label>
-                    <div class="control-wrapper ">
-                        <div class="input-gap">
-                            <input class="form-control " id="emailVerificationCode" placeholder="인증번호를 입력하세요." type="text">
-                            <button class="btn btn-certification-select" type="button" id="verifyEmailCode">인증번호 확인</button>
-                        </div>
-                        <div class="error-message" id="emailVerificationError" style="display: none;"></div>
-                        <div class="email-timer-container" style="display: none;">
-                            <p>인증번호 유효 시간: <span id="emailTimerDisplay">3:00</span></p>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label">연락처</label>
-                    <div class="control-wrapper">
-                        <div class="input-gap">
-                            <input class="form-control ${myProfile.profilePhone}" data-exception="yes" placeholder="전화번호를 입력하세요." name="profilePhone" type="text" value="${myProfile.profilePhone}">
-                            <button class="btn btn-certification-select" type="button" id="requestVerificationCode">인증번호 요청</button>
-                        </div>
-                        <div class="error-message">
-                            <i class="fa fa-exclamation-circle"></i>
-                            올바른 전화번호를 입력해주세요.
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group certification-input-phone">
-                    <label class="control-label required">전화번호 인증</label>
-                    <div class="control-wrapper ">
-                        <div class="input-gap">
-                            <input class="form-control " id="verificationCode" placeholder="인증번호를 입력하세요." type="text">
-                            <button class="btn btn-certification-select" type="button" id="verifyCode">인증번호 확인</button>
-                        </div>
-                        <div class="error-message" id="verificationError">인증번호를 입력하세요.</div>
-                        <!-- 타이머 표시 영역 -->
-                        <div class="timer-container" style="display: none;">
-                            <p>인증번호 유효 시간: <span id="timerDisplay">3:00</span></p>
-                        </div>
-                    </div>
-                </div>
                 <div class="form-group etc">
                     <label class="control-label">추가 작성사항</label>
                     <div class="control-wrapper">
-                        <textarea class="form-control ${myProfile.profileEtc} form-textarea" placeholder="간단한 자기소개를 입력해주세요." name="profileEtc" value="${myProfile.profileEtc}" style="height: 340px"></textarea>
+                        <textarea class="form-control form-textarea" id="profileEtc" placeholder="간단한 자기소개를 입력해주세요." name="profileEtc" value="${myProfile.profileEtc}" style="height: 340px"></textarea>
                         <div class="error-message">
                             <i class="fa fa-exclamation-circle"></i>
                             간단한 자기소개를 입력해주세요.
@@ -1723,7 +1672,7 @@ const showMyProfile = (myProfile) => {
                 </div>
                 <div class="inquiry-footer">
                     <div class="button-box">
-                        <button id="btn-cancle" class="btn btn-gray btn-back" type="button">
+                        <button id="btn-cancle" class="btn btn-gray btn-back ${myProfile.memberId}" type="button">
                             취소
                         </button>
                         <button
@@ -1736,5 +1685,161 @@ const showMyProfile = (myProfile) => {
             </form>`;
 
     myProfileLayout.innerHTML = text;
+}
+
+const showMyNotification = (notifications) => {
+   let text = ``;
+
+    text += `   <div class="noti-center-header">
+                    <div
+                            class="subtitle-1 noti-center-title"
+                    >
+                        전체 알림
+                    </div>
+                    <div class="noti-center-header-more">
+                        <div class="noti-center-refresh">
+                            <div class="refresh-btn">
+                                <img
+                                        class="refresh-img"
+                                        src="/images/member/refresh.png"
+                                />새로고침
+                                <!--                               전체 update -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="noti-body">
+                    <div class="noti-box date-box">
+                        <div class="noti-box-wrapper">
+                            <p class="noti-date-title">
+                                10월 08일 화요일
+                                <!--                               알림 날짜 -->
+                            </p>
+                        </div>
+                    </div>
+                    <div class="noti-box unread">
+                        <div class="noti-box-wrapper">
+                            <div class="noti-box-content">
+                                <div class="noti-title">
+                                    작품 "심봉사와 아이들"에
+                                    댓글이 달렸습니다.
+                                    <!--                               알림 메시지 -->
+                                </div>
+                                <div class="noti-date">
+                                    2024.10.08. 오전 10시
+                                    16분
+                                    <!--                               알림 날짜와 시간 -->
+                                </div>
+                            </div>
+                        </div>
+                        <form style="display: none"
+                        ></form>
+                    </div>
+                    <div class="noti-box unread">
+                        <div
+                                class="noti-box-wrapper with-img"
+                        >
+                            <img
+                                    class="noti-img"
+                                    src="/images/member/alarm_icon.png"
+                            />
+                            <div class="noti-box-content">
+                                <div class="noti-title">
+                                    나의 모집 "[역삼역]
+                                    단편영화
+                                    배우모집합니다."에 모집
+                                    신청이 들어왔습니다.
+                                </div>
+                                <div class="noti-date">
+                                    2024.10.08. 오전 10시
+                                    15분
+                                </div>
+                            </div>
+                        </div>
+                        <form
+                                action=""
+                                style="display: none"
+                        ></form>
+                    </div>
+                    <div class="noti-box unread">
+                        <div class="noti-box-wrapper">
+                            <div class="noti-box-content">
+                                <div class="noti-title">
+                                    작품 "심봉사와 아이들"에
+                                    댓글이 달렸습니다.
+                                </div>
+                                <div class="noti-date">
+                                    2024.10.08. 오전 10시
+                                    16분
+                                </div>
+                            </div>
+                        </div>
+                        <form
+                                action=""
+                                style="display: none"
+                        ></form>
+                    </div>
+                    <div class="noti-box unread">
+                        <div
+                                class="noti-box-wrapper with-img"
+                        >
+                            <img
+                                    class="noti-img"
+                                    src="/images/member/alarm_icon.png"
+                            />
+                            <div class="noti-box-content">
+                                <div class="noti-title">
+                                    나의 펀딩 "영화
+                                    개구리소년들
+                                    모금합니다." 에 펀딩이
+                                    들어왔습니다.
+                                </div>
+                                <div class="noti-date">
+                                    2024.10.08. 오전 10시
+                                    15분
+                                </div>
+                            </div>
+                        </div>
+                        <form
+                                action=""
+                                style="display: none"
+                        ></form>
+                    </div>
+                    <div class="noti-box unread">
+                        <div
+                                class="noti-box-wrapper with-img"
+                        >
+                            <img
+                                    class="noti-img"
+                                    src="/images/member/alarm_icon.png"
+                            />
+                            <div class="noti-box-content">
+                                <div class="noti-title">
+                                    나의 모집 "[역삼역]
+                                    단편영화
+                                    배우모집합니다."에 모집
+                                    신청이 들어왔습니다.
+                                </div>
+                                <div class="noti-date">
+                                    2024.10.08. 오전 10시
+                                    15분
+                                </div>
+                            </div>
+                        </div>
+                        <form
+                                action=""
+                                style="display: none"
+                        ></form>
+                    </div>
+                </div>
+                <div
+                        class="noti-more ifclick footer-down"
+                        style="display: block"
+                >
+                    알림 더 보기<img
+                        src="/images/member/down.png"
+                />
+                </div>`
+
 }
 
