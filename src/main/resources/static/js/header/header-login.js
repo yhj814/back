@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function() {
     // **스크롤 기능 구현
-    const header = document.querySelector(".header");
+    const header = document.querySelector(".main-total-header");
     if (!header) {
         console.warn("Header element not found.");
         return;
