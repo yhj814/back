@@ -81,13 +81,6 @@ public class MemberRestController {
         return new RedirectView("/main");
     }
 
-//    // 회원 정보 수정
-//    @PostMapping("/member/video/my-page/update")
-//    public RedirectView update(MemberProfileDTO memberProfileDTO) {
-//        log.info(memberProfileDTO.toString());
-//        myPageService.updateMemberProfile(memberProfileDTO.toVO());
-//        return new RedirectView("/member/video/my-page");
-//    }
 //************************************************************************************************
 
     // 내 영상 작품 게시글 목록
