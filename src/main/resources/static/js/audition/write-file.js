@@ -13,15 +13,10 @@ document.addEventListener("DOMContentLoaded", function () {
         inputElements.forEach((inputElement) => {
             const labelInputPartner = inputElement.closest(".label-input-partner");
             if (inputElement) {
-                // inputElement.style.outline = "none";
-                // inputElement.style.border = "none";
 
                 inputElement.addEventListener("focus", function () {
                     labelInputPartner.classList.add("label-effect");
                     if (!inputElement.classList.contains("error")) {
-                        // inputElement.style.borderColor = "#00a878";
-                        // inputElement.style.borderWidth = "1px";
-                        // inputElement.style.borderStyle = "solid";
                     }
                 });
 
@@ -29,36 +24,26 @@ document.addEventListener("DOMContentLoaded", function () {
                     if (!inputElement.value) {
                         labelInputPartner.classList.remove("label-effect");
                         inputElement.classList.add("error");
-                        // inputElement.style.borderColor = "#e52929";
-                        // inputElement.style.borderWidth = "1px";
-                        // inputElement.style.borderStyle = "solid";
                     } else {
                         inputElement.classList.remove("error");
-                        // inputElement.style.border = "1px solid #e0e0e0";
                     }
                 });
 
                 inputElement.addEventListener("input", function () {
                     if (inputElement.classList.contains("error")) {
                         inputElement.classList.remove("error");
-                        // inputElement.style.borderColor = "#00a878";
-                        // inputElement.style.borderWidth = "1px";
-                        // inputElement.style.borderStyle = "solid";
                     }
                     labelInputPartner.classList.add("label-effect");
                 });
 
                 inputElement.addEventListener("mouseover", function () {
                     if (!inputElement.classList.contains("error")) {
-                        // inputElement.style.borderColor = "#00a878";
-                        // inputElement.style.borderWidth = "1px";
-                        // inputElement.style.borderStyle = "solid";
                     }
                 });
 
                 inputElement.addEventListener("mouseout", function () {
                     if (!inputElement.value && !inputElement.classList.contains("error")) {
-                        // inputElement.style.border = "1px solid #e0e0e0";
+
                     }
                 });
 
@@ -73,25 +58,20 @@ document.addEventListener("DOMContentLoaded", function () {
         textareaElements.forEach((textareaElement) => {
             const textareaBorder = textareaElement.closest(".textarea__border");
             if (textareaElement) {
-                // textareaElement.style.outline = "none";
-                // textareaElement.style.border = "none";
+
 
                 textareaElement.addEventListener("focus", function () {
                     textareaBorder.classList.add("active");
                     if (textareaBorder.classList.contains("error")) {
-                        textareaBorder.style.borderColor = "#e52929";
                     } else {
-                        // textareaBorder.style.borderColor = "#00a878";
                     }
                 });
 
                 textareaElement.addEventListener("blur", function () {
                     if (!textareaElement.value) {
                         textareaBorder.classList.add("error");
-                        textareaBorder.style.borderColor = "#e52929";
                     } else {
                         textareaBorder.classList.remove("error");
-                        // textareaBorder.style.border = "1px solid #e0e0e0";
                     }
                     textareaBorder.classList.remove("active");
                 });
@@ -99,13 +79,11 @@ document.addEventListener("DOMContentLoaded", function () {
                 textareaElement.addEventListener("input", function () {
                     if (textareaBorder.classList.contains("error")) {
                         textareaBorder.classList.remove("error");
-                        // textareaBorder.style.borderColor = "#00a878";
                     }
                 });
 
                 textareaElement.addEventListener("mouseover", function () {
                     if (textareaBorder.classList.contains("error")) {
-                        // textareaBorder.style.borderColor = "#e52929";
                     }
                 });
             }
