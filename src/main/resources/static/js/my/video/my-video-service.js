@@ -178,8 +178,6 @@ const myPageService = (() => {
         }
     }
 
-    const getUnreadAlarmsByCurrentMember = async ()
-
     return {
         getMyVideoWorkList: getMyVideoWorkList,
         getMyVideoWorkBuyerList: getMyVideoWorkBuyerList,
