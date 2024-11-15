@@ -4,7 +4,7 @@
 
     <insert id="insertPurchase" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO tbl_buy_work (member_profile_id, work_id, work_send_status)
-        VALUES (#{memberProfileId}, #{workId}, #{workSendStatus})
+        VALUES (#{memberProfileId}, #{workId}, 'NO')
     </insert>
 
     <select id="selectByWorkPostId" resultType="buyWorkDTO">
