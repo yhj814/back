@@ -19,9 +19,15 @@
     </sql>
 
     <select id="selectByMemberId" resultType="fundingDTO">
-        select "id", "genre_type", "post_title", "post_content", "post_type", "member_profile_id", "created_date", "updated_date", "profile_nickname", "member_id", "profile_img_url", "thumbnail_file_name", "thumbnail_file_path", "thumbnail_file_id"
-        from view_my_funding
-        where post_type = #{postType} and member_id = #{memberId}
+        select f.id, f.genre_type, p.post_title, p.post_content, p.post_type, p.member_profile_id, p.created_date, p.updated_date
+             , mp.profile_nickname, mp.member_id, m.profile_img_url
+             , fl.file_name as thumbnailFileName ,fl.file_path as thumbnailFilePath
+        from tbl_funding f
+                 join tbl_post p on f.id = p.id and p.post_type = #{postType}
+                 join tbl_member_profile mp on p.member_profile_id = mp.id
+                 join tbl_member m on mp.member_id = m.id and m.id = #{memberId}
+                 join tbl_file fl on f.thumbnail_file_id = fl.id
+        order by f.id desc
         limit #{myWorkAndFundingPagination.startRow}, #{myWorkAndFundingPagination.rowCount};
     </select>
 
