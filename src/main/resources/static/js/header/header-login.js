@@ -12,14 +12,14 @@ document.addEventListener("DOMContentLoaded", function() {
         return;
     }
 
-    window.addEventListener("scroll", function () {
-        let windowTop = window.scrollY;
-        if (windowTop >= headerHeight) {
-            headerNav.classList.add("sticky");
-        } else {
-            headerNav.classList.remove("sticky");
-        }
-    });
+    // window.addEventListener("scroll", function () {
+    //     let windowTop = window.scrollY;
+    //     if (windowTop >= headerHeight) {
+    //         headerNav.classList.add("sticky");
+    //     } else {
+    //         headerNav.classList.remove("sticky");
+    //     }
+    // });
 
     // **검색창 기능 구현
     const searchBox = document.getElementById("search-box");

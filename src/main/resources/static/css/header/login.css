@@ -52,18 +52,18 @@ body {
     width: inherit;
 }
 
-header.header {
+header.main-total-header {
     min-width: 1080px;
     margin-bottom: 72px;
 }
 
-header.header .sticky {
+header.main-total-header .sticky {
     position: fixed;
     top: 0;
     width: 100%;
 }
 
-header.header .header-nav {
+header.main-total-header .header-nav {
     display: flex;
     background-color: rgba(255, 255, 255, .8);
     height: 72px;
