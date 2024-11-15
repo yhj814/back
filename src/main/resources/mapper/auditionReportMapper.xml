@@ -30,8 +30,9 @@
         left join tbl_member_profile rp on ar.member_profile_id = rp.id
 
         where p.post_type = 'AUDITIONVIDEO'
+        and ar.id is not null -- 항상 신고된 글만 표시
 
-        <!-- 신고 관리 조건: reportStatus가 'REPORT'일 때만 필터링 -->
+        <!-- 신고 관리 조건: 신고 관리일 경우에만 report_status = 'REPORT' 추가 -->
         <if test="order == '신고관리'">
             and ar.report_status = 'REPORT'
         </if>
@@ -46,8 +47,8 @@
         </if>
 
         group by p.id, mp.profile_name, p.created_date, p.post_type, a.audition_field, p.post_title,
-                 date_format(a.audition_deadline, '%Y-%m-%d'), rp.profile_name,
-                 rp.profile_email, ar.report_status, ar.created_date, ar.report_contents
+        date_format(a.audition_deadline, '%Y-%m-%d'), rp.profile_name,
+        rp.profile_email, ar.report_status, ar.created_date, ar.report_contents
 
         <!-- 정렬 조건 추가 -->
         <choose>
@@ -69,6 +70,7 @@
         limit #{pagination.startRow}, #{pagination.rowCount}
     </select>
 
+
     <!-- 전체 영상 모집글 신고 목록 카운트-->
     <select id="countVideoAuditionReports" resultType="int">
         select
@@ -78,14 +80,15 @@
         join tbl_audition a on a.id = p.id
         left join tbl_audition_report ar on ar.audition_id = a.id
         left join tbl_member_profile rp on ar.member_profile_id = rp.id
+
         where p.post_type = 'AUDITIONVIDEO'
+        and ar.id is not null -- 항상 신고된 글만 카운트
 
-
-        <!-- 신고 관리 조건: reportStatus가 'REPORT'일 때만 필터링 -->
+        <!-- 신고 관리 조건: 신고 관리일 경우에만 report_status = 'REPORT' 추가 -->
         <if test="order == '신고관리'">
             and ar.report_status = 'REPORT'
         </if>
-          
+
         <!-- 검색 조건 추가 -->
         <if test="search != null and search != ''">
             and (
@@ -95,6 +98,7 @@
             )
         </if>
     </select>
+
 
     <!-- 영상모집 신고 상태 업데이트 쿼리 -->
     <update id="videoAuditionStatusChange">
@@ -132,8 +136,9 @@
         left join tbl_member_profile rp on ar.member_profile_id = rp.id
 
         where p.post_type = 'AUDITIONTEXT'
+        and ar.id is not null -- 항상 신고된 글만 표시
 
-        <!-- 신고 관리 조건: reportStatus가 'REPORT'일 때만 필터링 -->
+        <!-- 신고 관리 조건: 신고 관리일 경우에만 report_status = 'REPORT' 추가 -->
         <if test="order == '신고관리'">
             and ar.report_status = 'REPORT'
         </if>
@@ -180,9 +185,11 @@
         join tbl_audition a on a.id = p.id
         left join tbl_audition_report ar on ar.audition_id = a.id
         left join tbl_member_profile rp on ar.member_profile_id = rp.id
-        where p.post_type = 'AUDITIONTEXT'
 
-        <!-- 신고 관리 조건: reportStatus가 'REPORT'일 때만 필터링 -->
+        where p.post_type = 'AUDITIONTEXT'
+        and ar.id is not null -- 항상 신고된 글만 카운트
+
+        <!-- 신고 관리 조건: 신고 관리일 경우에만 report_status = 'REPORT' 추가 -->
         <if test="order == '신고관리'">
             and ar.report_status = 'REPORT'
         </if>
