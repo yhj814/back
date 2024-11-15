@@ -5,6 +5,7 @@ create table tbl_reply_notification (
     message varchar(255) null,
     is_read tinyint(1) default 0 null,
     create_date datetime default CURRENT_TIMESTAMP null,
+    sub_type varchar(255) null,
     constraint fk_reply_notification_member_profile
         foreign key (member_profile_id) references tbl_member_profile (id),
     constraint fk_reply_notification_reply
