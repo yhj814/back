@@ -1388,11 +1388,11 @@ function renderWorkList(pays) {
             <div class="apply-table-cell">${pay.id}</div>
             <div class="apply-table-cell">${workFieldText}</div>
             <div class="apply-table-cell post-title">
-                 <a href="#">
+                 <p>
                     ${pay.postTitle && pay.postTitle.length > 7
             ? pay.postTitle.substring(0, 7) + '...'
             : pay.postTitle || ''}
-                </a>
+                </p>
             </div>
             <div class="apply-table-cell">${pay.workPrice || ''}</div>
             <div class="apply-table-cell">${pay.profileName || ''}</div>
@@ -1489,11 +1489,11 @@ function renderFundingList(pays) {
             <div class="apply-table-cell">${pay.id}</div>
             <div class="apply-table-cell">${fundingFieldText}</div>
             <div class="apply-table-cell post-title">
-                 <a href="#">
+                 <p>
                     ${pay.productName && pay.productName.length > 7
             ? pay.productName.substring(0, 7) + '...'
             : pay.productName || ''}
-                </a>
+                </p>
             </div>
             <div class="apply-table-cell">${pay.productPrice || ''}</div>
             <div class="apply-table-cell">${pay.profileName || ''}</div>
