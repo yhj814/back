@@ -47,15 +47,29 @@ public class MemberRestController {
     private final KakaoService kakaoService;
     private final AlarmService alarmService;
 
-    // 로그인 완료 시 - 마이페이지 사용 가능
     @GetMapping("/member/video/my-page")
-    public void goToReadForm(Model model, HttpSession session) {
-        MemberVO memberVO = (MemberVO)session.getAttribute("member");
+    public String goToReadForm(Model model, HttpSession session, @RequestParam(value = "category", required = false) String type) {
+        MemberVO memberVO = (MemberVO) session.getAttribute("member");
         MemberProfileDTO memberProfileDTO = (MemberProfileDTO) session.getAttribute("memberProfile");
         model.addAttribute("member", memberVO);
 
         log.info("memberProfileDTO ??={}", memberProfileDTO);
+
+        // category 값이 있는 경우 이를 모델에 추가
+        if (type != null) {
+            model.addAttribute("type", type);  // 'category' 파라미터를 'type'으로 변경
+        }
+
+        // 마이페이지로 이동하는 경로 리턴
+        return "member/video/my-page";  // 혹은 뷰 이름으로 설정
     }
+
+//    // 카테고리별 마이페이지 표시 (기존 메서드)
+//    @GetMapping("/member/video/my-page/category")  // 경로를 다르게 설정
+//    public String showMyPage(@RequestParam("category") String type, Model model) {
+//        model.addAttribute("type", type);
+//        return "member/video/my-page";  // 마이페이지 뷰로 반환
+//    }
 
     // 내 정보 조회
     // SELECT
@@ -258,14 +272,6 @@ public class MemberRestController {
     }
 
 //************************************************************************************************
-
-//    @GetMapping("member/video/my-page")
-//    public String showMyPage(@RequestParam("category") String type, Model model) {
-//        // type 파라미터 값을 모델에 추가
-//        model.addAttribute("type", type);
-//
-//        return ("/member/video/my-page?category=" + type);
-//    }
 
     /**
      * 현재 로그인한 회원의 읽지 않은 알림을 조회합니다.

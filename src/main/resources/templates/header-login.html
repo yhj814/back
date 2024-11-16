@@ -57,7 +57,7 @@
                             <div id="noti-modal-2" class="noti-modal">
                                 <p class="noti-header">내 알림</p>
                                 <!-- 영상 알람 있을 시 -->
-                                <a href="" th:if="${unreadVideoAlarmsCount > 0}">
+                                <a th:href="@{/alarm/video/my-page}" th:if="${unreadVideoAlarmsCount > 0}">
                                     <div class="dot-video">
                                         <img class="noti-dot" src="/images/header/noti-dot.png" alt="Video Notification Dot" />
                                     </div>
@@ -66,7 +66,7 @@
                                     </div>
                                 </a>
                                 <!-- 영상 알람 없을 시 -->
-                                <a href="" th:unless="${unreadVideoAlarmsCount > 0}">
+                                <a th:href="@{/alarm/video/my-page}" th:unless="${unreadVideoAlarmsCount > 0}">
                                     <div class="noti-item">
                                         <p>영상</p>
                                     </div>
@@ -111,6 +111,12 @@
 <!-- 검색 창 (search.js 있음) -->
 <!-- ... 기존 검색 창 코드 생략 ... -->
 </body>
+<script>
+    // document.getElementById('.alarm-video').addEventListener('click', (e) => {
+    //     e.preventDefault(); // 기본 동작을 막고
+    //     location.href = '/alarm/video/my-page'; // 리디렉션
+    // });
+</script>
 <script src="/js/header/header-login.js"></script>
 <script src="/js/header/logout-click.js"></script>
 </html>

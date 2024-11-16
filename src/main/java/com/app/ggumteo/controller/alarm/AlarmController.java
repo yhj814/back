@@ -25,11 +25,11 @@ public class AlarmController {
     }
 
 
-    // 알림 버튼 클릭 시 마이페이지-알람으로
-//    @GetMapping
-//    public RedirectView clickAlarmButton() {
-//        return new RedirectView("/member/video/my-page?category=alarm");
-//    }
+     //알림 버튼 클릭 시 마이페이지-알람으로
+    @GetMapping("/video/my-page")
+    public RedirectView clickAlarmButton() {
+        return new RedirectView("/member/video/my-page?category=alarm");
+    }
     /**
      * 현재 로그인한 회원의 모든 알림을 조회합니다.
      *
