@@ -943,7 +943,7 @@ const showMyAuditionList = ({myAuditionPosts, myAuditionPagination}) => {
                         <h2 class="job_tit">
                             <a
                                 target="_blank"
-                                href=""
+                                href="/audition/video/detail/${myAuditionPost.id}"
                             >
                                 <span>
                                     ${myAuditionPost.postTitle} / `
@@ -991,7 +991,7 @@ const showMyAuditionList = ({myAuditionPosts, myAuditionPagination}) => {
                             >`
         } else {
             text += `<span
-                                >·경력</span
+                                >·경력 ${myAuditionPost.auditionCareer}</span
                             >`
         }
         text +=          `</div>

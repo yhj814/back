@@ -23,13 +23,23 @@ const myPageService = (() => {
     }
 
     const updateWorkSendStatus = async (buyWork) => {
-        await fetch(`/members/video/my/work/buyers/sendStatus/update`, {
-            method: "put",
-            body: JSON.stringify(buyWork),
-            headers: {
-                "Content-Type": "application/json; charset=utf-8"
-            }
+        try {
+            const response =  await fetch(`/members/video/my/work/buyers/sendStatus/update`, {
+                method: "put",
+                body: JSON.stringify(buyWork),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
         });
+            if (response.ok) {
+                const responseBody = await response.json(); // 응답이 JSON일 때만 파싱
+                console.log("응답 내용: ", responseBody);
+            } else {
+                console.error("서버 오류:", response.statusText);
+            }
+        } catch (error) {
+            console.error("서버 요청 중 오류 발생:", error);
+        }
     }
 
     const getMyBuyVideoWorkList = async (page, memberId, callback) => {
