@@ -278,7 +278,7 @@ public class VideoAuditionController {
         // subType을 VIDEO로 설정하여 서비스 메서드 호출
         auditionApplicationService.write(auditionApplicationDTO, AlarmSubType.VIDEO);
 
-        return new RedirectView("/audition/video/detail" + id); // 상세 페이지로
+        return new RedirectView("/audition/video/detail/" + id); // 상세 페이지로
     }
 
 }

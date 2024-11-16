@@ -666,7 +666,7 @@ function renderVideoReplyReportList(replyReports) {
         row.innerHTML = `
             <div class="apply-table-cell"><input type="checkbox" class="apply-checkbox" data-id="${replyReport.replyId}"/></div>
             <div class="apply-table-cell">${replyReport.replyId}</div>
-            <div class="apply-table-cell post-title"><a href="/video/detail/${replyReport.replyId}">${replyReport.postTitle || ''}</a></div>
+            <div class="apply-table-cell post-title"><a href="/video/detail/${replyReport.workId}">${replyReport.postTitle || ''}</a></div>
             <div class="apply-table-cell video-reply-content" style="cursor: pointer" 
                  data-content="${replyReport.replyContent || ''}"
                     onclick="openVideoReplyModal(this)">
@@ -768,7 +768,7 @@ function renderTextReplyReportList(replyReports) {
         row.innerHTML = `
             <div class="apply-table-cell"><input type="checkbox" class="apply-checkbox" data-id="${replyReport.replyId}"/></div>
             <div class="apply-table-cell">${replyReport.replyId}</div>
-            <div class="apply-table-cell post-title"><a href="/text/detail/${replyReport.replyId}">${replyReport.postTitle || ''}</a></div>
+            <div class="apply-table-cell post-title"><a href="/text/detail/${replyReport.workId}">${replyReport.postTitle || ''}</a></div>
             <div class="apply-table-cell text-reply-content" style="cursor: pointer" 
                  data-content="${replyReport.replyContent || ''}"
                     onclick="openTextReplyModal(this)">
