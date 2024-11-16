@@ -462,3 +462,13 @@ myProfileLayout.addEventListener('click', async (e) => {
         await myPageService.getMemberProfileByMemberId(memberId, showMyProfile);
     }
 })
+
+myPageService.getUnreadAlarms(showUnreadAlarms);
+
+// 새로고침 버튼 클릭 이벤트 처리
+myNotificationListLayout.addEventListener('click', (e) => {
+        if (e.target.classList[0] === 'refresh-btn') {
+            // 새로고침 동작
+            myPageService.getUnreadAlarms(showUnreadAlarms);
+        }
+});

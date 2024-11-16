@@ -188,6 +188,26 @@ const myPageService = (() => {
         }
     }
 
+//************* 알림 ***************
+    const getUnreadAlarms = async (callback) => {
+        const response = await fetch(`/members/video/alarm/unread`);
+
+        if (response.ok) {
+            const unreadAlarms = await response.json();
+            console.log("Unread Alarms: ", unreadAlarms);
+
+            // Callback 처리
+            if (callback) {
+                return callback(unreadAlarms);
+            }
+        } else {
+            console.error("Failed to fetch unread alarms. Status: ", response.status);
+            if (callback) {
+                return callback([]);
+            }
+        }
+    };
+
     return {
         getMyVideoWorkList: getMyVideoWorkList,
         getMyVideoWorkBuyerList: getMyVideoWorkBuyerList,
@@ -205,6 +225,7 @@ const myPageService = (() => {
         getMemberProfileByMemberId: getMemberProfileByMemberId,
         updateMemberProfileByMemberId: updateMemberProfileByMemberId,
         getMyInquiryHistoryList: getMyInquiryHistoryList,
-        getAdminAnswerByInquiryId: getAdminAnswerByInquiryId
+        getAdminAnswerByInquiryId: getAdminAnswerByInquiryId,
+        getUnreadAlarms: getUnreadAlarms
     }
-})()
+})();

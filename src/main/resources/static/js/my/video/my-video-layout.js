@@ -838,7 +838,7 @@ const showMyBuyFundingList = ({myBuyFundingPosts, myWorkAndFundingPagination}) =
                                         src="/images/member/member-image.jpg"
                                     />
                                     <p class="author-name">
-                                        ${myBuyFundingPost.postContent}
+                                        ${myBuyFundingPost.profileNickName}
                                     </p>
                                     <div
                                         class="divider"
@@ -1664,7 +1664,7 @@ const showMyProfile = (myProfile) => {
                 <div class="form-group etc">
                     <label class="control-label">추가 작성사항</label>
                     <div class="control-wrapper">
-                        <textarea class="form-control form-textarea" id="profileEtc" placeholder="간단한 자기소개를 입력해주세요." name="profileEtc" value="${myProfile.profileEtc}" style="height: 340px"></textarea>
+                        <textarea class="form-control form-textarea" id="profileEtc" placeholder="간단한 자기소개를 입력해주세요." name="profileEtc" style="height: 340px">${myProfile.profileEtc}</textarea>
                         <div class="error-message">
                             <i class="fa fa-exclamation-circle"></i>
                             간단한 자기소개를 입력해주세요.
@@ -1687,3 +1687,94 @@ const showMyProfile = (myProfile) => {
 
     myProfileLayout.innerHTML = text;
 }
+
+// 내 알림
+const myNotificationListLayout = document.getElementById("my-notification-list");
+
+const showUnreadAlarms = (unreadAlarms) => {
+    let text = ``;
+
+    // 알림 데이터가 없을 때
+    if (unreadAlarms.length === 0) {
+        text = `
+            <div class="noti-center-header">
+                <div class="subtitle-1 noti-center-title">전체 알림</div>
+                <div class="noti-center-header-more">
+                    <div class="noti-center-refresh">
+                        <div class="refresh-btn">
+                            <img
+                                    class="refresh-img"
+                                    src="/images/member/refresh.png"
+                            />새로고침
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        text += ` <div class="noti-box date-box">
+                        <div class="noti-box-wrapper">
+                            <p class="noti-date-title">
+                                읽지 않은 알림이 없습니다.
+                            </p>
+                        </div>
+                      </div>`
+
+        text += `</div>`; // noti-body 닫기
+
+    } else {
+        // 알림 데이터 있을 때
+        text += `
+            <div class="noti-center-header">
+                <div class="subtitle-1 noti-center-title">전체 알림</div>
+                <div class="noti-center-header-more">
+                    <div class="noti-center-refresh">
+                        <div class="refresh-btn">
+                            <img
+                                    class="refresh-img"
+                                    src="/images/member/refresh.png"
+                            />새로고침
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="noti-body">
+        `;
+
+        unreadAlarms.forEach((alarm) => {
+            text += ` <div class="noti-box date-box">
+                        <div class="noti-box-wrapper">
+                            <p class="noti-date-title">
+                                10월 08일 화요일
+                            </p>
+                        </div>
+                      </div>`
+        })
+
+        unreadAlarms.forEach(alarm => {
+            text += `
+                <div class="noti-box unread">
+                    <div class="noti-box-wrapper">
+                        <div class="noti-box-content">
+                            <div class="noti-title">
+                                작품 "심봉사와 아이들"에
+                                댓글이 달렸습니다.
+                                <!--                               알림 메시지 -->
+                            </div>
+                            <div class="noti-date">
+                                2024.10.08. 오전 10시
+                                16분
+                                <!--                               알림 날짜와 시간 -->
+                            </div>
+                        </div>
+                    </div>
+                    <form style="display: none"></form>
+                </div>
+            `;
+        });
+
+        text += `</div>`; // noti-body 닫기
+    }
+
+    myNotificationListLayout.innerHTML = text;
+};

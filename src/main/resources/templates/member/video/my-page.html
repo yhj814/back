@@ -2175,6 +2175,11 @@
     </body>
     <script th:inline="javascript">
         const memberId = [[${member.id}]];
+        const type = [[${type}]];
+
+        if(type === "alarm"){
+            실행;
+        }
 
         document.getElementById("soft-delete").addEventListener("click", (e) => {
             location.href = `/member/video/my-page/delete?id=${memberId}`;

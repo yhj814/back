@@ -35,19 +35,19 @@ public class MyPageServiceTests {
     private MyPageService myPageService;
 
     @Test
-    public void testGetMember() {
-        MemberDTO memberDTO = new MemberDTO();
-        memberDTO.setId(2L);
+    public void getMemberProfileByMemberId() {
+        MemberProfileDTO memberProfileDTO = new MemberProfileDTO();
+        memberProfileDTO.setMemberId(9L);
 
-        Optional<MemberVO> foundMemberInfo = myPageService.getMember(memberDTO.getId());
-        foundMemberInfo.map(MemberVO::toString).ifPresent(log::info);
+        Optional<MemberProfileVO> foundMemberInfo = myPageService.getMemberProfileByMemberId(memberProfileDTO.getMemberId());
+        foundMemberInfo.map(MemberProfileVO::toString).ifPresent(log::info);
     }
 
     @Test
     public void testGetMyVideoWorkList() {
         MemberVO memberVO = null;
         MyWorkAndFundingPagination myWorkAndFundingPagination = new MyWorkAndFundingPagination();
-        memberVO = myPageService.getMember(2L).get();
+        memberVO = myPageService.getMember(4L).get();
         myWorkAndFundingPagination.setTotal(myPageService.getMyVideoWorkPostsTotal(memberVO.getId(), PostType.WORKVIDEO.name()));
         myWorkAndFundingPagination.progress();
         MyWorkListDTO myWorkPosts = myPageService.getMyVideoWorkList
