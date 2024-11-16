@@ -7,7 +7,7 @@ server:
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost/gb?serverTimezone=Asia/Seoul
+    url: jdbc:mysql://3.39.234.85/gb?serverTimezone=Asia/Seoul
     username: gb
     password: 1234
 
