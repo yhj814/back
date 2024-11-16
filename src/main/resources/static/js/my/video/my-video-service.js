@@ -196,7 +196,6 @@ const myPageService = (() => {
             const unreadAlarms = await response.json();
             console.log("Unread Alarms: ", unreadAlarms);
 
-            // Callback 처리
             if (callback) {
                 return callback(unreadAlarms);
             }

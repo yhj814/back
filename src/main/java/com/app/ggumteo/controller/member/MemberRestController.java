@@ -53,23 +53,12 @@ public class MemberRestController {
         MemberProfileDTO memberProfileDTO = (MemberProfileDTO) session.getAttribute("memberProfile");
         model.addAttribute("member", memberVO);
 
-        log.info("memberProfileDTO ??={}", memberProfileDTO);
-
-        // category 값이 있는 경우 이를 모델에 추가
         if (type != null) {
-            model.addAttribute("type", type);  // 'category' 파라미터를 'type'으로 변경
+            model.addAttribute("type", type);
         }
 
-        // 마이페이지로 이동하는 경로 리턴
-        return "member/video/my-page";  // 혹은 뷰 이름으로 설정
+        return "member/video/my-page";
     }
-
-//    // 카테고리별 마이페이지 표시 (기존 메서드)
-//    @GetMapping("/member/video/my-page/category")  // 경로를 다르게 설정
-//    public String showMyPage(@RequestParam("category") String type, Model model) {
-//        model.addAttribute("type", type);
-//        return "member/video/my-page";  // 마이페이지 뷰로 반환
-//    }
 
     // 내 정보 조회
     // SELECT
@@ -93,16 +82,16 @@ public class MemberRestController {
         MemberVO memberVO = (MemberVO) session.getAttribute("member");
         Long id = memberVO.getId();
 
-        String token = (String) session.getAttribute("kakaoToken");
-        log.info("로그아웃 시 세션에서 가져온 kakaoToken: {}", token);
+        String token = (String) session.getAttribute("kaKaoToken");
+        log.info("로그아웃 시 세션에서 가져온 kaKaoToken: {}", token);
 
         if (token != null) {
             boolean isWithDraw = kakaoService.kakaoLogout(token);
 
             if (isWithDraw) {
-                session.removeAttribute("kakaoToken");  // 명시적 속성 제거
-                session.removeAttribute("member");       // 세션에서 사용자 정보도 제거
-                session.invalidate();                    // 세션 완전 무효화
+                session.removeAttribute("kaKaoToken");
+                session.removeAttribute("member");
+                session.invalidate();
                 log.info("탈퇴 성공");
 
             } else {
@@ -116,7 +105,6 @@ public class MemberRestController {
 
         return new RedirectView("/main");
     }
-
 
 //************************************************************************************************
 
@@ -282,11 +270,14 @@ public class MemberRestController {
     @GetMapping("/members/video/alarm/unread")
     @ResponseBody
     public ResponseEntity<List<AlarmDTO>> getUnreadAlarmsByCurrentMember(HttpSession session) {
-        MemberDTO member = (MemberDTO) session.getAttribute("loginMember");
-        if (member != null) {
-            List<AlarmDTO> latestAlarms = alarmService.getUnreadAlarmsByMemberId(member.getId());
+        MemberVO memberVO = (MemberVO) session.getAttribute("member");
+        if (memberVO != null) {
+            List<AlarmDTO> latestAlarms = alarmService.getUnreadAlarmsByMemberId(memberVO.getId());
+            log.info("알람 memberVO.getId()={}", memberVO.getId());
+            log.info("알람 latestAlarms={}",latestAlarms);
             return ResponseEntity.ok(latestAlarms);
         } else {
+            log.info("알람 else memberDTO={}", memberVO);
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
     }

@@ -1749,6 +1749,7 @@ const showUnreadAlarms = (unreadAlarms) => {
                             </p>
                         </div>
                       </div>`
+            console.log(alarm)
         })
 
         unreadAlarms.forEach(alarm => {
