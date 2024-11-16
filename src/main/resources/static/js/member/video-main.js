@@ -13,11 +13,11 @@ document.addEventListener("DOMContentLoaded", function () {
             // iconFold.classList.toggle(" fold-on");
         });
     }
-    // 페이지가 처음 로드될 때 기본 콘텐츠 표시 (my-main)
-    const defaultContent = document.getElementById("my-main");
-    if (defaultContent) {
-        defaultContent.classList.add("active");
-    }
+    // // 페이지가 처음 로드될 때 기본 콘텐츠 표시 (my-main)
+    // const defaultContent = document.getElementById("my-main");
+    // if (defaultContent) {
+    //     defaultContent.classList.add("active");
+    // }
 
     // 사이드바 메뉴 클릭 이벤트 설정 (내 활동내역 이외의 메뉴들)
     document
