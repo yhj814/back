@@ -53,6 +53,8 @@ public class MemberRestController {
         MemberProfileDTO memberProfileDTO = (MemberProfileDTO) session.getAttribute("memberProfile");
         model.addAttribute("member", memberVO);
 
+        log.info("마이페이지 memberProfileDTO={}", memberProfileDTO);
+
         if (type != null) {
             model.addAttribute("type", type);
         }
@@ -269,15 +271,15 @@ public class MemberRestController {
      */
     @GetMapping("/members/video/alarm/unread")
     @ResponseBody
-    public ResponseEntity<List<AlarmDTO>> getUnreadAlarmsByCurrentMember(HttpSession session) {
-        MemberVO memberVO = (MemberVO) session.getAttribute("member");
-        if (memberVO != null) {
-            List<AlarmDTO> latestAlarms = alarmService.getUnreadAlarmsByMemberId(memberVO.getId());
-            log.info("알람 memberVO.getId()={}", memberVO.getId());
+    public ResponseEntity<List<AlarmDTO>> getUnreadAlarmsByCurrentMemberProfile(HttpSession session) {
+        MemberProfileDTO memberProfileDTO = (MemberProfileDTO) session.getAttribute("memberProfile");
+        if (memberProfileDTO != null) {
+            List<AlarmDTO> latestAlarms = alarmService.getUnreadAlarmsByMemberId(memberProfileDTO.getId());
+            log.info("알람 memberProfileDTO.getId()={}", memberProfileDTO.getId());
             log.info("알람 latestAlarms={}",latestAlarms);
             return ResponseEntity.ok(latestAlarms);
         } else {
-            log.info("알람 else memberDTO={}", memberVO);
+            log.info("알람 else memberDTO={}", memberProfileDTO);
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
     }

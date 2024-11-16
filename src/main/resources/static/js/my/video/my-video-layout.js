@@ -1741,20 +1741,16 @@ const showUnreadAlarms = (unreadAlarms) => {
             <div class="noti-body">
         `;
 
-        unreadAlarms.forEach((alarm) => {
-            text += ` <div class="noti-box date-box">
-                        <div class="noti-box-wrapper">
-                            <p class="noti-date-title">
-                                10월 08일 화요일
-                            </p>
-                        </div>
-                      </div>`
-            console.log(alarm)
-        })
-
+        console.log("unreadAlarms", unreadAlarms)
         unreadAlarms.forEach(alarm => {
-            text += `
-                <div class="noti-box unread">
+        text += `<div class="noti-box date-box">
+                    <div class="noti-box-wrapper">
+                        <p class="noti-date-title">
+                            10월 08일 화요일
+                        </p>
+                    </div>
+                  </div>
+                  <div class="noti-box unread">
                     <div class="noti-box-wrapper">
                         <div class="noti-box-content">
                             <div class="noti-title">
@@ -1770,8 +1766,9 @@ const showUnreadAlarms = (unreadAlarms) => {
                         </div>
                     </div>
                     <form style="display: none"></form>
-                </div>
-            `;
+                  </div>
+                    `;
+            console.log("alarms", alarm)
         });
 
         text += `</div>`; // noti-body 닫기
