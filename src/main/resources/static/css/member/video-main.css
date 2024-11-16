@@ -205,15 +205,15 @@ html {
 .icon-fold {
     width: 16px;
     height: 16px;
-    background-image: url('https://yozm.wishket.com/renewal/img/news/icon_menu_open_on.png'); /* 초기 이미지: 아래로 화살표 */
+    background-image: url(https://yozm.wishket.com/static/renewal/img/news/icon_menu_open_on.png);     /* 초기 이미지: 아래로 화살표 */
     cursor: pointer;
     transition: transform 0.3s ease;
-
 }
 
 .icon-fold.fold-on {
-    background-image: url('https://yozm.wishket.com/renewal/img/news/icon_menu_open_on.png'); /* 접힌 상태의 이미지 */
-    transform: rotate(-90deg);}
+    background-image: url(https://yozm.wishket.com/static/renewal/img/news/icon_menu_open_on.png); /* 접힌 상태의 이미지 */
+    transform: rotate(-90deg);
+}
 
 .container.mypage .main-content-container {
     width: 800px;

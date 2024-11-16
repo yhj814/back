@@ -2176,6 +2176,35 @@
     <script th:inline="javascript">
         const memberId = [[${member.id}]];
 
+        // 서버에서 전달된 category 값으로 처리
+        const type = [[${type}]]; // 서버에서 전달된 type 값
+
+        if (type === "alarm") {
+            // 알림 화면을 표시
+            document.getElementById('my-notification-content').classList.add('active');
+            const defaultContent = document.getElementById("my-main");
+            defaultContent.classList.remove("active");
+
+            // 알림 사이드바 메뉴에 active-menu 클래스 추가
+            const alarmMenu = document.querySelector('[name=my-notification]');
+            alarmMenu.classList.add('active-menu');
+
+            // 다른 사이드바 메뉴에서 active-menu 클래스 제거
+            document.querySelectorAll('.sidebar-menu').forEach((menu) => {
+                if (menu !== alarmMenu) {
+                    menu.classList.remove('active-menu');
+                }
+            });
+        }
+        else {
+            //기본 콘텐츠 표시 (my-main)
+            const defaultContent = document.getElementById("my-main");
+            if (defaultContent) {
+                defaultContent.classList.add("active");
+            }
+
+        }
+
         document.getElementById("soft-delete").addEventListener("click", (e) => {
             location.href = `/member/video/my-page/delete?id=${memberId}`;
         });
