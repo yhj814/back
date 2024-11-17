@@ -13,13 +13,13 @@
     </delete>
 
     <select id="selectPostById" parameterType="Long" resultType="com.app.ggumteo.domain.post.PostDTO">
-        SELECT
+        select
             id,
-            member_profile_id AS memberProfileId,
-            post_type AS postType
-        FROM
+            member_profile_id as memberProfileId,
+            post_type as postType
+        from
             tbl_post
-        WHERE
+        where
             id = #{id}
     </select>
 </mapper>

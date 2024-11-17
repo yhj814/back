@@ -13,7 +13,8 @@ create table tbl_funding_report (
 
 select  *from tbl_funding_report;
 
-insert into tbl_funding_report
-values (3,'아이들이 보기에 적합하지 않은거 같습니다',4,now(),default,3);
 
-select*from tbl_member_profile;
+insert into tbl_funding_report
+values (18,'범죄도시 내용과 비슷합니다',61,now(),default,3);
+
+select*from tbl_post;

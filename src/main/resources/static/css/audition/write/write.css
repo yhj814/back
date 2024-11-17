@@ -1,27 +1,27 @@
 @font-face {
     font-family: "NotoSansKR";
     font-weight: 700;
-    src: url("/static/fonts/NotoSansKR-Bold.woff2") format("woff2");
+    src: url("/fonts/NotoSansKR-Bold.woff2") format("woff2");
 }
 @font-face {
     font-family: "NotoSansKR";
     font-weight: 500;
-    src: url("/static/fonts/NotoSansKR-Medium.woff2") format("woff2");
+    src: url("/fonts/NotoSansKR-Medium.woff2") format("woff2");
 }
 @font-face {
     font-family: "NotoSansKR";
     font-weight: 400;
-    src: url("/static/fonts/NotoSansKR-Regular.woff2") format("woff2");
+    src: url("/fonts/NotoSansKR-Regular.woff2") format("woff2");
 }
 @font-face {
     font-family: "NotoSansKR";
     font-weight: 300;
-    src: url("/static/fonts/NotoSansKR-Light.woff2") format("woff2");
+    src: url("/fonts/NotoSansKR-Light.woff2") format("woff2");
 }
 @font-face {
     font-family: "NotoSansKR";
     font-weight: 100;
-    src: url("/static/fonts/NotoSansKR-Thin.woff2") format("woff2");
+    src: url("/fonts/NotoSansKR-Thin.woff2") format("woff2");
 }
 
 * {
@@ -83,11 +83,11 @@
     background-size: cover;
     background-position: center center;
     background-repeat: no-repeat;
-    background-image: url(/static/images/inquiry/inqury-background-img.png;);
+    background-image: url(/images/inquiry/inqury-background-img.png;);
     background-image: -webkit-image-set(
-        url(/static/images/inquiry/inqury-background-img.png) 1x,
-        url(/static/images/inquiry/inqury-background-img.png) 2x,
-        url(/static/images/inquiry/inqury-background-img.png) 3x
+        url(/images/inquiry/inqury-background-img.png) 1x,
+        url(/images/inquiry/inqury-background-img.png) 2x,
+        url(/images/inquiry/inqury-background-img.png) 3x
     );
 }
 
@@ -96,11 +96,11 @@
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center center;
-    background-image: url(/static/images/inquiry/inqury-background-img.png);
+    background-image: url(/images/inquiry/inqury-background-img.png);
     background-image: -webkit-image-set(
-        url(/static/images/inquiry/inqury-background-img.png) 1x,
-        url(/static/images/inquiry/inqury-background-img.png) 2x,
-        url(/static/images/inquiry/inqury-background-img.png) 3x
+        url(/images/inquiry/inqury-background-img.png) 1x,
+        url(/images/inquiry/inqury-background-img.png) 2x,
+        url(/images/inquiry/inqury-background-img.png) 3x
     );
 }
 
