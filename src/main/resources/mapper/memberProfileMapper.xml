@@ -15,11 +15,11 @@
 
     <!-- 마이페이지 - 내 정보 조회 -->
     <select id="selectByMemberId" resultType="memberProfileVO">
-        select mp.profile_name, mp.profile_nickname, mp.profile_gender, mp.profile_age, mp.profile_etc, mp.member_id, mp.created_date, mp.updated_date,
-               m.id, m.member_status
+        select mp.id, mp.profile_name, mp.profile_nickname, mp.profile_gender, mp.profile_age, mp.profile_etc, mp.member_id, mp.created_date, mp.updated_date,
+               m.member_status
         from tbl_member_profile mp
                  join tbl_member m on mp.member_id = m.id
-            and m.member_status = 'YES' and mp.id = #{memberId};
+            and m.member_status = 'YES' and mp.member_id = #{memberId};
     </select>
 
     <!-- 마이페이지 - 내 정보 수정 -->
