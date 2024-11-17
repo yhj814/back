@@ -1,31 +1,31 @@
 package com.app.ggumteo.controller.member;
 
-import com.app.ggumteo.constant.PostType;
 import com.app.ggumteo.domain.admin.AdminAnswerDTO;
+import com.app.ggumteo.domain.alarm.AlarmDTO;
 import com.app.ggumteo.domain.audition.AuditionApplicationDTO;
 import com.app.ggumteo.domain.audition.MyApplicationAuditionListDTO;
 import com.app.ggumteo.domain.audition.MyAuditionApplicantListDTO;
 import com.app.ggumteo.domain.audition.MyAuditionListDTO;
 import com.app.ggumteo.domain.buy.*;
-import com.app.ggumteo.domain.file.PostFileDTO;
 import com.app.ggumteo.domain.funding.MyFundingListDTO;
 import com.app.ggumteo.domain.inquiry.MyInquiryHistoryListDTO;
 import com.app.ggumteo.domain.member.MemberDTO;
 import com.app.ggumteo.domain.member.MemberProfileDTO;
 import com.app.ggumteo.domain.member.MemberProfileVO;
 import com.app.ggumteo.domain.member.MemberVO;
-import com.app.ggumteo.domain.post.PostVO;
 import com.app.ggumteo.domain.work.MyWorkListDTO;
-import com.app.ggumteo.domain.work.WorkDTO;
-import com.app.ggumteo.exception.SessionNotFoundException;
 import com.app.ggumteo.pagination.MyAuditionPagination;
 import com.app.ggumteo.pagination.MySettingTablePagination;
 import com.app.ggumteo.pagination.MyWorkAndFundingPagination;
-import com.app.ggumteo.service.file.PostFileService;
+import com.app.ggumteo.service.alarm.AlarmService;
+import com.app.ggumteo.service.member.KakaoService;
 import com.app.ggumteo.service.myPage.MyPageService;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
@@ -36,6 +36,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Controller
@@ -43,17 +44,32 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class MemberRestController {
     private final MyPageService myPageService;
-    private final HttpSession session;
+    private final KakaoService kakaoService;
+    private final AlarmService alarmService;
 
-    // 로그인 완료 시 - 마이페이지 사용 가능
     @GetMapping("/member/video/my-page")
-    public void goToReadForm(Model model, HttpSession session) {
-        MemberVO memberVO = (MemberVO)session.getAttribute("member");
+    public String goToReadForm(Model model, HttpSession session, @RequestParam(value = "category", required = false) String type) {
+        MemberVO memberVO = (MemberVO) session.getAttribute("member");
         MemberProfileDTO memberProfileDTO = (MemberProfileDTO) session.getAttribute("memberProfile");
         model.addAttribute("member", memberVO);
 
         log.info("memberProfileDTO ??={}", memberProfileDTO);
+
+        // category 값이 있는 경우 이를 모델에 추가
+        if (type != null) {
+            model.addAttribute("type", type);  // 'category' 파라미터를 'type'으로 변경
+        }
+
+        // 마이페이지로 이동하는 경로 리턴
+        return "member/video/my-page";  // 혹은 뷰 이름으로 설정
     }
+
+//    // 카테고리별 마이페이지 표시 (기존 메서드)
+//    @GetMapping("/member/video/my-page/category")  // 경로를 다르게 설정
+//    public String showMyPage(@RequestParam("category") String type, Model model) {
+//        model.addAttribute("type", type);
+//        return "member/video/my-page";  // 마이페이지 뷰로 반환
+//    }
 
     // 내 정보 조회
     // SELECT
@@ -73,13 +89,34 @@ public class MemberRestController {
 
     // 회원 탈퇴
     @GetMapping("/member/video/my-page/delete")
-    public RedirectView softDeleteMember(HttpSession session) {
+    public RedirectView softDeleteMember(HttpSession session, HttpServletResponse response) {
         MemberVO memberVO = (MemberVO) session.getAttribute("member");
         Long id = memberVO.getId();
+
+        String token = (String) session.getAttribute("kakaoToken");
+        log.info("로그아웃 시 세션에서 가져온 kakaoToken: {}", token);
+
+        if (token != null) {
+            boolean isWithDraw = kakaoService.kakaoLogout(token);
+
+            if (isWithDraw) {
+                session.removeAttribute("kakaoToken");  // 명시적 속성 제거
+                session.removeAttribute("member");       // 세션에서 사용자 정보도 제거
+                session.invalidate();                    // 세션 완전 무효화
+                log.info("탈퇴 성공");
+
+            } else {
+                log.error("탈퇴 실패");
+            }
+        } else {
+            log.error("세션에 저장된 토큰이 없습니다.");
+        }
+
         myPageService.softDeleteMember(id);
-        session.invalidate(); // 탈퇴 후 세션 무효화
+
         return new RedirectView("/main");
     }
+
 
 //************************************************************************************************
 
@@ -236,6 +273,23 @@ public class MemberRestController {
 
 //************************************************************************************************
 
+    /**
+     * 현재 로그인한 회원의 읽지 않은 알림을 조회합니다.
+     *
+     * @param session HTTP 세션
+     * @return 읽지 않은 알림 목록
+     */
+    @GetMapping("/members/video/alarm/unread")
+    @ResponseBody
+    public ResponseEntity<List<AlarmDTO>> getUnreadAlarmsByCurrentMember(HttpSession session) {
+        MemberDTO member = (MemberDTO) session.getAttribute("loginMember");
+        if (member != null) {
+            List<AlarmDTO> latestAlarms = alarmService.getUnreadAlarmsByMemberId(member.getId());
+            return ResponseEntity.ok(latestAlarms);
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+    }
 
 
 //************************************************************************************************
