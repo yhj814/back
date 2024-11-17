@@ -57,7 +57,7 @@ public class AuditionApplicationServiceImpl implements AuditionApplicationServic
         // 알람 생성 조건 확인
         if (audition != null) {
             Long hostMemberProfileId = audition.getMemberProfileId();
-            String message = "새로운 오디션 신청이 들어왔습니다.";
+            String message = "에 모집 신청이 들어왔습니다.";
             log.info("Creating alarm for hostMemberProfileId: {}", hostMemberProfileId);
 
             // 알람 생성

@@ -1,7 +1,9 @@
 package com.app.ggumteo.service;
 
+import com.app.ggumteo.constant.AlarmSubType;
 import com.app.ggumteo.constant.PostType;
 import com.app.ggumteo.domain.admin.AdminAnswerDTO;
+import com.app.ggumteo.domain.alarm.MyAlarmListDTO;
 import com.app.ggumteo.domain.audition.AuditionApplicationDTO;
 import com.app.ggumteo.domain.audition.AuditionDTO;
 import com.app.ggumteo.domain.audition.MyAuditionApplicantListDTO;
@@ -15,9 +17,12 @@ import com.app.ggumteo.domain.member.MemberProfileVO;
 import com.app.ggumteo.domain.member.MemberVO;
 import com.app.ggumteo.domain.work.MyWorkListDTO;
 import com.app.ggumteo.domain.work.WorkDTO;
+import com.app.ggumteo.mapper.member.MemberProfileMapper;
+import com.app.ggumteo.pagination.MyAlarmPagination;
 import com.app.ggumteo.pagination.MyAuditionPagination;
 import com.app.ggumteo.pagination.MySettingTablePagination;
 import com.app.ggumteo.pagination.MyWorkAndFundingPagination;
+import com.app.ggumteo.repository.alarm.AlarmDAO;
 import com.app.ggumteo.repository.inquiry.InquiryDAO;
 import com.app.ggumteo.service.myPage.MyPageService;
 import lombok.extern.slf4j.Slf4j;
@@ -33,6 +38,10 @@ import java.util.Optional;
 public class MyPageServiceTests {
     @Autowired
     private MyPageService myPageService;
+    @Autowired
+    private AlarmDAO alarmDAO;
+    @Autowired
+    private MemberProfileMapper memberProfileMapper;
 
     @Test
     public void getMemberProfileByMemberId() {
@@ -200,6 +209,22 @@ public class MyPageServiceTests {
     @Test
     public void testSoftDeleteMember() {
         myPageService.softDeleteMember(5L);
+    }
+
+    @Test
+    public void testGetMyAlarmsByMemberProfileId() {
+        MemberProfileVO memberProfileVO = null;
+        MyAlarmPagination myAlarmPagination = new MyAlarmPagination();
+        memberProfileVO = memberProfileMapper.selectById(1L).get();
+        myAlarmPagination.setTotal(alarmDAO.getAlarmTotal(memberProfileVO.getId(), AlarmSubType.VIDEO.name()));
+        myAlarmPagination.progress();
+        MyAlarmListDTO myAlarms = myPageService.getMyAlarmsByMemberProfileId(1, myAlarmPagination, memberProfileVO.getId(),AlarmSubType.VIDEO.name());
+
+        log.info(" myAlarms.toString()-test={}", myAlarms.toString());
+        log.info(" myAlarmPagination.getTotal()={}", myAlarmPagination.getTotal());
+        log.info(" myAlarmPagination.getRowCount()={}", myAlarmPagination.getRowCount());
+
+
     }
 
 }

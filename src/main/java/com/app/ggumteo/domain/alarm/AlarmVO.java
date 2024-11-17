@@ -12,12 +12,11 @@ import org.springframework.stereotype.Component;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AlarmVO {
-    private Long id;
-    private Long memberProfileId;
-    private Long dataId;
-    private String message;
-    private boolean isRead;
-    private String alarmType;
-    private String subType;
-    private String createDate;
+    private Long id; // 알림 ID
+    private String message; // 알림 내용
+    private Long memberProfileId;  // 회원 프로필 ID
+    private String createDate; // 생성 일시
+    private boolean isRead; // 읽었는지 여부
+    private String alarmType;  // 알림 유형
+    private String postTitle; // 게시글 제목
 }
