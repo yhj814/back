@@ -28,7 +28,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-    // 유효성 검사 함수 (이메일, 전화번호 전용 - 인증번호는 제외)
     function validateField(input, regex, errorMessageText) {
         const errorMessage = input.closest(".input-gap")
             ? input.closest(".input-gap").parentElement.querySelector(".error-message")
@@ -50,7 +49,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    // 전화번호 포맷 자동 추가
     const phoneField = document.querySelector("input[name='profilePhone']");
     phoneField.addEventListener("input", (event) => {
         let value = event.target.value.replace(/[^0-9]/g, "");
@@ -62,7 +60,6 @@ document.addEventListener("DOMContentLoaded", function () {
         event.target.value = value;
     });
 
-    // 이메일 인증번호 요청 버튼 클릭 시 유효성 검사 및 `.certification-input` 클래스 제거
     document.getElementById("requestEmailCode").addEventListener("click", function () {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         const emailField = document.querySelector("input[name='profileEmail']");
@@ -75,7 +72,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-    // 전화번호 인증번호 요청 버튼 클릭 시 유효성 검사 및 `.certification-input` 클래스 제거
     document.getElementById("requestVerificationCode").addEventListener("click", function () {
         const phoneRegex = /^(010|011|016|017|018|019)-\d{3,4}-\d{4}$/;
 
@@ -87,26 +83,21 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-    // 전체 폼 유효성 검사 및 제출 함수
     function validateAndSubmitForm() {
         let isValid = true;
 
-        // 이메일 필드 유효성 검사
         const emailField = document.querySelector("input[name='profileEmail']");
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!validateField(emailField, emailRegex, "올바른 이메일 주소를 입력해주세요.")) {
             isValid = false;
         }
 
-        // 전화번호 필드 유효성 검사
-        const phoneField = document.querySelector("input[name='profilePhone']");
         const phoneRegex = /^(010|011|016|017|018|019)-\d{3,4}-\d{4}$/;
         if (!validateField(phoneField, phoneRegex, "올바른 전화번호를 입력해주세요.")) {
             isValid = false;
         }
 
-        // 기타 필드 유효성 검사 (인증번호 필드는 제외)
-        document.querySelectorAll(".form-control:not(#emailVerificationCode):not(#verificationCode)").forEach(function (input) {
+        document.querySelectorAll(".form-control").forEach(function (input) {
             const errorMessage = input.closest(".input-gap")
                 ? input.closest(".input-gap").parentElement.querySelector(".error-message")
                 : input.parentElement.querySelector(".error-message");
@@ -125,7 +116,6 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
 
-        // 폼 제출 처리
         if (isValid) {
             document.getElementById("base-edit-form").submit();
         } else {
