@@ -43,6 +43,14 @@ const showMyWorkList = ({myWorkPosts, myWorkAndFundingPagination}) => {
     let text = ``;
     let pagingText = ``;
 
+    if(myWorkPosts.length == 0) {
+        text += `  <div class="list-item">
+                        <div class="products-list">
+                           올린 작품 글이 없습니다.
+                        </div>
+                    </div>`
+    } else {
+
     myWorkPosts.forEach((myWorkPost) => {
 
         text += `
@@ -172,8 +180,6 @@ const showMyWorkList = ({myWorkPosts, myWorkAndFundingPagination}) => {
             </div>
             `;
     });
-    myWorkListLayout.innerHTML = text;
-
 
     if(myWorkAndFundingPagination.prev){
         pagingText += `
@@ -198,6 +204,9 @@ const showMyWorkList = ({myWorkPosts, myWorkAndFundingPagination}) => {
         `
     }
 
+    }
+
+    myWorkListLayout.innerHTML = text;
     myWorkListPaging.innerHTML = pagingText;
 }
 
@@ -229,9 +238,9 @@ const showMyWorkBuyerList = ({myWorkBuyers, mySettingTablePagination}) => {
                         </div>
                     </div>
                     <div class="center-text price-member setting-td with-text primary size-s"
-                            style="margin-bottom: 35px;">
-                        ${myWorkBuyer.workPrice}
-                    </div>
+                            style="margin-bottom: 35px;">`
+        text += myWorkBuyer.workPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        text +=    `원</div>
                     <div class="center-text setting-td with-btn trueorfalse">
                         <div class="btn-group choice-group">`
         if(myWorkBuyer.workSendStatus === "YES") {
@@ -304,8 +313,16 @@ const showMyBuyWorkList = ({myBuyWorkPosts, myWorkAndFundingPagination}) => {
     let text = ``;
     let pagingText = ``;
 
-    myBuyWorkPosts.forEach((myBuyWorkPost) => {
-        text += ` <div class="list-item">
+    if(myBuyWorkPosts.length == 0) {
+        text += `  <div class="list-item">
+                        <div class="products-list">
+                            구매한 작품이 없습니다.
+                        </div>
+                    </div>`
+    } else {
+
+        myBuyWorkPosts.forEach((myBuyWorkPost) => {
+            text += ` <div class="list-item">
                     <div class="products-list">
                         <div class="flex-box">
                             <div class="products-text">
@@ -373,9 +390,8 @@ const showMyBuyWorkList = ({myBuyWorkPosts, myWorkAndFundingPagination}) => {
                                 <div
                                     id="work-price"
                                     class="timeandcontent smooth" >`
-                            if(myBuyWorkPost.workPrice !== null) {
-                                        text += myBuyWorkPost.workPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-                                    }
+                text += myBuyWorkPost.workPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
                             text += `원
                                 </div>
                             </div>
@@ -433,33 +449,32 @@ const showMyBuyWorkList = ({myBuyWorkPosts, myWorkAndFundingPagination}) => {
                     </div>
                 </div>`
 
-    });
+        });
 
-    myBuyWorkListLayout.innerHTML = text;
-
-    if(myWorkAndFundingPagination.prev){
-        pagingText += `
+        if (myWorkAndFundingPagination.prev) {
+            pagingText += `
             <li class="page-item">
                 <a href="${myWorkAndFundingPagination.startPage - 1}" class="page-link back"></a>
             </li>
         `
-    }
-    for(let i=myWorkAndFundingPagination.startPage; i<=myWorkAndFundingPagination.endPage; i++){
-        if(myWorkAndFundingPagination.page === i){
-            pagingText += `<li class="page-item"><div class="page-link active">${i}</div></li>`
-        }else{
-            pagingText += `<li class="page-item"><a href="${i}" class="page-link">${i}</a></li>`
         }
-    }
+        for (let i = myWorkAndFundingPagination.startPage; i <= myWorkAndFundingPagination.endPage; i++) {
+            if (myWorkAndFundingPagination.page === i) {
+                pagingText += `<li class="page-item"><div class="page-link active">${i}</div></li>`
+            } else {
+                pagingText += `<li class="page-item"><a href="${i}" class="page-link">${i}</a></li>`
+            }
+        }
 
-    if(myWorkAndFundingPagination.next) {
-        pagingText += `
+        if (myWorkAndFundingPagination.next) {
+            pagingText += `
             <li class="page-item">
                 <a href="${myWorkAndFundingPagination.endPage + 1}" class="page-link next"></a>
             </li>
         `
+        }
     }
-
+    myBuyWorkListLayout.innerHTML = text;
     myBuyWorkListPaging.innerHTML = pagingText;
 }
 
@@ -471,9 +486,17 @@ const showMyFundingList = ({myFundingPosts, myWorkAndFundingPagination}) => {
     let text = ``;
     let pagingText = ``;
 
-    myFundingPosts.forEach((myFundingPost) => {
+    if(myFundingPosts.length == 0) {
+        text += `  <div class="list-item">
+                        <div class="products-list">
+                            올린 펀딩 글이 없습니다.
+                        </div>
+                    </div>`
+    } else {
 
-        text += `
+        myFundingPosts.forEach((myFundingPost) => {
+
+            text += `
          <div class="list-item my-funding-posts">
             <div class="products-list">
                 <div class="flex-box">
@@ -533,7 +556,7 @@ const showMyFundingList = ({myFundingPosts, myWorkAndFundingPagination}) => {
                     >
                         <img
                             class="author-image"
-                            src="/images/member/member-image.jpg"
+                            src=${myFundingPost.profileImgUrl}
                         />
                         <p class="author-name">
                             ${myFundingPost.profileNickname}
@@ -595,33 +618,34 @@ const showMyFundingList = ({myFundingPosts, myWorkAndFundingPagination}) => {
                 </div>
             </div>
             `;
-    });
-    myFundingListLayout.innerHTML = text;
+        });
 
 
-    if(myWorkAndFundingPagination.prev){
-        pagingText += `
+        if (myWorkAndFundingPagination.prev) {
+            pagingText += `
             <li class="page-item">
                 <a href="${myWorkAndFundingPagination.startPage - 1}" class="page-link back"></a>
             </li>
         `
-    }
-    for(let i=myWorkAndFundingPagination.startPage; i<=myWorkAndFundingPagination.endPage; i++){
-        if(myWorkAndFundingPagination.page === i){
-            pagingText += `<li class="page-item"><div class="page-link active">${i}</div></li>`
-        }else{
-            pagingText += `<li class="page-item"><a href="${i}" class="page-link">${i}</a></li>`
         }
-    }
+        for (let i = myWorkAndFundingPagination.startPage; i <= myWorkAndFundingPagination.endPage; i++) {
+            if (myWorkAndFundingPagination.page === i) {
+                pagingText += `<li class="page-item"><div class="page-link active">${i}</div></li>`
+            } else {
+                pagingText += `<li class="page-item"><a href="${i}" class="page-link">${i}</a></li>`
+            }
+        }
 
-    if(myWorkAndFundingPagination.next) {
-        pagingText += `
+        if (myWorkAndFundingPagination.next) {
+            pagingText += `
             <li class="page-item">
                 <a href="${myWorkAndFundingPagination.endPage + 1}" class="page-link next"></a>
             </li>
         `
+        }
     }
 
+    myFundingListLayout.innerHTML = text;
     myFundingListPaging.innerHTML = pagingText;
 }
 
@@ -671,9 +695,9 @@ const showFundingBuyerList = ({myFundingBuyers, mySettingTablePagination}) => {
                                 style="
                                 margin-bottom: 35px;
                             "
-                        >
-                             ${myFundingBuyer.productPrice}원
-                        </div>
+                        >`
+        text += myFundingBuyer.productPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        text +=     `원</div>
                         <div
                                 class="center-text setting-td with-btn trueorfalse"
                         >
@@ -775,8 +799,16 @@ const showMyBuyFundingList = ({myBuyFundingPosts, myWorkAndFundingPagination}) =
     let text = ``;
     let pagingText = ``;
 
-    myBuyFundingPosts.forEach((myBuyFundingPost) => {
-        text += ` <div class="list-item">
+    if(myBuyFundingPosts.length == 0) {
+        text += `  <div class="list-item">
+                        <div class="products-list">
+                            결제한 펀딩이 없습니다.
+                        </div>
+                    </div>`
+    } else {
+
+        myBuyFundingPosts.forEach((myBuyFundingPost) => {
+            text += ` <div class="list-item">
                       <div class="products-list">
                             <div class="flex-box">
                                 <div class="products-text">
@@ -835,10 +867,10 @@ const showMyBuyFundingList = ({myBuyFundingPosts, myWorkAndFundingPagination}) =
                                 >
                                     <img
                                         class="author-image"
-                                        src="/images/member/member-image.jpg"
+                                        src=${myBuyFundingPost.profileImgUrl}
                                     />
                                     <p class="author-name">
-                                        ${myBuyFundingPost.profileNickName}
+                                        ${myBuyFundingPost.profileNickname}
                                     </p>
                                     <div
                                         class="divider"
@@ -861,9 +893,9 @@ const showMyBuyFundingList = ({myBuyFundingPosts, myWorkAndFundingPagination}) =
                                     ></div>
                                     <div
                                         class="timeandcontent smooth"
-                                    >
-                                        ${myBuyFundingPost.productPrice}
-                                    </div>
+                                    >`
+            text += myBuyFundingPost.productPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            text +=              `원 </div>
                                 </div>
     
                                 <div class="flex-box">
@@ -891,36 +923,33 @@ const showMyBuyFundingList = ({myBuyFundingPosts, myWorkAndFundingPagination}) =
                             </div>
                         </div>
                   </div>`
-    });
+        });
 
-    myBuyFundingListLayout.innerHTML = text;
 
-//     콘솔창에 오류가 남. 확인 필요
-// if(myBuyFundingPosts[0].id !== null)  {}
-
-    if (myWorkAndFundingPagination.prev) {
-        pagingText += `
+        if (myWorkAndFundingPagination.prev) {
+            pagingText += `
             <li class="page-item">
                 <a href="${myWorkAndFundingPagination.startPage - 1}" class="page-link back"></a>
             </li>
         `
-    }
-    for (let i = myWorkAndFundingPagination.startPage; i <= myWorkAndFundingPagination.endPage; i++) {
-        if (myWorkAndFundingPagination.page === i) {
-            pagingText += `<li class="page-item"><div class="page-link active">${i}</div></li>`
-        } else {
-            pagingText += `<li class="page-item"><a href="${i}" class="page-link">${i}</a></li>`
         }
-    }
+        for (let i = myWorkAndFundingPagination.startPage; i <= myWorkAndFundingPagination.endPage; i++) {
+            if (myWorkAndFundingPagination.page === i) {
+                pagingText += `<li class="page-item"><div class="page-link active">${i}</div></li>`
+            } else {
+                pagingText += `<li class="page-item"><a href="${i}" class="page-link">${i}</a></li>`
+            }
+        }
 
-    if (myWorkAndFundingPagination.next) {
-        pagingText += `
+        if (myWorkAndFundingPagination.next) {
+            pagingText += `
             <li class="page-item">
                 <a href="${myWorkAndFundingPagination.endPage + 1}" class="page-link next"></a>
             </li>
         `
+        }
     }
-
+    myBuyFundingListLayout.innerHTML = text;
     myBuyFundingListPaging.innerHTML = pagingText;
 }
 
@@ -934,9 +963,17 @@ const showMyAuditionList = ({myAuditionPosts, myAuditionPagination}) => {
     let text = ``;
     let pagingText = ``;
 
-    myAuditionPosts.forEach((myAuditionPost) => {
+    if(myAuditionPosts.length == 0) {
+        text += `  <div class="list-item">
+                        <div class="products-list" style="margin-left: 38px;">
+                            나의 모집 글이 없습니다.
+                        </div>
+                    </div>`
+    } else {
 
-        text += `
+        myAuditionPosts.forEach((myAuditionPost) => {
+
+            text += `
              <div class="item">
                 <div class="item_recruit">
                     <div class="area_job">
@@ -947,16 +984,16 @@ const showMyAuditionList = ({myAuditionPosts, myAuditionPagination}) => {
                             >
                                 <span>
                                     ${myAuditionPost.postTitle} `
-        // if (myAuditionPost.auditionField == 1) {
-        //     text += `<b>배우</b> 채용`
-        // } else if (myAuditionPost.auditionField == 2) {
-        //     text += `<b>스텝</b> 채용`
-        // } else if (myAuditionPost.auditionField == 3) {
-        //     text += `<b>감독</b> 채용`
-        // } else if (myAuditionPost.auditionField == 4) {
-        //     text += `<b>기타</b> 채용`
-        // }
-        text += ` </span>
+            // if (myAuditionPost.auditionField == 1) {
+            //     text += `<b>배우</b> 채용`
+            // } else if (myAuditionPost.auditionField == 2) {
+            //     text += `<b>스텝</b> 채용`
+            // } else if (myAuditionPost.auditionField == 3) {
+            //     text += `<b>감독</b> 채용`
+            // } else if (myAuditionPost.auditionField == 4) {
+            //     text += `<b>기타</b> 채용`
+            // }
+            text += ` </span>
                             </a>
                         </h2>
                         <div class="job_date">
@@ -964,28 +1001,27 @@ const showMyAuditionList = ({myAuditionPosts, myAuditionPagination}) => {
                                 >~
                                 ${myAuditionPost.auditionDeadLine} </span
                             >`
-        if (myAuditionPost.auditionStatus === 'YES') {
-           text += `<button class="sri_btn_xs">
+            if (myAuditionPost.auditionStatus === 'YES') {
+                text += `<button class="sri_btn_xs">
                                 <span
                                     class="sri_btn_immediately"
                                     >모집중</span>
                             </button>`
-        }
-        else {
-            text += `<button class="sri_btn_xs">
+            } else {
+                text += `<button class="sri_btn_xs">
                                 <span class="btn-complete">
                                     모집완료</span>
                      </button>`
-        }
+            }
 
-        text +=  `</div>
+            text += `</div>
                         <div
                             class="job_condition"
                         >
                             <span
                                 >${myAuditionPost.auditionLocation}</span
                             >
-                                > ${myAuditionPost.auditionCareer}</span
+                                ·${myAuditionPost.auditionCareer}</span
                             ></div>
                         <div class="job_sector">
                             <b
@@ -997,7 +1033,7 @@ const showMyAuditionList = ({myAuditionPosts, myAuditionPagination}) => {
                             <span
                                 class="job_day"
                                 >등록일
-                                ${myAuditionPost.createdDate.substring(0,10)}</span
+                                ${myAuditionPost.createdDate.substring(0, 10)}</span
                             >
                         </div>
                     </div>
@@ -1107,30 +1143,31 @@ const showMyAuditionList = ({myAuditionPosts, myAuditionPagination}) => {
                 </div>
             </div>
             `;
-    });
-    myAuditionListLayout.innerHTML = text;
+        });
 
 
-    if (myAuditionPagination.prev) {
-        pagingText += `<a href="${myAuditionPagination.startPage - 1}" class="btnPrev page_move track_event"
+        if (myAuditionPagination.prev) {
+            pagingText += `<a href="${myAuditionPagination.startPage - 1}" class="btnPrev page_move track_event"
                         page="10" title="이전">이전</a>
         `
-    }
-    for(let i=myAuditionPagination.startPage; i<=myAuditionPagination.endPage; i++){
-        if(myAuditionPagination.page === i){
-            pagingText += `<span class="page">${i}</span>`
-        }else{
-            pagingText += `<a href="${i}" page="${i}" class="page page_move track_event">
+        }
+        for (let i = myAuditionPagination.startPage; i <= myAuditionPagination.endPage; i++) {
+            if (myAuditionPagination.page === i) {
+                pagingText += `<span class="page">${i}</span>`
+            } else {
+                pagingText += `<a href="${i}" page="${i}" class="page page_move track_event">
                             ${i}</a>`
+            }
+        }
+
+        if (myAuditionPagination.next) {
+            pagingText += `<a href="${myAuditionPagination.endPage + 1}" class="btnNext page_move track_event"
+                          page="11" title="다음">다음</a>
+        `
         }
     }
 
-    if(myAuditionPagination.next) {
-        pagingText += `<a href="${myAuditionPagination.endPage + 1}" class="btnNext page_move track_event"
-                          page="11" title="다음">다음</a>
-        `
-    }
-
+    myAuditionListLayout.innerHTML = text;
     myAuditionListPaging.innerHTML = pagingText;
 }
 
@@ -1264,8 +1301,16 @@ const showMyApplicationAuditionList = ({myApplicationAuditionPosts, myAuditionPa
     let text = ``;
     let pagingText = ``;
 
-    myApplicationAuditionPosts.forEach((myApplicationAuditionPost) => {
-        text += `<div class="item">
+    if(myApplicationAuditionPosts.length == 0) {
+        text += `  <div class="list-item">
+                        <div class="products-list"  style="margin-left: 38px;">
+                            신청한 모집이 없습니다.
+                        </div>
+                    </div>`
+    } else {
+
+        myApplicationAuditionPosts.forEach((myApplicationAuditionPost) => {
+            text += `<div class="item">
                         <div class="item_recruit">
                             <div class="area_job">
                                 <h2 class="job_tit">
@@ -1275,16 +1320,16 @@ const showMyApplicationAuditionList = ({myApplicationAuditionPosts, myAuditionPa
                             >
                                 <span>
                                     ${myApplicationAuditionPost.postTitle}`
-        // if (myApplicationAuditionPost.auditionField == 1) {
-        //     text += `<b>배우</b> 채용`
-        // } else if (myApplicationAuditionPost.auditionField == 2) {
-        //     text += `<b>스텝</b> 채용`
-        // } else if (myApplicationAuditionPost.auditionField == 3) {
-        //     text += `<b>감독</b> 채용`
-        // } else if (myApplicationAuditionPost.auditionField == 4) {
-        //     text += `<b>기타</b> 채용`
-        // }
-        text += `</span>
+            // if (myApplicationAuditionPost.auditionField == 1) {
+            //     text += `<b>배우</b> 채용`
+            // } else if (myApplicationAuditionPost.auditionField == 2) {
+            //     text += `<b>스텝</b> 채용`
+            // } else if (myApplicationAuditionPost.auditionField == 3) {
+            //     text += `<b>감독</b> 채용`
+            // } else if (myApplicationAuditionPost.auditionField == 4) {
+            //     text += `<b>기타</b> 채용`
+            // }
+            text += `</span>
                             </a>
                         </h2>
                         <div class="job_date">
@@ -1292,37 +1337,26 @@ const showMyApplicationAuditionList = ({myApplicationAuditionPosts, myAuditionPa
                                 >~
                                 ${myApplicationAuditionPost.auditionDeadLine} </span
                             >`
-        if (myApplicationAuditionPost.auditionStatus === 'YES') {
-            text += `<button class="sri_btn_xs">
+            if (myApplicationAuditionPost.auditionStatus === 'YES') {
+                text += `<button class="sri_btn_xs">
                                 <span
                                     class="sri_btn_immediately"
                                     >모집중</span>
                             </button>`
-        }
-        else {
-            text += `<button class="sri_btn_xs">
+            } else {
+                text += `<button class="sri_btn_xs">
                                 <span class="btn-complete">
                                     모집완료</span>
                      </button>`
-        }
+            }
 
-        text +=  `</div>
+            text += `</div>
                         <div
                             class="job_condition"
                         >
                             <span
                                 >${myApplicationAuditionPost.auditionLocation}</span
-                            >`
-        if (myApplicationAuditionPost.auditionCareer === '') {
-            text +=  `<span
-                                >·신입</span
-                            >`
-        } else {
-            text += `<span
-                                >·경력</span
-                            >`
-        }
-        text +=          `</div>
+                            ><span>·${myApplicationAuditionPost.auditionCareer}</span></div>
                         <div class="job_sector">
                             <b
                                 >${myApplicationAuditionPost.expectedAmount}</b
@@ -1354,30 +1388,30 @@ const showMyApplicationAuditionList = ({myApplicationAuditionPosts, myAuditionPa
                             ></div>
                         </div>
                     </div>`
-    });
+        });
 
-    myApplicationAuditionListLayout.innerHTML = text;
-
-    if (myAuditionPagination.prev) {
-        pagingText += `<a href="${myAuditionPagination.startPage - 1}" class="btnPrev page_move track_event"
+        if (myAuditionPagination.prev) {
+            pagingText += `<a href="${myAuditionPagination.startPage - 1}" class="btnPrev page_move track_event"
                         page="10" title="이전">이전</a>
         `
-    }
-    for(let i=myAuditionPagination.startPage; i<=myAuditionPagination.endPage; i++){
-        if(myAuditionPagination.page === i){
-            pagingText += `<span class="page">${i}</span>`
-        }else{
-            pagingText += `<a href="${i}" page="${i}" class="page page_move track_event">
+        }
+        for (let i = myAuditionPagination.startPage; i <= myAuditionPagination.endPage; i++) {
+            if (myAuditionPagination.page === i) {
+                pagingText += `<span class="page">${i}</span>`
+            } else {
+                pagingText += `<a href="${i}" page="${i}" class="page page_move track_event">
                             ${i}</a>`
+            }
+        }
+
+        if (myAuditionPagination.next) {
+            pagingText += `<a href="${myAuditionPagination.endPage + 1}" class="btnNext page_move track_event"
+                          page="11" title="다음">다음</a>
+        `
         }
     }
 
-    if(myAuditionPagination.next) {
-        pagingText += `<a href="${myAuditionPagination.endPage + 1}" class="btnNext page_move track_event"
-                          page="11" title="다음">다음</a>
-        `
-    }
-
+    myApplicationAuditionListLayout.innerHTML = text;
     myApplicationAuditionListPaging.innerHTML = pagingText;
 }
 
@@ -1390,8 +1424,16 @@ const showMyInquiryHistoryList = ({myInquiryHistories, myWorkAndFundingPaginatio
 let text = ``;
 let pagingText = ``;
 
-    myInquiryHistories.forEach((myInquiryHistory) => {
-        text += `<div class="list-item">
+    if(myInquiryHistories.length == 0) {
+        text += `  <div class="list-item">
+                        <div class="products-list">
+                            문의 내역이 없습니다.
+                        </div>
+                    </div>`
+    } else {
+
+        myInquiryHistories.forEach((myInquiryHistory) => {
+            text += `<div class="list-item">
             <div class="inquiry-list">
                 <div class="flex-box">
                     <div class="inquiry-text">
@@ -1434,7 +1476,7 @@ let pagingText = ``;
                     >
                         <img
                             class="author-image"
-                            src="/images/member/member-image.jpg"
+                            src= ${myInquiryHistory.profileImgUrl}
                         />
                         <p class="author-name">
                             ${myInquiryHistory.profileNickname}
@@ -1495,32 +1537,33 @@ let pagingText = ``;
                 </div>
             </div>
         </div>`;
-    });
-    myInquiryHistoryListLayout.innerHTML = text;
+        });
 
 
-    if(myWorkAndFundingPagination.prev){
-        pagingText += `
+        if (myWorkAndFundingPagination.prev) {
+            pagingText += `
             <li class="page-item">
                 <a href="${myWorkAndFundingPagination.startPage - 1}" class="page-link back"></a>
             </li>
         `
-    }
-    for(let i=myWorkAndFundingPagination.startPage; i<=myWorkAndFundingPagination.endPage; i++){
-        if(myWorkAndFundingPagination.page === i){
-            pagingText += `<li class="page-item"><div class="page-link active">${i}</div></li>`
-        }else{
-            pagingText += `<li class="page-item"><a href="${i}" class="page-link">${i}</a></li>`
         }
-    }
+        for (let i = myWorkAndFundingPagination.startPage; i <= myWorkAndFundingPagination.endPage; i++) {
+            if (myWorkAndFundingPagination.page === i) {
+                pagingText += `<li class="page-item"><div class="page-link active">${i}</div></li>`
+            } else {
+                pagingText += `<li class="page-item"><a href="${i}" class="page-link">${i}</a></li>`
+            }
+        }
 
-    if(myWorkAndFundingPagination.next) {
-        pagingText += `
+        if (myWorkAndFundingPagination.next) {
+            pagingText += `
             <li class="page-item">
                 <a href="${myWorkAndFundingPagination.endPage + 1}" class="page-link next"></a>
             </li>
         `
+        }
     }
+    myInquiryHistoryListLayout.innerHTML = text;
     myInquiryHistoryListPaging.innerHTML = pagingText;
 }
 
