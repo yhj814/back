@@ -14,6 +14,7 @@ public interface ReplyMapper {
     void insertReply(ReplyDTO replyDTO);
 
     // 댓글 삭제
+    void deleteReplyNotificationsByReplyId(@Param("replyId") Long replyId);
     void deleteReplyById(@Param("id") Long id);
 
     // 특정 작품에 대한 댓글 목록 조회

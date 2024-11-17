@@ -23,6 +23,10 @@ public class ReplyDAO {
     public void deleteReplyById(Long id) {
         replyMapper.deleteReplyById(id);
     }
+    public void deleteReplyNotificationsByReplyId(Long replyId) {
+        replyMapper.deleteReplyNotificationsByReplyId(replyId);
+    }
+
 
     // 특정 작품에 대한 댓글 목록 조회
     public List<ReplyDTO> selectRepliesByWorkId(Long workId, Pagination pagination) {

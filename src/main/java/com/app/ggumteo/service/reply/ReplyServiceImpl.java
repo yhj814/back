@@ -86,6 +86,11 @@ public class ReplyServiceImpl implements ReplyService {
     public void deleteReplyById(Long id) {
         replyDAO.deleteReplyById(id);
     }
+    @Override
+    public void deleteReplyNotificationsByReplyId(Long replyId) {
+        replyDAO.deleteReplyNotificationsByReplyId(replyId);
+    }
+
 
     @Override
     public ReplyListDTO selectRepliesByWorkId(int page, Pagination pagination, Long workId) {

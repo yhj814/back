@@ -13,6 +13,7 @@ public interface ReplyService {
 
     // 댓글 삭제
     void deleteReplyById(Long id);
+    void deleteReplyNotificationsByReplyId(Long replyId);
 
     // 특정 작품에 대한 댓글 목록 조회
     public ReplyListDTO selectRepliesByWorkId(int page, Pagination pagination, Long workId);
