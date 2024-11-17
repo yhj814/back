@@ -76,6 +76,7 @@ public class ReplyController {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteReply(@PathVariable Long id) {
         try {
+            replyService.deleteReplyNotificationsByReplyId(id);
             replyService.deleteReplyById(id);
             log.info("댓글이 성공적으로 삭제되었습니다. ID: {}", id);
             return ResponseEntity.ok("댓글이 성공적으로 삭제되었습니다.");
