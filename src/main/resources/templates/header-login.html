@@ -8,7 +8,7 @@
 </head>
 <body>
 <!-- 로그인 -->
-<header th:fragment="header" id="main-header" class="main-total-header">
+<header th:fragment="header" id="main-header" class="main-total-header login-header">
     <div class="header-nav sticky">
         <div class="main-header-container">
             <div class="header-nav-wrapper">
@@ -35,12 +35,12 @@
                             <!-- 내 알림 모달 -->
                             <div id="noti-modal-1" class="noti-modal">
                                 <p class="noti-header">내 알림</p>
-                                <a th:href="@{/404}">
+                                <a th:href="@{/alarm/video/my-page}">
                                     <div class="noti-item">
                                         <p>영상</p>
                                     </div>
                                 </a>
-                                <a href="/audition/text/text-alarms">
+                                <a th:href="@{/alarm/video/my-page}">
                                     <div class="noti-item">
                                         <p>글</p>
                                     </div>

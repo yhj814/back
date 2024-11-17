@@ -1,6 +1,8 @@
 package com.app.ggumteo.mapper.alarm;
 
 import com.app.ggumteo.domain.alarm.AlarmDTO;
+import com.app.ggumteo.pagination.MyAlarmPagination;
+import com.app.ggumteo.pagination.MyWorkAndFundingPagination;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -31,4 +33,10 @@ public interface AlarmMapper {
     );
 
     int countUnreadAlarmsBySubtype(@Param("memberProfileId") Long memberProfileId, @Param("subType") String subType);
+
+    public List<AlarmDTO> selectAlarmsByMemberProfileId(@Param("myAlarmPagination") MyAlarmPagination myAlarmPagination,
+                                                        @Param("memberProfileId") Long memberProfileId, String subType);
+
+    public int selectAlarmTotal(Long memberProfileId, String subType);
+
 }

@@ -1386,7 +1386,7 @@ h1.common-header-description {
 /* 두번째 열 */
 #review-section .apply-header-cell:nth-child(3),
 #review-section .apply-table-cell:nth-child(3) {
-    width: 18%;
+    width: 24%;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -1473,7 +1473,7 @@ h1.common-header-description {
 /* 여섯번째 열 */
 #inquiry-section .apply-header-cell:nth-child(7),
 #inquiry-section .apply-table-cell:nth-child(7) {
-    width: 14%;
+    width: 18%;
 }
 
 /* 일곱 열 */

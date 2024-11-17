@@ -1,6 +1,8 @@
 package com.app.ggumteo.service.myPage;
 
 import com.app.ggumteo.domain.admin.AdminAnswerDTO;
+import com.app.ggumteo.domain.alarm.AlarmDTO;
+import com.app.ggumteo.domain.alarm.MyAlarmListDTO;
 import com.app.ggumteo.domain.audition.*;
 import com.app.ggumteo.domain.buy.*;
 import com.app.ggumteo.domain.funding.*;
@@ -10,10 +12,12 @@ import com.app.ggumteo.domain.member.MemberProfileVO;
 import com.app.ggumteo.domain.member.MemberVO;
 import com.app.ggumteo.domain.work.MyWorkListDTO;
 import com.app.ggumteo.domain.work.WorkDTO;
+import com.app.ggumteo.pagination.MyAlarmPagination;
 import com.app.ggumteo.pagination.MyAuditionPagination;
 import com.app.ggumteo.pagination.MySettingTablePagination;
 import com.app.ggumteo.pagination.MyWorkAndFundingPagination;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface MyPageService {
@@ -129,7 +133,7 @@ public interface MyPageService {
     // 마이페이지 - 내 정보 조회
     public Optional<MemberVO> getMember(Long id);
 
-    //  마이페이지 - 회원 정보 수정(조회)
+    // 마이페이지 - 회원 정보 수정(조회)
     public Optional<MemberProfileVO> getMemberProfileByMemberId(Long memberId);
 
     // 마이페이지 - 내 정보 수정
@@ -137,6 +141,11 @@ public interface MyPageService {
 
     // 마이페이지 - 회원 탈퇴
     public void softDeleteMember(Long id);
+
+//====내 알림 ====================================================
+    //  알림 조회
+    public MyAlarmListDTO getMyAlarmsByMemberProfileId(int page, MyAlarmPagination myAlarmPagination,
+                                                      Long memberProfileId, String subType);
 }
 
 

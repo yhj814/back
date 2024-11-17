@@ -70,7 +70,7 @@ public class ReplyServiceImpl implements ReplyService {
             return;
         }
 
-        String message = "새로운 댓글이 달렸습니다.";
+        String message = "에 댓글이 달렸습니다.";
         log.info("Creating reply alarm with subType: {}", subType);
         try {
             alarmService.createReplyAlarm(recipientMemberProfileId, replyDTO.getId(), message, subType);

@@ -2,8 +2,10 @@ package com.app.ggumteo.repository.alarm;
 
 import com.app.ggumteo.domain.alarm.AlarmDTO;
 import com.app.ggumteo.mapper.alarm.AlarmMapper;
+import com.app.ggumteo.pagination.MyAlarmPagination;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -85,4 +87,13 @@ public class AlarmDAO {
         int count = alarmMapper.countUnreadAlarmsBySubtype(memberProfileId, subType);
         return count;
     }
+
+    public List<AlarmDTO> findAlarmsByMemberProfileId(MyAlarmPagination myAlarmPagination,
+                                                      Long memberProfileId, String subType) {
+        return alarmMapper.selectAlarmsByMemberProfileId(myAlarmPagination, memberProfileId, subType);
+    };
+
+    public int getAlarmTotal(Long memberProfileId, String subType) {
+        return alarmMapper.selectAlarmTotal(memberProfileId, subType);
+    };
 }

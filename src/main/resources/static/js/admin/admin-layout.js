@@ -666,7 +666,13 @@ function renderVideoReplyReportList(replyReports) {
         row.innerHTML = `
             <div class="apply-table-cell"><input type="checkbox" class="apply-checkbox" data-id="${replyReport.replyId}"/></div>
             <div class="apply-table-cell">${replyReport.replyId}</div>
-            <div class="apply-table-cell post-title"><a href="/video/detail/${replyReport.workId}">${replyReport.postTitle || ''}</a></div>
+            <div class="apply-table-cell post-title" style="cursor: pointer">
+                <a href="/video/detail/22" 
+                    data-title="${replyReport.postTitle || ''}">
+                    ${replyReport.postTitle && replyReport.postTitle.length > 15
+            ? replyReport.postTitle.substring(0, 15) + '...' : replyReport.postTitle || ''}
+                </a>
+            </div>
             <div class="apply-table-cell video-reply-content" style="cursor: pointer" 
                  data-content="${replyReport.replyContent || ''}"
                     onclick="openVideoReplyModal(this)">
@@ -768,7 +774,13 @@ function renderTextReplyReportList(replyReports) {
         row.innerHTML = `
             <div class="apply-table-cell"><input type="checkbox" class="apply-checkbox" data-id="${replyReport.replyId}"/></div>
             <div class="apply-table-cell">${replyReport.replyId}</div>
-            <div class="apply-table-cell post-title"><a href="/text/detail/${replyReport.workId}">${replyReport.postTitle || ''}</a></div>
+            <div class="apply-table-cell post-title" style="cursor: pointer">
+                <a href="/text/detail/62" 
+                    data-title="${replyReport.postTitle || ''}">
+                    ${replyReport.postTitle && replyReport.postTitle.length > 15
+                    ? replyReport.postTitle.substring(0, 15) + '...' : replyReport.postTitle || ''}
+                </a>
+            </div>
             <div class="apply-table-cell text-reply-content" style="cursor: pointer" 
                  data-content="${replyReport.replyContent || ''}"
                     onclick="openTextReplyModal(this)">
@@ -1388,11 +1400,11 @@ function renderWorkList(pays) {
             <div class="apply-table-cell">${pay.id}</div>
             <div class="apply-table-cell">${workFieldText}</div>
             <div class="apply-table-cell post-title">
-                 <p>
+                 <a href="/video/detail/${pay.id}">
                     ${pay.postTitle && pay.postTitle.length > 7
             ? pay.postTitle.substring(0, 7) + '...'
             : pay.postTitle || ''}
-                </p>
+                </a>
             </div>
             <div class="apply-table-cell">${pay.workPrice || ''}</div>
             <div class="apply-table-cell">${pay.profileName || ''}</div>
@@ -1489,11 +1501,11 @@ function renderFundingList(pays) {
             <div class="apply-table-cell">${pay.id}</div>
             <div class="apply-table-cell">${fundingFieldText}</div>
             <div class="apply-table-cell post-title">
-                 <p>
+                 <a href="/video/funding/detail/${pay.id}">
                     ${pay.productName && pay.productName.length > 7
             ? pay.productName.substring(0, 7) + '...'
             : pay.productName || ''}
-                </p>
+                </a>
             </div>
             <div class="apply-table-cell">${pay.productPrice || ''}</div>
             <div class="apply-table-cell">${pay.profileName || ''}</div>
