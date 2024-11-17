@@ -14,11 +14,9 @@ create table tbl_work_report (
 select *from tbl_work_report;
 
 insert into tbl_work_report
-values (3,'현실성을 떨어뜨리는 연출과 전개 방식은 관객의 이해를 저해할 수 있습니다. 이는 서사의 논리적 일관성과 관객의 몰입을 방해할 가능성이 높습니다.',3,now(),default,2);
+values (17,'작품이 현실과 꿈의 경계를 다루면서 관객에게 혼란을 줄 수 있는 모호한 표현이나 부적절한 상징성을 사용한 점이 우려됩니다.',65,now(),default,5);
 
 select *from tbl_member_profile;
 
-select *from tbl_reply;
-
-drop table tbl_work_report;
+select *from tbl_post;
 
