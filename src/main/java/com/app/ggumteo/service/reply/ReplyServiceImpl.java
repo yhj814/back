@@ -70,7 +70,7 @@ public class ReplyServiceImpl implements ReplyService {
             return;
         }
 
-        String message = "새로운 댓글이 달렸습니다.";
+        String message = "에 댓글이 달렸습니다.";
         log.info("Creating reply alarm with subType: {}", subType);
         try {
             alarmService.createReplyAlarm(recipientMemberProfileId, replyDTO.getId(), message, subType);
@@ -86,6 +86,11 @@ public class ReplyServiceImpl implements ReplyService {
     public void deleteReplyById(Long id) {
         replyDAO.deleteReplyById(id);
     }
+    @Override
+    public void deleteReplyNotificationsByReplyId(Long replyId) {
+        replyDAO.deleteReplyNotificationsByReplyId(replyId);
+    }
+
 
     @Override
     public ReplyListDTO selectRepliesByWorkId(int page, Pagination pagination, Long workId) {

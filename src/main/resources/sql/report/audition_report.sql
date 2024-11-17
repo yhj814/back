@@ -15,5 +15,6 @@ create table tbl_audition_report (
 select *from tbl_audition_report;
 
 insert into tbl_audition_report
-values (6,'모집조건이 너무 까다롭습니다..',34,now(),default,2);
+values (10,'모집지역이 너무 포괄적입니다',77,now(),default,3);
 
+select *from tbl_post;

@@ -317,7 +317,7 @@ public class VideoFundingController {
             }
 
             // 2. Create alarm to the author
-            String message = "새로운 펀딩 상품이 구매되었습니다.";
+            String message = "에 펀딩이 들어왔습니다.";
             AlarmSubType subType = AlarmSubType.VIDEO;
 
             alarmService.createFundingAlarm(authorMemberProfileId, buyFundingProductVO.getId(), message, subType);
