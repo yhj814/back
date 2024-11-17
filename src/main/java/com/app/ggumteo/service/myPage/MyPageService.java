@@ -114,6 +114,10 @@ public interface MyPageService {
     public int getMyApplicationAuditionListTotal(Long memberId, String postType);
 
 
+//====리뷰 ====================================================
+    // 마이페이지 - 내 단 리뷰 총 갯수
+    public int getMyReviewsTotal(Long memberId, String postType);
+
 //====문의내역 ====================================================
 
     // 마이페이지 - 문의 내역 조회

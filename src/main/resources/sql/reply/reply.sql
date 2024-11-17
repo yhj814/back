@@ -22,3 +22,9 @@ values (25,'댓글adsadsadsadsadasadasdsdsadsadsa',9,12,now(),2);
 
 select *from tbl_work;
 select *from tbl_post;
+
+select count(*) from tbl_reply r
+                         join tbl_member_profile mp on mp.id = r.member_profile_id
+                         join tbl_work w on w.id = r.work_id
+                         join tbl_post p on p.id = w.id and p.post_type = 'WORKVIDEO'
+                         join tbl_member m on m.id = mp.member_id and m.id = 1;

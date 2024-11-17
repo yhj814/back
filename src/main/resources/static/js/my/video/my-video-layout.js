@@ -1173,8 +1173,6 @@ const showMyAuditionList = ({myAuditionPosts, myAuditionPagination}) => {
 
 // 나의 모집 목록, 페이징 - 구매자 목록, 페이징
 const showMyAuditionApplicantList = ({myAuditionApplicants, mySettingTablePagination}) => {
-    console.log("layout-myAuditionApplicants : ", myAuditionApplicants)
-    console.log("layout-mySettingTablePagination : ", mySettingTablePagination)
 
     let text = `<div
                                 class="setting-th"
@@ -1367,7 +1365,7 @@ const showMyApplicationAuditionList = ({myApplicationAuditionPosts, myAuditionPa
                             <span
                                 class="job_day"
                                 >등록일
-                                ${myApplicationAuditionPost.createdDate}</span
+                                ${myApplicationAuditionPost.createdDate.substring(0, 10)}</span
                             >
                         </div>
                     </div>
@@ -1727,6 +1725,27 @@ const myNotificationListLayout = document.getElementById("my-notification-list")
 const moreButton = document.getElementById("more-button");
 
 
+let isHeaderRendered = false; // 헤더가 렌더링되었는지 확인하는 변수
+
+const renderNotificationHeader = () => {
+    if (isHeaderRendered) return; // 이미 렌더링된 경우 실행하지 않음
+
+    const text = `
+        <div class="notification-center-header">
+            <div class="subtitle-1 notification-center-title">영상 전체 알림</div>
+            <div class="notification-center-header-more">
+                <div class="notification-center-refresh">
+                    <div class="refresh-btn">
+                        <img onclick="refresh()" class="refresh-img" src="/images/member/refresh.png" />새로고침
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+    myNotificationListLayout.innerHTML = text;
+    isHeaderRendered = true; // 헤더 렌더링 완료 표시
+};
+
 // 날짜 포맷 함수: 10월 08일 화요일
 const formatDateHangul = (dateString) => {
     const date = new Date(dateString);
@@ -1777,132 +1796,227 @@ const groupAlarmsByDate = (myAlarms) => {
     return groupedAlarms;
 };
 
-// const renderedDates = []; // 이미 렌더링된 날짜를 추적
+const showMyNotification = ({myAlarms, myAlarmPagination}) => {
+    // let text = ``;
+    let moreText = ``;
 
-const showUnreadAlarms = ({ myAlarms, myAlarmPagination }) => {
-    let text = ``;
+    console.log("myAlarms : ", myAlarms);
+    console.log("myAlarmPagination : ", myAlarmPagination);
 
-
-    // 더보기 버튼 표시 여부 처리
-    if (myAlarmPagination.rowCount >= myAlarms.length) {
-        moreButton.style.display = "none"; // 더보기 버튼 숨김
+    if(myAlarmPagination.rowCount >= myAlarms.length) {
+        moreButton.style.display = "none";
     } else {
-        moreButton.style.display = "block";
+        myAlarms.pop();
     }
-
-    // 알림 데이터가 없을 때
-    if (myAlarms.length === 0) {
-        text = `
-            <div class="notification-center-header">
-                <div class="subtitle-1 notification-center-title">전체 알림</div>
-                <div class="notification-center-header-more">
-                    <div class="notification-center-refresh">
-                        <div class="refresh-btn">
-                            <img class="refresh-img" src="/images/member/refresh.png" />새로고침
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="notification-box date-box">
-                <div class="notification-box-wrapper">
-                    <p class="notification-date-title">읽지 않은 알림이 없습니다.</p>
-                </div>
-            </div>
-        `;
-    } else {
-        // 알림 데이터 있을 때
-        text += `
-            <div class="notification-center-header">
-                <div class="subtitle-1 notification-center-title">전체 알림</div>
-                <div class="notification-center-header-more">
-                    <div class="notification-center-refresh">
-                        <div class="refresh-btn">
-                            <img class="refresh-img" src="/images/member/refresh.png" />새로고침
-                        </div>
-                    </div>
-                </div>
-            </div>
-        `;
-
-        // 알림 날짜별로 그룹화
-        const groupedAlarms = groupAlarmsByDate(myAlarms);
+//
+//                 text += `
+//                         <div class="notification-center-header">
+//                             <div class="subtitle-1 notification-center-title">영상 전체 알림</div>
+//                             <div class="notification-center-header-more">
+//                                 <div class="notification-center-refresh">
+//                                     <div class="refresh-btn">
+//                                         <img class="refresh-img" src="/images/member/refresh.png" />새로고침
+//                                     </div>
+//                                 </div>
+//                             </div>
+//                         </div>
+//                     `;
+// //                 <div class="notification-body">
+// //                     <div class="notification-box date-box">
+// // <!--                        알림 그룹 날짜-->
+// //                     </div>`
+//     myNotificationListLayout.innerHTML = text;
 
 
-        // 그룹화된 알림을 순차적으로 표시
-        Object.keys(groupedAlarms).forEach(dateKey => {
-            // // 날짜가 렌더링되지 않았으면 추가
-            // if (!renderedDates.includes(dateKey)) {
-            //     renderedDates.push(dateKey); // 날짜 추가
-            // 날짜 출력: "10월 08일 화요일"
-            const formattedHangul = formatDateHangul(groupedAlarms[dateKey][0].createdDate);
-            text += `
-                <div class="notification-body">
-                    <div class="notification-box date-box">
-                        <div class="notification-box-wrapper">
-                            <p class="notification-date-title">${formattedHangul}</p>
-                        </div>
-                    </div>
-            `;
-        // }
+                myAlarms.forEach((myAlarm) => {
+                        // 출력 예시: 2024.10.08. 오전 10시 16분
+                        const formattedDate = formatDate(myAlarm.createdDate);
+                        const formattedTime = formatTime(myAlarm.createdDate);
 
-            // 날짜별 알림을 표시
-            groupedAlarms[dateKey].slice(0, 5).forEach((myAlarm) => {
-                // 시간 출력: "2024.10.08. 오전 10시 16분"
-                const formattedDate = formatDate(myAlarm.createdDate);
-                const formattedTime = formatTime(myAlarm.createdDate);
+                    moreText += `<div class="notification-box unread">
+                            <div class="notification-box-wrapper">`
+                            // 알림 내용
+                    moreText += `
+                                    <div class="notification-box-content">
+                                        <div class="notification-title">
+                                `;
 
-                // 기본 알림 박스 시작
-                text += `
-                        <div class="notification-box unread">`
-                    if (myAlarm.alarmType !== 'reply') {
-                        text +=   `<div class="notification-box-wrapper with-img">`;
-                    }
-                    else if(myAlarm.alarmType == 'reply') {
-                        text +=   `<div class="notification-box-wrapper">`;
-                    }
+                                // 알림 타입에 맞는 제목 처리
+                                if (myAlarm.alarmType === 'work') {
+                                    moreText += `내 작품 `;
+                                } else if (myAlarm.alarmType === 'fundingProduct') {
+                                    moreText += `나의 펀딩 `;
+                                } else if (myAlarm.alarmType === 'audition') {
+                                    moreText += `나의 모집 `;
+                                } else if (myAlarm.alarmType === 'reply') {
+                                    moreText += `내 작품 `;
+                                }
 
-                    // 댓글이 아닐 경우 이미지 포함
-                    if (myAlarm.alarmType !== 'reply') {
-                        text += `
-                            <img class="notification-img" src="/images/member/alarm_icon.png">
-                        `;
-                   }
-
-                    // 알림 내용
-                    text += `
-                        <div class="notification-box-content">
-                            <div class="notification-title">
-                    `;
-
-                    // 알림 타입에 맞는 제목 처리
-                    if (myAlarm.alarmType === 'work') {
-                        text += `내 작품 `;
-                    } else if (myAlarm.alarmType === 'fundingProduct') {
-                        text += `나의 펀딩 `;
-                    } else if (myAlarm.alarmType === 'audition') {
-                        text += `나의 모집 `;
-                    } else if (myAlarm.alarmType === 'reply') {
-                        text += `내 작품 `;
-                    }
-
-                    // 제목과 메시지 출력
-                    text += `&lt;${myAlarm.postTitle}&gt; ${myAlarm.message}
-                            </div>
-                            <div class="notification-date">
-                                ${formattedDate}. ${formattedTime}
+                                // 제목과 메시지 출력
+                    moreText += `<u> ${myAlarm.postTitle} </u> ${myAlarm.message}
+                                        </div>
+                                        <div class="notification-date">
+                                            ${formattedDate}. ${formattedTime}
+                                        </div>
                             </div>
                         </div>
                     </div>
-                    </div>
-                    `;
+                </div>`
 
-            });
 
-            text += `</div>`;
-        });
-    }
+     });
 
-    console.log("Rendered HTML:", text);
-    myNotificationListLayout.innerHTML = text;
+    myNotificationListLayout.innerHTML += moreText;
 
-};
+}
+
+//
+// // const renderedDates = []; // 이미 렌더링된 날짜를 추적
+//
+// const showUnreadAlarms = ({ myAlarms, myAlarmPagination }) => {
+//     let text = ``;
+//
+//
+//     // // 더보기 버튼 표시 여부 처리
+//     // if (myAlarmPagination.rowCount >= myAlarms.length) {
+//     //     moreButton.style.display = "none"; // 더보기 버튼 숨김
+//     // } else {
+//     //     moreButton.style.display = "block";
+//     // }
+//
+//     // 알림 데이터가 없을 때
+//     if (myAlarms.length === 0) {
+//         text = `
+//             <div class="notification-center-header">
+//                 <div class="subtitle-1 notification-center-title">영상 전체 알림</div>
+//                 <div class="notification-center-header-more">
+//                     <div class="notification-center-refresh">
+//                         <div class="refresh-btn">
+//                             <img class="refresh-img" src="/images/member/refresh.png" />새로고침
+//                         </div>
+//                     </div>
+//                 </div>
+//             </div>
+//             <div class="notification-box date-box">
+//                 <div class="notification-box-wrapper">
+//                     <p class="notification-date-title">읽지 않은 알림이 없습니다.</p>
+//                 </div>
+//             </div>
+//         `;
+//     } else {
+//         // 알림 데이터 있을 때
+//         text += `
+//             <div class="notification-center-header">
+//                 <div class="subtitle-1 notification-center-title">영상 전체 알림</div>
+//                 <div class="notification-center-header-more">
+//                     <div class="notification-center-refresh">
+//                         <div class="refresh-btn">
+//                             <img class="refresh-img" src="/images/member/refresh.png" />새로고침
+//                         </div>
+//                     </div>
+//                 </div>
+//             </div>
+//         `;
+//
+//         // 알림 날짜별로 그룹화
+//         const groupedAlarms = groupAlarmsByDate(myAlarms);
+//
+//
+//         // 그룹화된 알림을 순차적으로 표시
+//         Object.keys(groupedAlarms).forEach(dateKey => {
+//             // // 날짜가 렌더링되지 않았으면 추가
+//             // if (!renderedDates.includes(dateKey)) {
+//             //     renderedDates.push(dateKey); // 날짜 추가
+//             // 날짜 출력: "10월 08일 화요일"
+//             const formattedHangul = formatDateHangul(groupedAlarms[dateKey][0].createdDate);
+//             text += `
+//                 <div class="notification-body">
+//                     <div class="notification-box date-box">
+//                         <div class="notification-box-wrapper">
+//                             <p class="notification-date-title">${formattedHangul}</p>
+//                         </div>
+//                     </div>
+//             `;
+//         // }
+//
+//             // 날짜별 알림을 표시
+//             groupedAlarms[dateKey].slice(0, 5).forEach((myAlarm) => {
+//                 // 시간 출력: "2024.10.08. 오전 10시 16분"
+//                 const formattedDate = formatDate(myAlarm.createdDate);
+//                 const formattedTime = formatTime(myAlarm.createdDate);
+//
+//                 // 기본 알림 박스 시작
+//                 text += `
+//                         <div class="notification-box unread">`
+//                     if (myAlarm.alarmType !== 'reply') {
+//                         text +=   `<div class="notification-box-wrapper with-img">`;
+//                     }
+//                     else if(myAlarm.alarmType == 'reply') {
+//                         text +=   `<div class="notification-box-wrapper">`;
+//                     }
+//
+//                     // 댓글이 아닐 경우 이미지 포함
+//                     if (myAlarm.alarmType !== 'reply') {
+//                         text += `
+//                             <img class="notification-img" src="/images/member/alarm_icon.png">
+//                         `;
+//                    }
+//
+//                     // 알림 내용
+//                     text += `
+//                         <div class="notification-box-content">
+//                             <div class="notification-title">
+//                     `;
+//
+//                     // 알림 타입에 맞는 제목 처리
+//                     if (myAlarm.alarmType === 'work') {
+//                         text += `내 작품 `;
+//                     } else if (myAlarm.alarmType === 'fundingProduct') {
+//                         text += `나의 펀딩 `;
+//                     } else if (myAlarm.alarmType === 'audition') {
+//                         text += `나의 모집 `;
+//                     } else if (myAlarm.alarmType === 'reply') {
+//                         text += `내 작품 `;
+//                     }
+//
+//                     // 제목과 메시지 출력
+//                     text += `&lt;${myAlarm.postTitle}&gt; ${myAlarm.message}
+//                             </div>
+//                             <div class="notification-date">
+//                                 ${formattedDate}. ${formattedTime}
+//                             </div>
+//                         </div>
+//                     </div>
+//                     </div>
+//                     `;
+//
+//             });
+//
+//             text += `</div>`;
+//         });
+//     }
+//
+//     console.log("Rendered HTML:", text);
+//     myNotificationListLayout.innerHTML = text;
+//
+// };
+//
+// let currentPage = 1; // 현재 페이지
+// let isLoading = false; // 중복 요청 방지 플래그
+//
+// const loadMoreAlarms = async () => {
+//     if (isLoading) return; // 중복 요청 방지
+//     isLoading = true;
+//
+//     try {
+//         const alarms = await myPageService.getMyAlarmsByMemberProfileId(currentPage);
+//         showUnreadAlarms(alarms);
+//
+//         // 요청 성공 시 현재 페이지 증가
+//         currentPage++;
+//     } catch (error) {
+//         console.error("Error loading more alarms:", error);
+//     } finally {
+//         isLoading = false;
+//     }
+// };

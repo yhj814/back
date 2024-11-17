@@ -26,6 +26,11 @@ html {
     font-size: 16px
 }
 
+body {
+    background-color: white;
+    margin: 0;
+}
+
 .container.mypage {
     display: flex;
     padding-top: 48px;
@@ -190,13 +195,13 @@ html {
 .icon-fold {
     width: 16px;
     height: 16px;
-    background-image: url(https://yozm.wishket.com/static/renewal/img/news/icon_menu_open_on.png);     /* 초기 이미지: 아래로 화살표 */
+    /*background-image: url(https://yozm.wishket.com/static/renewal/img/news/icon_menu_open_on.png);     !* 초기 이미지: 아래로 화살표 *!*/
     cursor: pointer;
     transition: transform 0.3s ease;
 }
 
 .icon-fold.fold-on {
-    background-image: url(https://yozm.wishket.com/static/renewal/img/news/icon_menu_open_on.png); /* 접힌 상태의 이미지 */
+    /*background-image: url(https://yozm.wishket.com/static/renewal/img/news/icon_menu_open_on.png); !* 접힌 상태의 이미지 *!*/
     transform: rotate(-90deg);
 }
 
@@ -266,7 +271,7 @@ html {
 .container.mypage .main-content-container {
     width: 800px;
     padding-left: 80px;
-}  
+}
   .container.mypage .main-content-container .main-content {
     width: 720px;
 }
@@ -562,7 +567,7 @@ body.partners_profile .edit-menu-box .profile-menu-setting .setting-table .setti
     font-weight: 600;
 }
 .setting-td.with-text {
-    
+
     vertical-align:middle;
 }
 
@@ -957,7 +962,7 @@ body.partners_profile .edit-menu-box .profile-menu-setting .setting-table .setti
     font-weight: 600;
 }
 .setting-td.with-text {
-    
+
     vertical-align:middle;
 }
 
@@ -1527,7 +1532,7 @@ p {
 }
 .pagination3 span.page {
     padding: 3px 8px;
-    
+
     line-height: 30px;
     box-sizing: border-box;
     border: 1px solid #444;
@@ -1725,10 +1730,10 @@ p {
 
 /* 미디어 쿼리 시작 */
 @media (max-width: 430px) {
-    
-    
+
+
     body {
-       
+
         overflow-x: hidden !important;
         margin: 0;
         padding: 0;
@@ -1862,10 +1867,10 @@ p {
         height: 34px;
         vertical-align:middle;
       }
-      
+
       /* Hide default HTML checkbox */
       .switch input {display:none;}
-      
+
       /* The slider */
       .slider {
         position: absolute;
@@ -1878,7 +1883,7 @@ p {
         -webkit-transition: .4s;
         transition: .4s;
       }
-      
+
       .slider:before {
         position: absolute;
         content: "";
@@ -1890,30 +1895,30 @@ p {
         -webkit-transition: .4s;
         transition: .4s;
       }
-      
+
       input:checked + .slider {
         background-color: #2196F3;
       }
-      
+
       input:focus + .slider {
         box-shadow: 0 0 1px #2196F3;
       }
-      
+
       input:checked + .slider:before {
         -webkit-transform: translateX(26px);
         -ms-transform: translateX(26px);
         transform: translateX(26px);
       }
-      
+
       /* Rounded sliders */
       .slider.round {
         border-radius: 34px;
       }
-      
+
       .slider.round:before {
         border-radius: 50%;
       }
-      
+
       p {
           margin:0px;
           display:inline-block;
@@ -1947,13 +1952,13 @@ p {
     .pagination2{
         display: none !important;
     }
-    
+
     .setting-tr-group {
         width: 100%;}
-    
+
     .pagination{
         display: none !important;
-    }    
+    }
     .item_recruit {
         padding: 0px 0px 0px;
         border-top: 1px solid #e6e6e6;
@@ -2384,6 +2389,13 @@ html, button, input, select, textarea {
     background: white;
     position: relative;
     width: 52px;
+}
+
+#my-notification-content {
+    max-width: 100%; /* 최대 너비 */
+    width: auto;     /* 동적 너비 */
+    height: auto;    /* 동적 높이 */
+    overflow: visible; /* 스크롤 막힘 방지 */
 }
 
 

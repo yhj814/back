@@ -463,18 +463,26 @@ myProfileLayout.addEventListener('click', async (e) => {
     }
 })
 globalThis.MyAlarmPage = 1
-myPageService.getMyAlarmsByMemberProfileId(MyAlarmPage, showUnreadAlarms);
+myPageService.getMyAlarmsByMemberProfileId(MyAlarmPage, (data) => {
+    renderNotificationHeader();
+    showMyNotification(data);
+});
 
 // 새로고침 버튼 클릭 이벤트 처리
 myNotificationListLayout.addEventListener('click', (e) => {
-        if (e.target.classList[0] === 'refresh-btn' ||
-            e.target.classList[0] === 'refresh-img') {
-            // 새로고침 동작
-            globalThis.MyAlarmPage = 1
-            myPageService.getMyAlarmsByMemberProfileId(globalThis.MyAlarmPage, showUnreadAlarms);
-        }
+    if (e.target.classList.contains('refresh-btn') || e.target.classList.contains('refresh-img')) {
+
+    }
 });
 
+function refresh() { // genreType을 빈 문자열로 설정
+    const url = `/alarm/video/my-page`;
+    window.location.href = url;
+}
+
 moreButton.addEventListener("click", (e) => {
-    myPageService.getMyAlarmsByMemberProfileId(++globalThis.MyAlarmPage, showUnreadAlarms);
+    myPageService.getMyAlarmsByMemberProfileId(++globalThis.MyAlarmPage, (data) => {
+        renderNotificationHeader();
+        showMyNotification(data);
+    });
 });

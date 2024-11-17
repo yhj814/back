@@ -28,6 +28,7 @@ import com.app.ggumteo.repository.funding.FundingDAO;
 import com.app.ggumteo.repository.inquiry.InquiryDAO;
 import com.app.ggumteo.repository.member.MemberDAO;
 import com.app.ggumteo.repository.member.MemberProfileDAO;
+import com.app.ggumteo.repository.reply.ReplyDAO;
 import com.app.ggumteo.repository.work.WorkDAO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -48,6 +49,7 @@ public class MyPageServiceImpl implements MyPageService {
     private final BuyFundingProductDAO buyFundingProductDAO;
     private final AuditionDAO auditionDAO;
     private final AuditionApplicationDAO auditionApplicationDAO;
+    private final ReplyDAO replyDAO;
     private final InquiryDAO inquiryDAO;
     private final MemberProfileDAO memberProfileDAO;
     private final AlarmDAO alarmDAO;
@@ -276,6 +278,11 @@ public class MyPageServiceImpl implements MyPageService {
     @Override
     public int getMyApplicationAuditionListTotal(Long memberId, String postType) {
         return auditionApplicationDAO.getMyAuditionApplicationListTotal(memberId, postType);
+    }
+
+    @Override
+    public int getMyReviewsTotal(Long memberId, String postType) {
+        return replyDAO.getCountByMemberId(memberId, postType);
     }
 
     //    마이페이지 - 문의 내역 조회
