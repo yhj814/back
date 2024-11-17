@@ -1427,6 +1427,7 @@ p {
     vertical-align: top;
 }
  .notification-box .notification-box-content .notification-title {
+     font-size: 13px;
     color: #616161;
 }
  .notification-box .notification-box-content .notification-date {

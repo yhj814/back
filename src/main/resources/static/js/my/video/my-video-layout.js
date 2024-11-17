@@ -946,17 +946,17 @@ const showMyAuditionList = ({myAuditionPosts, myAuditionPagination}) => {
                                 href="/audition/video/detail/${myAuditionPost.id}"
                             >
                                 <span>
-                                    ${myAuditionPost.postTitle} / `
-        if (myAuditionPost.auditionField == 1) {
-            text += `<b>배우</b> 채용`
-        } else if (myAuditionPost.auditionField == 2) {
-            text += `<b>스텝</b> 채용`
-        } else if (myAuditionPost.auditionField == 3) {
-            text += `<b>감독</b> 채용`
-        } else if (myAuditionPost.auditionField == 4) {
-            text += `<b>기타</b> 채용`
-        }
-        text += `</span>
+                                    ${myAuditionPost.postTitle} `
+        // if (myAuditionPost.auditionField == 1) {
+        //     text += `<b>배우</b> 채용`
+        // } else if (myAuditionPost.auditionField == 2) {
+        //     text += `<b>스텝</b> 채용`
+        // } else if (myAuditionPost.auditionField == 3) {
+        //     text += `<b>감독</b> 채용`
+        // } else if (myAuditionPost.auditionField == 4) {
+        //     text += `<b>기타</b> 채용`
+        // }
+        text += ` </span>
                             </a>
                         </h2>
                         <div class="job_date">
@@ -984,17 +984,9 @@ const showMyAuditionList = ({myAuditionPosts, myAuditionPagination}) => {
                         >
                             <span
                                 >${myAuditionPost.auditionLocation}</span
-                            >`
-        if (myAuditionPost.auditionCareer === '') {
-            text +=  `<span
-                                >·신입</span
-                            >`
-        } else {
-            text += `<span
-                                >·경력 ${myAuditionPost.auditionCareer}</span
-                            >`
-        }
-        text +=          `</div>
+                            >
+                                > ${myAuditionPost.auditionCareer}</span
+                            ></div>
                         <div class="job_sector">
                             <b
                                 >${myAuditionPost.expectedAmount}</b
@@ -1279,20 +1271,19 @@ const showMyApplicationAuditionList = ({myApplicationAuditionPosts, myAuditionPa
                                 <h2 class="job_tit">
                                      <a
                                 target="_blank"
-                                title="${myApplicationAuditionPost.postTitle}"
                                 href=""
                             >
                                 <span>
-                                    ${myApplicationAuditionPost.postTitle} / `
-        if (myApplicationAuditionPost.auditionField == 1) {
-            text += `<b>배우</b> 채용`
-        } else if (myApplicationAuditionPost.auditionField == 2) {
-            text += `<b>스텝</b> 채용`
-        } else if (myApplicationAuditionPost.auditionField == 3) {
-            text += `<b>감독</b> 채용`
-        } else if (myApplicationAuditionPost.auditionField == 4) {
-            text += `<b>기타</b> 채용`
-        }
+                                    ${myApplicationAuditionPost.postTitle}`
+        // if (myApplicationAuditionPost.auditionField == 1) {
+        //     text += `<b>배우</b> 채용`
+        // } else if (myApplicationAuditionPost.auditionField == 2) {
+        //     text += `<b>스텝</b> 채용`
+        // } else if (myApplicationAuditionPost.auditionField == 3) {
+        //     text += `<b>감독</b> 채용`
+        // } else if (myApplicationAuditionPost.auditionField == 4) {
+        //     text += `<b>기타</b> 채용`
+        // }
         text += `</span>
                             </a>
                         </h2>
@@ -1843,7 +1834,7 @@ const showUnreadAlarms = ({ myAlarms, myAlarmPagination }) => {
                     // 알림 타입에 맞는 제목 처리
                     if (myAlarm.alarmType === 'work') {
                         text += `내 작품 `;
-                    } else if (myAlarm.alarmType === 'funding') {
+                    } else if (myAlarm.alarmType === 'fundingProduct') {
                         text += `나의 펀딩 `;
                     } else if (myAlarm.alarmType === 'audition') {
                         text += `나의 모집 `;
@@ -1852,7 +1843,7 @@ const showUnreadAlarms = ({ myAlarms, myAlarmPagination }) => {
                     }
 
                     // 제목과 메시지 출력
-                    text += `"${myAlarm.postTitle}" ${myAlarm.message}
+                    text += `&lt;${myAlarm.postTitle}&gt; ${myAlarm.message}
                             </div>
                             <div class="notification-date">
                                 ${formattedDate}. ${formattedTime}
