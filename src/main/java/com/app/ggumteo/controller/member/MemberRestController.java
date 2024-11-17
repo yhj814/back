@@ -55,6 +55,9 @@ public class MemberRestController {
         MemberProfileDTO memberProfileDTO = (MemberProfileDTO) session.getAttribute("memberProfile");
         model.addAttribute("member", memberVO);
 
+        boolean isLoggedIn = memberVO != null;
+        model.addAttribute("isLoggedIn", isLoggedIn);
+
         log.info("마이페이지 memberProfileDTO={}", memberProfileDTO);
 
         if (type != null) {

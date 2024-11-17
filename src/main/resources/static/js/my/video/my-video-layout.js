@@ -1726,6 +1726,7 @@ const formatTime = (dateString) => {
 
 // 날짜별 알림을 그룹화
 const groupAlarmsByDate = (myAlarms) => {
+
     const groupedAlarms = {};
 
     myAlarms.forEach(alarm => {
@@ -1747,41 +1748,40 @@ const groupAlarmsByDate = (myAlarms) => {
 const showUnreadAlarms = ({ myAlarms, myAlarmPagination }) => {
     let text = ``;
 
-    // 더보기 버튼이 표시될지 여부 체크
+
+    // 더보기 버튼 표시 여부 처리
     if (myAlarmPagination.rowCount >= myAlarms.length) {
         moreButton.style.display = "none"; // 더보기 버튼 숨김
     } else {
-        moreButton.style.display = "block"; // 더보기 버튼 표시
+        moreButton.style.display = "block";
     }
-    console.log("myAlarmPaginationL.rowCount :", myAlarmPagination.rowCount);
-    console.log("myAlarms.length:", myAlarms.length);
 
     // 알림 데이터가 없을 때
     if (myAlarms.length === 0) {
         text = `
-            <div class="noti-center-header">
-                <div class="subtitle-1 noti-center-title">전체 알림</div>
-                <div class="noti-center-header-more">
-                    <div class="noti-center-refresh">
+            <div class="notification-center-header">
+                <div class="subtitle-1 notification-center-title">전체 알림</div>
+                <div class="notification-center-header-more">
+                    <div class="notification-center-refresh">
                         <div class="refresh-btn">
                             <img class="refresh-img" src="/images/member/refresh.png" />새로고침
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="noti-box date-box">
-                <div class="noti-box-wrapper">
-                    <p class="noti-date-title">읽지 않은 알림이 없습니다.</p>
+            <div class="notification-box date-box">
+                <div class="notification-box-wrapper">
+                    <p class="notification-date-title">읽지 않은 알림이 없습니다.</p>
                 </div>
             </div>
         `;
     } else {
         // 알림 데이터 있을 때
         text += `
-            <div class="noti-center-header">
-                <div class="subtitle-1 noti-center-title">전체 알림</div>
-                <div class="noti-center-header-more">
-                    <div class="noti-center-refresh">
+            <div class="notification-center-header">
+                <div class="subtitle-1 notification-center-title">전체 알림</div>
+                <div class="notification-center-header-more">
+                    <div class="notification-center-refresh">
                         <div class="refresh-btn">
                             <img class="refresh-img" src="/images/member/refresh.png" />새로고침
                         </div>
@@ -1802,42 +1802,42 @@ const showUnreadAlarms = ({ myAlarms, myAlarmPagination }) => {
             // 날짜 출력: "10월 08일 화요일"
             const formattedHangul = formatDateHangul(groupedAlarms[dateKey][0].createdDate);
             text += `
-                <div class="noti-body">
-                    <div class="noti-box date-box">
-                        <div class="noti-box-wrapper">
-                            <p class="noti-date-title">${formattedHangul}</p>
+                <div class="notification-body">
+                    <div class="notification-box date-box">
+                        <div class="notification-box-wrapper">
+                            <p class="notification-date-title">${formattedHangul}</p>
                         </div>
                     </div>
             `;
         // }
 
             // 날짜별 알림을 표시
-            groupedAlarms[dateKey].forEach((myAlarm) => {
+            groupedAlarms[dateKey].slice(0, 5).forEach((myAlarm) => {
                 // 시간 출력: "2024.10.08. 오전 10시 16분"
                 const formattedDate = formatDate(myAlarm.createdDate);
                 const formattedTime = formatTime(myAlarm.createdDate);
 
                 // 기본 알림 박스 시작
                 text += `
-                        <div class="noti-box unread">`
+                        <div class="notification-box unread">`
                     if (myAlarm.alarmType !== 'reply') {
-                        text +=   `<div class="noti-box-wrapper with-img">`;
+                        text +=   `<div class="notification-box-wrapper with-img">`;
                     }
                     else if(myAlarm.alarmType == 'reply') {
-                        text +=   `<div class="noti-box-wrapper">`;
+                        text +=   `<div class="notification-box-wrapper">`;
                     }
 
                     // 댓글이 아닐 경우 이미지 포함
                     if (myAlarm.alarmType !== 'reply') {
                         text += `
-                            <img class="noti-img" src="/images/member/alarm_icon.png">
+                            <img class="notification-img" src="/images/member/alarm_icon.png">
                         `;
                    }
 
                     // 알림 내용
                     text += `
-                        <div class="noti-box-content">
-                            <div class="noti-title">
+                        <div class="notification-box-content">
+                            <div class="notification-title">
                     `;
 
                     // 알림 타입에 맞는 제목 처리
@@ -1854,7 +1854,7 @@ const showUnreadAlarms = ({ myAlarms, myAlarmPagination }) => {
                     // 제목과 메시지 출력
                     text += `"${myAlarm.postTitle}" ${myAlarm.message}
                             </div>
-                            <div class="noti-date">
+                            <div class="notification-date">
                                 ${formattedDate}. ${formattedTime}
                             </div>
                         </div>

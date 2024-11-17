@@ -30,7 +30,15 @@ html {
     position: inherit;
 }
 
-* {
+/** {*/
+/*    box-sizing: border-box;*/
+/*    margin: 0;*/
+/*    padding: 0;*/
+/*    font-family: "NotoSansKR";*/
+/*    line-height: 1rem;*/
+/*}*/
+
+#main-header .login-header {
     box-sizing: border-box;
     margin: 0;
     padding: 0;

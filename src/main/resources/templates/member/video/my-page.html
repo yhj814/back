@@ -5,9 +5,14 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link rel="stylesheet" href="/css/member/video-main.css" />
         <title>영상 내 활동내역</title>
+        <link rel="stylesheet" th:href="@{/css/header/login-test.css}">
     </head>
     <body>
-        <div class="layout">
+    <th:block th:if="${isLoggedIn}">
+        <div th:replace="~{header-login :: header}"></div>
+    </th:block>
+    <main>
+        <div class="layout" id="my-page">
             <div class="container mypage">
                 <div class="pc-sidebar" style="width: 280px">
                     <div
@@ -176,35 +181,35 @@
                     </div>
                     <div class="content-divide" style="margin: 20px 0px"></div>
                     <div
-                        class="sidebar-menu highlight-memo"
-                        name="my-profile"
-                        style="
+                            class="sidebar-menu highlight-memo"
+                            name="my-profile"
+                            style="
                             margin-top: -15px;
                             height: 20px;
                             width: 230px;
                         "
                     >
                         <div
-                            class="sidebar-menu-name"
+                                class="sidebar-menu-name"
                         >
                             내 정보
                         </div>
                     </div>
                     <div
-                        class="sidebar-menu read-news"
-                        name="my-inquiry"
-                        style="margin-bottom: -16px; height: 20px; width: 230px"
+                            class="sidebar-menu read-news"
+                            name="my-inquiry"
+                            style="margin-bottom: -16px; height: 20px; width: 230px"
                     >
                         <div
-                            class="sidebar-menu-name"
+                                class="sidebar-menu-name"
                         >
                             문의 내역
                         </div>
                     </div>
                     <div
-                        class="sidebar-menu read-news"
-                        name="my-notification"
-                        style="
+                            class="sidebar-menu read-news"
+                            name="my-notification"
+                            style="
                             margin-bottom: -16px;
                             height: 20px;
                             margin-top: 16px;
@@ -212,7 +217,7 @@
                         "
                     >
                         <div
-                            class="sidebar-menu-name"
+                                class="sidebar-menu-name"
                         >
                             알림
                         </div>
@@ -2109,7 +2114,7 @@
                                         <div id="my-notification-list">
                                             <!--                                        알림 목록 -->
                                         </div>
-                                        <div class="noti-more ifclick footer-down" id="more-button" style="display: block">
+                                        <div class="notification-more ifclick footer-down" id="more-button">
                                             알림 더 보기<img src="/images/member/down.png">
                                         </div>
                                     </div>
@@ -2177,6 +2182,7 @@
                 </div>
             </div>
         </div>
+    </main>
     </body>
     <script th:inline="javascript">
         const memberId = [[${member.id}]];
@@ -2219,4 +2225,5 @@
     <script src="/js/my/video/my-video-service.js"></script>
     <script src="/js/my/video/my-video-layout.js"></script>
     <script src="/js/my/video/my-video-event.js"></script>
+    <script th:src="@{/js/header/header-login.js}"></script>
 </html>

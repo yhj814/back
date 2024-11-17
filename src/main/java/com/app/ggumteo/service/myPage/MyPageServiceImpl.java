@@ -343,6 +343,7 @@ public class MyPageServiceImpl implements MyPageService {
         myAlarmPagination.setPage(page);
         myAlarmPagination.setTotal(alarmDAO.getAlarmTotal(memberProfileId, AlarmSubType.VIDEO.name()));
         myAlarmPagination.progress();
+
         myAlarms.setMyAlarmPagination(myAlarmPagination);
         myAlarms.setMyAlarms(alarmDAO.findAlarmsByMemberProfileId(myAlarmPagination, memberProfileId, AlarmSubType.VIDEO.name()));
 
