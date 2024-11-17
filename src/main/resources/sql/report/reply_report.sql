@@ -14,6 +14,9 @@ create table tbl_reply_report (
 select * from tbl_reply_report;
 
 insert into tbl_reply_report
-values (3,'댓글에 비해 리뷰점수가 낮은거 같습니다',5,now(),default,3);
+values (13,'부적절한 댓글입니다',12,now(),default,1);
 
 select * from tbl_reply;
+
+select *
+from tbl_post;
