@@ -3,14 +3,21 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" th:href="@{/css/header/login-test.css}">
+        <link rel="stylesheet" th:href="@{/css/header/logout-test.css}">
+        <link rel="stylesheet" th:href="@{/css/footer/footer-test.css}">
+        <link rel="stylesheet" th:href="@{/css/member/video-header.css}">
         <link rel="stylesheet" href="/css/member/video-main.css" />
         <title>영상 내 활동내역</title>
-        <link rel="stylesheet" th:href="@{/css/header/login-test.css}">
     </head>
     <body>
     <th:block th:if="${isLoggedIn}">
         <div th:replace="~{header-login :: header}"></div>
     </th:block>
+    <th:block th:if="${!isLoggedIn}">
+        <div th:replace="~{header-logout :: header}"></div>
+    </th:block>
+    <header th:replace="~{member/video/header.html :: my-page-header}"></header>
     <main>
         <div class="layout" id="my-page">
             <div class="container mypage">
@@ -53,8 +60,8 @@
                                 <div
                                     class="mypage-mys-count"
                                     style="margin-right: 6px"
+                                    th:text="'(' + ${myVideoWorkPostsTotal} + ')'"
                                 >
-                                    (0)
                                 </div>
                             </div>
                         </div>
@@ -74,6 +81,7 @@
                                 <div
                                     class="mypage-mys-count"
                                     style="margin-right: 6px"
+                                    th:text="'(' + ${myBuyWorkListTotal} + ')'"
                                 >
                                     (0)
                                 </div>
@@ -93,6 +101,7 @@
                                 <div
                                     class="mypage-mys-count"
                                     style="margin-right: 6px"
+                                    th:text="'(' + ${myFundingPostsTotal} + ')'"
                                 >
                                     (0)
                                 </div>
@@ -112,6 +121,7 @@
                                 <div
                                     class="mypage-mys-count"
                                     style="margin-right: 6px"
+                                    th:text="'(' + ${myBuyFundingListTotal} + ')'"
                                 >
                                     (0)
                                 </div>
@@ -131,6 +141,7 @@
                                 <div
                                     class="mypage-mys-count"
                                     style="margin-right: 6px"
+                                    th:text="'(' + ${myVideoAuditionPostsTotal} + ')'"
                                 >
                                     (0)
                                 </div>
@@ -152,6 +163,7 @@
                                 <div
                                     class="mypage-mys-count"
                                     style="margin-right: 6px"
+                                    th:text="'(' + ${myApplicationAuditionListTotal} + ')'"
                                 >
                                     (0)
                                 </div>
@@ -173,6 +185,7 @@
                                 <div
                                     class="mypage-mys-count"
                                     style="margin-right: 6px"
+                                    th:text="'(' + ${myReviewsTotal} + ')'"
                                 >
                                     (0)
                                 </div>
@@ -215,6 +228,7 @@
                             margin-top: 16px;
                             width: 230px;
                         "
+                            onclick="refresh()"
                     >
                         <div
                                 class="sidebar-menu-name"
@@ -258,11 +272,12 @@
                                 >
                                     <img
                                         class="only-pc"
-                                        src="/images/member/menu.png"
+                                        src="/images/member/menu-video.png"
                                     />
                                     <div class="last-open-mypage-info">
                                         <div class="mypage-title">내 작품</div>
-                                        <div class="howmany">0개의 콘텐츠</div>
+                                        <div class="howmany">
+                                            <span th:text="${myVideoWorkPostsTotal}">0</span>개의 콘텐츠</div>
                                     </div>
                                 </div>
                                 <div
@@ -271,13 +286,13 @@
                                 >
                                     <img
                                         class="only-pc"
-                                        src="/images/member/menu.png"
+                                        src="/images/member/menu-video.png"
                                     />
                                     <div class="last-open-mypage-info">
                                         <div class="mypage-title">
                                             내가 구매한 작품
                                         </div>
-                                        <div class="howmany">0개의 콘텐츠</div>
+                                        <div class="howmany"><span th:text="${myBuyWorkListTotal}">0</span>개의 콘텐츠</div>
                                     </div>
                                 </div>
                                 <div
@@ -286,13 +301,13 @@
                                 >
                                     <img
                                         class="only-pc"
-                                        src="/images/member/menu.png"
+                                        src="/images/member/menu-video.png"
                                     />
                                     <div class="last-open-mypage-info">
                                         <div class="mypage-title">
                                             나의 펀딩
                                         </div>
-                                        <div class="howmany">0개의 콘텐츠</div>
+                                        <div class="howmany"><span th:text="${myFundingPostsTotal}">0</span>개의 콘텐츠</div>
                                     </div>
                                 </div>
                                 <div
@@ -301,13 +316,13 @@
                                 >
                                     <img
                                         class="only-pc"
-                                        src="/images/member/menu.png"
+                                        src="/images/member/menu-video.png"
                                     />
                                     <div class="last-open-mypage-info">
                                         <div class="mypage-title">
                                             결제한 펀딩
                                         </div>
-                                        <div class="howmany">0개의 콘텐츠</div>
+                                        <div class="howmany"><span th:text="${myBuyFundingListTotal}">0</span>개의 콘텐츠</div>
                                     </div>
                                 </div>
                                 <div
@@ -316,13 +331,13 @@
                                 >
                                     <img
                                         class="only-pc"
-                                        src="/images/member/menu.png"
+                                        src="/images/member/menu-video.png"
                                     />
                                     <div class="last-open-mypage-info">
                                         <div class="mypage-title">
                                             나의 모집
                                         </div>
-                                        <div class="howmany">0개의 콘텐츠</div>
+                                        <div class="howmany"><span th:text="${myVideoAuditionPostsTotal}">0</span>개의 콘텐츠</div>
                                     </div>
                                 </div>
                                 <div
@@ -331,13 +346,13 @@
                                 >
                                     <img
                                         class="only-pc"
-                                        src="/images/member/menu.png"
+                                        src="/images/member/menu-video.png"
                                     />
                                     <div class="last-open-mypage-info">
                                         <div class="mypage-title">
                                             내가 신청한 모집
                                         </div>
-                                        <div class="howmany">0개의 콘텐츠</div>
+                                        <div class="howmany"><span th:text="${myApplicationAuditionListTotal}">0</span>개의 콘텐츠</div>
                                     </div>
                                 </div>
                                 <div
@@ -346,13 +361,13 @@
                                 >
                                     <img
                                         class="only-pc"
-                                        src="/images/member/menu.png"
+                                        src="/images/member/menu-video.png"
                                     />
                                     <div class="last-open-mypage-info">
                                         <div class="mypage-title">
                                             내가 단 리뷰
                                         </div>
-                                        <div class="howmany">0개의 콘텐츠</div>
+                                        <div class="howmany"><span th:text="${myReviewsTotal}">0</span>개의 콘텐츠</div>
                                     </div>
                                 </div>
                             </div>
@@ -2183,6 +2198,7 @@
             </div>
         </div>
     </main>
+    <footer th:replace="~{footer.html :: footer}"></footer>
     </body>
     <script th:inline="javascript">
         const memberId = [[${member.id}]];
@@ -2226,4 +2242,5 @@
     <script src="/js/my/video/my-video-layout.js"></script>
     <script src="/js/my/video/my-video-event.js"></script>
     <script th:src="@{/js/header/header-login.js}"></script>
+    <script th:src="@{/js/header/logout-click.js}"></script>
 </html>

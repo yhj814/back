@@ -24,4 +24,7 @@ public interface ReplyMapper {
     Double selectAverageStarByWorkId(@Param("workId") Long workId);
     // 특정 작품에 대한 댓글 수 조회
     int countRepliesByWorkId(@Param("workId") Long workId);
+
+    // 마이페이지 - 내 단 리뷰 총 갯수
+    public int selectCountByMemberId(Long memberId, String postType);
 }

@@ -1,5 +1,6 @@
 package com.app.ggumteo.controller.member;
 
+import com.app.ggumteo.constant.PostType;
 import com.app.ggumteo.domain.admin.AdminAnswerDTO;
 import com.app.ggumteo.domain.alarm.AlarmDTO;
 import com.app.ggumteo.domain.alarm.MyAlarmListDTO;
@@ -57,6 +58,27 @@ public class MemberRestController {
 
         boolean isLoggedIn = memberVO != null;
         model.addAttribute("isLoggedIn", isLoggedIn);
+
+        int myVideoWorkPostsTotal = myPageService.getMyVideoWorkPostsTotal(memberVO.getId(), PostType.WORKVIDEO.name());
+        model.addAttribute("myVideoWorkPostsTotal", myVideoWorkPostsTotal);
+
+        int myBuyWorkListTotal = myPageService.getMyBuyWorkListTotal(memberVO.getId(), PostType.WORKVIDEO.name());
+        model.addAttribute("myBuyWorkListTotal", myBuyWorkListTotal);
+
+        int myFundingPostsTotal = myPageService.getMyFundingPostsTotal(memberVO.getId(), PostType.FUNDINGVIDEO.name());
+        model.addAttribute("myFundingPostsTotal", myFundingPostsTotal);
+
+        int myBuyFundingListTotal = myPageService.getMyBuyFundingListTotal(memberVO.getId(), PostType.FUNDINGVIDEO.name());
+        model.addAttribute("myBuyFundingListTotal", myBuyFundingListTotal);
+
+        int myVideoAuditionPostsTotal = myPageService.getMyVideoAuditionPostsTotal(memberVO.getId(), PostType.AUDITIONVIDEO.name());
+        model.addAttribute("myVideoAuditionPostsTotal", myVideoAuditionPostsTotal);
+
+        int myApplicationAuditionListTotal = myPageService.getMyApplicationAuditionListTotal(memberVO.getId(), PostType.AUDITIONVIDEO.name());
+        model.addAttribute("myApplicationAuditionListTotal", myApplicationAuditionListTotal);
+
+        int myReviewsTotal = myPageService.getMyReviewsTotal(memberVO.getId(), PostType.WORKVIDEO.name());
+        model.addAttribute("myReviewsTotal", myReviewsTotal);
 
         log.info("마이페이지 memberProfileDTO={}", memberProfileDTO);
 

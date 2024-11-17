@@ -42,4 +42,10 @@ public class ReplyDAO {
     public int countRepliesByWorkId(Long workId) {
         return replyMapper.countRepliesByWorkId(workId);
     }
+
+
+    // 마이페이지 - 내 단 리뷰 총 갯수
+    public int getCountByMemberId(Long memberId, String postType) {
+        return replyMapper.selectCountByMemberId(memberId, postType);
+    };
 }

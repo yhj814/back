@@ -38,20 +38,6 @@ html {
 /*    line-height: 1rem;*/
 /*}*/
 
-#main-header.login-header {
-    box-sizing: border-box;
-    padding: 0;
-    font-family: "NotoSansKR";
-    line-height: 1rem;
-}
-
-#main-header .header-nav{
-    box-sizing: border-box;
-    padding: 0;
-    font-family: "NotoSansKR";
-    line-height: 1rem;
-}
-
 *:focus {
     outline: none;
 }
@@ -78,6 +64,11 @@ header.main-total-header .sticky {
 }
 
 header.main-total-header .header-nav {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: "NotoSansKR";
+    line-height: 1rem;
     display: flex;
     background-color: rgba(255, 255, 255, .8);
     height: 72px;
@@ -112,7 +103,7 @@ header.main-total-header .header-nav {
     /* pc 버전*/
     display: flex !important;
     /* 반응형 안하면 ↑ important 빼도 될 것 같다. */
-    /* 반응형 하게 되면, 이 부분 생각해보기 */
+    /* 반응형 하게 되면, 이 부분 생각해보기 */  
 }
 
 .header-nav .category-navigation-wrapper .category-navigation {
@@ -154,12 +145,6 @@ header.main-total-header .header-nav {
     background-color: #fafafa;
 }
 
-.noti-box {
-    display: flex;
-    align-items: center;
-    margin-left: auto;
-}
-
 .btn {
     cursor: pointer;
 }
@@ -188,116 +173,8 @@ header.main-total-header .header-nav {
     margin-left: 15px;
 }
 
-/* 로그인 시 */
-
-.header-nav-wrapper .profile-image {
-    box-sizing: border-box;
-    padding: 16px 0 0 12px;
-    height: 64px;
-    cursor: pointer;
-}
-
-.icon-box img.authenticated-member-image {
-    box-sizing: border-box;
-    width: 32px;
-    height: 32px;
-    border-radius: 16px;
-    border: solid 1px #e0e0e0;
-}
-
-.profile-image .authenticated-member-image {
-    padding: 2px;
-}
-
-.logout {
-    color: #7e7e7e;
-    font-weight: 500;
-    padding: 4px 18px;
-    border-radius: 8px;
-    font-size: 14px;
-    line-height: 1.71;
-    letter-spacing: normal;
-    text-align: center;
-}
-
-/* 알림 (notification) */
-
-.noti-bell-container {
-    position: relative;
-    width: 30px;
-    margin: 0 15px;
-    padding: 1px 0;
-    cursor: pointer;
-}
-
-.icon-noti-bell {
-    padding-top: 3px;
-    width: 24px;
-}
-
-.noti-dot {
-    width: 11px;
-}
-
-.noti-dot-wrapper {
-    position: absolute;
-    display: flex;
-    padding: 0 5px;
-    transform: translateX(32%);
-    bottom: 17px;
-}
-
-.noti-modal {
-    box-sizing: border-box;
-    font-size: 14px;
-    top: 40px;
-    position: absolute;
-    width: 100px;
-    border: solid 1px rgba(201, 201, 201, 0.329);
-    background: #ffffff;
-    padding: 12px 12px 14px 12px;
-    border-radius: 9px;
-    display: none;
-    cursor: default;
-    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, .16);
-}
-
-.noti-header {
-    margin: 0px 0px 20px 0px;
-    color: #b8b8b8;
-    font-weight: 500;
-}
-
-.noti-item {
-    font-weight: 700;
-    color: #343434;
-    cursor: pointer;
-}
-
-.noti-item-write {
-    font-weight: 700;
-    color: #343434;
-    cursor: pointer;
-}
-
-.noti-item-write p {
-    margin: 0;
-}
-
-.icon-box .noti-item {
-    margin-bottom: 15px;
-}
-
-.dot-video {
-    position: absolute;
-    top: 39px;
-    left: 36px;
-}
-
-.dot-writing {
-    position: absolute;
-    top: 70px;
-    left: 23px;
+.kakao-login {
+    width: 150px;
 }
 
 
@@ -447,6 +324,8 @@ header.main-total-header .header-nav {
 .search-full-modal .search-sub-part .recent-keyword-part .recent-keyword-part-wrapper .recent-keyword-list .recent-keyword+.recent-keyword {
     margin-top: 8px;
 }
+
+
 
 
 

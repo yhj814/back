@@ -29,6 +29,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.Optional;
 
@@ -224,6 +226,16 @@ public class MyPageServiceTests {
         log.info(" myAlarmPagination.getTotal()={}", myAlarmPagination.getTotal());
         log.info(" myAlarmPagination.getRowCount()={}", myAlarmPagination.getRowCount());
 
+
+    }
+
+    @Test
+    public void testGetMyVideoWorkPostsTotal() {
+        MemberVO memberVO = null;
+        memberVO = myPageService.getMember(1L).get();
+        int myVideoWorkPostsTotal = myPageService.getMyVideoWorkPostsTotal(memberVO.getId(), PostType.WORKVIDEO.name());
+
+        log.info("myVideoWorkPostsTotal={}", myVideoWorkPostsTotal);
 
     }
 

@@ -63,8 +63,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     globalThis.myInquiryHistoryPage = 1;
                     myPageService.getMyInquiryHistoryList(globalThis.myInquiryHistoryPage, memberId, showMyInquiryHistoryList);
 
-                    globalThis.MyAlarmPage = 1
-                    myPageService.getMyAlarmsByMemberProfileId(MyAlarmPage, showUnreadAlarms);
                 }
 
                 // 모든 사이드바 메뉴에서 active-menu 클래스 제거
