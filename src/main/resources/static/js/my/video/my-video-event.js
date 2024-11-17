@@ -40,46 +40,97 @@ myWorkListLayout.addEventListener('click', async (e) => {
 
                 console.log("3 : ", globalThis.myWorkBuyerPage);
 
-                // 구매자 테이블을 클릭했을 때
+                let isRequestInProgress = false; // 상태 변수 추가
+
                 workBuyerTable.addEventListener('click', async (e) => {
                     e.preventDefault();
-                    console.log("4 : ", globalThis.myWorkBuyerPage);
 
-                    // 만약 a 태그를 클릭한다면
+                    if (isRequestInProgress) {
+                        console.log("요청 진행 중입니다. 대기하세요.");
+                        return; // 요청 진행 중이면 무시
+                    }
+
                     if(e.target.tagName === 'A') {
-                        // 클릭한 링크(의 번호)를 페이지 변수?에 담아라
                         globalThis.myWorkBuyerPage = e.target.getAttribute("href");
-                        // 구매자 테이블 html 을
                         workBuyerTable.innerHTML = await myPageService.getMyVideoWorkBuyerList(globalThis.myWorkBuyerPage, myWorkPostId, showMyWorkBuyerList);
 
                         console.log("5 : ", globalThis.myWorkBuyerPage);
                     }
 
-                    if(e.target.classList[1] === "btn-public") {
-                        const buyWorkId = e.target.classList[2];
-                        const sendYes = "YES";
+                    if (e.target.classList[1] === "btn-public" || e.target.classList[1] === "btn-secret") {
 
-                        if(e.target.nextElementSibling.classList[2] === "active" ||
-                            e.target.nextElementSibling.classList[3] === "active") {
-                            e.target.classList.add("active");
-                            e.target.nextElementSibling.classList.remove("active")
-                            await myPageService.updateWorkSendStatus({
-                                id: buyWorkId, workSendStatus: sendYes
-                            });
-                        }
-                    } else if(e.target.classList[1] === "btn-secret") {
-                        const buyWorkId = e.target.classList[2];
-                        const sendNo = "NO";
+                        isRequestInProgress = true; // 요청 상태 시작
+                        try {
+                            const buyWorkId = e.target.classList[2];
+                            const sendStatus = e.target.classList[1] === "btn-public" ? "YES" : "NO";
+                            const sibling = e.target.classList[1] === "btn-public"
+                                ? e.target.nextElementSibling
+                                : e.target.previousElementSibling;
 
-                        if(e.target.previousElementSibling .classList[2] === "active" ||
-                            e.target.previousElementSibling .classList[3] === "active") {
-                            e.target.classList.add("active");
-                            e.target.previousElementSibling.classList.remove("active")
-                            await myPageService.updateWorkSendStatus({
-                                id: buyWorkId, workSendStatus: sendNo
-                            });
+                            if (sibling?.classList.contains("active")) {
+                                e.target.classList.add("active");
+                                sibling.classList.remove("active");
+                                const response = await myPageService.updateWorkSendStatus({
+                                    id: buyWorkId,
+                                    workSendStatus: sendStatus
+                                });
+
+                                if (response?.success) {
+                                    console.log("DB 업데이트 성공");
+                                } else {
+                                    console.error("DB 업데이트 실패");
+                                }
+                            }
+                        } catch (error) {
+                            console.error("요청 중 오류 발생:", error);
+                        } finally {
+                            isRequestInProgress = false; // 요청 상태 초기화
                         }
                     }
+
+                    // if(e.target.classList[1] === "btn-public") {
+                    //     const buyWorkId = e.target.classList[2];
+                    //     const sendYes = "YES";
+                    //
+                    //     if(e.target.nextElementSibling.classList[2] === "active" ||
+                    //         e.target.nextElementSibling.classList[3] === "active") {
+                    //         e.target.classList.add("active");
+                    //         e.target.nextElementSibling.classList.remove("active")
+                    //         try {
+                    //             const response = await myPageService.updateWorkSendStatus({
+                    //                 id: buyWorkId, workSendStatus: sendYes
+                    //             });
+                    //             if (response.success) {
+                    //                 console.log("DB 업데이트 성공 - YES");
+                    //             } else {
+                    //                 console.error("DB 업데이트 실패 - YES");
+                    //             }
+                    //         } catch (error) {
+                    //             console.error("요청 중 오류 발생 - YES :", error);
+                    //         }
+                    //     }
+                    // } else if(e.target.classList[1] === "btn-secret") {
+                    //     const buyWorkId = e.target.classList[2];
+                    //     const sendNo = "NO";
+                    //
+                    //     if(e.target.previousElementSibling .classList[2] === "active" ||
+                    //         e.target.previousElementSibling .classList[3] === "active") {
+                    //         e.target.classList.add("active");
+                    //         e.target.previousElementSibling.classList.remove("active")
+                    //         try {
+                    //             const response = await myPageService.updateWorkSendStatus({
+                    //             id: buyWorkId, workSendStatus: sendNo
+                    //         });
+                    //             if (response.success) {
+                    //                 console.log("DB 업데이트 성공 - NO");
+                    //             } else {
+                    //                 console.error("DB 업데이트 실패 - NO");
+                    //             }
+                    //         } catch (error) {
+                    //             console.error("요청 중 오류 발생 - NO :", error);
+                    //         }
+                    //     }
+                    // }
                 });
             }
             // 2. 작품 구매자 테이블의 자식요소[배열]의 길이가 0이 아니라면 (=목록이 불러진 상태라면)
@@ -411,3 +462,13 @@ myProfileLayout.addEventListener('click', async (e) => {
         await myPageService.getMemberProfileByMemberId(memberId, showMyProfile);
     }
 })
+
+myPageService.getUnreadAlarms(showUnreadAlarms);
+
+// 새로고침 버튼 클릭 이벤트 처리
+myNotificationListLayout.addEventListener('click', (e) => {
+        if (e.target.classList[0] === 'refresh-btn') {
+            // 새로고침 동작
+            myPageService.getUnreadAlarms(showUnreadAlarms);
+        }
+});

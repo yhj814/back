@@ -9,15 +9,15 @@ document.addEventListener("DOMContentLoaded", function () {
             // `hidden` 클래스를 토글하여 접기/펼치기 구현
             mypageListBox.classList.toggle("hidden");
 
-            // 아이콘 방향 변경
-            iconFold.classList.toggle(" fold-on");
+            // // 아이콘 방향 변경
+            // iconFold.classList.toggle(" fold-on");
         });
     }
-    // 페이지가 처음 로드될 때 기본 콘텐츠 표시 (my-main)
-    const defaultContent = document.getElementById("my-main");
-    if (defaultContent) {
-        defaultContent.classList.add("active");
-    }
+    // // 페이지가 처음 로드될 때 기본 콘텐츠 표시 (my-main)
+    // const defaultContent = document.getElementById("my-main");
+    // if (defaultContent) {
+    //     defaultContent.classList.add("active");
+    // }
 
     // 사이드바 메뉴 클릭 이벤트 설정 (내 활동내역 이외의 메뉴들)
     document
@@ -72,12 +72,12 @@ document.addEventListener("DOMContentLoaded", function () {
                 // 클릭된 메뉴에 active-menu 클래스 추가
                 this.classList.add("active-menu");
 
-                // "나의 활동내역" 아이콘 상태 업데이트 (접힌 상태일 때 아이콘이 올바르게 표시되도록)
-                if (mypageListBox.style.display === "none") {
-                    iconFold.classList.add("fold-on");
-                } else {
-                    iconFold.classList.remove("fold-on");
-                }
+                // // "나의 활동내역" 아이콘 상태 업데이트 (접힌 상태일 때 아이콘이 올바르게 표시되도록)
+                // if (mypageListBox.style.display === "none") {
+                //     iconFold.classList.add("fold-on");
+                // } else {
+                //     iconFold.classList.remove("fold-on");
+                // }
             });
         });
 
