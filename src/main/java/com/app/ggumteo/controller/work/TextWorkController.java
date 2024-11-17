@@ -301,7 +301,7 @@ public class TextWorkController {
             Long buyWorkId = savedBuyWork.getId(); // 저장된 구매 ID 추출
 
             // 알림 메시지 설정
-            String message = "등록한 작품이 구매되었습니다.";
+            String message = "이 구매되었습니다.";
 
             // AlarmService를 통해 알림 생성 (작품 작성자의 memberProfileId 사용)
             alarmService.createWorkAlarm(authorMemberProfileId, buyWorkId, message, AlarmSubType.TEXT);

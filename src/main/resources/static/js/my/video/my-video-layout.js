@@ -1690,38 +1690,91 @@ const showMyProfile = (myProfile) => {
 
 // 내 알림
 const myNotificationListLayout = document.getElementById("my-notification-list");
+const moreButton = document.getElementById("more-button");
 
-const showUnreadAlarms = (unreadAlarms) => {
+
+// 날짜 포맷 함수: 10월 08일 화요일
+const formatDateHangul = (dateString) => {
+    const date = new Date(dateString);
+    const dayOptions = { weekday: 'long', month: 'long', day: 'numeric' };
+    const formattedDate = date.toLocaleDateString('ko-KR', dayOptions);
+    return formattedDate.replace(/\s/g, ' ').replace('월', '월 ').replace('일', '일');
+};
+
+// 날짜 포맷 함수: 2024.10.08
+const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');  // 월은 0부터 시작하므로 +1
+    const day = String(date.getDate()).padStart(2, '0');  // 일자 두 자릿수로 출력
+
+    return `${year}.${month}.${day}`;
+};
+
+// 시간 포맷 함수: 오전 10시 16분
+const formatTime = (dateString) => {
+    const date = new Date(dateString);
+    const hour = date.getHours();
+    const minute = String(date.getMinutes()).padStart(2, '0');  // 분 두 자릿수로 출력
+
+    // 오전/오후 계산
+    const period = hour < 12 ? '오전' : '오후';
+    const formattedHour = hour % 12 === 0 ? 12 : hour % 12;  // 12시간제로 변환 (12시 처리)
+
+    return `${period} ${formattedHour}시 ${minute}분`;
+};
+
+// 날짜별 알림을 그룹화
+const groupAlarmsByDate = (myAlarms) => {
+    const groupedAlarms = {};
+
+    myAlarms.forEach(alarm => {
+        const alarmDate = new Date(alarm.createdDate);
+        const dateKey = `${alarmDate.getFullYear()}.${alarmDate.getMonth() + 1}.${alarmDate.getDate()}`;
+
+        if (!groupedAlarms[dateKey]) {
+            groupedAlarms[dateKey] = [];
+        }
+
+        groupedAlarms[dateKey].push(alarm);
+    });
+
+    return groupedAlarms;
+};
+
+// const renderedDates = []; // 이미 렌더링된 날짜를 추적
+
+const showUnreadAlarms = ({ myAlarms, myAlarmPagination }) => {
     let text = ``;
 
+    // 더보기 버튼이 표시될지 여부 체크
+    if (myAlarmPagination.rowCount >= myAlarms.length) {
+        moreButton.style.display = "none"; // 더보기 버튼 숨김
+    } else {
+        moreButton.style.display = "block"; // 더보기 버튼 표시
+    }
+    console.log("myAlarmPaginationL.rowCount :", myAlarmPagination.rowCount);
+    console.log("myAlarms.length:", myAlarms.length);
+
     // 알림 데이터가 없을 때
-    if (unreadAlarms.length === 0) {
+    if (myAlarms.length === 0) {
         text = `
             <div class="noti-center-header">
                 <div class="subtitle-1 noti-center-title">전체 알림</div>
                 <div class="noti-center-header-more">
                     <div class="noti-center-refresh">
                         <div class="refresh-btn">
-                            <img
-                                    class="refresh-img"
-                                    src="/images/member/refresh.png"
-                            />새로고침
+                            <img class="refresh-img" src="/images/member/refresh.png" />새로고침
                         </div>
                     </div>
                 </div>
             </div>
+            <div class="noti-box date-box">
+                <div class="noti-box-wrapper">
+                    <p class="noti-date-title">읽지 않은 알림이 없습니다.</p>
+                </div>
+            </div>
         `;
-
-        text += ` <div class="noti-box date-box">
-                        <div class="noti-box-wrapper">
-                            <p class="noti-date-title">
-                                읽지 않은 알림이 없습니다.
-                            </p>
-                        </div>
-                      </div>`
-
-        text += `</div>`; // noti-body 닫기
-
     } else {
         // 알림 데이터 있을 때
         text += `
@@ -1730,49 +1783,92 @@ const showUnreadAlarms = (unreadAlarms) => {
                 <div class="noti-center-header-more">
                     <div class="noti-center-refresh">
                         <div class="refresh-btn">
-                            <img
-                                    class="refresh-img"
-                                    src="/images/member/refresh.png"
-                            />새로고침
+                            <img class="refresh-img" src="/images/member/refresh.png" />새로고침
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="noti-body">
         `;
 
-        console.log("unreadAlarms", unreadAlarms)
-        unreadAlarms.forEach(alarm => {
-        text += `<div class="noti-box date-box">
-                    <div class="noti-box-wrapper">
-                        <p class="noti-date-title">
-                            10월 08일 화요일
-                        </p>
+        // 알림 날짜별로 그룹화
+        const groupedAlarms = groupAlarmsByDate(myAlarms);
+
+
+        // 그룹화된 알림을 순차적으로 표시
+        Object.keys(groupedAlarms).forEach(dateKey => {
+            // // 날짜가 렌더링되지 않았으면 추가
+            // if (!renderedDates.includes(dateKey)) {
+            //     renderedDates.push(dateKey); // 날짜 추가
+            // 날짜 출력: "10월 08일 화요일"
+            const formattedHangul = formatDateHangul(groupedAlarms[dateKey][0].createdDate);
+            text += `
+                <div class="noti-body">
+                    <div class="noti-box date-box">
+                        <div class="noti-box-wrapper">
+                            <p class="noti-date-title">${formattedHangul}</p>
+                        </div>
                     </div>
-                  </div>
-                  <div class="noti-box unread">
-                    <div class="noti-box-wrapper">
+            `;
+        // }
+
+            // 날짜별 알림을 표시
+            groupedAlarms[dateKey].forEach((myAlarm) => {
+                // 시간 출력: "2024.10.08. 오전 10시 16분"
+                const formattedDate = formatDate(myAlarm.createdDate);
+                const formattedTime = formatTime(myAlarm.createdDate);
+
+                // 기본 알림 박스 시작
+                text += `
+                        <div class="noti-box unread">`
+                    if (myAlarm.alarmType !== 'reply') {
+                        text +=   `<div class="noti-box-wrapper with-img">`;
+                    }
+                    else if(myAlarm.alarmType == 'reply') {
+                        text +=   `<div class="noti-box-wrapper">`;
+                    }
+
+                    // 댓글이 아닐 경우 이미지 포함
+                    if (myAlarm.alarmType !== 'reply') {
+                        text += `
+                            <img class="noti-img" src="/images/member/alarm_icon.png">
+                        `;
+                   }
+
+                    // 알림 내용
+                    text += `
                         <div class="noti-box-content">
                             <div class="noti-title">
-                                작품 "심봉사와 아이들"에
-                                댓글이 달렸습니다.
-                                <!--                               알림 메시지 -->
+                    `;
+
+                    // 알림 타입에 맞는 제목 처리
+                    if (myAlarm.alarmType === 'work') {
+                        text += `내 작품 `;
+                    } else if (myAlarm.alarmType === 'funding') {
+                        text += `나의 펀딩 `;
+                    } else if (myAlarm.alarmType === 'audition') {
+                        text += `나의 모집 `;
+                    } else if (myAlarm.alarmType === 'reply') {
+                        text += `내 작품 `;
+                    }
+
+                    // 제목과 메시지 출력
+                    text += `"${myAlarm.postTitle}" ${myAlarm.message}
                             </div>
                             <div class="noti-date">
-                                2024.10.08. 오전 10시
-                                16분
-                                <!--                               알림 날짜와 시간 -->
+                                ${formattedDate}. ${formattedTime}
                             </div>
                         </div>
                     </div>
-                    <form style="display: none"></form>
-                  </div>
+                    </div>
                     `;
-            console.log("alarms", alarm)
-        });
 
-        text += `</div>`; // noti-body 닫기
+            });
+
+            text += `</div>`;
+        });
     }
 
+    console.log("Rendered HTML:", text);
     myNotificationListLayout.innerHTML = text;
+
 };

@@ -2,6 +2,7 @@ package com.app.ggumteo.controller.member;
 
 import com.app.ggumteo.domain.admin.AdminAnswerDTO;
 import com.app.ggumteo.domain.alarm.AlarmDTO;
+import com.app.ggumteo.domain.alarm.MyAlarmListDTO;
 import com.app.ggumteo.domain.audition.AuditionApplicationDTO;
 import com.app.ggumteo.domain.audition.MyApplicationAuditionListDTO;
 import com.app.ggumteo.domain.audition.MyAuditionApplicantListDTO;
@@ -14,6 +15,7 @@ import com.app.ggumteo.domain.member.MemberProfileDTO;
 import com.app.ggumteo.domain.member.MemberProfileVO;
 import com.app.ggumteo.domain.member.MemberVO;
 import com.app.ggumteo.domain.work.MyWorkListDTO;
+import com.app.ggumteo.pagination.MyAlarmPagination;
 import com.app.ggumteo.pagination.MyAuditionPagination;
 import com.app.ggumteo.pagination.MySettingTablePagination;
 import com.app.ggumteo.pagination.MyWorkAndFundingPagination;
@@ -282,6 +284,24 @@ public class MemberRestController {
             log.info("알람 else memberDTO={}", memberProfileDTO);
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
+    }
+
+    // 내 알림 목록
+    // SELECT
+    @ResponseBody
+    @GetMapping("/member/video/alarms/{page}")
+    public MyAlarmListDTO getMyAlarmsByMemberProfileId(HttpSession session
+            , @PathVariable("page") int page, MyAlarmPagination myAlarmPagination, String subType) {
+
+        MemberProfileDTO memberProfileDTO = (MemberProfileDTO) session.getAttribute("memberProfile");
+
+        if (memberProfileDTO == null) {
+            throw new IllegalStateException("로그인 하지 않은 상태입니다.");
+        }
+
+        Long memberProfileId = memberProfileDTO.getId();
+
+        return myPageService.getMyAlarmsByMemberProfileId(page, myAlarmPagination, memberProfileId, subType);
     }
 
 

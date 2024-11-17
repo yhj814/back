@@ -1,9 +1,11 @@
 package com.app.ggumteo.service.myPage;
 
 import com.app.ggumteo.aspect.annotation.*;
+import com.app.ggumteo.constant.AlarmSubType;
 import com.app.ggumteo.constant.PostType;
 import com.app.ggumteo.controller.member.MemberRestController;
 import com.app.ggumteo.domain.admin.AdminAnswerDTO;
+import com.app.ggumteo.domain.alarm.MyAlarmListDTO;
 import com.app.ggumteo.domain.audition.*;
 import com.app.ggumteo.domain.buy.*;
 import com.app.ggumteo.domain.funding.*;
@@ -13,9 +15,11 @@ import com.app.ggumteo.domain.member.MemberProfileVO;
 import com.app.ggumteo.domain.member.MemberVO;
 import com.app.ggumteo.domain.work.MyWorkListDTO;
 import com.app.ggumteo.domain.work.WorkDTO;
+import com.app.ggumteo.pagination.MyAlarmPagination;
 import com.app.ggumteo.pagination.MyAuditionPagination;
 import com.app.ggumteo.pagination.MySettingTablePagination;
 import com.app.ggumteo.pagination.MyWorkAndFundingPagination;
+import com.app.ggumteo.repository.alarm.AlarmDAO;
 import com.app.ggumteo.repository.audition.AuditionApplicationDAO;
 import com.app.ggumteo.repository.audition.AuditionDAO;
 import com.app.ggumteo.repository.buy.BuyFundingProductDAO;
@@ -46,6 +50,7 @@ public class MyPageServiceImpl implements MyPageService {
     private final AuditionApplicationDAO auditionApplicationDAO;
     private final InquiryDAO inquiryDAO;
     private final MemberProfileDAO memberProfileDAO;
+    private final AlarmDAO alarmDAO;
 
 
     //    내 작품 게시물 전체 조회 - 영상
@@ -329,5 +334,18 @@ public class MyPageServiceImpl implements MyPageService {
     @Override
     public void softDeleteMember(Long id) {
         memberDAO.softDeleteMember(id);
+    }
+
+    //    마이페이지 - 내 알림
+    @Override
+    public MyAlarmListDTO getMyAlarmsByMemberProfileId(int page, MyAlarmPagination myAlarmPagination, Long memberProfileId, String subType) {
+        MyAlarmListDTO myAlarms = new MyAlarmListDTO();
+        myAlarmPagination.setPage(page);
+        myAlarmPagination.setTotal(alarmDAO.getAlarmTotal(memberProfileId, AlarmSubType.VIDEO.name()));
+        myAlarmPagination.progress();
+        myAlarms.setMyAlarmPagination(myAlarmPagination);
+        myAlarms.setMyAlarms(alarmDAO.findAlarmsByMemberProfileId(myAlarmPagination, memberProfileId, AlarmSubType.VIDEO.name()));
+
+        return myAlarms;
     }
 }

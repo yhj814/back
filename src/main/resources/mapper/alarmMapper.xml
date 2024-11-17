@@ -247,7 +247,7 @@
     <select id="selectAlarmsByMemberProfileId" resultType="alarmDTO">
         select
             w_n.id,
-            w_n.message as alarmContent,
+            w_n.message,
             w_n.member_profile_id as memberProfileId,
             w_n.create_date as createdDate,
             w_n.is_read as isRead,
@@ -261,14 +261,15 @@
                  join tbl_buy_work bw on bw.id = w_n.buy_work_id
                  join tbl_work w on bw.work_id = w.id
                  join tbl_post p on w.id = p.id
-        where w_n.member_profile_id = #{memberProfileId}
-          and w_n.is_read = false
+        and w_n.member_profile_id = #{memberProfileId}
+        and w_n.is_read = false
+        and w_n.sub_type = #{subType}
 
         union all
 
         select
             aa_n.id,
-            aa_n.message as alarmContent,
+            aa_n.message,
             aa_n.member_profile_id as memberProfileId,
             aa_n.create_date as createdDate,
             aa_n.is_read as isRead,
@@ -282,14 +283,15 @@
                  join tbl_audition_application aa on aa_n.audition_application_id = aa.id
                  join tbl_audition a on aa.audition_id = a.id
                  join tbl_post p on a.id = p.id
-        where aa_n.member_profile_id = #{memberProfileId}
-          and aa_n.is_read = false
+        and aa_n.member_profile_id = #{memberProfileId}
+        and aa_n.is_read = false
+        and aa_n.sub_type = #{subType}
 
         union all
 
         select
             r_n.id,
-            r_n.message as alarmContent,
+            r_n.message,
             r_n.member_profile_id as memberProfileId,
             r_n.create_date as createdDate,
             r_n.is_read as isRead,
@@ -303,14 +305,15 @@
                  join tbl_reply r on r.id = r_n.reply_id
                  join tbl_work w on w.id = r.work_id
                  join tbl_post p on w.id = p.id
-        where r_n.member_profile_id = #{memberProfileId}
-          and r_n.is_read = false
+        and r_n.member_profile_id = #{memberProfileId}
+        and r_n.is_read = false
+        and r_n.sub_type = #{subType}
 
         union all
 
         select
             fp_n.id,
-            fp_n.message as alarmContent,
+            fp_n.message,
             fp_n.member_profile_id as memberProfileId,
             fp_n.create_date as createdDate,
             fp_n.is_read as isRead,
@@ -325,11 +328,68 @@
                  join tbl_funding_product fp on fp.id = bfp.funding_product_id
                  join tbl_funding f on fp.funding_id = f.id
                  join tbl_post p on f.id = p.id
-        where fp_n.member_profile_id = #{memberProfileId}
-          and fp_n.is_read = false
+        and fp_n.member_profile_id = #{memberProfileId}
+        and fp_n.is_read = false
+        and fp_n.sub_type = #{subType}
 
         order by createdDate desc
-            limit #{startRow}, #{moreRowCount};
+            limit #{myAlarmPagination.startRow}, #{myAlarmPagination.moreRowCount};
+    </select>
+
+    <select id="selectAlarmTotal">
+        select count(*)
+        from (
+                 -- work 알림
+                 select
+                     w_n.id
+                 from tbl_work_notification w_n
+                          join tbl_buy_work bw on bw.id = w_n.buy_work_id
+                          join tbl_work w on bw.work_id = w.id
+                          join tbl_post p on w.id = p.id
+                 where w_n.member_profile_id = #{memberProfileId}
+                   and w_n.is_read = false
+                   and w_n.sub_type = #{subType}
+
+                 union all
+
+                 -- audition 알림
+                 select
+                     aa_n.id
+                 from tbl_apply_audition_notification aa_n
+                          join tbl_audition_application aa on aa_n.audition_application_id = aa.id
+                          join tbl_audition a on aa.audition_id = a.id
+                          join tbl_post p on a.id = p.id
+                 where aa_n.member_profile_id = #{memberProfileId}
+                   and aa_n.is_read = false
+                   and aa_n.sub_type = #{subType}
+
+                 union all
+
+                 -- reply 알림
+                 select
+                     r_n.id
+                 from tbl_reply_notification r_n
+                          join tbl_reply r on r.id = r_n.reply_id
+                          join tbl_work w on w.id = r.work_id
+                          join tbl_post p on w.id = p.id
+                 where r_n.member_profile_id = #{memberProfileId}
+                   and r_n.is_read = false
+                   and r_n.sub_type = #{subType}
+
+                 union all
+
+                 -- fundingProduct 알림
+                 select
+                     fp_n.id
+                 from tbl_funding_product_notification fp_n
+                          join tbl_buy_funding_product bfp on bfp.id = fp_n.buy_funding_product_id
+                          join tbl_funding_product fp on fp.id = bfp.funding_product_id
+                          join tbl_funding f on fp.funding_id = f.id
+                          join tbl_post p on f.id = p.id
+                 where fp_n.member_profile_id = #{memberProfileId}
+                   and fp_n.is_read = false
+                   and fp_n.sub_type = #{subType}
+             ) as totalAlarms
     </select>
 
 </mapper>

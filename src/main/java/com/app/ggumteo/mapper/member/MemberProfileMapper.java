@@ -16,4 +16,7 @@ public interface MemberProfileMapper {
 
     //  마이페이지 - 내 정보 수정
     public void updateMemberProfileByMemberId(MemberProfileVO memberProfileVO);
+
+    // 마이페이지 - 회원 프로필 Id
+    public Optional<MemberProfileVO> selectById(Long id);
 }

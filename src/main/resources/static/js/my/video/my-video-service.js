@@ -189,23 +189,33 @@ const myPageService = (() => {
     }
 
 //************* 알림 ***************
-    const getUnreadAlarms = async (callback) => {
-        const response = await fetch(`/members/video/alarm/unread`);
+//     const getUnreadAlarms = async (callback) => {
+//         const response = await fetch(`/members/video/alarm/unread`);
+//
+//         if (response.ok) {
+//             const unreadAlarms = await response.json();
+//             console.log("Unread Alarms: ", unreadAlarms);
+//
+//             if (callback) {
+//                 return callback(unreadAlarms);
+//             }
+//         } else {
+//             console.error("Failed to fetch unread alarms. Status: ", response.status);
+//             if (callback) {
+//                 return callback([]);
+//             }
+//         }
+//     };
 
-        if (response.ok) {
-            const unreadAlarms = await response.json();
-            console.log("Unread Alarms: ", unreadAlarms);
+    const getMyAlarmsByMemberProfileId = async (page, callback) => {
+        page = page || 1;
+        const response = await fetch(`/member/video/alarms/${page}`);
+        const myAlarms = await response.json();
 
-            if (callback) {
-                return callback(unreadAlarms);
-            }
-        } else {
-            console.error("Failed to fetch unread alarms. Status: ", response.status);
-            if (callback) {
-                return callback([]);
-            }
+        if(callback){
+            callback(myAlarms);
         }
-    };
+    }
 
     return {
         getMyVideoWorkList: getMyVideoWorkList,
@@ -225,6 +235,6 @@ const myPageService = (() => {
         updateMemberProfileByMemberId: updateMemberProfileByMemberId,
         getMyInquiryHistoryList: getMyInquiryHistoryList,
         getAdminAnswerByInquiryId: getAdminAnswerByInquiryId,
-        getUnreadAlarms: getUnreadAlarms
+        getMyAlarmsByMemberProfileId: getMyAlarmsByMemberProfileId
     }
 })();

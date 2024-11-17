@@ -30,4 +30,10 @@
             profile_etc = #{profileEtc}
         where member_id = #{memberId}
     </update>
+
+    <!-- 마이페이지 - 회원 프로필 Id-->
+    <select id="selectById" resultType="memberProfileVO">
+        select id
+        from tbl_member_profile where id = #{Id};
+    </select>
 </mapper>
