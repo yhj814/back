@@ -109,7 +109,7 @@
 <br>
 <br>
 5-2 백엔드<br><br>
-<img src="https://github.com/user-attachments/assets/23b8c6aa-6f30-4389-bf19-971783236c9b"><br>
+<img src="https://github.com/user-attachments/assets/23b8c6aa-6f30-4389-bf19-971783236c9b"><br><br>
 
 
 ▶ 관리자 페이지 : 인증번호
