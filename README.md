@@ -68,8 +68,9 @@
 - fetch<br>
 - JDK 17.0.10<br>
 - Kakao DEVELOPER API<br>
+- kakao pay<br>
 - Cool SMS API<br>
-- REST API
+- REST API<br>
 - lombok<br>
 - thymeleaf<br>
 - Slack<br><br><br>
